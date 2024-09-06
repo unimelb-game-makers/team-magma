@@ -15,7 +15,6 @@ namespace Managers
      */
     public class MSaveGameManager : PersistentSingleton<MSaveGameManager>
     {
-    
         /**
          * Call the Save method for each ISaveGame service
          * Currently not implemented
