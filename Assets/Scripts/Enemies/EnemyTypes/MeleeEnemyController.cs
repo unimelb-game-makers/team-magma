@@ -5,18 +5,20 @@ using Enemy;
 
 public class MeleeEnemyController : EnemyController
 {
-    private float currentAttackCooldown = 0;
-
     public override void Attack() {
         RotateTowardsPlayer();
-        animator.Play(idleAttackAnimation.name);
 
-        currentAttackCooldown -= Time.deltaTime;
-        if (currentAttackCooldown <= 0) {
-            currentAttackCooldown = GetAttackCooldown();
+        // Calculate the current cooldown time. If cooldown is over, attack.
+        SetCurrentAttackCooldown(GetCurrentAttackCooldown() - Time.deltaTime); 
+        if (GetCurrentAttackCooldown() <= 0) {
+            SetCurrentAttackCooldown(GetAttackCooldown());
 
             Debug.Log("Melee Attack!");
-            animator.Play(attackAnimation.name);
+            GetAnimator().SetTrigger(GetAttackAnimationTrigger());
+
+            // Temporary until actual logic is implemented.
+            // Eg: Could wait until the animation has finished playing.
+            SetIsAttacking(true);
 
             // TO IMPLEMENT:
             // The damageable component will take care of dealing the damage.
@@ -26,6 +28,8 @@ public class MeleeEnemyController : EnemyController
             // This is assuming that both the player and enemy deal damage on collision.
 
             // Also have to remove renderer component from damageable script.
+
+            SetIsAttacking(false);
         }
     }
 }

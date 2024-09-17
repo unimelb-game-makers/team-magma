@@ -6,42 +6,34 @@ using UnityEngine.AI;
 using UnityEngine.Diagnostics;
 using Player;
 
-public class PatrolState : IEnemyState
+public class PatrolState : BaseEnemyState
 {
-    private NavMeshAgent navMeshAgent;
-    private PlayerController player;
-    private float chaseRange;
+    public PatrolState(EnemyController enemyController, NavMeshAgent navMeshAgent, PlayerController playerController) : 
+                        base(enemyController, navMeshAgent, playerController) { }
 
-    public void EnterState(EnemyController enemyController) {
+    public override void EnterState() {
         Debug.Log("Entering Patrol State");
-
-        navMeshAgent = enemyController.GetNavMeshAgent();
+        enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), true);
         navMeshAgent.destination = enemyController.GetCurrentPatrolPoint().position;
         navMeshAgent.speed = enemyController.GetPatrolSpeed();
-
-        player = enemyController.GetPlayer();
-
-        chaseRange = enemyController.GetChaseRange();
     }
 
-    public void UpdateState(EnemyController enemyController) {
+    public override void UpdateState() {
         enemyController.Patrol();
 
-        // y is set to 0 so that the patrol point can be at any height.
-        var destinationPos = new Vector3(navMeshAgent.destination.x, 0, navMeshAgent.destination.z);
-        var currentPos = new Vector3(navMeshAgent.transform.position.x, 0, navMeshAgent.transform.position.z);
-
-        // If the patrol point was reached, transition to idle state.
-        if (Vector3.Distance(destinationPos, currentPos) <= navMeshAgent.stoppingDistance) {
-            enemyController.TransitionToState(enemyController.GetIdleState());
-            enemyController.NextPatrolPoint();
-        }
-
-        if (enemyController.GetPlayer() == null) return;
-        // If the player is within chase distance, transition to chase state.
-        float enemyPlayerDistance = Vector3.Distance(enemyController.transform.position, player.transform.position);
-        if (enemyPlayerDistance <= chaseRange) {
+        // If the player is within aggro range, transition to chase state.
+        if (playerController != null && enemyController.IsWithinAggroRange) {
             enemyController.TransitionToState(enemyController.GetChaseState());
         }
+        // If the patrol point was reached, transition to idle state.
+        else if (enemyController.HasReachedPatrolPoint) {
+            enemyController.HasReachedPatrolPoint = false;
+            enemyController.NextPatrolPoint();
+            enemyController.TransitionToState(enemyController.GetIdleState());
+        }
+    }
+
+    public override void ExitState() {
+        enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), false);
     }
 }
