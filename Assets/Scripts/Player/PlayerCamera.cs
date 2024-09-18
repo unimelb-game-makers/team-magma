@@ -15,6 +15,7 @@ namespace Player
         [SerializeField] private Vector3 _offset = new Vector3(0, 10, -10);
         //camera rotation
         [SerializeField] private Vector3 _rotation = new Vector3(45, 0, 0);
+        public AnimationCurve curve;
         // Start is called before the first frame update
         
         private void Start()

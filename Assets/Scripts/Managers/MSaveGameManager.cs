@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,15 +16,35 @@ namespace Managers
      */
     public class MSaveGameManager : PersistentSingleton<MSaveGameManager>
     {
+        private string SaveName = "SaveGame";
+        private float saveInterval = 5f;
+        private float saveTimer = 0f;
+
+        
+        //Load the game assume all the ISaveGame services are registered
+        private void Start()
+        {
+            LoadGame_Player(SaveName);
+        }
+        
+        private void Update()
+        {
+            saveTimer += Time.deltaTime;
+            if(saveTimer >= saveInterval)
+            {
+                SaveGame(SaveName);
+                saveTimer = 0f;
+            }
+        }
+
         /**
          * Call the Save method for each ISaveGame service
          * Currently not implemented
          */
         public void SaveGame(string saveName)
         {
-            // Save<ISavePlayer>(SaveName);
-            // Save<ISaveLevel>(SaveName);
-            //Save<ISaveInventory>(SaveName);
+            Debug.Log("Save Game Player");
+            Save<ISavePlayer>(saveName);
         }
 
         /**
@@ -31,9 +52,9 @@ namespace Managers
          * Currently not implemented
          */
         public void LoadGame_Player(string saveName)
-        {
-            //LoadGame<ISavePlayer>(SaveName);
-            //LoadGame<ISaveInventory>(SaveName);
+        {            
+            Debug.Log("Load Game Player");
+            LoadGame<ISavePlayer>(saveName);
         }
 
         /**
@@ -82,6 +103,7 @@ namespace Managers
             return !ES3.KeyExists(GetInternalName<T>(saveName));
         }
 
+        
         /**
          * Load the default data for the specified type of ISaveGame service
          */
@@ -92,6 +114,8 @@ namespace Managers
             foreach (var o in saveServices)
             {
                 o.LoadDefaultData();
+                //debug
+                Debug.Log("Default Data Loaded for " + o);
             }
         }
 
