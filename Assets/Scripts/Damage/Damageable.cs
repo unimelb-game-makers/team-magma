@@ -26,7 +26,6 @@ namespace Damage
         {
             if (!isInvulnerable) {
                 health -= damage;
-                Debug.Log(gameObject.name + " takes damage " + damage + "; Remain health: " + health);
                 if (health <= 0)
                 {
                     Debug.Log("Object dies");

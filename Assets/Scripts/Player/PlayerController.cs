@@ -3,6 +3,8 @@ using Damage;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Platforms;
+using Utilities.ServiceLocator;
 
 namespace Player
 {
@@ -122,6 +124,11 @@ namespace Player
             {
                 _leftShiftButtonDown = false;
             }
+            
+            if (Input.GetButtonDown("Fire2"))
+            {
+                PlayTapeEffect();
+            }
         }
 
         private void Move()
@@ -140,7 +147,7 @@ namespace Player
                     _dodgeDirection = transform.forward;
                 }
 
-                GetComponent<Damageable>().setIsInvulnerable(true);
+                GetComponent<Damage.Damageable>().setIsInvulnerable(true);
             }
 
             if (Input.GetButtonUp("Dodge"))
@@ -229,6 +236,20 @@ namespace Player
                     var canAttackList = new List<string> { "Enemy" };
                     _meleeAttackBox.SendMessage("EditCanAttack", canAttackList);
                 }
+            }
+        }
+
+        
+        /**
+         * Placeholder for playing the tape effect
+         */
+        private void PlayTapeEffect()
+        {
+            //get IAffectServices from service locator
+            var affectServices = ServiceLocator.Instance.Get<IAffectService>();
+            foreach (var o in affectServices)
+            {
+                o.Affect(TapeType.Slow, 5, 0.5f);
             }
         }
 

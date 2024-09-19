@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +24,6 @@ namespace Damage
             if(other.gameObject.GetComponent<Damageable>()==null) return;
             if (canAttack.Contains(other.gameObject.GetComponent<Damageable>().GetTag()))
             {
-                Debug.LogError(gameObject.name + " hit " + other.gameObject.name);
                 ApplyDamage(other);
                 Destroy(gameObject);
             }
