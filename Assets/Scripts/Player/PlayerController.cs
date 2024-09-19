@@ -3,6 +3,8 @@ using Damage;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Platforms;
+using Utilities.ServiceLocator;
 
 namespace Player
 {
@@ -12,6 +14,10 @@ namespace Player
         [Header("Movement Setup")]
         [SerializeField] private float movementSpeed = 15f;
         [SerializeField] private OrientationType orientation;
+        [SerializeField] private float jumpHeight = 2.0f;
+    	[SerializeField] private float jumpForce = 2.0f;
+    
+    	
 
         [Space(10)]
 
@@ -55,10 +61,14 @@ namespace Player
 
         private bool _isMovingHorizontally;
         private bool _isMovingVertically;
+        private bool _isGrounded;
+
         private float _previousDodge;
         private Vector3 _dodgeDirection;
+
         private float _horizontalInput;
         private float _verticalInput;
+
         private void Start()
         {
             // Get the Rigidbody component attached to this GameObject
@@ -122,6 +132,11 @@ namespace Player
             {
                 _leftShiftButtonDown = false;
             }
+            
+            if (Input.GetButtonDown("Fire2"))
+            {
+                PlayTapeEffect();
+            }
         }
 
         private void Move()
@@ -140,13 +155,19 @@ namespace Player
                     _dodgeDirection = transform.forward;
                 }
 
-                GetComponent<Damageable>().setIsInvulnerable(true);
+                GetComponent<Damage.Damageable>().setIsInvulnerable(true);
             }
 
             if (Input.GetButtonUp("Dodge"))
             { 
                 _DodgeButtonDown = false;
             }
+
+            if(Input.GetButtonDown("Jump") && _isGrounded){
+    
+    			_rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
+    			_isGrounded = false;
+    		}
 
             if (Time.time > _previousDodge + isInvulnerableTime && GetComponent<Damageable>().getIsInvulnerable()) {
                 GetComponent<Damageable>().setIsInvulnerable(false);
@@ -171,9 +192,6 @@ namespace Player
                 {
                     movement = new Vector3(_horizontalInput * movementSpeed, _rigidbody.velocity.y, _verticalInput * movementSpeed);
                 }
-
-                // Apply the movement to the Rigidbody
-                //_rigidbody.MovePosition(_rigidbody.position + movement * Time.deltaTime);
 
                 // Apply velocity to the Rigidbody
                 _rigidbody.velocity = movement;
@@ -232,6 +250,20 @@ namespace Player
             }
         }
 
+        
+        /**
+         * Placeholder for playing the tape effect
+         */
+        private void PlayTapeEffect()
+        {
+            //get IAffectServices from service locator
+            var affectServices = ServiceLocator.Instance.Get<IAffectService>();
+            foreach (var o in affectServices)
+            {
+                o.Affect(TapeType.Slow, 5, 0.5f);
+            }
+        }
+
         void Rotate()
         {
             Quaternion targetRotation;
@@ -283,5 +315,10 @@ namespace Player
             }
             return _isMovingHorizontally || _isMovingVertically;
         }
+
+        void OnCollisionStay()
+    	{
+    		_isGrounded = true;
+    	}
     }
 }
