@@ -17,7 +17,7 @@ namespace Enemies
         [SerializeField] private float shootRate = 1f;
 
         private float _nextShoot;
-
+        
         private void Start()
         {
             target = FindObjectOfType<PlayerController>();
