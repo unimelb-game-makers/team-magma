@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Player;
+using Timeline;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,7 @@ namespace Enemy
     public abstract class EnemyController : MonoBehaviour, ITriggerCheckable
     {
         private PlayerController player;
+        private MusicTimeline timeline;
         private Rigidbody rigidbody;
         private NavMeshAgent navMeshAgent;
         private Animator animator;
@@ -67,6 +69,7 @@ namespace Enemy
         private AttackState attackState;
 
         public PlayerController GetPlayerController() { return player; }
+        public MusicTimeline GetMusicTimeline() {return timeline; }
         public Rigidbody GetRigidbody() { return rigidbody; }
         public NavMeshAgent GetNavMeshAgent() { return navMeshAgent; }
 
@@ -107,6 +110,7 @@ namespace Enemy
 
         void Awake() {
             player = FindObjectOfType<PlayerController>();
+            timeline = FindObjectOfType<MusicTimeline>();
             rigidbody = GetComponent<Rigidbody>();
             navMeshAgent = GetComponent<NavMeshAgent>();
             navMeshAgent.updateRotation = false;
