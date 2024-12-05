@@ -1,12 +1,25 @@
+// Author : Peiyu Wang @ Daphatus
+// 05 12 2024 12 04
+
+using Platforms;
 using Tempo;
 using UnityEngine;
 
-namespace Platforms
-
+namespace Hazard
 {
-    public abstract class PlatformComponent : MonoBehaviour, ISyncable
+    [RequireComponent(typeof(Collider))]
+    public class Hazard : MonoBehaviour, ISyncable
     {
-        public abstract void Affect(TapeType tapeType, float duration, float effectValue);
+        public void OnTriggerEnter(Collider other)
+        {
+            
+        }
+        
+        public void Affect(TapeType tapeType, float duration, float effectValue)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void OnChangeTrack()
         {
             throw new System.NotImplementedException();

@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Platforms;
+using Tempo;
 using Utilities.ServiceLocator;
 
 namespace Player
@@ -257,7 +258,7 @@ namespace Player
         private void PlayTapeEffect()
         {
             //get IAffectServices from service locator
-            var affectServices = ServiceLocator.Instance.Get<IAffectService>();
+            var affectServices = ServiceLocator.Instance.Get<ISyncable>();
             foreach (var o in affectServices)
             {
                 o.Affect(TapeType.Slow, 5, 0.5f);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Tempo;
 using UnityEngine;
 using Utilities.ServiceLocator;
 
@@ -38,7 +39,7 @@ namespace Platforms
 
         public void Start()
         {
-            ServiceLocator.Instance.Register<IAffectService>(this);
+            ServiceLocator.Instance.Register<ISyncable>(this);
         }
 
         public void Update()
