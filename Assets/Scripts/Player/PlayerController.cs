@@ -11,11 +11,8 @@ namespace Player
         // Movement speed of the player
         [Header("Movement Setup")]
         [SerializeField] private float movementSpeed = 15f;
-        [SerializeField] private OrientationType orientation;
-        [SerializeField] private float jumpHeight = 2.0f;
-    	[SerializeField] private float jumpForce = 2.0f;
-    
-    	
+        [SerializeField] private OrientationType lookOrientation;
+        [SerializeField] private OrientationType moveOrientation;
 
         [Space(10)]
 
@@ -59,14 +56,10 @@ namespace Player
 
         private bool _isMovingHorizontally;
         private bool _isMovingVertically;
-        private bool _isGrounded;
-
         private float _previousDodge;
         private Vector3 _dodgeDirection;
-
         private float _horizontalInput;
         private float _verticalInput;
-
         private void Start()
         {
             // Get the Rigidbody component attached to this GameObject
@@ -89,9 +82,9 @@ namespace Player
 
             TrackMovementInput();
 
-            Move();
-
             Rotate();
+            
+            Move();
 
             Attack();
         }
@@ -139,7 +132,7 @@ namespace Player
 
             if (Input.GetButtonDown("Dodge") && !_DodgeButtonDown && Time.time > _previousDodge + dodgeRecoverTime)
             {
-                _dodgeDirection = new Vector3(_horizontalInput, 0, _verticalInput);
+                _dodgeDirection = transform.forward; 
                 _previousDodge = Time.time;
                 _DodgeButtonDown = true;
 
@@ -156,12 +149,6 @@ namespace Player
                 _DodgeButtonDown = false;
             }
 
-            if(Input.GetButtonDown("Jump") && _isGrounded){
-    
-    			_rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
-    			_isGrounded = false;
-    		}
-
             if (Time.time > _previousDodge + isInvulnerableTime && GetComponent<Damageable>().getIsInvulnerable()) {
                 GetComponent<Damageable>().setIsInvulnerable(false);
             }
@@ -176,7 +163,7 @@ namespace Player
             {
                 Vector3 movement;
                 // Calculate the movement vector
-                //Slow down the speed by 1/sqrt(2) if both keys pressed
+                // Slow down the speed by 1/sqrt(2) if both keys pressed
                 if (_isMovingHorizontally && _isMovingVertically)
                 {
                     movement = new Vector3(_horizontalInput * movementSpeed * 0.69f, _rigidbody.velocity.y, _verticalInput * movementSpeed * 0.69f);
@@ -185,6 +172,37 @@ namespace Player
                 {
                     movement = new Vector3(_horizontalInput * movementSpeed, _rigidbody.velocity.y, _verticalInput * movementSpeed);
                 }
+
+                switch (moveOrientation)
+                {
+                    case OrientationType.BasedOnInput:
+                        //if (TrackMovementInput()) {
+                            // Rotate the movement vector direction based on camera angle
+                            movement = Quaternion.AngleAxis(_mainCamera.transform.rotation.eulerAngles.y, Vector3.up) * movement;
+                        //}
+                        break;
+
+                    // Movement besides foward is a bit weird but it works.
+                    case OrientationType.TowardMouse: 
+                        // Get the mouse position in the world space
+                        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+                        Plane groundPlane = new Plane(Vector3.up, Vector3.down);  // Define a plane at the ground level
+
+                        // Check where the ray intersects the plane
+                        if (groundPlane.Raycast(ray, out float distance))
+                        {
+                            Vector3 targetPoint = ray.GetPoint(distance);  // Get the point on the plane
+                            Vector3 direction = (targetPoint - transform.position).normalized;  // Calculate the direction
+
+                            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+                            // Rotate the movement vector direction based on direction to mouse
+                            movement = Quaternion.AngleAxis(targetRotation.eulerAngles.y, Vector3.up) * movement;
+                        }
+                        break;
+                }
+
+                // Apply the movement to the Rigidbody
+                //_rigidbody.MovePosition(_rigidbody.position + movement * Time.deltaTime);
 
                 // Apply velocity to the Rigidbody
                 _rigidbody.velocity = movement;
@@ -214,13 +232,15 @@ namespace Player
             // Create a ray from the camera to the mouse position
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             // Create a plane at the player's position with normal facing up
-            Plane plane = new Plane(Vector3.up, transform.position);
+            Plane plane = new Plane(Vector3.up, transform.position + Vector3.down);
             // Calculate the distance from the ray origin to the plane
             if (plane.Raycast(ray, out float distance))
             {
                 // Get the point on the plane where the ray intersects
                 Vector3 hitPoint = ray.GetPoint(distance);
-                return hitPoint;
+                // Adjust y to be level with player so not vertically angled 
+                Vector3 directionPoint = new Vector3(hitPoint.x, transform.position.y, hitPoint.z);
+                return directionPoint;
             }
             return Vector3.zero;
         }
@@ -246,11 +266,11 @@ namespace Player
         void Rotate()
         {
             Quaternion targetRotation;
-            switch (orientation)
+            switch (lookOrientation)
             {
                 case OrientationType.BasedOnInput:
                     if (TrackMovementInput()) {
-                        targetRotation = Quaternion.LookRotation(new Vector3(_horizontalInput, 0, _verticalInput));
+                        targetRotation = Quaternion.LookRotation(Quaternion.AngleAxis(_mainCamera.transform.rotation.eulerAngles.y, Vector3.up) * new Vector3(_horizontalInput, 0, _verticalInput));
                         // Smoothly rotate towards the target rotation
                         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
                     }
@@ -258,7 +278,7 @@ namespace Player
                 case OrientationType.TowardMouse:
                     // Get the mouse position in the world space
                     Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-                    Plane groundPlane = new Plane(Vector3.up, Vector3.zero);  // Define a plane at the ground level
+                    Plane groundPlane = new Plane(Vector3.up, Vector3.down);  // Define a plane at the ground level
 
                     // Check where the ray intersects the plane
                     if (groundPlane.Raycast(ray, out float distance))
@@ -292,12 +312,7 @@ namespace Player
             {
                 _isMovingVertically = false; 
             }
-            return _isMovingHorizontally || _isMovingVertically;
+            return _isMovingHorizontally || _isMovingVertically; 
         }
-
-        void OnCollisionStay()
-    	{
-    		_isGrounded = true;
-    	}
     }
 }

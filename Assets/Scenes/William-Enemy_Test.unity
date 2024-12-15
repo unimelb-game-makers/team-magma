@@ -821,7 +821,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 15
-  orientation: 0
+  lookOrientation: 0
+  moveOrientation: 1
   projectilePrefab: {fileID: 3345562608605307880, guid: d20f1b4b149104c94b88ac30db2413f0, type: 3}
   enemyLayers:
     serializedVersion: 2
@@ -1844,7 +1845,7 @@ MonoBehaviour:
   chaseSpeed: 8
   chaseAnimationBool: isChase
   chaseAudio: {fileID: 0}
-  outsideAttackRangeDuration: 0.5
+  outsideAttackRangeDuration: 1
   attackCooldown: 1
   attackAnimationTrigger: isAttack
   idleAttackAnimationBool: isAttackIdle
