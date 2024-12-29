@@ -98,5 +98,21 @@ namespace Platforms
             yield return new WaitForSeconds(duration);
             _speed = 1;
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                other.transform.SetParent(transform); // Parent the player to the platform
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                other.transform.SetParent(null); // Unparent the player
+            }
+        }
     }
 }

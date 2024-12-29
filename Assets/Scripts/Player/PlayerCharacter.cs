@@ -15,6 +15,16 @@ namespace Player
         [SerializeField] private float batteryLevel = 100;
         [SerializeField] private float batteryMax = 100;
 
+        public float GetHealth()
+        {
+            return health;
+        }
+
+        public void SetHealth(float newHealth)
+        {
+            health = newHealth;
+        }
+
         private void Awake()
         {
             ServiceLocator.Instance.Register<ISavePlayer>(this);

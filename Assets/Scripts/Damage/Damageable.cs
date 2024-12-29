@@ -1,47 +1,58 @@
 using UnityEngine;
 using System.Collections;
+using Player;
 
 namespace Damage
 {
-    public class Damageable : DamageComponent
+    public class Damageable : MonoBehaviour
     {
-        [SerializeField] private int health = 100;
-        [SerializeField] private string tag = "Player";
+        // ***************
+        // Not sure if we need this, leaving for now.
         [SerializeField] private Color hitColor = Color.red;
         [SerializeField] private float hitEffectDuration = 0.5f;
         [SerializeField] private float colorChangeDuration = 0.2f;
         
         private Renderer rend;  // The Renderer component of the cube  // The color to change to when hit
         private Color originalColor;  // To store the original color of the cube
+        // ***************
 
         private bool isInvulnerable = false;
 
-        public void Start()
+        private IHealthManager healthManager;
+
+        public void Awake()
         {
             rend = GetComponent<Renderer>();
-            originalColor = rend.material.color;
+            if (rend != null)
+            {
+                originalColor = rend.material.color;
+            }
+
+            // Get the health manager component.
+            healthManager = GetComponent<IHealthManager>();
+            Debug.Log(healthManager);
+            if (healthManager == null)
+            {
+                Debug.LogError("No IHealthManager implementation found on the GameObject.");
+            }
         }
 
-        public void ApplyDamage(int damage)
+        public void TakeDamage(float damage)
         {
             if (!isInvulnerable) {
-                health -= damage;
-                if (health <= 0)
+                Debug.Log(healthManager);
+                healthManager.TakeDamage(damage);
+                
+                if (healthManager.IsDead())
                 {
-                    Debug.Log("Object dies");
+                    Debug.Log("GameObject has died!");
                     Destroy(gameObject);
-                } else
+                }
+                else if (rend != null)
                 {
                     StartCoroutine(HitEffect());
                 }
             }
-        }
-        /**
-         * To differentiate enemy or player
-         */
-        public string GetTag()
-        {
-            return tag;
         }
 
         private IEnumerator HitEffect()

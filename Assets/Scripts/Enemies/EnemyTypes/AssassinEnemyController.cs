@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Enemy;
 using UnityEditor.Callbacks;
+using Damage;
 
 public class AssassinEnemyController : EnemyController
 {
@@ -87,6 +88,9 @@ public class AssassinEnemyController : EnemyController
                 Vector3 knockbackDirectionWithY = transform.position - GetPlayerController().transform.position;
                 Vector3 knockbackDirection = new Vector3(knockbackDirectionWithY.x, 0f, knockbackDirectionWithY.z).normalized;
                 GetRigidbody().AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+
+                // Player has taken damage
+                GetPlayerController().GetComponent<Damageable>().TakeDamage(GetDamage());
             }
         } else {
             GetRigidbody().velocity = dashDirection * dashSpeed;

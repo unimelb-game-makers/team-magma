@@ -7,17 +7,8 @@ using UnityEngine;
 
 namespace Hazard
 {
-    [RequireComponent(typeof(Collider))]
-    public class Hazard : MonoBehaviour, ISyncable
-    {
-        public void OnTriggerEnter(Collider other)
-        {
-            
-        }
-        
-        public void Affect(TapeType tapeType, float duration, float effectValue)
-        {
-            throw new System.NotImplementedException();
-        }
+    public abstract class Hazard : MonoBehaviour, ISyncable
+    {   
+        public abstract void Affect(TapeType tapeType, float duration, float effectValue);
     }
 }

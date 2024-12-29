@@ -7,13 +7,21 @@ namespace Damage
      * Component that deals damage to other objects on collision.
      */
     [RequireComponent(typeof(Collider))]
-    public class DamageComponent : MonoBehaviour
+    public class Damager : MonoBehaviour
     {
-        /**
-         * the amount of damage to deal on target.
-         */
-        [SerializeField] private int damage = 10;
+        private IDamageManager damageManager;
+
         [SerializeField] private List<string> canAttack = new List<string>();
+
+        public void Awake()
+        {
+            // Get the damage manager component.
+            damageManager = GetComponent<IDamageManager>();
+            if (damageManager == null)
+            {
+                Debug.LogError("No IDamageManager implementation found on the GameObject.");
+            }
+        }
         
         /**
          * Deal damage to the target on collision.
@@ -22,16 +30,10 @@ namespace Damage
         {
             if(other==null) return;
             if(other.gameObject.GetComponent<Damageable>()==null) return;
-            if (canAttack.Contains(other.gameObject.GetComponent<Damageable>().GetTag()))
+            if (canAttack.Contains(other.gameObject.tag))
             {
-                ApplyDamage(other);
-                Destroy(gameObject);
+                damageManager.DealDamage(other.gameObject.GetComponent<Damageable>());
             }
-        }
-    
-        private void ApplyDamage(Collider other)
-        {
-            other.gameObject.GetComponent<Damageable>().ApplyDamage(damage);
         }
 
         public List<string> GetCanAttack()

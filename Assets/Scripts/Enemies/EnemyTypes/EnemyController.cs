@@ -18,6 +18,10 @@ namespace Enemy
         private Animator animator;
         private AudioSource audioSource;
 
+        [Header("Health and Damage")]
+        [SerializeField] private float health = 100;
+        [SerializeField] private float damage = 10;
+
         [Header("Idle")]
         [SerializeField] private float idleDuration = 3f;
         [SerializeField] private string idleAnimationBool = "isIdle";
@@ -70,6 +74,10 @@ namespace Enemy
         public Rigidbody GetRigidbody() { return rigidbody; }
         public NavMeshAgent GetNavMeshAgent() { return navMeshAgent; }
 
+        public float GetHealth() { return health; }
+        public void SetHealth(float newHealth) { health = newHealth; }
+        public float GetDamage() { return damage; }
+        
         public float GetIdleDuration() { return idleDuration; }
         public float GetPatrolSpeed() { return patrolSpeed; }
         public Transform GetCurrentPatrolPoint() { return currentPatrolPoint; }
