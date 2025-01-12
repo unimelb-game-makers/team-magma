@@ -12,11 +12,17 @@ namespace Hazard
 {
     public class Fan : Hazard
     {
+        [Header("Fan Children Objects")]
         /**
-         * The 'fanArea' object is the object that detects characters and 
+         * The 'fanPush' object is the object that detects characters and 
          * calls the push function in the fan class.
          */
-        private GameObject fanArea;
+        private GameObject fanPush;
+        /**
+         * The 'fanPull' object is the object that detects characters and 
+         * calls the pull function in the fan class.
+         */
+        private GameObject fanPull;
         /**
          * The 'fanBlades' object is the fan itself that needs to rotate.
          */
@@ -28,35 +34,57 @@ namespace Hazard
         private GameObject fanStopper;
 
         [Header("Rotation Speed")]
-        /**
-         * The speed with which the fan rotates when at fast tempo.
-         */
-        [SerializeField] private Vector3 _fastSpeed = new Vector3(0, 0, -1000);
-        /**
-         * The speed with which the fan rotates when at slow tempo.
-         */
-        [SerializeField] private Vector3 _slowSpeed = new Vector3(0, 0, -10);
-        private Vector3 currentSpeed;
+        [Tooltip("The speed at which the fan rotates when at fast tempo.")]
+        [SerializeField] private Vector3 _fastSpeed = new(0, 0, -1000);
+        [Tooltip("The speed at which the fan rotates when at slow tempo.")]
+        [SerializeField] private Vector3 _slowSpeed = new(0, 0, -10);
+
+        [Header("Damage and Knockback")]
+        [Tooltip("The damage which the fan deals when at fast tempo.")]
+        [SerializeField] private float _fastDamage = 10;
+        [Tooltip("The damage which the fan deals when at slow tempo.")]
+        [SerializeField] private float _slowDamage = 5;
+        [Tooltip("The force with which the characters are knockbacked when at fast tempo.")]
+        [SerializeField] private float _fastKnockbackForce = 100;
+        [Tooltip("The force with which the characters are knockbacked when at slow tempo.")]
+        [SerializeField] private float _slowKnockbackForce = 50;
 
         [Header("Force and Direction")]
-        /**
-         * The force with which the fan pushes characters.
-         */
+        [Tooltip("The force with which the fan pushes/pulls characters.")]
         [SerializeField] private float _forceAmount = 1;
-        /**
-         * The direction of the force in which the fan pushes characters.
-         */
-        [SerializeField] private Vector3 _forceDirection;
+        [Tooltip("The direction of the force in which the fan pushes/pulls characters.")]
+        private Vector3 _forceDirection;
 
         public void Awake()
         {
-            // The 'FanArea' object is the child of the 'Fan' object.
-            fanArea = transform.Find("FanArea").gameObject;
             // The 'FanBlades' object is the child of the 'Fan' object.
             fanBlades = transform.Find("FanBlades").gameObject;
+            fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
+
+            // Set the direction to the local backward direction so that the fan
+            // faces forward correctly.
+            _forceDirection = -transform.forward;
+
+            // Set the damage and knockback for each child blade.
+            foreach (Transform fanBlade in fanBlades.transform)
+            {
+                fanBlade.GetComponent<FanDamager>().SetDamage(_fastDamage);
+                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_fastKnockbackForce);
+                fanBlade.GetComponent<FanDamager>().SetKnockbackDirection(_forceDirection);
+            }
+
+            // The 'FanPush' object is the child of the 'Fan' object.
+            fanPush = transform.Find("FanPush").gameObject;
+            fanPush.GetComponent<FanPush>().SetForceAmount(_forceAmount);
+            fanPush.GetComponent<FanPush>().SetForceDirection(_forceDirection);
+
+            // The 'FanPull' object is the child of the 'Fan' object.
+            fanPull = transform.Find("FanPull").gameObject;
+            fanPull.GetComponent<FanPull>().SetForceAmount(_forceAmount);
+            fanPull.GetComponent<FanPull>().SetForceDirection(_forceDirection);
+
             // The 'FanStopper' object is the child of the 'Fan' object.
             fanStopper = transform.Find("FanStopper").gameObject;
-            currentSpeed = _fastSpeed;
         }
 
         public void Start()
@@ -64,40 +92,19 @@ namespace Hazard
             ServiceLocator.Instance.Register<ISyncable>(this);
         }
 
+
+        // ***************************************************************************************************
+        // Testing Purposes only - This whole block can be deleted safely.
+        [SerializeField] private bool isSlowTempo = false;
         public void Update()
         {
-            RotateBlades();
-        }
-
-        /*
-         * Rotate the blades of the fan at the current speed.
-         */
-        private void RotateBlades()
-        {
-            fanBlades.transform.Rotate(currentSpeed * Time.deltaTime);
-        }
-
-        /**
-         * Pushes the characters that enter the 'FanArea' object.
-         */
-        public void PushCharacters(Collider collider)
-        {
-            // Ignore objects with trigger colliders.
-            if (collider.isTrigger) return;
-
-            // Push player or enemies.
-            // Check if the object has a Rigidbody to apply the force.
-            Rigidbody rb = collider.attachedRigidbody;
-            if (rb != null)
+            if (isSlowTempo)
             {
-                // Apply the force in the specified direction and magnitude.
-                Vector3 force = _forceDirection.normalized * _forceAmount;
-                // ForceMode.Force for continuous force.
-                rb.AddForce(force, ForceMode.Force);
-
-                Debug.Log("Characters are being pushed!");
+                Affect(TapeType.Slow, 5f, 0);
+                isSlowTempo = false;
             }
         }
+        // ***************************************************************************************************
 
         /**
          * Switch the fan off for 'duration' seconds.
@@ -106,11 +113,20 @@ namespace Hazard
         {
             if(tapeType == TapeType.Slow)
             {
-                // Disable the 'fanArea' object so no characters are pushed.
-                fanArea.SetActive(false);
+                fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_slowSpeed);
+                foreach (Transform fanBlade in fanBlades.transform)
+                {
+                    fanBlade.GetComponent<FanDamager>().SetDamage(_slowDamage);
+                    fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_slowKnockbackForce);
+                }
+                
+                // Disable the 'fanPush' object so no characters are pushed.
+                fanPush.SetActive(false);
+                // Disable the 'fanPull' object so no characters are pushed.
+                fanPull.SetActive(false);
+
                 // Disable the 'fanStopper' object so characters can pass through.
                 fanStopper.SetActive(false);
-                currentSpeed = _slowSpeed;
 
                 // Code for Animations and Sounds.
 
@@ -119,17 +135,25 @@ namespace Hazard
         }
 
         /**
-         * After 'duration' seconds, the 'fanArea' object is switched on again.
+         * After 'duration' seconds, the fan is switched on again.
          */
         private IEnumerator AffectTimer(float duration)
         {
             yield return new WaitForSeconds(duration);
 
             // Code for Animations and Sounds.
-            
-            fanArea.SetActive(true);
+
+            fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
+            foreach (Transform fanBlade in fanBlades.transform)
+            {
+                fanBlade.GetComponent<FanDamager>().SetDamage(_fastDamage);
+                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_fastKnockbackForce);
+            }
+
+            fanPush.SetActive(true);
+            fanPull.SetActive(true);
+
             fanStopper.SetActive(true);
-            currentSpeed = _fastSpeed;
         }
     }
 }

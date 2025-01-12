@@ -22,11 +22,8 @@ namespace Damage
                 Debug.LogError("No IDamageManager implementation found on the GameObject.");
             }
         }
-        
-        /**
-         * Deal damage to the target on collision.
-         */
-        private void OnTriggerEnter(Collider other)
+
+        public void Damage(Collider other)
         {
             if(other==null) return;
             if(other.gameObject.GetComponent<Damageable>()==null) return;
