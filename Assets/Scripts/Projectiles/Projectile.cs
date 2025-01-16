@@ -20,6 +20,14 @@ public class Projectile : MonoBehaviour
     
     private void Update()
     {
+        ProjectileMovement();
+    }
+
+    /**
+     * Moves the projectile forward
+     */
+    private void ProjectileMovement()
+    {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Enemy;
 using UnityEditor.Callbacks;
+using Damage;
 
 public class AssassinEnemyController : EnemyController
 {
@@ -16,7 +17,7 @@ public class AssassinEnemyController : EnemyController
     // Temp variables for collision checking - if all enemy types are using this, should declare in the base class
     [Header("Knockback")]
     [SerializeField] private float knockbackForce = 10f;
-    [SerializeField] private float knockbacDuration = 1f;
+    [SerializeField] private float knockbackDuration = 1f;
     private bool hasCollidedWithPlayer = false;
     public bool isKnockback = false;
     private float currentknockbackTime;
@@ -50,9 +51,6 @@ public class AssassinEnemyController : EnemyController
 
                 // If player is still alive.
                 if (GetPlayerController()) StartDash();
-
-                // TO IMPLEMENT: damageable (Check MeleeEnemyController for more details).
-                // damageable will take care of dealing the damage.
             }
         }     
     }
@@ -79,7 +77,7 @@ public class AssassinEnemyController : EnemyController
 
             if (hasCollidedWithPlayer) {
                 isKnockback = true;
-                currentknockbackTime = knockbacDuration;
+                currentknockbackTime = knockbackDuration;
                 GetAnimator().SetTrigger(knockbackAnimationTrigger);
 
                 // Apply a knockback:
@@ -87,6 +85,9 @@ public class AssassinEnemyController : EnemyController
                 Vector3 knockbackDirectionWithY = transform.position - GetPlayerController().transform.position;
                 Vector3 knockbackDirection = new Vector3(knockbackDirectionWithY.x, 0f, knockbackDirectionWithY.z).normalized;
                 GetRigidbody().AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+
+                // Player has taken damage
+                GetPlayerController().GetComponent<Damageable>().TakeDamage(GetDamage());
             }
         } else {
             GetRigidbody().velocity = dashDirection * dashSpeed;
@@ -98,7 +99,7 @@ public class AssassinEnemyController : EnemyController
     // Could implement this for all enemy types and apply a knockback to all of them, interrupting their attack.
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.CompareTag("Player")) {
-            Debug.Log("Enemy has collided with the player");
+            Debug.Log("Assassin Enemy has collided with the player");
             hasCollidedWithPlayer = true;
         }
     }

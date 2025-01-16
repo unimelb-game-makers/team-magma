@@ -1,12 +1,12 @@
-using System;
+using Platforms;
 using Player;
+using Tempo;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
 namespace Enemies
 {
-    public class Enemy : MonoBehaviour
+    public class Enemy : MonoBehaviour, ISyncable
     {
         private PlayerController target;
         //pathfinding
@@ -17,7 +17,8 @@ namespace Enemies
         [SerializeField] private float shootRate = 1f;
 
         private float _nextShoot;
-        
+        private ISyncable syncableImplementation;
+
         private void Start()
         {
             target = FindObjectOfType<PlayerController>();
@@ -58,5 +59,50 @@ namespace Enemies
             projectileComponent.SetInitialDirection((target.transform.position - transform.position).normalized);
         }
     }
+
+        public void Affect(TapeType tapeType, float duration, float effectValue)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnChangeTrack()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnChangeTempo()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnChangeBar()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnChangeBeat()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void EnableSync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SyncLow()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SyncMid()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SyncHigh()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

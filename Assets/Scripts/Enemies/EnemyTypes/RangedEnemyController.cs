@@ -53,6 +53,9 @@ public class RangedEnemyController : EnemyController
         Projectile projectileComponent = projectile.GetComponent<Projectile>();
         // Check if the Projectile component exists.
         if (projectileComponent != null) {
+            var canAttackList = new List<string> { "Player" };
+            projectileComponent.SendMessage("EditCanAttack", canAttackList);
+
             // Set the initial direction of the projectile.
             Vector3 direction = (GetPlayerController().transform.position - transform.position).normalized;
             projectileComponent.SetInitialDirection(new Vector3(direction.x, 0f, direction.z));
