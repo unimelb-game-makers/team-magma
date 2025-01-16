@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Enemy;
+using FMODUnity;
 
 public class RangedEnemyController : EnemyController
 {
@@ -13,11 +14,27 @@ public class RangedEnemyController : EnemyController
 
         // Calculate the current cooldown time. If cooldown is over, attack.
         SetCurrentAttackCooldown(GetCurrentAttackCooldown() - Time.deltaTime); 
-        if (GetCurrentAttackCooldown() <= 0) {
+        if (GetCurrentAttackCooldown() <= 0 && GetMusicTimeline().GetOnBeat()) {
             SetCurrentAttackCooldown(GetAttackCooldown());
 
             Debug.Log("Ranged Attack!");
             GetAnimator().SetTrigger(GetAttackAnimationTrigger());
+
+            /*
+             * NOTE: This event audio is triggered using a StudioEventEmitter component attached to this enemy.
+             * The audio gets louder closer you are to the enemy, this is because it is using the FMOD Studio Listener Component
+             * attached to the camera for Attenuation (basic top-down 3d directional audio falloff).
+             * However the StudioEventEmitter "Override Attenuation" setting WONT WORK because the "Wooden Collision" FMOD audio track
+             * is uses a spacializer that overrides this.
+            */ 
+
+            // Trigger Ranged Attack Audio Event
+            StudioEventEmitter fire = GetComponent<FMODUnity.StudioEventEmitter>();
+            fire.Play();
+            //FMODUnity.RuntimeManager.AttachInstanceToGameObject(fire.EventInstance, gameObject, GetComponent<Rigidbody>());
+
+            
+
 
             // Temporary until actual logic is implemented.
             // Eg: Could wait until the animation has finished playing.
