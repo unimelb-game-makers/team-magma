@@ -15,7 +15,7 @@ namespace Damage
         private Renderer rend;  // The Renderer component of the cube  // The color to change to when hit
         private Color originalColor;  // To store the original color of the cube
         // ***************
-
+        
         private bool isInvulnerable = false;
 
         private IHealthManager healthManager;

@@ -1,3 +1,4 @@
+using System.Collections;
 using Damage;
 using Enemy;
 using UnityEngine;
@@ -77,6 +78,25 @@ namespace Enemies.EnemyTypes
                 Debug.Log(gameObject + " Melee Enemy has collided with the player!");
                 hasCollidedWithPlayer = true;
             }
+        }
+        
+        protected override IEnumerator SlowTempo(float duration)
+        {
+            //https://docs.google.com/document/d/1K65hq-uRl9L1aO6luQ29W-MZi8Z0XvnxqSZyk1JGLyA/edit?tab=t.0
+
+            damage = originalDamage * 1.75f;
+
+            attackCooldown = originalAttackCooldown * 1.5f; 
+
+            yield return new WaitForSeconds(duration);
+            DefaultTempo();
+        }
+
+        protected override IEnumerator FastTempo(float duration)
+        {
+            attackCooldown = originalAttackCooldown * 0.5f;
+            yield return new WaitForSeconds(duration);
+            DefaultTempo();
         }
     }
 }

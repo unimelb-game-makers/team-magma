@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Platforms;
 using Player;
+using Tempo;
 using Timeline;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,7 +13,7 @@ namespace Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(AudioSource))]
-    public abstract class EnemyController : MonoBehaviour, ITriggerCheckable
+    public abstract class EnemyController : MonoBehaviour, ITriggerCheckable, ISyncable
     {
         private PlayerController player;
         private MusicTimeline timeline;
@@ -22,7 +24,7 @@ namespace Enemy
 
         [Header("Health and Damage")]
         [SerializeField] private float health = 100;
-        [SerializeField] private float damage = 10;
+        [SerializeField] protected float damage = 10;
 
         [Header("Idle")]
         [SerializeField] private float idleDuration = 3f;
@@ -47,7 +49,7 @@ namespace Enemy
 
         [Header("Attack")]
         [SerializeField] private float outsideAttackRangeDuration = 0.5f;
-        [SerializeField] private float attackCooldown = 1f;
+        [SerializeField] protected float attackCooldown = 1f;
         private float currentAttackCooldown;
         private bool isAttacking = false;
         [SerializeField] private string attackAnimationTrigger = "isAttack";
@@ -55,6 +57,11 @@ namespace Enemy
         [SerializeField] private AudioClip attackAudio;
         [SerializeField] private AudioClip idleAttackAudio;
 
+        protected float originalDamage;
+        protected float originalAttackCooldown;
+        private float originalPatrolSpeed;
+        private float originalChaseSpeed;
+        
         public bool IsWithinAggroRange { get; set; }
         public bool IsWithinAttackRange { get; set; }
         public bool HasReachedPatrolPoint { get; set; }
@@ -134,6 +141,12 @@ namespace Enemy
             currentState.EnterState();
 
             currentPatrolPoint = patrolPoints[patrolIndex];
+            
+            
+            originalDamage = damage;
+            originalAttackCooldown = attackCooldown;
+            originalPatrolSpeed = patrolSpeed;
+            originalChaseSpeed = chaseSpeed;
         }
 
         void Update() {
@@ -197,5 +210,31 @@ namespace Enemy
                                                         ref yVelocity, rotationTime);
             navMeshAgent.transform.rotation = Quaternion.Euler(0, lookDirection, 0);
         }
+
+        public void Affect(TapeType tapeType, float duration, float effectValue)
+        {
+            switch (tapeType)
+            {
+                case TapeType.Slow:
+                    StartCoroutine(SlowTempo(duration));
+                    break;
+                case TapeType.Fast:
+                    StartCoroutine(FastTempo(duration));
+                    break;
+            }
+        }
+        protected virtual void DefaultTempo()
+        {
+            // Revert to original stats
+            damage = originalDamage;
+            attackCooldown = originalAttackCooldown;
+            patrolSpeed = originalPatrolSpeed;
+            chaseSpeed = originalChaseSpeed;
+            
+        }
+
+        protected abstract IEnumerator SlowTempo(float duration);
+
+        protected abstract IEnumerator FastTempo(float duration);
     }
 }

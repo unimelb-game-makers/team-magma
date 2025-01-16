@@ -30,6 +30,7 @@ namespace Player
         [SerializeField] private GameObject MeleeAttackPrefab;
         [SerializeField] private float hitRange = 0.5f;
         [SerializeField] private float meleeAttackRecoverTime = 0.7f;
+        [SerializeField] private float attackDamage = 10;
 
         [Space(10)]
 
@@ -277,6 +278,7 @@ namespace Player
                 GameObject attackBox = Instantiate(MeleeAttackPrefab, forward, transform.rotation);
                 _meleeAttackBox = attackBox.GetComponent<MeleeAttackBox>();
                 _meleeAttackBox.transform.parent = gameObject.transform;
+                attackBox.GetComponent<MeleeDamager>().Damage = attackDamage;
                 if (_meleeAttackBox != null)
                 {
                     var canAttackList = new List<string> { "Enemy" };

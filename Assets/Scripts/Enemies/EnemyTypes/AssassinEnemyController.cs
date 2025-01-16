@@ -55,6 +55,8 @@ public class AssassinEnemyController : EnemyController
         }     
     }
 
+
+
     private void StartDash() {
         isDashing = true;
         GetNavMeshAgent().enabled = false;
@@ -102,5 +104,15 @@ public class AssassinEnemyController : EnemyController
             Debug.Log("Assassin Enemy has collided with the player");
             hasCollidedWithPlayer = true;
         }
+    }
+    
+    protected override IEnumerator SlowTempo(float duration)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override IEnumerator FastTempo(float duration)
+    {
+        throw new System.NotImplementedException();
     }
 }

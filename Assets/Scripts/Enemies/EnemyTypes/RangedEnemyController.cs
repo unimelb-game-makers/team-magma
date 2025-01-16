@@ -47,6 +47,16 @@ public class RangedEnemyController : EnemyController
         }
     }
 
+    protected override IEnumerator SlowTempo(float duration)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override IEnumerator FastTempo(float duration)
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void SpawnProjectile() {
         GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
         // Get the Projectile component from the projectile object.
