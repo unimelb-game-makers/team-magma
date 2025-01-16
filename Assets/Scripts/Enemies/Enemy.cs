@@ -46,61 +46,21 @@ namespace Enemies
         }
 
         private void Shoot()
-    {
-        
-        //spawn a projectile
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
-        //get the Projectile component from the projectile object
-        Projectile projectileComponent = projectile.GetComponent<Projectile>();
-        //check if the Projectile component exists
-        if (projectileComponent != null)
         {
-            //set the initial direction of the projectile
-            projectileComponent.SetInitialDirection((target.transform.position - transform.position).normalized);
+            
+            //spawn a projectile
+            GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
+            //get the Projectile component from the projectile object
+            Projectile projectileComponent = projectile.GetComponent<Projectile>();
+            //check if the Projectile component exists
+            if (projectileComponent != null)
+            {
+                //set the initial direction of the projectile
+                projectileComponent.SetInitialDirection((target.transform.position - transform.position).normalized);
+            }
         }
-    }
 
         public void Affect(TapeType tapeType, float duration, float effectValue)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnChangeTrack()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnChangeTempo()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnChangeBar()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnChangeBeat()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void EnableSync()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void SyncLow()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void SyncMid()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void SyncHigh()
         {
             throw new System.NotImplementedException();
         }

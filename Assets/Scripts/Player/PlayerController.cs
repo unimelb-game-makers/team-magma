@@ -1,7 +1,6 @@
 using System;
 using Damage;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using Platforms;
 using Tempo;

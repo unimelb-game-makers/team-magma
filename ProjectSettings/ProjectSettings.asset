@@ -654,14 +654,13 @@ PlayerSettings:
     PS4: UNITY_VISUAL_SCRIPTING
     QNX: UNITY_VISUAL_SCRIPTING
     Server: UNITY_VISUAL_SCRIPTING
-    Standalone: UNITY_VISUAL_SCRIPTING
+    Standalone: UNITY_VISUAL_SCRIPTING;INK_RUNTIME;INK_EDITOR
     VisionOS: UNITY_VISUAL_SCRIPTING
     WebGL: UNITY_VISUAL_SCRIPTING
     Windows Store Apps: UNITY_VISUAL_SCRIPTING
     XboxOne: UNITY_VISUAL_SCRIPTING
     iPhone: UNITY_VISUAL_SCRIPTING
     tvOS: UNITY_VISUAL_SCRIPTING
-    Standalone: INK_RUNTIME;INK_EDITOR
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
