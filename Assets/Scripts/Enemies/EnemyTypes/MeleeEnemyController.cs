@@ -7,87 +7,125 @@ namespace Enemies.EnemyTypes
 {
     public class MeleeEnemyController : EnemyController
     {
-        [Header("Strike")]
-        [SerializeField] private float strikeSpeed = 5f;
-        [SerializeField] private float strikeDuration = 0.5f;
+
+        [Header("Wind-up & Damage")]
+        [SerializeField] private float windUpTime = 0.3f;
+        [SerializeField] private float damageRadius = 1f;
+        [SerializeField] private float damageAngle = 90f;
+
+        [SerializeField] private GameObject damageAreaPrefab;
+
         private bool isStriking = false;
-        private float currentStrikeTime;
-        private Vector3 strikeDirection;
         private bool hasCollidedWithPlayer = false;
 
-        public override void Attack() {
-            if (isStriking) {
-                UpdateStrike();
+        private Vector3 strikeDirection;
+        private AreaDamage areaDamage;
+
+        public override void Attack()
+        {
+            if (isStriking)
+            {
+                // If we're already in the middle of striking, just continue.
+                return;
             }
-            else {
-                hasCollidedWithPlayer = false;
-                RotateTowardsPlayer();
+            hasCollidedWithPlayer = false;
+            RotateTowardsPlayer();
 
-                // Calculate the current cooldown time. If cooldown is over, attack.
-                SetCurrentAttackCooldown(GetCurrentAttackCooldown() - Time.deltaTime); 
-                if (GetCurrentAttackCooldown() <= 0) {
-                    SetCurrentAttackCooldown(GetAttackCooldown());
+            // Handle attack cooldown
+            SetCurrentAttackCooldown(GetCurrentAttackCooldown() - Time.deltaTime); 
+            if (GetCurrentAttackCooldown() <= 0)
+            {
+                // Reset the cooldown
+                SetCurrentAttackCooldown(GetAttackCooldown());
 
-                    Debug.Log("Melee Attack!");
-                    GetAnimator().SetTrigger(GetAttackAnimationTrigger());
+                // Trigger animation
+                GetAnimator().SetTrigger(GetAttackAnimationTrigger());
+                SetIsAttacking(true);
 
-                    // Temporary until actual logic is implemented.
-                    // Eg: Could wait until the animation has finished playing.
-                    SetIsAttacking(true);
-
-                    // If player is still alive.
-                    if (GetPlayerController()) StartStrike();
+                // If the player is still valid, begin the strike sequence
+                if (GetPlayerController())
+                {
+                    StartStrike();
                 }
             }
         }
 
-        private void StartStrike() {
+        private void StartStrike()
+        {
             isStriking = true;
             GetNavMeshAgent().enabled = false;
-            // The strike cannot change direction midway.
-            // Calculate the direction without y, so enemy stays on the ground.
+
+            // Calculate direction on the ground only
             Vector3 dashDirectionWithY = GetPlayerController().transform.position - transform.position;
             strikeDirection = new Vector3(dashDirectionWithY.x, 0f, dashDirectionWithY.z).normalized;
-            currentStrikeTime = strikeDuration;
+
+            // Instantiate the damage area
+            GameObject damageAreaInstance = Instantiate(
+                damageAreaPrefab, 
+                transform.position, 
+                transform.rotation, 
+                transform
+            );
+
+            // Get and initialize the AreaDamage component
+            areaDamage = damageAreaInstance.GetComponent<AreaDamage>();
+            areaDamage.InitializeAttack(damage, damageRadius, damageAngle, windUpTime,gameObject);
+
+            // Start the coroutine for the entire wind-up → damage → dash flow
+            StartCoroutine(PerformStrikeSequence());
         }
 
-        private void UpdateStrike() {
-            currentStrikeTime -= Time.deltaTime;
+        /// <summary>
+        /// A coroutine that handles:
+        /// 1) Wind-up time
+        /// 2) Dealing damage
+        /// 3) Dashing for strikeDuration
+        /// 4) Ending the strike
+        /// </summary>
+        private IEnumerator PerformStrikeSequence()
+        {
+            float timer = 0f;
 
-            // If the strike's duration has ended or the player was hit, end the strike.
-            if (currentStrikeTime <= 0 || hasCollidedWithPlayer) {
-                isStriking = false;
-                GetRigidbody().velocity = Vector3.zero;
-                SetIsAttacking(false);
-                GetNavMeshAgent().enabled = true;
+            // ---------------------------------------
+            // 1) WIND-UP PHASE
+            // ---------------------------------------
+            while (timer < windUpTime)
+            {
+                timer += Time.deltaTime;
+                // Call areaDamage.WindUp() to visualize or grow the area each frame
+                areaDamage.WindUp();
 
-                if (hasCollidedWithPlayer) {
-                    // Player has taken damage
-                    GetPlayerController().GetComponent<Damageable>().TakeDamage(GetDamage());
-                }
-            } else {
-                GetRigidbody().velocity = strikeDirection * strikeSpeed;
+                yield return null;
             }
+
+            // ---------------------------------------
+            // 2) DEAL DAMAGE AFTER WIND-UP
+            // ---------------------------------------
+            areaDamage.DealDamage();
+            
+
+            // ---------------------------------------
+            // 4) END STRIKE
+            // ---------------------------------------
+            EndStrike();
         }
 
-        // Temporary methods for checking for collisions with the player.
-        // Checks if the enemy has collided with the player.
-        // Could implement this for all enemy types and apply a knockback to all of them, interrupting their attack.
-        private void OnCollisionEnter(Collision collision) {
-            if (collision.gameObject.CompareTag("Player")) {
-                Debug.Log(gameObject + " Melee Enemy has collided with the player!");
-                hasCollidedWithPlayer = true;
-            }
+        private void EndStrike()
+        {
+            isStriking = false;
+            GetRigidbody().velocity = Vector3.zero;
+            SetIsAttacking(false);
+            GetNavMeshAgent().enabled = true;
+            
+            //TODO: Check if the player is still within the attack range, if does, then attack again, else chase the player 
         }
         
+        #region Tempo Overrides
+
         protected override IEnumerator SlowTempo(float duration)
         {
-            //https://docs.google.com/document/d/1K65hq-uRl9L1aO6luQ29W-MZi8Z0XvnxqSZyk1JGLyA/edit?tab=t.0
-
             damage = originalDamage * 1.75f;
-
             attackCooldown = originalAttackCooldown * 1.5f; 
-
             yield return new WaitForSeconds(duration);
             DefaultTempo();
         }
@@ -98,5 +136,7 @@ namespace Enemies.EnemyTypes
             yield return new WaitForSeconds(duration);
             DefaultTempo();
         }
+
+        #endregion
     }
 }

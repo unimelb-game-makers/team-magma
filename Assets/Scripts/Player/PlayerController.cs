@@ -273,11 +273,19 @@ namespace Player
             Vector3 origin = transform.position;
             Vector3 forward = (transform.forward * hitRange) + origin;
 
+            // Check if the player has attacked recently
             if (_meleeAttackBox == null && Time.time > _previousMeleeAttack + meleeAttackRecoverTime) {
+                // update timer
                 _previousMeleeAttack = Time.time;
+                
+                //spawn damage area
                 GameObject attackBox = Instantiate(MeleeAttackPrefab, forward, transform.rotation);
+                
+                //get damage size
                 _meleeAttackBox = attackBox.GetComponent<MeleeAttackBox>();
+                //set transform
                 _meleeAttackBox.transform.parent = gameObject.transform;
+                
                 attackBox.GetComponent<MeleeDamager>().Damage = attackDamage;
                 if (_meleeAttackBox != null)
                 {

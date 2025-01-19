@@ -25,11 +25,11 @@ public class ChaseState : BaseEnemyState
         enemyController.Chase();
 
         // If the player was killed, transition to patrol state.
-        if (playerController == null) {
+        if (!playerController) {
             enemyController.TransitionToState(enemyController.GetPatrolState());
         }
         // If the player is within attack range, transition to attack state.
-        else if (playerController != null && enemyController.IsWithinAttackRange) {
+        else if (playerController && enemyController.IsWithinAttackRange) {
             enemyController.TransitionToState(enemyController.GetAttackState());
         }
         // If the player has exited the enemy's aggro range for chaseTime, transition to patrol state.

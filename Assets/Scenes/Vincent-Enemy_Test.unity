@@ -2231,6 +2231,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Ranged
       objectReference: {fileID: 0}
+    - target: {fileID: 6642942852778422270, guid: 3d0c305b53954409a8f0d5f5b808fa06, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2289,6 +2293,18 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1645788066436700531, guid: a2aa0b3f8192c4b8c81f7f8dc5db313c, type: 3}
+      propertyPath: windUpTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645788066436700531, guid: a2aa0b3f8192c4b8c81f7f8dc5db313c, type: 3}
+      propertyPath: damageRadius
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1645788066436700531, guid: a2aa0b3f8192c4b8c81f7f8dc5db313c, type: 3}
+      propertyPath: damageAreaPrefab
+      value: 
+      objectReference: {fileID: 3345562608605307880, guid: 09bae0f8be2e24537a4016ff51518298, type: 3}
+    - target: {fileID: 1645788066436700531, guid: a2aa0b3f8192c4b8c81f7f8dc5db313c, type: 3}
       propertyPath: patrolPoints.Array.data[0]
       value: 
       objectReference: {fileID: 982656463}
@@ -2316,6 +2332,10 @@ PrefabInstance:
     - target: {fileID: 3900859857498743021, guid: 4ea848bd9031e42a9abb05bce1abf605, type: 3}
       propertyPath: m_Name
       value: Enemy_Assassin
+      objectReference: {fileID: 0}
+    - target: {fileID: 3900859857498743021, guid: 4ea848bd9031e42a9abb05bce1abf605, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5061047676209061022, guid: 4ea848bd9031e42a9abb05bce1abf605, type: 3}
       propertyPath: m_LocalPosition.x

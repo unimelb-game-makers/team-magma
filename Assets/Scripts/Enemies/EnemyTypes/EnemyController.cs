@@ -98,7 +98,12 @@ namespace Enemy
         protected float GetCurrentAttackCooldown() { return currentAttackCooldown; }
         public void SetCurrentAttackCooldown(float currentAttackCooldown) { this.currentAttackCooldown = currentAttackCooldown; }
         public bool IsAttacking() { return isAttacking; }
-        public void SetIsAttacking(bool isAttacking) { this.isAttacking = isAttacking; }
+
+        public void SetIsAttacking(bool isAttacking)
+        {
+            Debug.Log("Setting isAttacking to " + isAttacking);
+            this.isAttacking = isAttacking;
+        }
 
         public Animator GetAnimator() { return animator; }
         public string GetIdleAnimationBool() { return idleAnimationBool; }
