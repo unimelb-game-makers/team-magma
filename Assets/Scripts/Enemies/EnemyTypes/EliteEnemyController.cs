@@ -2,17 +2,17 @@
 // 19 01 2025 01 54
 
 using System.Collections;
+using Enemies.EnemyStates;
 using Enemy;
 
 namespace Enemies.EnemyTypes
 {
-    public class EliteEnemyController : EnemyController
+    //guarding
+    
+    public class EliteEnemyController : MeleeEnemyController
     {
-        public override void Attack()
-        {
-            throw new System.NotImplementedException();
-        }
-
+        protected override bool CanDamage => CurrentState is GuardState;
+        
         protected override IEnumerator SlowTempo(float duration)
         {
             throw new System.NotImplementedException();
@@ -22,5 +22,16 @@ namespace Enemies.EnemyTypes
         {
             throw new System.NotImplementedException();
         }
+
+        public void Guard()
+        {
+            throw new System.NotImplementedException();
+        }
+        
+        public void StopGuard()
+        {
+            throw new System.NotImplementedException();
+        }
+        
     }
 }

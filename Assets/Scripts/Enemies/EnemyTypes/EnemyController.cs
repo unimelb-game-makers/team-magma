@@ -68,7 +68,7 @@ namespace Enemy
         private float originalPatrolSpeed;
         private float originalChaseSpeed;
         
-        private BaseEnemyState currentState; protected BaseEnemyState CurrentState => currentState;
+        private BaseEnemyState _currentState; protected BaseEnemyState CurrentState => _currentState;
         
         public bool IsWithinAggroRange { get; set; }
         public bool IsWithinAttackRange { get; set; }
@@ -98,7 +98,19 @@ namespace Enemy
         public NavMeshAgent GetNavMeshAgent() { return navMeshAgent; }
 
         public float GetHealth() { return health; }
-        public void SetHealth(float newHealth) { health = newHealth; }
+
+        public void SetHealth(float newHealth)
+        {
+            if(CanDamage)
+                health = newHealth;
+            else
+            {
+                Debug.Log("Enemy is invulnerable");
+            }
+            
+        }
+        
+        protected virtual bool CanDamage => true;
         public float GetDamage() { return damage; }
         
         public float GetIdleDuration() { return idleDuration; }
@@ -156,8 +168,8 @@ namespace Enemy
             
             AddStates();
             
-            currentState = GetState(EnemyState.Idle);
-            currentState.EnterState();
+            _currentState = GetState(EnemyState.Idle);
+            _currentState.EnterState();
 
             currentPatrolPoint = patrolPoints[patrolIndex];
             
@@ -182,7 +194,7 @@ namespace Enemy
         }
         
         void Update() {
-            currentState.UpdateState();
+            _currentState.UpdateState();
         }
 
         // Exit the current state, and enter the new state.
@@ -192,8 +204,8 @@ namespace Enemy
             {
                 throw new Exception("State not found ++++++++++++++++++");
             }
-            currentState.ExitState();
-            currentState = newState;
+            _currentState.ExitState();
+            _currentState = newState;
             newState.EnterState();
         }
 
