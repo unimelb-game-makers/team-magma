@@ -125,6 +125,7 @@ namespace Enemies.EnemyTypes
         protected override IEnumerator SlowTempo(float duration)
         {
             damage = originalDamage * 1.75f;
+            windUpTime = originalWindUpTime * 2f;
             attackCooldown = originalAttackCooldown * 1.5f; 
             yield return new WaitForSeconds(duration);
             DefaultTempo();
@@ -132,6 +133,14 @@ namespace Enemies.EnemyTypes
 
         protected override IEnumerator FastTempo(float duration)
         {
+            /*
+               Mostly the same as the default tempo (same damage, etc.), 
+               but AoE is wider, and the attack has a higher “rate of fire”/lower cooldown 
+               (the enemies attack more often at the fast tempo)
+             */
+            damage = originalDamage;
+            windUpTime = originalWindUpTime * 0.5f;
+            damageAngle = originalDamageAngle * 1.5f;
             attackCooldown = originalAttackCooldown * 0.5f;
             yield return new WaitForSeconds(duration);
             DefaultTempo();

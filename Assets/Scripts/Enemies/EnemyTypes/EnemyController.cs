@@ -59,6 +59,9 @@ namespace Enemy
 
         protected float originalDamage;
         protected float originalAttackCooldown;
+        protected float originalWindUpTime;
+        protected float originalDamageAngle;
+        protected float originalDamageRadius;
         private float originalPatrolSpeed;
         private float originalChaseSpeed;
         
