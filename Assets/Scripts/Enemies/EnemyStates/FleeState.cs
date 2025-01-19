@@ -26,6 +26,7 @@ namespace Enemies.EnemyStates
                 //if the enemy is fleeing, return
                 if(rangedEnemyController.IsFleeing) return;
                 
+                Debug.Log(rangedEnemyController.IsFleeing + " fleeing");
                 // If the player is within aggro range, transition to chase state.
                 if (playerController != null && enemyController.IsWithinAggroRange) {
                     enemyController.TransitionToState(EnemyState.Chase);

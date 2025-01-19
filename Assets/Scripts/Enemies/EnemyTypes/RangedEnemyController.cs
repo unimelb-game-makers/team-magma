@@ -110,6 +110,7 @@ namespace Enemies.EnemyTypes
             yield return new WaitForSeconds(duration);
 
             CurrentState.ExitState();
+            navMeshAgent.speed = GetPatrolSpeed();
             _isFleeing = false;
         }
         
@@ -119,7 +120,7 @@ namespace Enemies.EnemyTypes
             Projectile projectileComponent = projectile.GetComponent<Projectile>();
             // Check if the Projectile component exists.
             if (projectileComponent != null) {
-                var canAttackList = new List<string> { "Player", "Enemy" };
+                var canAttackList = new List<string> { "Player"};
                 projectileComponent.SendMessage("EditCanAttack", canAttackList);
 
                 // Set the initial direction of the projectile.
