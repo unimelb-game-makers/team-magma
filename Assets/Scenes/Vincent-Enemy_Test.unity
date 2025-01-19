@@ -2233,7 +2233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6642942852778422270, guid: 3d0c305b53954409a8f0d5f5b808fa06, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2315,6 +2315,10 @@ PrefabInstance:
     - target: {fileID: 4991453937781679170, guid: a2aa0b3f8192c4b8c81f7f8dc5db313c, type: 3}
       propertyPath: m_Name
       value: Enemy_Melee
+      objectReference: {fileID: 0}
+    - target: {fileID: 4991453937781679170, guid: a2aa0b3f8192c4b8c81f7f8dc5db313c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -23,13 +23,13 @@ public class PatrolState : BaseEnemyState
 
         // If the player is within aggro range, transition to chase state.
         if (playerController != null && enemyController.IsWithinAggroRange) {
-            enemyController.TransitionToState(enemyController.GetChaseState());
+            enemyController.TransitionToState(EnemyState.Chase);
         }
         // If the patrol point was reached, transition to idle state.
         else if (enemyController.HasReachedPatrolPoint) {
             enemyController.HasReachedPatrolPoint = false;
             enemyController.NextPatrolPoint();
-            enemyController.TransitionToState(enemyController.GetIdleState());
+            enemyController.TransitionToState(EnemyState.Idle);
         }
     }
 

@@ -26,11 +26,11 @@ public class IdleState : BaseEnemyState
         // If enough time has passed, transition to patrol state.
         idleTime -= Time.deltaTime;
         if (idleTime <= 0) {
-            enemyController.TransitionToState(enemyController.GetPatrolState());
+            enemyController.TransitionToState(EnemyState.Patrol);
         }
         // If the player is within aggro range, transition to chase state.
         else if (playerController != null && enemyController.IsWithinAggroRange) {
-            enemyController.TransitionToState(enemyController.GetChaseState());
+            enemyController.TransitionToState(EnemyState.Chase);
         }
     }
 

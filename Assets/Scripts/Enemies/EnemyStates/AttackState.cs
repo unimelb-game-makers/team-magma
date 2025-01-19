@@ -7,7 +7,7 @@ using Player;
 
 public class AttackState : BaseEnemyState
 {
-    private float outsideAttackRangeTime;
+    protected float outsideAttackRangeTime;
     private float outsideAttackRangeDuration = 0.5f;
     
     public AttackState(EnemyController enemyController, NavMeshAgent navMeshAgent, PlayerController playerController) : 
@@ -30,6 +30,7 @@ public class AttackState : BaseEnemyState
         // If the enemy is currently attacking/knockbacked, wait for the attack/knockback to finish first before checking anything.
         
         Debug.Log("Attack State Update" + enemyController.IsAttacking());
+        
         if (enemyController.IsAttacking()) return;
         // Temporary code until knockback is included in base class.
         else if (enemyController is AssassinEnemyController && ((AssassinEnemyController) enemyController).isKnockback) {
@@ -37,17 +38,16 @@ public class AttackState : BaseEnemyState
         }
         // If the player was killed, transition to patrol state.
         else if (!playerController) {
-            enemyController.TransitionToState(enemyController.GetPatrolState());
+            enemyController.TransitionToState(EnemyState.Patrol);
         }
         // If the player has exited attack range, transition to chase state.
         else if (!enemyController.IsWithinAttackRange) {
             outsideAttackRangeTime -= Time.deltaTime;
             if (outsideAttackRangeTime <= 0) {
                 // If I disable the nav mesh agent for ranged enemy, this comes here? Why? Do the colliders disappear or something???
-                enemyController.TransitionToState(enemyController.GetChaseState());
+                enemyController.TransitionToState(EnemyState.Chase);
             }
         }
-        
         //if all the above conditions are false, then attack the player
         enemyController.Attack();
     }

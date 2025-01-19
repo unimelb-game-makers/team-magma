@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enemies.EnemyStates;
 using Platforms;
 using Player;
 using Tempo;
@@ -15,10 +17,10 @@ namespace Enemy
     [RequireComponent(typeof(AudioSource))]
     public abstract class EnemyController : MonoBehaviour, ITriggerCheckable, ISyncable
     {
-        private PlayerController player;
+        protected PlayerController player;
         private MusicTimeline timeline;
         private Rigidbody rigidbody;
-        private NavMeshAgent navMeshAgent;
+        protected NavMeshAgent navMeshAgent;
         private Animator animator;
         private AudioSource audioSource;
 
@@ -46,7 +48,7 @@ namespace Enemy
         [SerializeField] private float chaseSpeed = 5f;
         [SerializeField] private string chaseAnimationBool = "isChase";
         [SerializeField] private AudioClip chaseAudio;
-
+        
         [Header("Attack")]
         [SerializeField] private float outsideAttackRangeDuration = 0.5f;
         [SerializeField] protected float attackCooldown = 1f;
@@ -57,6 +59,7 @@ namespace Enemy
         [SerializeField] private AudioClip attackAudio;
         [SerializeField] private AudioClip idleAttackAudio;
 
+        
         protected float originalDamage;
         protected float originalAttackCooldown;
         protected float originalWindUpTime;
@@ -65,9 +68,20 @@ namespace Enemy
         private float originalPatrolSpeed;
         private float originalChaseSpeed;
         
+        private BaseEnemyState currentState; protected BaseEnemyState CurrentState => currentState;
+        
         public bool IsWithinAggroRange { get; set; }
         public bool IsWithinAttackRange { get; set; }
         public bool HasReachedPatrolPoint { get; set; }
+
+        public bool IsWithinAttackRangeClose
+        {
+            get
+            {
+                if(player == null) return false;
+                return Vector3.Distance(player.transform.position, transform.position) < 3f;
+            }
+        }
 
         // These variables are used to turn the enemy so that it faces the direction it is moving in,
         // or so that it faces the player when in attack range.
@@ -76,11 +90,7 @@ namespace Enemy
         private float yVelocity;    // This variable does not do anything, just to plug something in the method.
 
         [Header("States")]
-        private BaseEnemyState currentState;
-        private IdleState idleState;
-        private PatrolState patrolState;
-        private ChaseState chaseState;
-        private AttackState attackState;
+        protected Dictionary<EnemyState, BaseEnemyState> _states;
 
         public PlayerController GetPlayerController() { return player; }
         public MusicTimeline GetMusicTimeline() {return timeline; }
@@ -125,13 +135,17 @@ namespace Enemy
         public void SetAggroRangeBool(bool isWithinAggroRange) { IsWithinAggroRange = isWithinAggroRange; }
         public void SetAttackRangeBool(bool isWithinAttackRange) { IsWithinAttackRange = isWithinAttackRange; }
         public void SetHasReachedPatrolPointBool(bool hasReachedPatrolPoint) { HasReachedPatrolPoint = hasReachedPatrolPoint; }
-
-        public IdleState GetIdleState() { return idleState; }
-        public PatrolState GetPatrolState() { return patrolState; }
-        public ChaseState GetChaseState() { return chaseState; }
-        public AttackState GetAttackState() { return attackState; }
-
-        void Awake() {
+        
+        public BaseEnemyState GetState(EnemyState state)
+        {
+            if (_states.TryGetValue(state, out var state1))
+            {
+                return state1;
+            }
+            return null;
+        }
+        
+        protected virtual void Awake() {
             player = FindObjectOfType<PlayerController>();
             timeline = FindObjectOfType<MusicTimeline>();
             rigidbody = GetComponent<Rigidbody>();
@@ -139,13 +153,10 @@ namespace Enemy
             navMeshAgent.updateRotation = false;
             animator = GetComponent<Animator>();
             audioSource = GetComponent<AudioSource>();
-
-            idleState = new IdleState(this, navMeshAgent, player);
-            patrolState = new PatrolState(this, navMeshAgent, player);
-            chaseState = new ChaseState(this, navMeshAgent, player);
-            attackState = new AttackState(this, navMeshAgent, player);
-
-            currentState = idleState;
+            
+            AddStates();
+            
+            currentState = GetState(EnemyState.Idle);
             currentState.EnterState();
 
             currentPatrolPoint = patrolPoints[patrolIndex];
@@ -156,13 +167,31 @@ namespace Enemy
             originalPatrolSpeed = patrolSpeed;
             originalChaseSpeed = chaseSpeed;
         }
+        
+        protected virtual void AddStates()
+        {
 
+            _states = new Dictionary<EnemyState, BaseEnemyState>()
+            {
+                { EnemyState.Idle, new IdleState(this, navMeshAgent, player) },
+                { EnemyState.Patrol, new PatrolState(this, navMeshAgent, player) },
+                { EnemyState.Chase, new ChaseState(this, navMeshAgent, player) },
+                { EnemyState.Attack, new AttackState(this, navMeshAgent, player) },
+                { EnemyState.Flee, new FleeState(this, navMeshAgent, player) }
+            };
+        }
+        
         void Update() {
             currentState.UpdateState();
         }
 
         // Exit the current state, and enter the new state.
-        public void TransitionToState(BaseEnemyState newState) {
+        public void TransitionToState(EnemyState stateType) {
+            var newState = GetState(stateType);
+            if (newState == null)
+            {
+                throw new Exception("State not found ++++++++++++++++++");
+            }
             currentState.ExitState();
             currentState = newState;
             newState.EnterState();
@@ -188,6 +217,8 @@ namespace Enemy
             currentPlayerLocationCheckTime = playerLocationCheckInterval;
             navMeshAgent.destination = player.transform.position;
         }
+        
+
 
         public abstract void Attack();
 
@@ -238,11 +269,19 @@ namespace Enemy
             attackCooldown = originalAttackCooldown;
             patrolSpeed = originalPatrolSpeed;
             chaseSpeed = originalChaseSpeed;
-            
         }
 
         protected abstract IEnumerator SlowTempo(float duration);
 
         protected abstract IEnumerator FastTempo(float duration);
+    }
+
+    public enum EnemyState
+    {
+        Idle,
+        Patrol,
+        Chase,
+        Attack,
+        Flee
     }
 }

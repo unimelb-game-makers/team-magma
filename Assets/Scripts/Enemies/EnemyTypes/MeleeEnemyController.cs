@@ -122,6 +122,14 @@ namespace Enemies.EnemyTypes
         
         #region Tempo Overrides
 
+        protected override void DefaultTempo()
+        {
+            base.DefaultTempo();
+            windUpTime = originalWindUpTime;
+            damageRadius = originalDamageRadius;
+            damageAngle = originalDamageAngle;
+        }
+
         protected override IEnumerator SlowTempo(float duration)
         {
             damage = originalDamage * 1.75f;
