@@ -24,7 +24,13 @@ namespace Enemies.EnemyStates
 
         public override void UpdateState()
         {
+            //check if ready to leave guard state
+            if (enemyController is not EliteEnemyController eliteEnemyController) return;
             
+            if (!eliteEnemyController.IsAttackInCooldown)
+            {
+                eliteEnemyController.TransitionToState(EnemyState.Attack);
+            }
         }
 
         public override void ExitState()

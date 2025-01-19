@@ -8,7 +8,7 @@ using Player;
 public class AttackState : BaseEnemyState
 {
     protected float outsideAttackRangeTime;
-    private float outsideAttackRangeDuration = 0.5f;
+    protected float outsideAttackRangeDuration = 0.5f;
     
     public AttackState(EnemyController enemyController, NavMeshAgent navMeshAgent, PlayerController playerController) : 
                         base(enemyController, navMeshAgent, playerController) { }
@@ -28,8 +28,6 @@ public class AttackState : BaseEnemyState
     public override void UpdateState() {
         
         // If the enemy is currently attacking/knockbacked, wait for the attack/knockback to finish first before checking anything.
-        
-        Debug.Log("Attack State Update" + enemyController.IsAttacking());
         
         if (enemyController.IsAttacking()) return;
         // Temporary code until knockback is included in base class.

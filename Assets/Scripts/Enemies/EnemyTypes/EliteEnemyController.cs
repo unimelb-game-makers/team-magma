@@ -2,6 +2,7 @@
 // 19 01 2025 01 54
 
 using System.Collections;
+using System.Collections.Generic;
 using Enemies.EnemyStates;
 using Enemy;
 
@@ -15,22 +16,33 @@ namespace Enemies.EnemyTypes
         
         protected override IEnumerator SlowTempo(float duration)
         {
-            throw new System.NotImplementedException();
+            return base.SlowTempo(duration);
         }
-
+        
         protected override IEnumerator FastTempo(float duration)
         {
-            throw new System.NotImplementedException();
+            return base.FastTempo(duration);
         }
-
+        
+        protected virtual void AddStates()
+        {
+            _states = new Dictionary<EnemyState, BaseEnemyState>()
+            {
+                { EnemyState.Idle, new IdleState(this, navMeshAgent, player) },
+                { EnemyState.Patrol, new PatrolState(this, navMeshAgent, player) },
+                { EnemyState.Chase, new ChaseState(this, navMeshAgent, player) },
+                { EnemyState.Attack, new EliteAttackState(this, navMeshAgent, player) },
+                { EnemyState.Guard, new GuardState(this, navMeshAgent, player) }
+            };
+        }
         public void Guard()
         {
-            throw new System.NotImplementedException();
+            //Animation
         }
         
         public void StopGuard()
         {
-            throw new System.NotImplementedException();
+            //Animation
         }
         
     }

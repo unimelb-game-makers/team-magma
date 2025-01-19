@@ -189,7 +189,6 @@ namespace Enemy
                 { EnemyState.Patrol, new PatrolState(this, navMeshAgent, player) },
                 { EnemyState.Chase, new ChaseState(this, navMeshAgent, player) },
                 { EnemyState.Attack, new AttackState(this, navMeshAgent, player) },
-                { EnemyState.Flee, new FleeState(this, navMeshAgent, player) }
             };
         }
         
@@ -294,6 +293,7 @@ namespace Enemy
         Patrol,
         Chase,
         Attack,
-        Flee
+        Flee,
+        Guard
     }
 }

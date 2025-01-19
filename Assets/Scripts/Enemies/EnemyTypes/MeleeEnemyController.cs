@@ -15,12 +15,13 @@ namespace Enemies.EnemyTypes
 
         [SerializeField] private GameObject damageAreaPrefab;
 
+        public bool IsAttackInCooldown => GetCurrentAttackCooldown() <= 0;
         private bool isStriking = false;
         private bool hasCollidedWithPlayer = false;
 
         private Vector3 strikeDirection;
         private AreaDamage areaDamage;
-
+        
         public override void Attack()
         {
             if (isStriking)
@@ -33,7 +34,7 @@ namespace Enemies.EnemyTypes
 
             // Handle attack cooldown
             SetCurrentAttackCooldown(GetCurrentAttackCooldown() - Time.deltaTime); 
-            if (GetCurrentAttackCooldown() <= 0)
+            if (IsAttackInCooldown)
             {
                 // Reset the cooldown
                 SetCurrentAttackCooldown(GetAttackCooldown());
