@@ -30,6 +30,9 @@ public class BeatSpawner : MonoBehaviour
         // Instantiate a new beat at the starting hexagon position
         GameObject beatInstance = Instantiate(beatPrefab, hexagonManager.GetHexagonPosition(0), Quaternion.identity, transform);
 
+        // Should be the same as parent's rotation otherwise it will be out of shape
+        beatInstance.transform.rotation = transform.rotation;
+
         // Initialize the beat with HexagonManager and step interval
         Beat beatScript = beatInstance.GetComponent<Beat>();
         if (beatScript != null)
