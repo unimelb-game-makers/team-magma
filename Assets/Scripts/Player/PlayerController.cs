@@ -114,6 +114,7 @@ namespace Player
 
         private void Attack()
         {
+            if (PauseManager.IsPaused) return;
             //if the player has attacked need to release the mouse to attack again
             if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
             {

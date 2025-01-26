@@ -8,15 +8,22 @@ public class SelectionWheelManager : MonoBehaviour
     private bool isWheelActive = false; // Track if the wheel is active
     public PauseObjectController pauseObjectController;
     public BatteryManager batteryManager;
+    public PauseMenuController pauseMenuController;
     public float batteryNeeded = 50;
 
     void Update()
     {
-        if (PauseManager.IsPaused) 
+        if (PauseManager.IsPaused && pauseMenuController.isPauseMenu) 
         {
             if (isWheelActive)
             {
-                ToggleWheel();
+                isWheelActive = !isWheelActive;
+
+                selectionWheel.SetActive(isWheelActive);
+
+                // Blur background
+                PostProcessVolume ppVolume = Camera.main.gameObject.GetComponent<PostProcessVolume>();
+                ppVolume.enabled = !ppVolume.enabled;
             }
             return;
         }
@@ -25,7 +32,7 @@ public class SelectionWheelManager : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetButtonDown(inputName)) // Check for input using the name 'Tape'
+        if (Input.GetButtonDown(inputName))
         {
             ToggleWheel();
         }
@@ -35,12 +42,12 @@ public class SelectionWheelManager : MonoBehaviour
     {
         if (!isWheelActive) 
         {
-            Time.timeScale = 0;
+            PauseManager.PauseGame();
             pauseObjectController.DisableObjects();
         }
         else 
         {
-            Time.timeScale = 1;
+            PauseManager.ResumeGame();
             pauseObjectController.EnableObjects();
         
         }

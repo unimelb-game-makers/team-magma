@@ -5,6 +5,7 @@ public class PauseMenuController : MonoBehaviour
     public CanvasGroup pauseMenuCanvasGroup;
     public float fadeDuration = 0.5f; // Duration for the fade effect
     public PauseObjectController pauseObjectController;
+    public bool isPauseMenu = false;
 
     void Update()
     {
@@ -12,12 +13,17 @@ public class PauseMenuController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePauseMenu();
+            isPauseMenu = !isPauseMenu;
         }
     }
 
     public void TogglePauseMenu()
     {
-        PauseManager.TogglePause();
+        if (!(PauseManager.IsPaused && !isPauseMenu))
+        {
+            // if it is paused because of things other than pause menu, remain paused
+            PauseManager.TogglePause();
+        }
 
         if (PauseManager.IsPaused)
         {
