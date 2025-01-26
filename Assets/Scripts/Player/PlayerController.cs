@@ -40,6 +40,11 @@ namespace Player
         [SerializeField] private float dodgeTime = 0.15f;
         [SerializeField] private float isInvulnerableTime = 0.1f;
 
+        [Space(10)]
+
+        [Header("Beat Setup")]
+        [SerializeField] private Transform detectionZone;
+        [SerializeField] private float detectionRadius = 0.5f;   // Adjust based on the hexagon's size
 
         public enum OrientationType
         {
@@ -51,11 +56,9 @@ namespace Player
         private Rigidbody _rigidbody;
 
         private bool _leftMouseButtonDown;
-
         private bool _leftShiftButtonDown;
-
         private bool _DodgeButtonDown;
-
+        private bool _HitButtonDown;
         private Camera _mainCamera;  // Reference to the main camera
 
         private MeleeAttackBox _meleeAttackBox = null;
@@ -101,6 +104,8 @@ namespace Player
             Move();
 
             Attack();
+
+            Hit();
         }
 
         private void FixedUpdate()
@@ -114,7 +119,6 @@ namespace Player
 
         private void Attack()
         {
-            if (PauseManager.IsPaused) return;
             //if the player has attacked need to release the mouse to attack again
             if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
             {
@@ -342,6 +346,32 @@ namespace Player
                     break;
             }
         }
+
+        private void Hit()
+        {
+            //if the player has attacked need to release the mouse to attack again
+            if (Input.GetButtonDown("Hit") && !_HitButtonDown)
+            {
+                // Check if hit
+                Collider2D[] hits = Physics2D.OverlapCircleAll(detectionZone.position, detectionRadius); // Adjust radius
+                foreach (var hit in hits)
+                {
+                    Beat beat = hit.GetComponent<Beat>();
+                    if (beat != null && beat.IsHittable())
+                    {
+                        Debug.Log("Hit!");
+                        beat.OnHit();
+                        Destroy(beat.gameObject);  // Remove beat when hit
+                    }
+                }
+                _HitButtonDown = true;
+            }
+            if (Input.GetButtonUp("Hit"))
+            {
+                _HitButtonDown = false;
+            }
+        }
+
 
         private bool TrackMovementInput()
         {
