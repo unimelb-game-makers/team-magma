@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using Ink.Runtime;
 using Narrative;
-using Player;
 using UnityEngine;
 
 namespace NPC
@@ -13,28 +12,34 @@ namespace NPC
     [RequireComponent(typeof(Collider))]
     public class Npc : MonoBehaviour
     {
-        [SerializeField] private NpcState _state;
         [Header("Ink Story JSON")] [SerializeField]
         private TextAsset inkJSONAsset; // Assign the compiled LvlPocLeaderStory.json here
         
         private Story _story;
         [SerializeField] private float _interactionRange = 5f;
 
-        private NpcState _currentState = NpcState.Idle; public NpcState CurrentState => _currentState;
+        [SerializeField] private NpcState _currentState; public NpcState CurrentState => _currentState;
+        
+        [SerializeField] private Transform [] PatrolPoints;
         
         private void Start()
         {
             // Load the Ink Story
+            agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+            
             _story = new Story(inkJSONAsset.text);
         }
-        
-        
         
         
         private GameObject _player = null;
         private Coroutine _playerInRangeCheckCoroutine = null;
         
         private void OnMouseDown()
+        {
+            InteractWithNpc();
+        }
+        
+        public void InteractWithNpc()
         {
             if (!IsPlayerInRange()) return;
             
@@ -45,6 +50,7 @@ namespace NPC
             
             _playerInRangeCheckCoroutine = StartCoroutine(PlayerInRangeCheck());
         }
+        
 
         private bool IsPlayerInRange()
         {
@@ -72,6 +78,32 @@ namespace NPC
                 yield return new WaitForSeconds(1f);
             }
         }
+
+
+        #region Ai
+
+        private UnityEngine.AI.NavMeshAgent agent;
+
+        public void Update()
+        {
+            
+            if (CurrentState == NpcState.Walking)
+            {
+                Debug.Log("Patrolling");
+                Patrol();
+            }
+        }
+
+        public void Patrol()
+        {
+            if (PatrolPoints.Length == 0) return;
+            if (agent.remainingDistance < 0.5f)
+            {
+                agent.destination = PatrolPoints[UnityEngine.Random.Range(0, PatrolPoints.Length)].position;
+            }
+        }
+
+        #endregion
     }
 
     public enum NpcState

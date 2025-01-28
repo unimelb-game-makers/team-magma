@@ -5,10 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aca06b45-29a0-4f99-9d15-04a4a15d1e46" name="Changes" comment="Now can talk to NPC and close the dialogue window">
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Characters/NPC.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Characters/NPC.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/UIs/DialogueUi.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/UIs/DialogueUi.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/UIs/InteractUI.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/UIs/InteractUI.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/TestScene_Vincent.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/TestScene_Vincent/NavMesh-NavMesh Surface.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/TestScene_Vincent/NavMesh-NavMesh Surface.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UserInterface.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UserInterface/IndicatorTrigger.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UserInterface/IndicatorTrigger.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UserInterface/InteractIndicator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/UserInterface/InteractIndicator.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.team-magma/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.team-magma/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene/NavMesh-NavMesh Surface.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene/NavMesh-NavMesh Surface.asset.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene_Vincent.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestScene_Vincent.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/NPC/Npc.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NPC/Npc.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Narrative/DialogueUi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Narrative/DialogueUi.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,18 +51,8 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0fe1635722fa40459df2fd62da0fd6ca175c00/66/6045266e/Component.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/92/a8eded2c/Void.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/daphatus/team-magma/Assets/Scenes/William-Enemy_Test.unity" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Damage/IDamageManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Damage/IHealthManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.kamzhanyue.utility-delivery@53bd103e80/Runtime/Kuroneko.UtilityDelivery.asmdef" root0="SKIP_HIGHLIGHTING" />
@@ -73,7 +78,7 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Standalone Player.Start Unity.executor": "Run",
-    "git-widget-placeholder": "ui-dialogue",
+    "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
