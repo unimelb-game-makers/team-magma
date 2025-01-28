@@ -30,10 +30,10 @@ namespace Damage
 
             // Get the health manager component.
             healthManager = GetComponent<IHealthManager>();
-            Debug.Log(healthManager);
+            //Debug.Log(healthManager);
             if (healthManager == null)
             {
-                Debug.LogError("No IHealthManager implementation found on the GameObject.");
+                //Debug.LogError("No IHealthManager implementation found on the GameObject.");
             }
         }
 
