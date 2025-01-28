@@ -4,19 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aca06b45-29a0-4f99-9d15-04a4a15d1e46" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/NPC.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/NPC/Npc.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/NPC/Npc.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Narrative/StoryletsManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Narrative/StoryletsManager.cs.meta" afterDir="false" />
+    <list default="true" id="aca06b45-29a0-4f99-9d15-04a4a15d1e46" name="Changes" comment="Now can talk to NPC and close the dialogue window">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.team-magma/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.team-magma/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestScene_Vincent.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestScene_Vincent.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Damage/Damageable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Damage/Damageable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Narrative/DialogueController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Narrative/DialogueUi.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Narrative/DialogueController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Narrative/DialogueUi.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fmod_editor.log" beforeDir="false" afterPath="$PROJECT_DIR$/fmod_editor.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NPC/Npc.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NPC/Npc.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Narrative/DialogueUi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Narrative/DialogueUi.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +211,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734306161917</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Now can talk to NPC and close the dialogue window">
+      <option name="closed" value="true" />
+      <created>1738028496741</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1738028496741</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,6 +253,7 @@
     <MESSAGE value="add interface to the game" />
     <MESSAGE value="Remove Easy Save 3" />
     <MESSAGE value="Add Audio Manager Use Audio Test for testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add Audio Manager Use Audio Test for testing" />
+    <MESSAGE value="Now can talk to NPC and close the dialogue window" />
+    <option name="LAST_COMMIT_MESSAGE" value="Now can talk to NPC and close the dialogue window" />
   </component>
 </project>

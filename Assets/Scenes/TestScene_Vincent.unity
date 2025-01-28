@@ -1162,7 +1162,7 @@ GameObject:
   - component: {fileID: 1056587390}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1664,6 +1664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _state: 0
   inkJSONAsset: {fileID: 4900000, guid: f18ed477199e9400a958149b4f1bdd37, type: 3}
+  _interactionRange: 5
 --- !u!1 &1344082278
 GameObject:
   m_ObjectHideFlags: 0
