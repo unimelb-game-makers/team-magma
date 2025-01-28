@@ -10,25 +10,34 @@ namespace Narrative
     using UnityEngine.UI;
     using Ink.Runtime;
 
-    public class DialogueController : MonoBehaviour, IUIHandler
+    public class DialogueUi : Singleton<DialogueUi>, IUIHandler
     {
-        [Header("Ink Story JSON")] [SerializeField]
-        private TextAsset inkJSONAsset; // Assign the compiled LvlPocLeaderStory.json here
 
         [Header("UI Elements")] [SerializeField]
         private TextMeshProUGUI dialogueText; // The main text field for displaying dialogue
-
+        
         [SerializeField] private GameObject choiceButtonPrefab; // A prefab for a button that represents a choice
+        [SerializeField] private GameObject dialogueUiPanel; // A prefab for a button that represents a choice
         [SerializeField] private Transform choicePanel; // A container (e.g., VerticalLayoutGroup) for choice buttons
-
+        
+        
+        
         private Story _story;
-
+        
         private void Start()
         {
-            // Load the Ink Story
-            _story = new Story(inkJSONAsset.text);
-
-            // Begin the story from the first line
+            HideUI();
+        }
+        
+        public void TalkToNpc(Story story)
+        {
+            SetStory(story);
+            ShowUI();
+        }
+        
+        private void SetStory(Story story)
+        {
+            _story = story;
             RefreshView();
         }
         
@@ -56,8 +65,17 @@ namespace Narrative
             }
             else
             {
-                // No more choices? Could mean the conversation is over, or story ended.
-                // You could hide the UI or trigger something else here.
+                //Add a button to close the dialogue
+                CreateCloseButton();
+
+                void CreateCloseButton()
+                {
+                    GameObject buttonGO = Instantiate(choiceButtonPrefab, choicePanel);
+                    Button buttonComponent = buttonGO.GetComponent<Button>();
+                    TextMeshProUGUI buttonText = buttonGO.GetComponentInChildren<TextMeshProUGUI>();
+                    buttonText.text = "Close";
+                    buttonComponent.onClick.AddListener(delegate { HideUI(); });
+                }
             }
         }
 
@@ -93,17 +111,17 @@ namespace Narrative
 
         public void ShowUI()
         {
-            gameObject.SetActive(true);
+            dialogueUiPanel.SetActive(true);
         }
 
         public void HideUI()
         {
-            gameObject.SetActive(false);
+            dialogueUiPanel.SetActive(false);
         }
 
         public void ToggleUI()
         {
-            gameObject.SetActive(!gameObject.activeSelf);
+            dialogueUiPanel.SetActive(!dialogueUiPanel.activeSelf);
         }
     }
 }

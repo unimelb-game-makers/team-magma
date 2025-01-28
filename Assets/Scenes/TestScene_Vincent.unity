@@ -195,10 +195,9 @@ GameObject:
   m_Component:
   - component: {fileID: 77917554}
   - component: {fileID: 77917556}
-  - component: {fileID: 77917555}
   - component: {fileID: 77917557}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: DialogueUi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -216,8 +215,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2103797785}
-  - {fileID: 1933509302}
+  - {fileID: 1887094920}
   m_Father: {fileID: 1344082282}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -225,36 +223,6 @@ RectTransform:
   m_AnchoredPosition: {x: 39, y: -279}
   m_SizeDelta: {x: -744.9114, y: -665.4798}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &77917555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 77917553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &77917556
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -275,9 +243,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38488e66876644b69af80e6179eab692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkJSONAsset: {fileID: 4900000, guid: f18ed477199e9400a958149b4f1bdd37, type: 3}
   dialogueText: {fileID: 2103797786}
   choiceButtonPrefab: {fileID: 8959173525596321029, guid: d3e51abb105f445a5a30fd8d5ff65df2, type: 3}
+  dialogueUiPanel: {fileID: 1887094919}
   choicePanel: {fileID: 1933509302}
 --- !u!1 &113668643
 GameObject:
@@ -397,10 +365,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Enemy
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
@@ -451,10 +415,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Enemy
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.2
   colorChangeDuration: 0.2
@@ -758,10 +718,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Enemy
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
@@ -969,10 +925,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Enemy
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
@@ -1008,10 +960,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Enemy
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
@@ -1235,6 +1183,12 @@ MonoBehaviour:
   _player: {fileID: 1056587386}
   _offset: {x: 0, y: 15, z: -3}
   _rotation: {x: 80, y: 0, z: 0}
+  curve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!65 &1056587383
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1361,6 +1315,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 15
+  orientation: 0
+  jumpHeight: 2
+  jumpForce: 2
   lookOrientation: 0
   moveOrientation: 0
   projectilePrefab: {fileID: 3345562608605307880, guid: d20f1b4b149104c94b88ac30db2413f0, type: 3}
@@ -1387,10 +1344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Player
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
@@ -1603,6 +1556,7 @@ GameObject:
   - component: {fileID: 1339830285}
   - component: {fileID: 1339830284}
   - component: {fileID: 1339830283}
+  - component: {fileID: 1339830286}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -1619,7 +1573,7 @@ Transform:
   m_GameObject: {fileID: 1339830281}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42879865, y: 1.13, z: 3.79}
+  m_LocalPosition: {x: 5.49, y: 1.13, z: 3.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1695,7 +1649,21 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1339830281}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1339830286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339830281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cff653cc46643b3a2400c892791ef7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _state: 0
+  inkJSONAsset: {fileID: 4900000, guid: f18ed477199e9400a958149b4f1bdd37, type: 3}
 --- !u!1 &1344082278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1830,10 +1798,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Enemy
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
@@ -2041,10 +2005,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Player
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
@@ -2080,10 +2040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Enemy
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
@@ -2291,13 +2247,113 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Enemy
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.2
   colorChangeDuration: 0.2
+--- !u!1 &1887094919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1887094920}
+  - component: {fileID: 1887094922}
+  - component: {fileID: 1887094921}
+  - component: {fileID: 1887094923}
+  m_Layer: 5
+  m_Name: DialoguePanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1887094920
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887094919}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2103797785}
+  - {fileID: 1933509302}
+  m_Father: {fileID: 77917554}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 2.1726074, y: -1.5275574}
+  m_SizeDelta: {x: 1117.6047, y: 374.8704}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1887094921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887094919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1887094922
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887094919}
+  m_CullTransparentMesh: 1
+--- !u!114 &1887094923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887094919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1933509301
 GameObject:
   m_ObjectHideFlags: 0
@@ -2322,17 +2378,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933509301}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 77917554}
+  m_Father: {fileID: 1887094920}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 454.49, y: -118.8703}
-  m_SizeDelta: {x: 212.96, y: 140.1849}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1117.6, y: 144.87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1933509303
 MonoBehaviour:
@@ -2348,13 +2404,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 0
-    m_Right: 0
+    m_Right: 10
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 0
+  m_ChildAlignment: 8
+  m_Spacing: 5
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -2426,17 +2482,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2103797784}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 77917554}
+  m_Father: {fileID: 1887094920}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.1726, y: 39.6498}
-  m_SizeDelta: {x: 1117.6047, y: 292.5157}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1117.6047, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2103797786
 MonoBehaviour:
@@ -2631,10 +2687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210040be912f48b9ab3d4e91d94e587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  canAttack: []
-  health: 100
-  tag: Enemy
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
