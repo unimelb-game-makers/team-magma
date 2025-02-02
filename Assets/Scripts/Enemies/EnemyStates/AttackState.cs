@@ -4,6 +4,7 @@ using UnityEngine;
 using Enemy;
 using UnityEngine.AI;
 using Player;
+using Enemies.EnemyTypes;
 
 public class AttackState : BaseEnemyState
 {
@@ -17,40 +18,47 @@ public class AttackState : BaseEnemyState
         Debug.Log("Entering Attack State");
         
         //ToDo: the animation should be reimplemented according Our Requirements
-        enemyController.GetAnimator().SetBool(enemyController.GetIdleAttackAnimationBool(), true);
-        navMeshAgent.destination = playerController.transform.position;
-        navMeshAgent.speed = 0;
-        enemyController.SetCurrentAttackCooldown(enemyController.GetAttackCooldown());
+        // enemyController.GetAnimator().SetBool(enemyController.GetIdleAttackAnimationBool(), true);
+        navMeshAgent.SetDestination(enemyController.transform.position);
         outsideAttackRangeDuration = enemyController.GetOutsideAttackRangeDuration();
         outsideAttackRangeTime = outsideAttackRangeDuration;
     }
 
     public override void UpdateState() {
-        
-        // If the enemy is currently attacking/knockbacked, wait for the attack/knockback to finish first before checking anything.
-        
+        if (playerController != null)
+            enemyController.transform.LookAt(playerController.transform.position);
+
+        // If the enemy is currently attacking/knockbacked, wait for the
+        // attack to finish first.
         if (enemyController.IsAttacking()) return;
         // Temporary code until knockback is included in base class.
-        else if (enemyController is AssassinEnemyController && ((AssassinEnemyController) enemyController).isKnockback) {
+        else if (enemyController is AssassinEnemyController aController && aController.isKnockback) {
             return;
         }
         // If the player was killed, transition to patrol state.
         else if (!playerController) {
             enemyController.TransitionToState(EnemyState.Patrol);
         }
-        // If the player has exited attack range, transition to chase state.
-        else if (!enemyController.IsWithinAttackRange) {
+        // If the player is too close to the enemy, the enemy must flee.
+        // This is only if the enemy is a ranged enemy.
+        else if (enemyController is RangedEnemyController rController && rController.EnemyIsInFleeRange()) {
+            enemyController.TransitionToState(EnemyState.Flee);
+        }
+        // If the player has exited attack range, transition to chase state
+        // after some time.
+        else if (!enemyController.PlayerIsInAttackRange()) {
             outsideAttackRangeTime -= Time.deltaTime;
             if (outsideAttackRangeTime <= 0) {
-                // If I disable the nav mesh agent for ranged enemy, this comes here? Why? Do the colliders disappear or something???
                 enemyController.TransitionToState(EnemyState.Chase);
             }
         }
-        //if all the above conditions are false, then attack the player
-        enemyController.Attack();
+        // If all the above conditions are false, then attack the player
+        else {
+            enemyController.Attack();
+        }
     }
 
     public override void ExitState() {
-        enemyController.GetAnimator().SetBool(enemyController.GetIdleAttackAnimationBool(), false);
+        // enemyController.GetAnimator().SetBool(enemyController.GetIdleAttackAnimationBool(), false);
     }
 }

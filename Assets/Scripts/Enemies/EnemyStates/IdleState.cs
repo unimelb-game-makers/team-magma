@@ -15,7 +15,7 @@ public class IdleState : BaseEnemyState
 
     public override void EnterState() {
         Debug.Log("Entering Idle State");
-        enemyController.GetAnimator().SetBool(enemyController.GetIdleAnimationBool(), true);
+        // enemyController.GetAnimator().SetBool(enemyController.GetIdleAnimationBool(), true);
         idleDuration = enemyController.GetIdleDuration();
         idleTime = idleDuration;
     }
@@ -28,13 +28,13 @@ public class IdleState : BaseEnemyState
         if (idleTime <= 0) {
             enemyController.TransitionToState(EnemyState.Patrol);
         }
-        // If the player is within aggro range, transition to chase state.
-        else if (playerController != null && enemyController.IsWithinAggroRange) {
+        // If the player is within sight range, transition to chase state.
+        else if (playerController != null && enemyController.PlayerIsInSightRange()) {
             enemyController.TransitionToState(EnemyState.Chase);
         }
     }
 
     public override void ExitState() {
-        enemyController.GetAnimator().SetBool(enemyController.GetIdleAnimationBool(), false);
+        // enemyController.GetAnimator().SetBool(enemyController.GetIdleAnimationBool(), false);
     }
 }

@@ -13,36 +13,24 @@ namespace Enemies.EnemyStates
 
         public override void EnterState() {
             Debug.Log("Entering Flee State");
-            enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), true);
-            navMeshAgent.destination = enemyController.GetCurrentPatrolPoint().position;
-            navMeshAgent.speed = enemyController.GetPatrolSpeed();
-        }
+            // enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), true);
 
-        public override void UpdateState() {
-
-            //if the enemy is RangedEnemyController 
-            if (enemyController is RangedEnemyController rangedEnemyController) 
+            if (enemyController is RangedEnemyController rController)
             {
-                //if the enemy is fleeing, return
-                if(rangedEnemyController.IsFleeing) return;
-                
-                Debug.Log(rangedEnemyController.IsFleeing + " fleeing");
-                // If the player is within aggro range, transition to chase state.
-                if (playerController != null && enemyController.IsWithinAggroRange) {
-                    enemyController.TransitionToState(EnemyState.Chase);
-                }
-                // If the patrol point was reached, transition to idle state.
-                else if (enemyController.HasReachedPatrolPoint) {
-                    enemyController.HasReachedPatrolPoint = false;
-                    enemyController.NextPatrolPoint();
-                    enemyController.TransitionToState(EnemyState.Idle);
-                }
-                rangedEnemyController.Flee();
+                navMeshAgent.SetDestination(rController.GetFleeLocation());
+                navMeshAgent.speed = rController.GetFleeSpeed();
             }
         }
 
+        public override void UpdateState() {
+            // Transition to attack state after fleeing.
+            if (enemyController is RangedEnemyController rEnemyController
+                && rEnemyController.EnemyHasMovedToFleeLocation()) 
+                enemyController.TransitionToState(EnemyState.Attack);
+        }
+
         public override void ExitState() {
-            enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), false);
+            // enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), false);
         }
     }
 }

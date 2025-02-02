@@ -13,27 +13,26 @@ public class PatrolState : BaseEnemyState
 
     public override void EnterState() {
         Debug.Log("Entering Patrol State");
-        enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), true);
-        navMeshAgent.destination = enemyController.GetCurrentPatrolPoint().position;
+        // enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), true);
+        navMeshAgent.destination = enemyController.GetCurrentPatrolPoint();
         navMeshAgent.speed = enemyController.GetPatrolSpeed();
     }
 
     public override void UpdateState() {
         enemyController.Patrol();
 
-        // If the player is within aggro range, transition to chase state.
-        if (playerController != null && enemyController.IsWithinAggroRange) {
+        // If the player is within sight range, transition to chase state.
+        if (playerController != null && enemyController.PlayerIsInSightRange()) {
             enemyController.TransitionToState(EnemyState.Chase);
         }
         // If the patrol point was reached, transition to idle state.
-        else if (enemyController.HasReachedPatrolPoint) {
-            enemyController.HasReachedPatrolPoint = false;
+        else if (enemyController.EnemyIsInDestinationRange()) {
             enemyController.NextPatrolPoint();
             enemyController.TransitionToState(EnemyState.Idle);
         }
     }
 
     public override void ExitState() {
-        enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), false);
+        // enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), false);
     }
 }

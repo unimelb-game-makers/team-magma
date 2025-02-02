@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 10f; public float Speed { get => speed; set => speed = value; }
+    [SerializeField] private float speed = 20f; public float Speed { get => speed; set => speed = value; }
     [SerializeField] private float lifetime = 2f;
     private GameObject _player;
     public bool IsHoming { get; set; } = false;
@@ -45,7 +45,8 @@ public class Projectile : MonoBehaviour
             ProjectileMovement();
         }
         Vector3 direction = (_player.transform.position - transform.position).normalized;
-        transform.forward = Vector3.Lerp(transform.forward, direction, Time.deltaTime);
+        float turnSpeed = 3f;
+        transform.forward = Vector3.Lerp(transform.forward, direction, turnSpeed * Time.deltaTime);
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 

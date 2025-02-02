@@ -8,7 +8,7 @@ using Damage;
 public class AssassinEnemyController : EnemyController
 {
     [Header("Dash")]
-    [SerializeField] private float dashSpeed = 10f;
+    // [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 2f;
     private bool isDashing = false;
     private float currentDashTime;
@@ -16,7 +16,7 @@ public class AssassinEnemyController : EnemyController
 
     // Temp variables for collision checking - if all enemy types are using this, should declare in the base class
     [Header("Knockback")]
-    [SerializeField] private float knockbackForce = 10f;
+    // [SerializeField] private float knockbackForce = 10f;
     [SerializeField] private float knockbackDuration = 1f;
     private bool hasCollidedWithPlayer = false;
     public bool isKnockback = false;
@@ -37,25 +37,18 @@ public class AssassinEnemyController : EnemyController
             UpdateDash();
         }
         else {
-            RotateTowardsPlayer();
+            transform.LookAt(player.transform.position);
 
-            // Calculate the current cooldown time. If cooldown is over, attack.
-            SetCurrentAttackCooldown(GetCurrentAttackCooldown() - Time.deltaTime);
-            if (GetCurrentAttackCooldown() <= 0) {
-                SetCurrentAttackCooldown(GetAttackCooldown());
-
-                Debug.Log("Assassin Attack!");
-                GetAnimator().SetTrigger(GetAttackAnimationTrigger());
+            if (!IsAttacking())
+            {
+                // Trigger animation
+                // GetAnimator().SetTrigger(GetAttackAnimationTrigger());
 
                 SetIsAttacking(true);
-
-                // If player is still alive.
-                if (GetPlayerController()) StartDash();
+                StartDash();
             }
         }     
     }
-
-
 
     private void StartDash() {
         isDashing = true;
@@ -73,26 +66,25 @@ public class AssassinEnemyController : EnemyController
         // If the dash's duration has ended or the player was hit, end the dash.
         if (currentDashTime <= 0 || hasCollidedWithPlayer) {
             isDashing = false;
-            GetRigidbody().velocity = Vector3.zero;
             SetIsAttacking(false);
             GetNavMeshAgent().enabled = true;
 
             if (hasCollidedWithPlayer) {
                 isKnockback = true;
                 currentknockbackTime = knockbackDuration;
-                GetAnimator().SetTrigger(knockbackAnimationTrigger);
+                // GetAnimator().SetTrigger(knockbackAnimationTrigger);
 
                 // Apply a knockback:
                 // Calculate the direction without y, so enemy stays on the ground.
                 Vector3 knockbackDirectionWithY = transform.position - GetPlayerController().transform.position;
                 Vector3 knockbackDirection = new Vector3(knockbackDirectionWithY.x, 0f, knockbackDirectionWithY.z).normalized;
-                GetRigidbody().AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+                //GetRigidbody().AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
 
                 // Player has taken damage
-                GetPlayerController().GetComponent<Damageable>().TakeDamage(GetDamage());
+                // GetPlayerController().GetComponent<Damageable>().TakeDamage(GetDamage());
             }
         } else {
-            GetRigidbody().velocity = dashDirection * dashSpeed;
+            //GetRigidbody().velocity = dashDirection * dashSpeed;
         }
     }
 

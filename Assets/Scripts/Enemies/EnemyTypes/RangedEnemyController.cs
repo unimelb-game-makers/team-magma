@@ -9,137 +9,218 @@ namespace Enemies.EnemyTypes
 {
     public class RangedEnemyController : EnemyController
     {
-        [Header("Projectile")]
+        [Header("Ranged Attack Variables")]
         [SerializeField] private GameObject projectilePrefab;
+        [SerializeField] private float originalWindUpTime = 0.3f;
+        [SerializeField] private float originalInaccuracyAmount = 5f;
+        [SerializeField] private float originalProjectileSpeed = 20f;
+        private float windUpTime;
+        private float inaccuracyAmount;
+        private float projectileSpeed;
+        private bool isProjectileHoming;
 
-        [SerializeField] private float tooCloseDistance = 5f;
-        public bool IsTooCloseToPlayer { get => Vector3.Distance(transform.position, GetPlayerController().transform.position) < tooCloseDistance; }
-        [SerializeField] private float fleeSpeed = 10f; public float FleeSpeed => fleeSpeed;
+        [Header("Flee Variables")]
+        [SerializeField] private LayerMask whatIsGround;
+        [SerializeField] private float fleeSpeed = 10f;
+        [SerializeField] private float fleeRange = 5f;
+        [SerializeField] private float moveToRange = 3f;
+        private bool enemyInFleeRange;
+        private bool enemyMovedToFleeLocation;
+        private Vector3 fleeLocation;
 
+        public float GetFleeSpeed() { return fleeSpeed; }
+        public bool EnemyIsInFleeRange() { return enemyInFleeRange; }
+        public bool EnemyHasMovedToFleeLocation() { return enemyMovedToFleeLocation; }
+
+        public override void Update()
+        {
+            // Update flee ranges
+            if (player != null)
+                enemyInFleeRange = Vector3.Distance(transform.position, player.transform.position) <= fleeRange;
+            enemyMovedToFleeLocation = Vector3.Distance(transform.position, fleeLocation) <= destinationToleranceRange;
+            
+            base.Update();
+        }
 
         protected override void AddStates()
         {
             _states = new Dictionary<EnemyState, BaseEnemyState>()
             {
-                { EnemyState.Idle, new IdleState(this, navMeshAgent, player) },
-                { EnemyState.Patrol, new PatrolState(this, navMeshAgent, player) },
-                { EnemyState.Chase, new ChaseState(this, navMeshAgent, player) },
-                { EnemyState.Attack, new RangedAttackState(this, navMeshAgent, player) },
-                { EnemyState.Flee, new FleeState(this, navMeshAgent, player) }
+                { EnemyState.Idle, new IdleState(this, agent, player) },
+                { EnemyState.Patrol, new PatrolState(this, agent, player) },
+                { EnemyState.Chase, new ChaseState(this, agent, player) },
+                { EnemyState.Attack, new AttackState(this, agent, player) },
+                { EnemyState.Flee, new FleeState(this, agent, player) }
             };
         }
         
+        #region Attack
         public override void Attack() {
-            RotateTowardsPlayer();
+            if (!IsAttacking())
+            {
+                // Trigger animation
+                // GetAnimator().SetTrigger(GetAttackAnimationTrigger());
 
-            // Calculate the current cooldown time. If cooldown is over, attack.
-            SetCurrentAttackCooldown(GetCurrentAttackCooldown() - Time.deltaTime); 
-            //if (GetCurrentAttackCooldown() <= 0 && GetMusicTimeline().GetOnBeat()) {
-            if (GetCurrentAttackCooldown() <= 0) {
-                SetCurrentAttackCooldown(GetAttackCooldown());
+                SetIsAttacking(true);
 
-                Debug.Log("Ranged Attack!");
-                GetAnimator().SetTrigger(GetAttackAnimationTrigger());
+                // If the player is still alive.
+                if (GetPlayerController())
+                    StartCoroutine(PerformStrikeSequence());
 
                 /*
-             * NOTE: This event audio is triggered using a StudioEventEmitter component attached to this enemy.
-             * The audio gets louder closer you are to the enemy, this is because it is using the FMOD Studio Listener Component
-             * attached to the camera for Attenuation (basic top-down 3d directional audio falloff).
-             * However the StudioEventEmitter "Override Attenuation" setting WONT WORK because the "Wooden Collision" FMOD audio track
-             * is uses a spacializer that overrides this.
-            */ 
+                * NOTE: This event audio is triggered using a StudioEventEmitter component attached to this enemy.
+                * The audio gets louder closer you are to the enemy, this is because it is using the FMOD Studio Listener Component
+                * attached to the camera for Attenuation (basic top-down 3d directional audio falloff).
+                * However the StudioEventEmitter "Override Attenuation" setting WONT WORK because the "Wooden Collision" FMOD audio track
+                * is uses a spacializer that overrides this.
+                */
 
                 // Trigger Ranged Attack Audio Event
                 //StudioEventEmitter fire = GetComponent<FMODUnity.StudioEventEmitter>();
                 //fire.Play();
                 //FMODUnity.RuntimeManager.AttachInstanceToGameObject(fire.EventInstance, gameObject, GetComponent<Rigidbody>());
-
-            
-
-
-                // Temporary until actual logic is implemented.
-                // Eg: Could wait until the animation has finished playing.
-                SetIsAttacking(true);
-
-                // If the player is still alive.
-                if (GetPlayerController()) SpawnProjectile();
-
-                SetIsAttacking(false);
             }
         }
 
-        protected override void DefaultTempo()
+        private IEnumerator PerformStrikeSequence()
         {
-            base.DefaultTempo();
-        }
+            float timer = 0f;
 
-        private bool _isFleeing = false; public bool IsFleeing => _isFleeing;
-        private float _fleeDuration = 5f;
-        
-        /**
-        * Flee from the player by finding a random point on the NavMesh and moving to it.
-        */
-        public void Flee()
-        {
-            RotateTowardsMovementDirection();
-            float fleeDistance = 20f;
-            _isFleeing = true;
-            Vector3 randomDirection = Random.insideUnitSphere * fleeDistance;
-
-            randomDirection += transform.position;
-
-            NavMeshHit hit;
-            
-            if (NavMesh.SamplePosition(randomDirection, out hit, fleeDistance, NavMesh.AllAreas))
+            // ---------------------------------------
+            // 1) WIND-UP PHASE
+            // ---------------------------------------
+            while (timer < windUpTime)
             {
-                // Set the destination to the position we found on the NavMesh.
-                navMeshAgent.destination = hit.position;
-        
-                // Optionally adjust the movement speed while fleeing.
-                // For instance, you might want to use chaseSpeed, or define a new fleeSpeed.
-                navMeshAgent.speed = FleeSpeed;
+                timer += Time.deltaTime;
+                yield return null;
             }
-            else
-            {
-                Debug.LogWarning("Flee: Could not find a valid NavMesh position to flee to.");
-            }
-            StartCoroutine(FleeTimer(_fleeDuration));
-        }
-        private IEnumerator FleeTimer(float duration)
-        {
-            yield return new WaitForSeconds(duration);
 
-            CurrentState.ExitState();
-            navMeshAgent.speed = GetPatrolSpeed();
-            _isFleeing = false;
+            // ---------------------------------------
+            // 2) Fire projectile
+            // ---------------------------------------
+            SpawnProjectile();
+
+            // ---------------------------------------
+            // 3) END Attack
+            // ---------------------------------------
+            Invoke(nameof(EndShot), attackCooldown);
         }
-        
+
         private void SpawnProjectile() {
-            GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
+            // The projectile should move in this direction
+            Vector3 direction = (player.transform.position - transform.position).normalized;
+
+            GameObject projectile = Instantiate(projectilePrefab, transform.position + direction, transform.rotation);
+
+            // Initialize the bullet's parent to this enemy
+            // This is so the bullet does not damage the enemy that shot it.
+            if (projectile.GetComponent<BulletDamager>())
+                projectile.GetComponent<BulletDamager>().Initialize(gameObject);
+
             // Get the Projectile component from the projectile object.
             Projectile projectileComponent = projectile.GetComponent<Projectile>();
             // Check if the Projectile component exists.
             if (projectileComponent != null) {
-                var canAttackList = new List<string> { "Player"};
+                var canAttackList = new List<string> {"Player", "Enemy"};
                 projectileComponent.SendMessage("EditCanAttack", canAttackList);
 
-                // Set the initial direction of the projectile.
-                Vector3 direction = (GetPlayerController().transform.position - transform.position).normalized;
-                projectileComponent.SetInitialDirection(new Vector3(direction.x, 0f, direction.z));
+                projectileComponent.IsHoming = isProjectileHoming;
+                projectileComponent.Speed = projectileSpeed;
+
+                // Introduce random inaccuracy
+                direction = ApplyInaccuracy(direction, inaccuracyAmount);
+
+                projectileComponent.SetInitialDirection(new Vector3(direction.x, 0f, direction.z), player.gameObject);
             }
+        }
+
+        // Apply innacuracy to projectiles fired.
+        private Vector3 ApplyInaccuracy(Vector3 direction, float maxAngle)
+        {
+            // Generate a random deviation within the specified maxAngle
+            float randomYaw = Random.Range(-maxAngle, maxAngle);
+
+            // Apply rotation to the direction vector
+            Quaternion inaccuracyRotation = Quaternion.Euler(0, randomYaw, 0);
+            return inaccuracyRotation * direction;
+        }
+
+        private void EndShot()
+        {
+            SetIsAttacking(false);
+        }
+        #endregion
+
+        // When flee state starts, find a location to flee to.
+        public Vector3 GetFleeLocation()
+        {
+            // Get a random angle between -45 and +45 degrees (behind the enemy)
+            float randomAngle = Random.Range(-45f, 45f);
+
+            // Convert angle to a direction vector (behind the enemy)
+            Vector3 fleeDirection = Quaternion.Euler(0, randomAngle + 180f, 0) * transform.forward;
+
+            // Get a random distance within moveToRange
+            // Avoid too close distances
+            float randomDistance = Random.Range(0.5f * moveToRange, moveToRange);
+
+            // Calculate the flee position
+            fleeLocation = transform.position + fleeDirection * randomDistance;
+
+            // Ensure the position is on the ground
+            if (Physics.Raycast(fleeLocation, Vector3.down, 2f, whatIsGround))
+            {
+                return fleeLocation;
+            }
+            // If invalid, return current position
+            else {
+                fleeLocation = transform.position;
+            }
+            
+            return fleeLocation;
+        }
+
+        #region Tempo Overrides
+        protected override void DefaultTempo()
+        {
+            base.DefaultTempo();
+            windUpTime = originalWindUpTime;
+            inaccuracyAmount = originalInaccuracyAmount;
+            projectileSpeed = originalProjectileSpeed;
+            isProjectileHoming = false;
         }
         
         protected override IEnumerator SlowTempo(float duration)
         {
-            attackCooldown = originalAttackCooldown * 2;
+            windUpTime = originalWindUpTime * 2f;
+            attackCooldown = originalAttackCooldown * 2f;
+            projectileSpeed = originalProjectileSpeed * 0.8f;
+            isProjectileHoming = true;
             yield return new WaitForSeconds(duration);
             DefaultTempo();
         }
 
         protected override IEnumerator FastTempo(float duration)
         {
+            windUpTime = originalWindUpTime / 2f;
+            attackCooldown = originalAttackCooldown / 2f;
+            inaccuracyAmount = originalInaccuracyAmount * 3f;
+            projectileSpeed = originalProjectileSpeed * 1.5f;
             yield return new WaitForSeconds(duration);
             DefaultTempo();
+        }
+        #endregion
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, attackRange);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, sightRange);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, destinationToleranceRange);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, fleeRange);
         }
     }
 }

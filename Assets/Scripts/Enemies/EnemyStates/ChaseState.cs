@@ -15,7 +15,7 @@ public class ChaseState : BaseEnemyState
 
     public override void EnterState() {
         Debug.Log("Entering Chase State");
-        enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), true);
+        // enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), true);
         navMeshAgent.speed = enemyController.GetChaseSpeed();
         chaseDuration = enemyController.GetChaseDuration();
         chaseTime = chaseDuration;
@@ -25,15 +25,15 @@ public class ChaseState : BaseEnemyState
         enemyController.Chase();
 
         // If the player was killed, transition to patrol state.
-        if (!playerController) {
+        if (playerController == null) {
             enemyController.TransitionToState(EnemyState.Patrol);
         }
         // If the player is within attack range, transition to attack state.
-        else if (playerController && enemyController.IsWithinAttackRange) {
+        else if (playerController && enemyController.PlayerIsInAttackRange()) {
             enemyController.TransitionToState(EnemyState.Attack);
         }
-        // If the player has exited the enemy's aggro range for chaseTime, transition to patrol state.
-        else if (!enemyController.IsWithinAggroRange) {
+        // If the player has exited the enemy's sight range for chaseTime, transition to patrol state.
+        else if (!enemyController.PlayerIsInSightRange()) {
             chaseTime -= Time.deltaTime;
             if (chaseTime <= 0) {
                 enemyController.TransitionToState(EnemyState.Patrol);
@@ -46,6 +46,6 @@ public class ChaseState : BaseEnemyState
     }
 
     public override void ExitState() {
-        enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), false);
+        // enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), false);
     }
 }

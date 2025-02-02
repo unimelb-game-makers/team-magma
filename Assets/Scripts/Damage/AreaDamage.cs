@@ -26,6 +26,7 @@ namespace Damage
         // Interpolated radius and angle for visualization
         private float currentRadius;
         private float currentAngle;
+        private Vector3 originalScale;
         
         public void InitializeAttack(float damage, float radius, float angle, float windUpTime,GameObject self)
         {
@@ -33,6 +34,9 @@ namespace Damage
             attackAreaRadius = radius;
             attackAngle = angle;
             _instigator = self;
+
+            // Store the original scale of the prefab
+            originalScale = transform.localScale;
 
             // Initialize wind-up interpolation
             time = windUpTime;
@@ -87,9 +91,9 @@ namespace Damage
             currentRadius = Mathf.Lerp(startRadius, targetRadius, 1f - time / windUpDuration);
             currentAngle = Mathf.Lerp(startAngle, targetAngle, 1f - time / windUpDuration);
             
-            // Ensure the final values are set after the wind-up completes
-            //change the size of the mesh
-            transform.localScale = new Vector3(currentRadius, 1, currentRadius);
+            // Change the size of the mesh after the wind-up completes
+            transform.localScale = new Vector3(currentRadius * originalScale.x, 
+                            originalScale.y, currentRadius * originalScale.z);
         }
 
         // ----------------------------------
