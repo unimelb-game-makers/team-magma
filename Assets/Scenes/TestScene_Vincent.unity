@@ -1366,10 +1366,13 @@ MonoBehaviour:
   MeleeAttackPrefab: {fileID: 3345562608605307880, guid: 320ad44a5e6169c4e8aad40d4f02f2f6, type: 3}
   hitRange: 0.7
   meleeAttackRecoverTime: 0.7
+  attackDamage: 10
   dodgeSpeed: 40
   dodgeRecoverTime: 1
   dodgeTime: 0.15
   isInvulnerableTime: 0.1
+  detectionZone: {fileID: 0}
+  detectionRadius: 0.5
 --- !u!114 &1056587389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2328,11 +2331,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myEventReference:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1840800105
+      Data2: 1164219590
+      Data3: -1091619938
+      Data4: 1253267948
+    Path: event:/UI/Okay
 --- !u!1 &2118904168
 GameObject:
   m_ObjectHideFlags: 0

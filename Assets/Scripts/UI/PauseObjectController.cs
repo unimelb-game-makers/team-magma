@@ -8,6 +8,9 @@ public class PauseObjectController : MonoBehaviour
 
     public void DisableObjects()
     {
+        return;
+        // If this is to pause the game while in a menu there is a better way to do this. -Ryan
+        /* 
         // Loop through each tag to disable relevant GameObjects
         foreach (string tag in tagsToDisable)
         {
@@ -20,11 +23,15 @@ public class PauseObjectController : MonoBehaviour
                     script.enabled = false; // Disable all scripts on this GameObject
                 }
             }
-        }
+        } 
+        */
     }
 
     public void EnableObjects()
     {
+        return;
+        // If this is to pause the game while in a menu there are better ways to do this. -Ryan
+        /* 
         // Loop through each tag to enable relevant GameObjects
         foreach (string tag in tagsToDisable)
         {
@@ -38,5 +45,6 @@ public class PauseObjectController : MonoBehaviour
                 }
             }
         }
+        */
     }
 }

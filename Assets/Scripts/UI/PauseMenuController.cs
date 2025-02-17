@@ -7,6 +7,11 @@ public class PauseMenuController : MonoBehaviour
     public PauseObjectController pauseObjectController;
     public bool isPauseMenu = false;
 
+    void Start()
+    {
+        HideUI();
+    }
+
     void Update()
     {
         // Toggle the pause menu when pressing the Escape key
@@ -28,6 +33,7 @@ public class PauseMenuController : MonoBehaviour
         if (PauseManager.IsPaused)
         {
             // Pause the game and fade in the menu
+            ShowUI();
             Time.timeScale = 0;
             StartCoroutine(FadeCanvasGroup(pauseMenuCanvasGroup, 0, 1, fadeDuration));
             pauseObjectController.DisableObjects();
@@ -58,6 +64,23 @@ public class PauseMenuController : MonoBehaviour
         yield return FadeCanvasGroup(pauseMenuCanvasGroup, 1, 0, fadeDuration);
         Time.timeScale = 1; // Unpause the game after fading out
         pauseObjectController.EnableObjects();
+        HideUI();
+    }
+
+    // These are to toggle the pause canvas, otherwise it blocks UI raycasts on other UI canvas elements.
+    public void ShowUI()
+    {
+        pauseMenuCanvasGroup.gameObject.SetActive(true);
+    }
+
+    public void HideUI()
+    {
+        pauseMenuCanvasGroup.gameObject.SetActive(false);
+    }
+
+    public void ToggleUI()
+    {
+        pauseMenuCanvasGroup.gameObject.SetActive(!pauseMenuCanvasGroup.gameObject.activeSelf);
     }
 }
 

@@ -2,7 +2,7 @@ using System;
 using Damage;
 using UnityEngine;
 using System.Collections.Generic;
-using Platforms;
+using Platforms; // Why is TapeType in platforms?
 using Tempo;
 using Utilities.ServiceLocator;
 
@@ -145,7 +145,8 @@ namespace Player
             
             if (Input.GetButtonDown("Fire2"))
             {
-                PlayTapeEffect();
+                // Reconfiging this to use Selection Wheel
+                //PlayTapeEffect();
             }
         }
 
@@ -312,7 +313,7 @@ namespace Player
             var affectServices = ServiceLocator.Instance.Get<ISyncable>();
             foreach (var o in affectServices)
             {
-                o.Affect(TapeType.Slow, 5, 0.5f);
+                o.Affect(TapeType.Slow, 5, 0.5f); // Why is TapeType in Platforms namespace?
             }
         }
 

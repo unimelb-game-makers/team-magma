@@ -40,7 +40,7 @@ namespace Damage
         public void TakeDamage(float damage)
         {
             if (!isInvulnerable) {
-                Debug.Log(healthManager);
+                //Debug.Log(healthManager);
                 healthManager.TakeDamage(damage);
                 
                 if (healthManager.IsDead())

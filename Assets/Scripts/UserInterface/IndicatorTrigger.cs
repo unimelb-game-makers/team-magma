@@ -9,12 +9,19 @@ namespace UserInterface
     {
         private void OnTriggerEnter(Collider other)
         {
-            InteractIndicator.Instance.ShowUI();
+            // Should only be the player that can trigger this! -Ryan
+            if (other.gameObject.GetComponent<Player.PlayerController>() != null) 
+            {
+                InteractIndicator.Instance.ShowUI();
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
+            if (other.gameObject.GetComponent<Player.PlayerController>() != null) 
+            {
             InteractIndicator.Instance.HideUI();
+            }
         }
     }
 }

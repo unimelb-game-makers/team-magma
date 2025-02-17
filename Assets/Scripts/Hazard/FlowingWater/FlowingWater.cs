@@ -103,6 +103,16 @@ namespace Hazard
 
                 StartCoroutine(AffectTimer(duration));
             }
+
+            if(tapeType == TapeType.Fast)
+            {
+                // Move the 'KillArea' object to height1.
+                StartCoroutine(MoveKillAreaToHeight(height3));
+
+                // Code for Animations and Sounds.
+
+                StartCoroutine(AffectTimer(duration));
+            }
         }
 
         /**
@@ -115,7 +125,7 @@ namespace Hazard
             // Code for Animations and Sounds.
 
             // Move the 'KillArea' object to height3.
-            StartCoroutine(MoveKillAreaToHeight(height3));
+            StartCoroutine(MoveKillAreaToHeight(height2));
         }
     }
 }

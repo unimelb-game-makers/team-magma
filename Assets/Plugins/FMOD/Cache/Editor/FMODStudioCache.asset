@@ -145,10 +145,10 @@ MonoBehaviour:
   Path: FMOD/Examples/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638748958031895800
+  lastModified: 638753240731635040
   FileSizes:
   - Name: Desktop
-    Value: 4014
+    Value: 4062
   Exists: 1
 --- !u!114 &-7999175037278444645
 MonoBehaviour:
@@ -218,7 +218,7 @@ MonoBehaviour:
   Path: FMOD/Examples/Build/Desktop/Dialogue_CN.bank
   Name: Dialogue_CN
   StudioPath: bank:/Dialogue_CN
-  lastModified: 638748958031887141
+  lastModified: 638685709610474019
   FileSizes:
   - Name: Desktop
     Value: 52416
@@ -341,10 +341,10 @@ MonoBehaviour:
   Path: FMOD/Examples/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638748958032538548
+  lastModified: 638753240735242256
   FileSizes:
   - Name: Desktop
-    Value: 21580064
+    Value: 21676928
   Exists: 1
 --- !u!114 &-5309038166239216683
 MonoBehaviour:
@@ -626,7 +626,7 @@ MonoBehaviour:
   Path: FMOD/Examples/Build/Desktop/Vehicles.bank
   Name: Vehicles
   StudioPath: bank:/Vehicles
-  lastModified: 638748958032555437
+  lastModified: 638686136560528314
   FileSizes:
   - Name: Desktop
     Value: 222464
@@ -670,7 +670,7 @@ MonoBehaviour:
   Path: FMOD/Examples/Build/Desktop/Dialogue_EN.bank
   Name: Dialogue_EN
   StudioPath: bank:/Dialogue_EN
-  lastModified: 638748958031890390
+  lastModified: 638685709611334808
   FileSizes:
   - Name: Desktop
     Value: 61120
@@ -850,10 +850,10 @@ MonoBehaviour:
   Path: FMOD/Examples/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638748958031894928
+  lastModified: 638753240731605024
   FileSizes:
   - Name: Desktop
-    Value: 15592
+    Value: 112608
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -908,12 +908,13 @@ MonoBehaviour:
   - {fileID: 5679464962875856921}
   - {fileID: -1368634326454066109}
   - {fileID: 1796362794292872675}
+  - {fileID: 7746025742840621263}
   EditorParameters: []
   MasterBanks:
   - {fileID: -118246307497934000}
   StringsBanks:
   - {fileID: -8047032796272247071}
-  cacheTime: 638748958032555437
+  cacheTime: 638753240735242256
   cacheVersion: 131621
 --- !u!114 &587905924714869622
 MonoBehaviour:
@@ -958,7 +959,7 @@ MonoBehaviour:
   Path: FMOD/Examples/Build/Desktop/Dialogue_JP.bank
   Name: Dialogue_JP
   StudioPath: bank:/Dialogue_JP
-  lastModified: 638748958031893859
+  lastModified: 638685709612202563
   FileSizes:
   - Name: Desktop
     Value: 66560
@@ -1237,7 +1238,7 @@ MonoBehaviour:
   Path: FMOD/Examples/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638748958032183128
+  lastModified: 638686187858705336
   FileSizes:
   - Name: Desktop
     Value: 10437984
@@ -1556,7 +1557,7 @@ MonoBehaviour:
   Path: FMOD/Examples/Build/Desktop/VO.bank
   Name: VO
   StudioPath: bank:/VO
-  lastModified: 638748958032546401
+  lastModified: 638685709719415049
   FileSizes:
   - Name: Desktop
     Value: 38624
@@ -1588,6 +1589,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 653
+--- !u!114 &7746025742840621263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/TapeWindEffect
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/TapeWindEffect
+  Guid:
+    Data1: 139096070
+    Data2: 1284971205
+    Data3: -1441117049
+    Data4: -287878034
+  Banks:
+  - {fileID: -118246307497934000}
+  - {fileID: -5695061283985355432}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 7296
 --- !u!114 &7850813317452844684
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ public class SampleButtonTrigger : MonoBehaviour
     private Color[] colors = {Color.black, Color.white};
 
     void Awake() {
-        musicManager = GameObject.FindGameObjectWithTag("Manager");
+        musicManager = GameObject.FindGameObjectWithTag("RhythmManager");
     }
 
     // Start is called before the first frame update
