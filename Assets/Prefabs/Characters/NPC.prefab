@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3353864805631988300}
   - component: {fileID: 1103706930354139336}
   - component: {fileID: 830997745390050372}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,9 @@ GameObject:
   - component: {fileID: 2235698218548765556}
   - component: {fileID: 7950779879045341808}
   - component: {fileID: 6962797391451866421}
-  m_Layer: 0
+  - component: {fileID: 5079268697508861590}
+  - component: {fileID: 1384713947108965322}
+  m_Layer: 6
   m_Name: NPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +132,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39bbb2cfad38d4345b1db254e669ec37, type: 2}
+  - {fileID: 2100000, guid: 874f6e7798289f14f8efc2b1bf7a60f5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -167,7 +169,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -185,6 +187,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cff653cc46643b3a2400c892791ef7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _state: 0
   inkJSONAsset: {fileID: 4900000, guid: f18ed477199e9400a958149b4f1bdd37, type: 3}
   _interactionRange: 5
+  _currentState: 0
+  PatrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!195 &5079268697508861590
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5454216320952627707}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5000001
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!54 &1384713947108965322
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5454216320952627707}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 4
+  m_CollisionDetection: 0
