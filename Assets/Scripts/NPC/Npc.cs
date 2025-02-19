@@ -16,18 +16,27 @@ namespace NPC
         private TextAsset inkJSONAsset; // Assign the compiled LvlPocLeaderStory.json here
         
         private Story _story;
+
+        [SerializeField] private string _storylets_prefix = "story_"; //JASPER WROTE THIS
+
         [SerializeField] private float _interactionRange = 5f;
 
         [SerializeField] private NpcState _currentState; public NpcState CurrentState => _currentState;
         
         [SerializeField] private Transform [] PatrolPoints;
         
+        private StoryletsManager _storylets_manager = null; //JASPER WROTE THIS
+
         private void Start()
         {
             // Load the Ink Story
             agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
             
             _story = new Story(inkJSONAsset.text);
+            _storylets_prefix = _storylets_prefix + "_"; //JASPER WROTE THIS because when I'm messing around in the editor, I WILL forget to add the underscore at the end of the prefixes that the Ink script requires, so this is just for ease-of-use to save us debugging headaches
+            _storylets_manager = new StoryletsManager(_story);//JASPER WROTE THIS
+            _storylets_manager.AddStorylets(_storylets_prefix);//JASPER WROTE THIS
+            _storylets_manager.Refresh();//JASPER WROTE THIS
         }
         
         
@@ -45,7 +54,8 @@ namespace NPC
             
             if (CurrentState == NpcState.Idle)
             {
-                DialogueUi.Instance.TalkToNpc(_story);
+                string _storylet_to_play = _storylets_manager.PickPlayableStorylet(); //JASPER WROTE THIS . This provides a KnotID string which, presumably we can pass to the Ink story to play content from?
+                DialogueUi.Instance.TalkToNpc(_story, _storylet_to_play);
             }
             
             _playerInRangeCheckCoroutine = StartCoroutine(PlayerInRangeCheck());
@@ -84,9 +94,10 @@ namespace NPC
 
         private UnityEngine.AI.NavMeshAgent agent;
 
-        public void Update()
+        void Update()
         {
-            
+            _storylets_manager.Tick();//JASPER WROTE THIS
+
             if (CurrentState == NpcState.Walking)
             {
                 Debug.Log("Patrolling");

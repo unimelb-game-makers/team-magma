@@ -29,14 +29,15 @@ namespace Narrative
             HideUI();
         }
         
-        public void TalkToNpc(Story story)
+        public void TalkToNpc(Story story, string knot) //JASPER WROTE THIS
         {
-            SetStory(story);
+            SetStory(story, knot);
             ShowUI();
         }
         
-        private void SetStory(Story story)
+        private void SetStory(Story story, string knot)
         {
+            story.ChoosePathString(knot); //JASPER WROTE THIS . This is a knot provided by the StoryletsManager to start with; it has been selected by that manager as an appropriate piece of content to display to the player, as dictated by me (Jasper!) in the ink script
             _story = story;
             RefreshView();
         }
