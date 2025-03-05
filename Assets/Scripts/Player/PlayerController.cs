@@ -27,8 +27,8 @@ namespace Player
         [SerializeField] private LayerMask enemyLayers;  // The layers that should be considered as enemies
         [SerializeField] private float rotationSpeed = 10f;  // Speed at which the player rotates
         [SerializeField] private GameObject MeleeAttackPrefab;
-        [SerializeField] private float weakAttackRange = 0.5f;
-        [SerializeField] private float strongAttackRange = 1f;
+        [SerializeField] private float weakAttackRange = 1f;
+        [SerializeField] private float strongAttackRange = 2f;
         [SerializeField] private float weakMeleeAttackRecoverTime = 0.5f;
         [SerializeField] private float strongMeleeAttackRecoverTime = 0.3f;
         [SerializeField] private float weakAttackDamage = 10;
@@ -125,11 +125,11 @@ namespace Player
                 // Check if the attack was on beat here
                 if (AttackOnBeat()) {
                     // Strong melee attack
-                    Debug.LogError("Strong Melee attack");
+                    Debug.Log("Strong Melee attack");
                     MeleeAttack(strongAttackRange, strongMeleeAttackRecoverTime, strongAttackDamage);
                 } else {
                     // Weak melee attack
-                    Debug.LogError("Weak Melee attack");
+                    Debug.Log("Weak Melee attack");
                     MeleeAttack(weakAttackRange, weakMeleeAttackRecoverTime, weakAttackDamage);
                 }
 

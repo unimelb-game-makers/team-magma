@@ -2026,6 +2026,8 @@ GameObject:
   - component: {fileID: 373883057}
   - component: {fileID: 373883056}
   - component: {fileID: 373883055}
+  - component: {fileID: 373883063}
+  - component: {fileID: 373883064}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2116,8 +2118,8 @@ MonoBehaviour:
     m_Bits: 64
   rotationSpeed: 20
   MeleeAttackPrefab: {fileID: 3345562608605307880, guid: 320ad44a5e6169c4e8aad40d4f02f2f6, type: 3}
-  weakAttackRange: 0.5
-  strongAttackRange: 1
+  weakAttackRange: 1
+  strongAttackRange: 2
   weakMeleeAttackRecoverTime: 0.5
   strongMeleeAttackRecoverTime: 0.3
   weakAttackDamage: 10
@@ -2220,6 +2222,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &373883063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373883053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec7ab2d66ecd5147bc844333936736a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &373883064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373883053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c72c96ab7f24958af1b0e967c2f04b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultPlayerStats: {fileID: 0}
+  health: 100
+  healthMax: 100
+  batteryLevel: 100
+  batteryMax: 100
 --- !u!1 &409813335
 GameObject:
   m_ObjectHideFlags: 0
