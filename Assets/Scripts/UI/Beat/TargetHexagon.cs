@@ -5,6 +5,7 @@ using System.Collections;
 public class TargetHexagon : MonoBehaviour
 {
     public Color highlightColor = Color.yellow;
+    public Color failColor = Color.red;
     private Image image;  // Reference to the Image component
     private Color originalColor;  // To store the original color
 
@@ -15,16 +16,23 @@ public class TargetHexagon : MonoBehaviour
     }
 
     // Method to change the hexagon's color temporarily
-    public void ChangeColorTemporary()
+    public void ChangeColorTemporary(bool onBeat)
     {
-        StartCoroutine(ChangeColorCoroutine());
+        if (onBeat) {
+            Debug.Log("Hit on Beat!");
+            StartCoroutine(ChangeColorCoroutine(highlightColor));
+            Debug.Log(highlightColor);
+        } else {
+            StartCoroutine(ChangeColorCoroutine(failColor));
+        }
+        
     }
 
     // Coroutine to handle color change
-    private IEnumerator ChangeColorCoroutine()
+    private IEnumerator ChangeColorCoroutine(Color color)
     {
-        // Change color to yellow
-        image.color = highlightColor;
+        // Change color to color
+        image.color = color;
 
         // Wait for a short duration (adjust as needed)
         yield return new WaitForSeconds(0.2f);
