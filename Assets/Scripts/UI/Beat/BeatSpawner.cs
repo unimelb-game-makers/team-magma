@@ -1,11 +1,18 @@
 using UnityEngine;
 using Timeline;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public class BeatSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject musicManager;
     public GameObject beatPrefab;  // The Beat prefab
-    public Transform spawnPoint;  // Where beats spawn
+    public Transform spawnPointLeft;  // Where beats spawn on the left
+    public Transform spawnPointRight;  // Where beats spawn on the right
+    public Transform hexagonLeft;
+    public Transform hexagonRight;
+    private List<Beat> beats = new();
+    [SerializeField] private float hitTolerance = 25f;
     public float beatSpeed;  // Speed of the beats (500 is a ok guess for default tempo)
     public float beatInterval;  // Time between beats (0.5 for deault tempo)
     private float beatIntervalDefault = 0.5f;
@@ -64,11 +71,36 @@ public class BeatSpawner : MonoBehaviour
 
     void SpawnBeat()
     {
-        GameObject beat = Instantiate(beatPrefab, spawnPoint.position, Quaternion.identity, transform);
-
+        GameObject beatLeft = Instantiate(beatPrefab, spawnPointLeft.position, Quaternion.identity, transform);
         // Should be the same as parent's rotation otherwise it will be out of shape
-        beat.transform.rotation = transform.rotation;
-        beat.GetComponent<Rigidbody2D>().velocity = new Vector2(-beatSpeed, 0);  // Move left
+        beatLeft.transform.rotation = transform.rotation;
+        beatLeft.GetComponent<Beat>().Initialise(hexagonLeft.GetComponent<TargetHexagon>(), -beatSpeed, hitTolerance);
+
+        GameObject beatRight = Instantiate(beatPrefab, spawnPointRight.position, Quaternion.identity, transform);
+        // Should be the same as parent's rotation otherwise it will be out of shape
+        beatRight.transform.rotation = transform.rotation;
+        beatRight.GetComponent<Beat>().Initialise(hexagonRight.GetComponent<TargetHexagon>(), beatSpeed, hitTolerance);
+
+        beats.Add(beatLeft.GetComponent<Beat>());
+        beats.Add(beatRight.GetComponent<Beat>());
+    }
+
+    // Check for and remove beats that have been hit
+    public bool AnyBeatsHittable()
+    {
+        bool hitOnBeat = false;
+
+        for (int i = beats.Count - 1; i >= 0; i--)
+        {
+            if (beats[i].IsHittable())
+            {
+                beats[i].OnHit();
+                beats.RemoveAt(i);
+                hitOnBeat = true;
+            }
+        }
+
+        return hitOnBeat;
     }
 }
 

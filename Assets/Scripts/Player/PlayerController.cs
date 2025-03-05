@@ -24,13 +24,17 @@ namespace Player
         [Space(10)]
 
         [Header("Attack Setup")]
-        [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private LayerMask enemyLayers;  // The layers that should be considered as enemies
         [SerializeField] private float rotationSpeed = 10f;  // Speed at which the player rotates
         [SerializeField] private GameObject MeleeAttackPrefab;
-        [SerializeField] private float hitRange = 0.5f;
-        [SerializeField] private float meleeAttackRecoverTime = 0.7f;
-        [SerializeField] private float attackDamage = 10;
+        [SerializeField] private float weakAttackRange = 1f;
+        [SerializeField] private float strongAttackRange = 2f;
+        [SerializeField] private float weakMeleeAttackRecoverTime = 0.5f;
+        [SerializeField] private float strongMeleeAttackRecoverTime = 0.3f;
+        [SerializeField] private float weakAttackDamage = 10;
+        [SerializeField] private float strongAttackDamage = 20;
+        
+        // To implement feat: Knockback
 
         [Space(10)]
 
@@ -43,8 +47,7 @@ namespace Player
         [Space(10)]
 
         [Header("Beat Setup")]
-        [SerializeField] private Transform detectionZone;
-        [SerializeField] private float detectionRadius = 0.5f;   // Adjust based on the hexagon's size
+        [SerializeField] private BeatSpawner beatSpawner;
 
         public enum OrientationType
         {
@@ -56,9 +59,7 @@ namespace Player
         private Rigidbody _rigidbody;
 
         private bool _leftMouseButtonDown;
-        private bool _leftShiftButtonDown;
         private bool _DodgeButtonDown;
-        private bool _HitButtonDown;
         private Camera _mainCamera;  // Reference to the main camera
 
         private MeleeAttackBox _meleeAttackBox = null;
@@ -86,7 +87,7 @@ namespace Player
             // Get the main camera
             _mainCamera = Camera.main;
 
-            _previousMeleeAttack = Time.time - meleeAttackRecoverTime;
+            _previousMeleeAttack = Time.time - weakMeleeAttackRecoverTime;
             _previousDodge = Time.time - dodgeRecoverTime;
         }
 
@@ -104,8 +105,6 @@ namespace Player
             Move();
 
             Attack();
-
-            Hit();
         }
 
         private void FixedUpdate()
@@ -122,25 +121,26 @@ namespace Player
             //if the player has attacked need to release the mouse to attack again
             if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
             {
-                Fire(GetMouseWorldPosition());
+                // Check if the attack was on beat here
+                if (beatSpawner.AnyBeatsHittable()) {
+                    // Strong melee attack
+                    Debug.Log("Strong Melee attack");
+                    MeleeAttack(strongAttackRange, strongMeleeAttackRecoverTime, strongAttackDamage);
+                } else {
+                    // Weak melee attack
+                    Debug.Log("Weak Melee attack");
+                    MeleeAttack(weakAttackRange, weakMeleeAttackRecoverTime, weakAttackDamage);
+                }
+
+                // The current fire method should be replaced by melee attack (i.e the player
+                // cannot shoot projectiles, only melee attack)
+                
                 _leftMouseButtonDown = true;
             }
 
             if (Input.GetButtonUp("Fire1"))
             {
                 _leftMouseButtonDown = false;
-            }
-
-            if (Input.GetButtonDown("Fire3") && !_leftShiftButtonDown)
-            {
-                MeleeAttack(GetMouseWorldPosition());
-                Debug.LogError("Melee attack");
-                _leftShiftButtonDown = true;
-            }
-
-            if (Input.GetButtonUp("Fire3"))
-            {
-                _leftShiftButtonDown = false;
             }
             
             if (Input.GetButtonDown("Fire2"))
@@ -239,24 +239,6 @@ namespace Player
                 _rigidbody.velocity = movement;
             }
         }
-        
-
-        private void Fire(Vector3 targetPosition)
-        {
-            //spawn a projectile
-            GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
-            //get the Projectile component from the projectile object
-            Projectile projectileComponent = projectile.GetComponent<Projectile>();
-            //check if the Projectile component exists
-            if (projectileComponent != null)
-            {
-                var canAttackList = new List<string> { "Enemy" };
-                projectileComponent.SendMessage("EditCanAttack", canAttackList);
-
-                //set the initial direction of the projectile
-                projectileComponent.SetInitialDirection((targetPosition - transform.position).normalized);
-            }
-        }
 
         private Vector3 GetMouseWorldPosition()
         {
@@ -276,25 +258,28 @@ namespace Player
             return Vector3.zero;
         }
 
-        private void MeleeAttack(Vector3 targetPosition)
+        private void MeleeAttack(float attackRange, float attackRecoverTime, float attackDamage)
         {
             Vector3 origin = transform.position;
-            Vector3 forward = (transform.forward * hitRange) + origin;
+            Vector3 forward = (transform.forward * weakAttackRange) + origin;
 
             // Check if the player has attacked recently
-            if (_meleeAttackBox == null && Time.time > _previousMeleeAttack + meleeAttackRecoverTime) {
+            if (_meleeAttackBox == null && Time.time > _previousMeleeAttack + attackRecoverTime) {
                 // update timer
                 _previousMeleeAttack = Time.time;
                 
-                //spawn damage area
+                //spawn damage area and adjust its size
                 GameObject attackBox = Instantiate(MeleeAttackPrefab, forward, transform.rotation);
+                attackBox.transform.localScale = new Vector3(attackRange, 1, attackRange);
                 
-                //get damage size
+                // the meleeAttackBox will move together with the player
                 _meleeAttackBox = attackBox.GetComponent<MeleeAttackBox>();
-                //set transform
                 _meleeAttackBox.transform.parent = gameObject.transform;
                 
+                // set the attack damage
                 attackBox.GetComponent<MeleeDamager>().Damage = attackDamage;
+
+                // the meleeAttackBox can damage enemies
                 if (_meleeAttackBox != null)
                 {
                     var canAttackList = new List<string> { "Enemy" };
@@ -345,31 +330,6 @@ namespace Player
                         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
                     }
                     break;
-            }
-        }
-
-        private void Hit()
-        {
-            //if the player has attacked need to release the mouse to attack again
-            if (Input.GetButtonDown("Hit") && !_HitButtonDown)
-            {
-                // Check if hit
-                Collider2D[] hits = Physics2D.OverlapCircleAll(detectionZone.position, detectionRadius); // Adjust radius
-                foreach (var hit in hits)
-                {
-                    Beat beat = hit.GetComponent<Beat>();
-                    if (beat != null && beat.IsHittable())
-                    {
-                        Debug.Log("Hit!");
-                        beat.OnHit();
-                        Destroy(beat.gameObject);  // Remove beat when hit
-                    }
-                }
-                _HitButtonDown = true;
-            }
-            if (Input.GetButtonUp("Hit"))
-            {
-                _HitButtonDown = false;
             }
         }
 
