@@ -31,13 +31,21 @@ namespace Timeline
 {
     public class MusicTimeline : MonoBehaviour
     {
+        public static MusicTimeline instance;
+
         [Header("Parameters")]
         [SerializeField] private int _intensity = 0;
         [SerializeField] static float _beatWindowAround = 0.1f;
+        private bool toSpawnBeat = false;
         
         [Space(5)]
         [Header("Events")]
         [SerializeField] private bool _timelineInfoDisplayToggle = true;
+
+        private BeatSpawner beatSpawner;
+        private float currentTempo;
+        private float changeTempoDuration = 0.5f;
+        private float currentChangeTempoTime;
 
         class TimelineInfo
         {
@@ -56,7 +64,6 @@ namespace Timeline
         FMOD.Studio.EventInstance musicInstance;
 
         static bool beatTrigger = false;
-        static float beatLast = 0.0f;
         static float beatWindowAfter;
 
     #if UNITY_EDITOR
@@ -66,8 +73,15 @@ namespace Timeline
         }
     #endif
 
+        void Awake()
+        {
+            instance = this;
+        }
+
         void Start()
         {
+            beatSpawner = FindObjectOfType<BeatSpawner>();
+
             timelineInfo = new TimelineInfo();
 
             // Explicitly create the delegate object and assign it to a member so it doesn't get freed
@@ -83,9 +97,28 @@ namespace Timeline
 
             musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
             musicInstance.start();
+
+            SetIntensity(0);
         }
 
         void Update() {
+            // Wait for some time before spawning beats each time the tempo changes
+            if (currentTempo != timelineInfo.CurrentMusicTempo) {
+                currentChangeTempoTime = changeTempoDuration;
+                currentTempo = timelineInfo.CurrentMusicTempo;
+            }
+            
+            currentChangeTempoTime -= Time.deltaTime;
+            if (currentChangeTempoTime <= 0) {
+                if (toSpawnBeat) {
+                    toSpawnBeat = false;
+                    beatSpawner.SetTempo(currentTempo);
+                    beatSpawner.SpawnBeat();
+                }
+            } else {
+                toSpawnBeat = false;
+            }
+
             //musicInstance.setParameterByName("Intensity", _intensity);
             //musicInstance.setParameterByName("Stinger", 0);
 
@@ -100,7 +133,6 @@ namespace Timeline
                 beatTrigger = false;
             }
             // TODO: Figure out predictive "before window" via current tempo and last beat. 
-
         }
 
         void OnDestroy()
@@ -129,7 +161,6 @@ namespace Timeline
 
         static void SetOnBeat() {
             beatTrigger = true;
-            beatLast = Time.time;
             beatWindowAfter = _beatWindowAround;
         }
 
@@ -137,6 +168,7 @@ namespace Timeline
             return beatTrigger;
         }
 
+        // BeatEventCallback: This method is called each time a new beat occurs
         [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
         static FMOD.RESULT BeatEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
         {
@@ -164,6 +196,9 @@ namespace Timeline
                         timelineInfo.CurrentMusicBeat = parameter.beat; // Added beats info - Ryan
                         timelineInfo.CurrentMusicBar = parameter.bar;
                         SetOnBeat();
+
+                        // A beat has to be spawned
+                        MusicTimeline.instance.toSpawnBeat = true;
                         break;
                     }
                     case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER:

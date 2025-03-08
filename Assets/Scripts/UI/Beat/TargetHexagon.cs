@@ -19,9 +19,7 @@ public class TargetHexagon : MonoBehaviour
     public void ChangeColorTemporary(bool onBeat)
     {
         if (onBeat) {
-            Debug.Log("Hit on Beat!");
             StartCoroutine(ChangeColorCoroutine(highlightColor));
-            Debug.Log(highlightColor);
         } else {
             StartCoroutine(ChangeColorCoroutine(failColor));
         }
