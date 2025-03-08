@@ -32,20 +32,21 @@ namespace Timeline
     public class MusicTimeline : MonoBehaviour
     {
         public static MusicTimeline instance;
+        private BeatSpawner beatSpawner;
 
         [Header("Parameters")]
+        [Tooltip("The current song / tempo")]
         [SerializeField] private int _intensity = 0;
         [SerializeField] static float _beatWindowAround = 0.1f;
+        private float currentTempo;
+        [Tooltip("How long to wait between tempo changes")]
+        [SerializeField] private float changeTempoDuration = 0.5f;
+        private float currentChangeTempoTime;
         private bool toSpawnBeat = false;
         
         [Space(5)]
         [Header("Events")]
         [SerializeField] private bool _timelineInfoDisplayToggle = true;
-
-        private BeatSpawner beatSpawner;
-        private float currentTempo;
-        private float changeTempoDuration = 0.5f;
-        private float currentChangeTempoTime;
 
         class TimelineInfo
         {
@@ -107,7 +108,7 @@ namespace Timeline
                 currentChangeTempoTime = changeTempoDuration;
                 currentTempo = timelineInfo.CurrentMusicTempo;
             }
-            
+
             currentChangeTempoTime -= Time.deltaTime;
             if (currentChangeTempoTime <= 0) {
                 if (toSpawnBeat) {

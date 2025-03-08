@@ -5,19 +5,16 @@ using System.Runtime.CompilerServices;
 
 public class BeatSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject musicManager;
     public GameObject beatPrefab;  // The Beat prefab
     public Transform spawnPointLeft;  // Where beats spawn on the left
     public Transform spawnPointRight;  // Where beats spawn on the right
-    public Transform hexagonLeft;
-    public Transform hexagonRight;
-    private List<Beat> beats = new();
-    [SerializeField] private float hitTolerance = 25f;
+    public Transform hexagonLeft;  // Beats spawning on the left move to this
+    public Transform hexagonRight;  // Beats spawning on the right move to this
+    private List<Beat> beats = new();  // Stores the active beats
     private float beatTravelTime;  // Time for the beat to move from its start to end pos
 
-    void Awake() {
-        musicManager = GameObject.FindGameObjectWithTag("RhythmManager");
-    }
+    [Tooltip("Hit range to hit beats on time")]
+    [SerializeField] private float hitTolerance = 25f;
 
     public void SetTempo(float tempo)
     {
@@ -44,25 +41,22 @@ public class BeatSpawner : MonoBehaviour
     }
 
     // Check for and remove beats that have been hit
-    public bool AnyBeatsHittable()
+    public bool HitOnBeat()
     {
-        bool hitOnBeat = false;
         float numBeatsHit = 0;
-
         for (int i = beats.Count - 1; i >= 0; i--)
         {
             if (beats[i].IsHittable())
             {
                 beats[i].OnHit();
                 beats.RemoveAt(i);
-                hitOnBeat = true;
 
                 numBeatsHit++;
-                if (numBeatsHit >= 2) break;
+                if (numBeatsHit >= 2) return true;
             }
         }
 
-        return hitOnBeat;
+        return false;
     }
 }
 

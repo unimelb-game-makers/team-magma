@@ -122,7 +122,7 @@ namespace Player
             if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
             {
                 // Check if the attack was on beat here
-                if (beatSpawner.AnyBeatsHittable()) {
+                if (beatSpawner.HitOnBeat()) {
                     // Strong melee attack
                     Debug.Log("Strong Melee attack");
                     MeleeAttack(strongAttackRange, strongMeleeAttackRecoverTime, strongAttackDamage);
