@@ -2,53 +2,69 @@ using UnityEngine;
 
 public class Beat : MonoBehaviour
 {
-    public string hittableTagName = "HitTarget";
-    private bool canBeHit;
-    private bool wasHit = false;
+    private RectTransform rectTransform;
+    // Assign the target hexagon of the beat here
+    private TargetHexagon targetHexagon;
+    private RectTransform target;
+    private float speed;
+    // How close it needs to be to the target to count as a hit
+    private float hitTolerance;
 
-    void OnTriggerEnter2D(Collider2D other)
+    void Start()
     {
-        if (other.CompareTag(hittableTagName))
-        {
-            canBeHit = true;
+        rectTransform = GetComponent<RectTransform>();
+    }
+
+    public void Initialise(TargetHexagon hexagon, float beatSpeed, float hitDistanceTolerance)
+    {
+        targetHexagon = hexagon;
+        target = targetHexagon.gameObject.GetComponent<RectTransform>();
+        speed = beatSpeed;
+        hitTolerance = hitDistanceTolerance;
+    }
+
+    void Update()
+    {
+        // Move beat
+        rectTransform.anchoredPosition -= new Vector2(speed * Time.deltaTime, 0);
+
+        // If the beat was not hit before it went beyond the target hexagon
+        if (IsBeyondLine()) {
+            // Call the method to change the hexagon's color temporarily
+            if (targetHexagon != null) targetHexagon.ChangeColorTemporary(false);
+            Destroy(gameObject);  // Remove beat after it was hit
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private bool IsBeyondLine()
     {
-        if (wasHit) return;
-        
-        if (other.CompareTag(hittableTagName))
-        {
-            canBeHit = false;
+        // x pos of the beat and its target
+        float beatX = rectTransform.anchoredPosition.x;
+        float targetX = target.anchoredPosition.x;
 
-            // Call the method to change the hexagon's color temporarily
-            var hexagon = FindObjectOfType<TargetHexagon>(); // Assuming there is only one hexagon
-            if (hexagon != null)
-            {
-                // Failed to hit on beat
-                hexagon.ChangeColorTemporary(false);
-            }
-
-            Destroy(gameObject);  // Remove beat after it passes
+        // the beat was not hit on time
+        if (beatX > 0) {
+            return (beatX - targetX) < -hitTolerance;
+        } else {
+            return (beatX - targetX) > hitTolerance;
         }
     }
 
     public bool IsHittable()
     {
-        return canBeHit;
+        if (!rectTransform) return false;
+
+        // x pos of the beat and its target
+        float beatX = rectTransform.anchoredPosition.x;
+        float targetX = target.anchoredPosition.x;
+
+        return Mathf.Abs(beatX - targetX) <= hitTolerance;
     }
 
     public void OnHit()
     {
-        wasHit = true;
-
         // Call the method to change the hexagon's color temporarily
-        var hexagon = FindObjectOfType<TargetHexagon>(); // Assuming there is only one hexagon
-        if (hexagon != null)
-        {
-            hexagon.ChangeColorTemporary(true);
-        }
+        if (targetHexagon != null) targetHexagon.ChangeColorTemporary(true);
         Destroy(gameObject);  // Remove beat after it was hit
 
         // can add more feedback (e.g., score increment, sound effect)

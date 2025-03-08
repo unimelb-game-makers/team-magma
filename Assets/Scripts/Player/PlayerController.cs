@@ -47,8 +47,7 @@ namespace Player
         [Space(10)]
 
         [Header("Beat Setup")]
-        [SerializeField] private Transform detectionZone;
-        [SerializeField] private float detectionRadius = 25f;   // Adjust based on the hexagon's size
+        [SerializeField] private BeatSpawner beatSpawner;
 
         public enum OrientationType
         {
@@ -123,7 +122,7 @@ namespace Player
             if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
             {
                 // Check if the attack was on beat here
-                if (AttackOnBeat()) {
+                if (beatSpawner.AnyBeatsHittable()) {
                     // Strong melee attack
                     Debug.Log("Strong Melee attack");
                     MeleeAttack(strongAttackRange, strongMeleeAttackRecoverTime, strongAttackDamage);
@@ -332,24 +331,6 @@ namespace Player
                     }
                     break;
             }
-        }
-
-        private bool AttackOnBeat()
-        {
-            bool onBeat = false;
-            Collider2D[] hits = Physics2D.OverlapCircleAll(detectionZone.position, detectionRadius); // Adjust radius
-            foreach (var hit in hits)
-            {
-                Beat beat = hit.GetComponent<Beat>();
-                if (beat != null && beat.IsHittable())
-                {
-                    Debug.Log("Hit!");
-                    beat.OnHit();
-                    Destroy(beat.gameObject);  // Remove beat when hit
-                    onBeat = true;
-                }
-            }
-            return onBeat;
         }
 
 

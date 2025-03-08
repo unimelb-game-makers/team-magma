@@ -25,7 +25,6 @@ public class TargetHexagon : MonoBehaviour
         } else {
             StartCoroutine(ChangeColorCoroutine(failColor));
         }
-        
     }
 
     // Coroutine to handle color change
