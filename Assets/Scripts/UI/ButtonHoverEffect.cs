@@ -50,4 +50,3 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
         backgroundImage.sizeDelta = to; // Ensure final size is set
     }
 }
-
