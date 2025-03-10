@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class PauseMenuController : MonoBehaviour
     public float fadeDuration = 0.5f; // Duration for the fade effect
     public PauseObjectController pauseObjectController;
     public bool isPauseMenu = false;
+    private float inputCooldown = 0.1f;  // Cooldown period (seconds)
+    private float lastResumeTime;
 
     void Start()
     {
@@ -14,11 +17,16 @@ public class PauseMenuController : MonoBehaviour
 
     void Update()
     {
+        // Check if enough time has passed since resuming
+        if (Time.time - lastResumeTime < inputCooldown)
+        {
+            return;
+        }
+
         // Toggle the pause menu when pressing the Escape key
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePauseMenu();
-            isPauseMenu = !isPauseMenu;
         }
     }
 
@@ -36,6 +44,7 @@ public class PauseMenuController : MonoBehaviour
             ShowUI();
             Time.timeScale = 0;
             StartCoroutine(FadeCanvasGroup(pauseMenuCanvasGroup, 0, 1, fadeDuration));
+            PauseManager.PauseGame();
             pauseObjectController.DisableObjects();
         }
         else
@@ -43,6 +52,7 @@ public class PauseMenuController : MonoBehaviour
             // Unpause the game and fade out the menu
             StartCoroutine(FadeOutAndUnpause());
         }
+        isPauseMenu = !isPauseMenu;
     }
 
     private System.Collections.IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
@@ -62,8 +72,12 @@ public class PauseMenuController : MonoBehaviour
     private System.Collections.IEnumerator FadeOutAndUnpause()
     {
         yield return FadeCanvasGroup(pauseMenuCanvasGroup, 1, 0, fadeDuration);
-        Time.timeScale = 1; // Unpause the game after fading out
+        PauseManager.ResumeGame();
         pauseObjectController.EnableObjects();
+
+        // Deselect the currently selected UI element
+        EventSystem.current.SetSelectedGameObject(null);
+
         HideUI();
     }
 
