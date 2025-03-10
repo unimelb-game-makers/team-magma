@@ -18,7 +18,8 @@ GameObject:
   - component: {fileID: 7685567570681082676}
   - component: {fileID: 3826332439342066953}
   - component: {fileID: 142032139593856738}
-  - component: {fileID: 46361933790032150}
+  - component: {fileID: 2666474838408712682}
+  - component: {fileID: -7409079135644007498}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -239,12 +240,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c72c96ab7f24958af1b0e967c2f04b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultPlayerStats: {fileID: 0}
   health: 100
   healthMax: 100
   batteryLevel: 100
   batteryMax: 100
---- !u!114 &46361933790032150
+--- !u!114 &2666474838408712682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4176051907566790841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c421ad490d54a9dab4f2fe7b965e67d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxValue: 100
+  threshold: 0.2
+  currentValue: 100
+  damageImmuneTime: 1
+--- !u!114 &-7409079135644007498
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -256,3 +272,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dec7ab2d66ecd5147bc844333936736a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthStat: {fileID: 2666474838408712682}
