@@ -96,7 +96,7 @@ namespace NPC
 
         void Update()
         {
-            _storylets_manager.Tick();//JASPER WROTE THIS
+            _storylets_manager?.Tick();//JASPER WROTE THIS
 
             if (CurrentState == NpcState.Walking)
             {

@@ -26,6 +26,11 @@ public class BeatSpawner : MonoBehaviour
 
     public void SpawnBeat()
     {
+        if (spawnPointLeft == null)
+        {
+            Debug.LogError("Spawn point was not set, check, i don't wanna fix this, fix if you can");
+            return;
+        }
         GameObject beatLeft = Instantiate(beatPrefab, spawnPointLeft.position, Quaternion.identity, transform);
         // Should be the same as parent's rotation otherwise it will be out of shape
         beatLeft.transform.rotation = transform.rotation;

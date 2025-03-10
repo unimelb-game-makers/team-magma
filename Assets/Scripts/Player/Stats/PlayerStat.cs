@@ -38,7 +38,7 @@ namespace Player.Stats
         public float CurrentValue
         {
             get => currentValue;
-            protected set
+            protected internal set
             {
                 bool oldBelow = currentValue <= threshold;
                 currentValue = Mathf.Clamp(value, 0, maxValue);
