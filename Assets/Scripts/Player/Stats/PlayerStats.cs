@@ -9,7 +9,7 @@ namespace Player.Stats
     {
         private PlayerCharacter playerCharacter;
         [SerializeField] private PlayerHealth healthStat;
-
+        public PlayerHealth HealthStat => healthStat;
         public void Awake()
         {
             playerCharacter = GetComponent<PlayerCharacter>();
@@ -18,7 +18,8 @@ namespace Player.Stats
                 throw new Exception("PlayerStats requires a health stat to function.");
             }
         }
-
+        
+        
         private void OnEnable()
         {
             healthStat.OnDeath += OnDeath;
@@ -33,7 +34,7 @@ namespace Player.Stats
             healthStat.onDamageImmune -= OnImmune;
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage = 1)
         {
             var absDamage = Mathf.Abs(damage);
             healthStat.Modify(-absDamage);
@@ -46,17 +47,17 @@ namespace Player.Stats
 
         private void OnDeath()
         {
-            Debug.Log("Player died");
+            Debug.Log("PlayerStats Player died");
         }
 
         private void OnDamaged(float health)
         {
-            Debug.Log("Player health: " + health);
+            Debug.Log("PlayerStats Player health: " + health);
         }
         
         private void OnImmune()
         {
-            Debug.Log("Player is immune to damage");
+            Debug.Log("PlayerStats Player is immune to damage");
         }
     }
 }

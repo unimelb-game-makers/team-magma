@@ -16,9 +16,9 @@ namespace Damage
         [SerializeField] private float windUpDuration = 0.5f; // Duration of the wind-up phase
 
         // Damage value (exposed via property)
-        private float _damage = 10f;
+        private float _damage = 1f;
         private GameObject _instigator;
-        private float time;
+        [SerializeField]  private float time;
         private float startRadius;
         private float startAngle;
         private float targetRadius;

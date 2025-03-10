@@ -27,7 +27,7 @@ namespace Player.Stats
         public override StatType StatType => StatType.Health;
         
         private Coroutine _damageImmuneCoroutine;
-
+        
         public override float Modify(float amount)
         {
             //if the player is not invincible, take damage
