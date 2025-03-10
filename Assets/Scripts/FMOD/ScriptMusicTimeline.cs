@@ -77,14 +77,11 @@ namespace Timeline
         void Awake()
         {
             instance = this;
+            timelineInfo = new TimelineInfo();
         }
-
         void Start()
         {
-            beatSpawner = FindObjectOfType<BeatSpawner>();
-
-            timelineInfo = new TimelineInfo();
-
+            beatSpawner = BeatSpawner.Instance;
             // Explicitly create the delegate object and assign it to a member so it doesn't get freed
             // by the garbage collected while it's being used
             beatCallback = new FMOD.Studio.EVENT_CALLBACK(BeatEventCallback);

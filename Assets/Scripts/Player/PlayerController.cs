@@ -45,9 +45,25 @@ namespace Player
         [SerializeField] private float isInvulnerableTime = 0.1f;
 
         [Space(10)]
+        
+        private BeatSpawner beatSpawner;
 
-        [Header("Beat Setup")]
-        [SerializeField] private BeatSpawner beatSpawner;
+        public BeatSpawner BeatSpawner
+        {
+            get
+            {
+                if (beatSpawner == null)
+                {
+                    beatSpawner = BeatSpawner.Instance;
+                    if (beatSpawner == null)
+                    {
+                        throw new Exception("No BeatSpawner found in the scene. please attach to somewhere in the scene");
+                    }
+                }
+                return beatSpawner;
+
+            }
+        }
 
         public enum OrientationType
         {
@@ -122,7 +138,7 @@ namespace Player
             if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
             {
                 // Check if the attack was on beat here
-                if (beatSpawner.HitOnBeat()) {
+                if (BeatSpawner.HitOnBeat()) {
                     // Strong melee attack
                     Debug.Log("Strong Melee attack");
                     MeleeAttack(strongAttackRange, strongMeleeAttackRecoverTime, strongAttackDamage);
