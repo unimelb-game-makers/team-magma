@@ -237,6 +237,35 @@ namespace Enemy
 
         public abstract void Attack();
 
+        // Apply a knockback to the enemy
+        public void ApplyKnockback(Vector3 direction, float distance)
+        {
+            // Apply knockback, then resume enemy AI after
+            agent.isStopped = true;
+            StartCoroutine(KnockbackRoutine(direction, distance));
+        }
+
+        private IEnumerator KnockbackRoutine(Vector3 direction, float distance)
+        {
+            float knockbackTime = 0.2f;
+            float timer = 0f;
+
+            Vector3 startPosition = transform.position;
+            Vector3 targetPosition = startPosition + direction * distance;
+
+            while (timer < knockbackTime)
+            {
+                timer += Time.deltaTime;
+                float t = timer / knockbackTime;
+
+                transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+
+                yield return null;
+            }
+
+            agent.isStopped = false;
+        }
+
         #region Tempo Overrides
         public void Affect(TapeType tapeType, float duration, float effectValue)
         {
