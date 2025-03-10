@@ -13,6 +13,7 @@ namespace UI
         // Start is called before the first frame update
         private PlayerStats _playerStats;
 
+        #region Internal Methods
         private void Start()
         {
             GetPlayerStats();
@@ -53,12 +54,22 @@ namespace UI
                 _playerStats.HealthStat.onDamageImmune -= UpdateDamageImmune;
             }
         }
+        
 
+        #endregion
+
+        /// <summary>
+        /// Called when the player's health is updated
+        /// </summary>
+        /// <param name="health"></param>
         private void UpdateHealthBar(float health)
         {
             Debug.Log("HealthUI Health: " + health);
         }
         
+        /// <summary>
+        /// Called when the player is getting hit when immune to damage
+        /// </summary>
         private void UpdateDamageImmune()
         {
             Debug.Log("HealthUI Player is immune to damage");
