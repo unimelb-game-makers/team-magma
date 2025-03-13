@@ -15,6 +15,11 @@ namespace UI
         public List<Image> healthImages;
         public Sprite healthSprite;
         public Sprite lostHealthSprite;
+        public Color normalColor = Color.white;
+        public float warningRatio = 0.6f;
+        public Color warningColor = new Color(1.0f, 0.65f, 0.0f);
+        public float dangerRatio = 0.2f;
+        public Color dangerColor = Color.red;
         // Start is called before the first frame update
         private PlayerStats _playerStats;
 
@@ -69,9 +74,25 @@ namespace UI
         /// <param name="health"></param>
         private void UpdateHealthBar(float health)
         {
+            int maxHealth = Mathf.CeilToInt(_playerStats.HealthStat.MaxValue);
+            float healthRatio = health / maxHealth;
+
+            // Change color based on health ratio
+            Color healthColor = normalColor;
+            if (healthRatio <= dangerRatio)
+            {
+                healthColor = dangerColor;
+            }
+            else if (healthRatio <= warningRatio)
+            {
+                healthColor = warningColor;
+            }
+
             for (int i = 0; i < healthImages.Count; i++)
             {
-                if (i < health)
+                float imageRatio = (float)(i + 1) / healthImages.Count;
+
+                if (imageRatio <= healthRatio)
                 {
                     healthImages[i].sprite = healthSprite;
                 }
@@ -79,6 +100,9 @@ namespace UI
                 {
                     healthImages[i].sprite = lostHealthSprite;
                 }
+
+                // Apply the color to each image
+                healthImages[i].color = healthColor;
             }
         }
         
