@@ -2,14 +2,19 @@
 // 10 03 2025 03 52
 
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 using Player;
 using Player.Stats;
-using UnityEngine;
 
 namespace UI
 {
     public class HealthBarUI : MonoBehaviour
     {
+        public List<Image> healthImages;
+        public Sprite healthSprite;
+        public Sprite lostHealthSprite;
         // Start is called before the first frame update
         private PlayerStats _playerStats;
 
@@ -64,7 +69,17 @@ namespace UI
         /// <param name="health"></param>
         private void UpdateHealthBar(float health)
         {
-            Debug.Log("HealthUI Health: " + health);
+            for (int i = 0; i < healthImages.Count; i++)
+            {
+                if (i < health)
+                {
+                    healthImages[i].sprite = healthSprite;
+                }
+                else
+                {
+                    healthImages[i].sprite = lostHealthSprite;
+                }
+            }
         }
         
         /// <summary>
