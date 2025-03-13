@@ -4069,6 +4069,11 @@ MonoBehaviour:
   - {fileID: 6687587536633952931}
   healthSprite: {fileID: 21300000, guid: 4cca49f2e1e4f634ea7996ea4e07ba00, type: 3}
   lostHealthSprite: {fileID: 21300000, guid: bb61bbf0d7db8524082b11491b1682d5, type: 3}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  warningRatio: 0.6
+  warningColor: {r: 1, g: 0.70865685, b: 0.39999998, a: 1}
+  dangerRatio: 0.2
+  dangerColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &8012420603560291672
 GameObject:
   m_ObjectHideFlags: 0
