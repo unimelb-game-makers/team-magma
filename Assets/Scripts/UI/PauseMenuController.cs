@@ -6,6 +6,7 @@ public class PauseMenuController : MonoBehaviour
     public CanvasGroup pauseMenuCanvasGroup;
     public float fadeDuration = 0.5f; // Duration for the fade effect
     public PauseObjectController pauseObjectController;
+    public SceneFadeManager sceneFadeManager;
     public bool isPauseMenu = false;
     private float inputCooldown = 0.1f;  // Cooldown period (seconds)
     private float lastResumeTime;
@@ -43,7 +44,7 @@ public class PauseMenuController : MonoBehaviour
             // Pause the game and fade in the menu
             ShowUI();
             Time.timeScale = 0;
-            StartCoroutine(FadeCanvasGroup(pauseMenuCanvasGroup, 0, 1, fadeDuration));
+            StartCoroutine(sceneFadeManager.FadeCanvasGroup(pauseMenuCanvasGroup, 0, 1, fadeDuration));
             PauseManager.PauseGame();
             pauseObjectController.DisableObjects();
         }
@@ -55,23 +56,9 @@ public class PauseMenuController : MonoBehaviour
         isPauseMenu = !isPauseMenu;
     }
 
-    private System.Collections.IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
-    {
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
-        {
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
-            elapsedTime += Time.unscaledDeltaTime; // Use unscaledDeltaTime to ignore Time.timeScale
-            yield return null;
-        }
-
-        canvasGroup.alpha = endAlpha; // Ensure the final alpha value is set
-    }
-
     private System.Collections.IEnumerator FadeOutAndUnpause()
     {
-        yield return FadeCanvasGroup(pauseMenuCanvasGroup, 1, 0, fadeDuration);
+        yield return sceneFadeManager.FadeCanvasGroup(pauseMenuCanvasGroup, 1, 0, fadeDuration);
         PauseManager.ResumeGame();
         pauseObjectController.EnableObjects();
 

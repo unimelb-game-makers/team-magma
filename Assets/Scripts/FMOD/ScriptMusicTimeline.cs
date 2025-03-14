@@ -59,6 +59,8 @@ namespace Timeline
         static float beatLast = 0.0f;
         static float beatWindowAfter;
 
+        [SerializeField] private float _volume = 1.0f;
+
     #if UNITY_EDITOR
         void Reset()
         {
@@ -88,6 +90,8 @@ namespace Timeline
         void Update() {
             //musicInstance.setParameterByName("Intensity", _intensity);
             //musicInstance.setParameterByName("Stinger", 0);
+
+            musicInstance.setVolume(_volume);
 
             if (timelineInfo.CurrentMusicBar == 6 && timelineInfo.CurrentMusicBeat == 4) {
                 // Change to Low intensity after Intro is finished first loop
@@ -181,6 +185,12 @@ namespace Timeline
                 }
             }
             return FMOD.RESULT.OK;
+        }
+
+        public void SetMusicVolume(float volume)
+        {
+            _volume = Mathf.Clamp(volume, 0.0f, 1.0f);
+            musicInstance.setVolume(_volume);
         }
     }
 }
