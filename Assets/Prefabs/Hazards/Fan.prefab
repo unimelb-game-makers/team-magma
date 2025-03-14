@@ -486,7 +486,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5419268544887989507}
+  - {fileID: 6035656501595415228}
   - {fileID: 1293086671760394675}
+  - {fileID: 3086362064020397720}
   - {fileID: 641285566094938326}
   - {fileID: 6970619320850911703}
   m_Father: {fileID: 0}
@@ -503,15 +505,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de3578e66d85b7b49b5d82bd2636a811, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultSpeed: {x: 0, y: 0, z: -500}
   _fastSpeed: {x: 0, y: 0, z: -1000}
   _slowSpeed: {x: 0, y: 0, z: -10}
+  _defaultDamage: 10
   _fastDamage: 10
   _slowDamage: 5
+  _defaultKnockbackForce: 75
   _fastKnockbackForce: 100
   _slowKnockbackForce: 50
-  _forceAmount: 600
-  _forceDirection: {x: 0, y: 0, z: -1}
+  _defaultForceAmount: 600
+  _fastForceAmount: 800
   isSlowTempo: 0
+  isFastTempo: 0
 --- !u!1 &3830662666819368295
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,6 +565,72 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da285d5a15bd2f54bb2e0f8e6b1d2c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &4453617691447217698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3086362064020397720}
+  - component: {fileID: 2612093871156376957}
+  - component: {fileID: 4879151263929820489}
+  m_Layer: 0
+  m_Name: FanPull_Fast
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3086362064020397720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4453617691447217698}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2.5}
+  m_LocalScale: {x: 6, y: 6, z: 4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4831678062653901606}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2612093871156376957
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4453617691447217698}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4879151263929820489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4453617691447217698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7808ffadbb260fa479586790555e2b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4564702690302244241
@@ -707,7 +779,7 @@ GameObject:
   - component: {fileID: 3529191812572244012}
   - component: {fileID: 5963202291759073433}
   m_Layer: 0
-  m_Name: FanPull
+  m_Name: FanPull_Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -761,6 +833,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7808ffadbb260fa479586790555e2b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5203695047324914837
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6035656501595415228}
+  - component: {fileID: 5976659825113619654}
+  - component: {fileID: 4581489206731519908}
+  m_Layer: 0
+  m_Name: FanPush_Fast
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6035656501595415228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5203695047324914837}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -2.5}
+  m_LocalScale: {x: 6, y: 6, z: 4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4831678062653901606}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5976659825113619654
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5203695047324914837}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4581489206731519908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5203695047324914837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b0ee593b209514a88bbe1078c7726e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6239348968535555739
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,7 +911,7 @@ GameObject:
   - component: {fileID: 1368379496084797188}
   - component: {fileID: 3835128335020028031}
   m_Layer: 0
-  m_Name: FanPush
+  m_Name: FanPush_Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

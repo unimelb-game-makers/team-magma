@@ -17,12 +17,14 @@ namespace Hazard
          * The 'fanPush' object is the object that detects characters and 
          * calls the push function in the fan class.
          */
-        private GameObject fanPush;
+        private GameObject fanPushDefault;
+        private GameObject fanPushFast;
         /**
          * The 'fanPull' object is the object that detects characters and 
          * calls the pull function in the fan class.
          */
-        private GameObject fanPull;
+        private GameObject fanPullDefault;
+        private GameObject fanPullFast;
         /**
          * The 'fanBlades' object is the fan itself that needs to rotate.
          */
@@ -34,16 +36,20 @@ namespace Hazard
         private GameObject fanStopper;
 
         [Header("Rotation Speed")]
+        [SerializeField] private Vector3 _defaultSpeed = new(0, 0, -500);
         [Tooltip("The speed at which the fan rotates when at fast tempo.")]
         [SerializeField] private Vector3 _fastSpeed = new(0, 0, -1000);
         [Tooltip("The speed at which the fan rotates when at slow tempo.")]
         [SerializeField] private Vector3 _slowSpeed = new(0, 0, -10);
 
         [Header("Damage and Knockback")]
+        [SerializeField] private float _defaultDamage = 10;
         [Tooltip("The damage which the fan deals when at fast tempo.")]
         [SerializeField] private float _fastDamage = 10;
         [Tooltip("The damage which the fan deals when at slow tempo.")]
         [SerializeField] private float _slowDamage = 5;
+
+        [SerializeField] private float _defaultKnockbackForce = 75;
         [Tooltip("The force with which the characters are knockbacked when at fast tempo.")]
         [SerializeField] private float _fastKnockbackForce = 100;
         [Tooltip("The force with which the characters are knockbacked when at slow tempo.")]
@@ -51,15 +57,19 @@ namespace Hazard
 
         [Header("Force and Direction")]
         [Tooltip("The force with which the fan pushes/pulls characters.")]
-        [SerializeField] private float _forceAmount = 1;
+        [SerializeField] private float _defaultForceAmount = 800;
+        [SerializeField] private float _fastForceAmount = 1000;
         [Tooltip("The direction of the force in which the fan pushes/pulls characters.")]
         private Vector3 _forceDirection;
+
+        private Coroutine resetFanCoroutine;
+        private bool canBeReset = true;
 
         public void Awake()
         {
             // The 'FanBlades' object is the child of the 'Fan' object.
             fanBlades = transform.Find("FanBlades").gameObject;
-            fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
+            fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_defaultSpeed);
 
             // Set the direction to the local backward direction so that the fan
             // faces forward correctly.
@@ -68,23 +78,35 @@ namespace Hazard
             // Set the damage and knockback for each child blade.
             foreach (Transform fanBlade in fanBlades.transform)
             {
-                fanBlade.GetComponent<FanDamager>().SetDamage(_fastDamage);
-                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_fastKnockbackForce);
+                fanBlade.GetComponent<FanDamager>().SetDamage(_defaultDamage);
+                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_defaultKnockbackForce);
                 fanBlade.GetComponent<FanDamager>().SetKnockbackDirection(_forceDirection);
             }
 
             // The 'FanPush' object is the child of the 'Fan' object.
-            fanPush = transform.Find("FanPush").gameObject;
-            fanPush.GetComponent<FanPush>().SetForceAmount(_forceAmount);
-            fanPush.GetComponent<FanPush>().SetForceDirection(_forceDirection);
+            fanPushDefault = transform.Find("FanPush_Default").gameObject;
+            fanPushDefault.GetComponent<FanPush>().SetForceAmount(_defaultForceAmount);
+            fanPushDefault.GetComponent<FanPush>().SetForceDirection(_forceDirection);
+
+            fanPushFast = transform.Find("FanPush_Fast").gameObject;
+            fanPushFast.GetComponent<FanPush>().SetForceAmount(_fastForceAmount);
+            fanPushFast.GetComponent<FanPush>().SetForceDirection(_forceDirection);
 
             // The 'FanPull' object is the child of the 'Fan' object.
-            fanPull = transform.Find("FanPull").gameObject;
-            fanPull.GetComponent<FanPull>().SetForceAmount(_forceAmount);
-            fanPull.GetComponent<FanPull>().SetForceDirection(_forceDirection);
+            fanPullDefault = transform.Find("FanPull_Default").gameObject;
+            fanPullDefault.GetComponent<FanPull>().SetForceAmount(_defaultForceAmount);
+            fanPullDefault.GetComponent<FanPull>().SetForceDirection(_forceDirection);
+
+            fanPullFast = transform.Find("FanPull_Fast").gameObject;
+            fanPullFast.GetComponent<FanPull>().SetForceAmount(_fastForceAmount);
+            fanPullFast.GetComponent<FanPull>().SetForceDirection(_forceDirection);
 
             // The 'FanStopper' object is the child of the 'Fan' object.
             fanStopper = transform.Find("FanStopper").gameObject;
+
+            // Only the default areas should be active at the start.
+            fanPushFast.SetActive(false);
+            fanPullFast.SetActive(false);
         }
 
         public void Start()
@@ -96,6 +118,7 @@ namespace Hazard
         // ***************************************************************************************************
         // Testing Purposes only - This whole block can be deleted safely.
         [SerializeField] private bool isSlowTempo = false;
+        [SerializeField] private bool isFastTempo = false;
         public void Update()
         {
             if (isSlowTempo)
@@ -103,11 +126,17 @@ namespace Hazard
                 Affect(TapeType.Slow, 5f, 0);
                 isSlowTempo = false;
             }
+
+            if (isFastTempo)
+            {
+                Affect(TapeType.Fast, 5f, 0);
+                isFastTempo = false;
+            }
         }
         // ***************************************************************************************************
 
         /**
-         * Switch the fan off for 'duration' seconds.
+         * Change the fan speed and damage for 'duration' seconds.
          */
         public override void Affect(TapeType tapeType, float duration, float effectValue)
         {
@@ -121,21 +150,48 @@ namespace Hazard
                 }
                 
                 // Disable the 'fanPush' object so no characters are pushed.
-                fanPush.SetActive(false);
+                fanPushDefault.SetActive(false);
+                fanPushFast.SetActive(false);
                 // Disable the 'fanPull' object so no characters are pushed.
-                fanPull.SetActive(false);
+                fanPullDefault.SetActive(false);
+                fanPullFast.SetActive(false);
 
                 // Disable the 'fanStopper' object so characters can pass through.
                 fanStopper.SetActive(false);
 
                 // Code for Animations and Sounds.
 
-                StartCoroutine(AffectTimer(duration));
+                // If there was a previous timer to return the fan to default configuration,
+                // then reset it.
+                if (resetFanCoroutine != null) StopCoroutine(resetFanCoroutine);
+                resetFanCoroutine = StartCoroutine(AffectTimer(duration));
+            }
+
+            // if TapeType.Fast, switch to fanPush_Fast
+            if(tapeType == TapeType.Fast)
+            {
+                fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
+                foreach (Transform fanBlade in fanBlades.transform)
+                {
+                    fanBlade.GetComponent<FanDamager>().SetDamage(_fastDamage);
+                    fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_fastKnockbackForce);
+                }
+
+                fanPushDefault.SetActive(false);
+                fanPushFast.SetActive(true);
+                
+                fanPullDefault.SetActive(false);
+                fanPullFast.SetActive(true);
+
+                fanStopper.SetActive(true);
+
+                if (resetFanCoroutine != null) StopCoroutine(resetFanCoroutine);
+                resetFanCoroutine = StartCoroutine(AffectTimer(duration));
             }
         }
 
         /**
-         * After 'duration' seconds, the fan is switched on again.
+         * After 'duration' seconds, the fan is returned to its default configuration.
          */
         private IEnumerator AffectTimer(float duration)
         {
@@ -143,15 +199,18 @@ namespace Hazard
 
             // Code for Animations and Sounds.
 
-            fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
+            fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_defaultSpeed);
             foreach (Transform fanBlade in fanBlades.transform)
             {
-                fanBlade.GetComponent<FanDamager>().SetDamage(_fastDamage);
-                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_fastKnockbackForce);
+                fanBlade.GetComponent<FanDamager>().SetDamage(_defaultDamage);
+                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_defaultKnockbackForce);
             }
 
-            fanPush.SetActive(true);
-            fanPull.SetActive(true);
+            fanPushDefault.SetActive(true);
+            fanPushFast.SetActive(false);
+
+            fanPullDefault.SetActive(true);
+            fanPullFast.SetActive(false);
 
             fanStopper.SetActive(true);
         }
