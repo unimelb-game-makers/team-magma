@@ -41,6 +41,7 @@ public class SoundManager : MonoBehaviour
         health = 1;
 
         // Creates an instance of an FMOD event and manually start it
+        Debug.Log("Starting Player State Event" + PlayerStateEvent);
         playerState = FMODUnity.RuntimeManager.CreateInstance(PlayerStateEvent);
         playerState.start();
 
