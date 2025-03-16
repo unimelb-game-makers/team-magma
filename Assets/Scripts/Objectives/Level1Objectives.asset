@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 488871f9d38101e4488f2ce3a929b144, type: 3}
+  m_Name: Level1Objectives
+  m_EditorClassIdentifier: 
+  objectives:
+  - Title: Test level 1 objective
+    Description: Test level 1 objective description
+    IsCompleted: 0
+  - Title: Test level 1 objective 2
+    Description: Test level 1 objective description 2
+    IsCompleted: 0
+  - Title: Test level 1 objective 3
+    Description: test finsihed objective
+    IsCompleted: 1

@@ -43,10 +43,12 @@ namespace NPC
         private GameObject _player = null;
         private Coroutine _playerInRangeCheckCoroutine = null;
         
+        /* Not working for some reason so comment it for now
         private void OnMouseDown()
         {
             InteractWithNpc();
         }
+        */
         
         public void InteractWithNpc()
         {
@@ -110,6 +112,24 @@ namespace NPC
             {
                 Debug.Log("Patrolling");
                 Patrol();
+            }
+
+            if (Input.GetMouseButtonDown(0))  // Left mouse button
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    // Get the root object of the hit collider (the NPC object)
+                    GameObject rootObject = hit.collider.transform.root.gameObject;
+
+                    // Check if the root object is this object
+                    if (rootObject == gameObject)
+                    {
+                        InteractWithNpc();
+                    }
+                }
             }
         }
 
