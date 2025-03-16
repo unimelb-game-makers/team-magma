@@ -8,12 +8,17 @@ public class PlayerStateManager : MonoBehaviour
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+            SetState(PlayerState.Normal);
+            Debug.Log("PlayerStateManager initialized");
+        }
         else
+        {
+            Debug.LogWarning("Multiple instances of PlayerStateManager found. Destroying duplicate.");
             Destroy(gameObject);
-
-        DontDestroyOnLoad(gameObject);
-        SetState(PlayerState.Normal);
+        }
     }
 
     public void SetState(PlayerState newState)
