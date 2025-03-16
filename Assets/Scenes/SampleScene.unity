@@ -1051,17 +1051,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409813335}
   m_Mesh: {fileID: 589887750089677092, guid: 43d67fb5552ae7a488b8359c6043ee33, type: 3}
---- !u!114 &438231259 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7635195147286302133, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-  m_PrefabInstance: {fileID: 38014523285561577}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5620f771c107254596d5cc328e26689, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &468751431
 GameObject:
   m_ObjectHideFlags: 0
@@ -4448,14 +4437,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2150774083243141814, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 438231259}
-    - target: {fileID: 2150774083243141814, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UseTapeDefault
-      objectReference: {fileID: 0}
     - target: {fileID: 2731126914536264922, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4520,30 +4501,6 @@ PrefabInstance:
       propertyPath: musicTimeline
       value: 
       objectReference: {fileID: 771204929}
-    - target: {fileID: 4640496135961959502, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_fontSize
-      value: 22
-      objectReference: {fileID: 0}
-    - target: {fileID: 4640496135961959502, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_fontStyle
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4640496135961959502, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_fontSizeMax
-      value: 26
-      objectReference: {fileID: 0}
-    - target: {fileID: 4640496135961959502, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_paragraphSpacing
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 4643983238778114825, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 291.751
-      objectReference: {fileID: 0}
-    - target: {fileID: 4643983238778114825, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 60.3463
-      objectReference: {fileID: 0}
     - target: {fileID: 4853757593021783718, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4567,18 +4524,6 @@ PrefabInstance:
     - target: {fileID: 5464047263039993057, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5523695915737496291, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_fontSize
-      value: 42
-      objectReference: {fileID: 0}
-    - target: {fileID: 5523695915737496291, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_fontSizeMax
-      value: 42
-      objectReference: {fileID: 0}
-    - target: {fileID: 5523695915737496291, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_fontSizeMin
-      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 5751455507674582516, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4632,14 +4577,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 638768908}
-    - target: {fileID: 7449147592945298850, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 438231259}
-    - target: {fileID: 7449147592945298850, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UseTapeSlow
-      objectReference: {fileID: 0}
     - target: {fileID: 7479578486098461109, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4647,18 +4584,6 @@ PrefabInstance:
     - target: {fileID: 8345192456953151483, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8686464841528021425, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 438231259}
-    - target: {fileID: 8686464841528021425, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UseTapeFast
-      objectReference: {fileID: 0}
-    - target: {fileID: 9022808641022111633, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: maxLinesPerPage
-      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
