@@ -120,7 +120,9 @@ namespace Player
             
             Move();
 
-            Attack();
+            if (PlayerStateManager.Instance.IsCombat()) {
+                Attack();
+            }
         }
 
         private void FixedUpdate()

@@ -9,8 +9,9 @@ namespace UserInterface
     {
         private void OnTriggerEnter(Collider other)
         {
+
             // Should only be the player that can trigger this! -Ryan
-            if (other.gameObject.GetComponent<Player.PlayerController>() != null) 
+            if (other.gameObject.GetComponent<Player.PlayerController>() != null && !PlayerStateManager.Instance.IsCombat()) 
             {
                 InteractIndicator.Instance.ShowUI();
             }
@@ -20,7 +21,7 @@ namespace UserInterface
         {
             if (other.gameObject.GetComponent<Player.PlayerController>() != null) 
             {
-            InteractIndicator.Instance.HideUI();
+                InteractIndicator.Instance.HideUI();
             }
         }
     }
