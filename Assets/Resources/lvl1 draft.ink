@@ -18,7 +18,7 @@ SL1Cassie
 
 
 == select_entry_type == 
-Did you succeed at level 1-7's puzzle?
+System: Did you succeed at level 1-7's puzzle?
 *[Yes]
     ~did_player_competently_enter_lvl1_village = true
 *[No]
@@ -31,7 +31,7 @@ Did you succeed at level 1-7's puzzle?
 *-> hub_character_hub
 
 == hub_character_hub ==
-Who will you talk to?
+System: Who will you talk to?
 * [Ralphie y] -> SL1Ralphie_talk_to_ralphie
 * [Paul n] -> SL1Paul_talk_to_paul 
 * [Old lady y] -> SL1Agatha_talk_to_agatha
@@ -46,7 +46,7 @@ Who will you talk to?
 ~ return (not did_player_competently_enter_lvl1_village)
 ==SL1Agatha_found_by_old_lady ==
 ~agatha_trust += 2
-Hello? You alright, dear?
+???: Hello? You alright, dear?
 *[I think so...]
     Great, now <>
 *[Who are you?]
@@ -54,7 +54,7 @@ Hello? You alright, dear?
     Who are YOU? Don't worry about that, <> 
 -come on, let's get you warm and dry. Well? What are you waiting for?
 ... 
-So, what *cough* brings you down here?
+Agatha: So, what *cough* brings you down here? It's Agatha, by the way.
 * [I got lost.]
     ~agatha_trust -= 2
     ... You know you're still in uniform, right?
@@ -97,7 +97,7 @@ So, what *cough* brings you down here?
 == function _SL1Ralphie_talk_to_ralphie ==
 ~ return 1
 ==SL1Ralphie_talk_to_ralphie==
-Hello! I'm Ralphie. How was your trip down here?
+Ralphie: Hello! I'm Ralphie. How was your trip down here?
 {did_player_competently_enter_lvl1_village ==false: 
     Looks like... not great? 
     -> agatha_introduces_to_ralphie
@@ -138,17 +138,17 @@ Hey, David, would you be able to get this nice young lady some tea? Thank you ve
 
 
 = agatha_introduces_to_ralphie
-Ralphie, this is...
+Agatha: Ralphie, this is...
 *[Krista.]
-    Good to meet you, Krista. 
+    Ralphie: Good to meet you, Krista. 
     ~ ralphie_knows_kristas_name = true
     
 *[A regulator from the Department of Transport.]
     -> ralphie_appreciates_directness_about_DOT ->
     
-- Yeah, she's {agatha_trust > 0: alright.|... yeah.}
+- Agatha:Yeah, she's {agatha_trust > 0: alright.|... yeah.}
 <> I'm gonna go now.
-Bye, Agatha.
+Ralphie: Bye, Agatha.
 *[Bye!]
     ~agatha_trust += 1
 *[...]
@@ -160,11 +160,11 @@ Bye, Agatha.
 
 =ralphie_appreciates_directness_about_DOT
 ~ralphie_trust += 1
-Ah, direct. That's a good way to be, I appreciate you not wasting my time.
+Ralphie: Ah, direct. That's a good way to be, I appreciate you not wasting my time.
 ->->
 
 =what_can_ralphie_do_for_you
-Now, what can I do for you 
+Ralphie: Now, what can I do for you 
 {ralphie_knows_kristas_name:
     <>, Krista?
 -else:
@@ -192,16 +192,16 @@ Now, what can I do for you
 *[It's Krista.]
     ~ralphie_knows_kristas_name = true
     ~ralphie_trust += 1
-    Right, how can I help you, Krista?
+    Ralphie: Right, how can I help you, Krista?
 *[...]
     ~ralphie_trust -= 1
-    Alright... well, let me know if you think of anything.
+    Ralphie: Alright... well, let me know if you think of anything.
 -
 ->->
 
 ==questions_what_can_ralphie_do_for_you==
 *[Do you know anything about stolen tapes?]
-    Oh, is that about all that nonsense with the people further down? We've been having a lot of trouble with them lately, lots of noise and lots of people marching through the tunnels with boxes of... I think machinery? Guess they're building some new stuff.
+    Ralphie: Oh, is that about all that nonsense with the people further down? We've been having a lot of trouble with them lately, lots of noise and lots of people marching through the tunnels with boxes of... I think machinery? Guess they're building some new stuff.
     Wish we had the tools to do that... all we do is sit around and complain.
     {
     -not tea_arrives: 
@@ -210,7 +210,7 @@ Now, what can I do for you
     ->questions_what_can_ralphie_do_for_you
     }
 *[Is there a guy down here who wears a weird hat?]
-    Oh, you mean Paul? Right, makes sense you'd wanna see him. He lives in the furthest tent, just a little bit outside this little cluster here, but not far.
+    Ralphie: Oh, you mean Paul? Right, makes sense you'd wanna see him. He lives in the furthest tent, just a little bit outside this little cluster here, but not far.
     {
     -not tea_arrives: 
     -> tea_arrives
@@ -218,7 +218,7 @@ Now, what can I do for you
     ->questions_what_can_ralphie_do_for_you
     }
 *   ->
-    How's the tea?
+    Ralphie: How's the tea?
     **[Wonderful, thank you.]
         Always nice to have something to warm you up after a long journey.
         ...It's okay to admit that it tastes like death, though.
@@ -235,12 +235,12 @@ Now, what can I do for you
         
         <> swears by the stuff, says it's how she stays so spritely *despite being even older than me!* But I can't stomach it. I appreciate your honesty.
 
-Alright well, great to meet you. I suppose you'll be wanting to explore a bit, or go see Paul, so I'll stop boring you with my wittering. See you!
+Ralphie: Alright well, great to meet you. I suppose you'll be wanting to explore a bit, or go see Paul, so I'll stop boring you with my wittering. See you!
 -> hub_character_hub
 
 =tea_arrives
-Here's your... um... tea... yeah. *sigh*
-Thank you, David.
+David: Here's your... um... tea... yeah. *sigh*
+Ralphie: Thank you, David.
 That was a touch performative, don't you think? Just kinda rude, if you ask me.
 *[What's his deal?]
     ~ralphie_trust += 1
@@ -267,7 +267,7 @@ That was a touch performative, don't you think? Just kinda rude, if you ask me.
 ->questions_what_can_ralphie_do_for_you
 
 =ralphie_complains_about_david
-I suppose he's just been pretty depressed lately. There are some pretty big changes happening around here, and it's been, I'll admit, pretty miserable to be stuck down in the sewer tunnels for the last few months. People want to go home, others want to stay put. I guess it's understandable.
+Ralphie: I suppose he's just been pretty depressed lately. There are some pretty big changes happening around here, and it's been, I'll admit, pretty miserable to be stuck down in the sewer tunnels for the last few months. People want to go home, others want to stay put. I guess it's understandable.
 Oh, it feels so naughty to spread gossip! Not like me at all... but it's good to get it out!
 Anything else you want to know?
 ->->
@@ -275,7 +275,7 @@ Anything else you want to know?
 == function _SL1Paul_talk_to_paul ==
 ~ return 1
 ==SL1Paul_talk_to_paul==
-Can I help you?
+???: Can I help you?
 *[Are you the guy with the hat?]
     ...Who sent you? Intelligence? Police? Military? I thought they gave up on that operation!
     **[Department of Transport?]
@@ -295,7 +295,7 @@ Can I help you?
         **[What?]
             ~paul_trust -= 1
             ...
-- I'm Paul. I'm undercover here, and they don't suspect a thing. 
+- Paul: I'm Paul. I'm undercover here, and they don't suspect a thing. 
 Here to sniff out any deviant behaviour.
 Terrorism.
 Extortion.
@@ -399,13 +399,13 @@ So, needless to say, I'll be voting to stay.
 =agatha_conversation_intro
 {
     -did_player_competently_enter_lvl1_village:
-        Hi, dear. I'm Agatha. Hopefully the others that you've met have said nice things about me... otherwise I might have trouble convincing you I'm not a total grouch.
+        Agatha: Hi, dear. I'm Agatha. Hopefully the others that you've met have said nice things about me... otherwise I might have trouble convincing you I'm not a total grouch.
     -else: //we've already met her
         {
             -agatha_trust>0:
-                Hi dear, good to see you. <>
+                Agatha: Hi dear, good to see you. <>
             -else:
-                Oh, you again. <>
+                Agatha: Oh, you again. <>
         }
         {
             -wearing_uniform:
@@ -415,7 +415,7 @@ So, needless to say, I'll be voting to stay.
         }
     
 }
-- How are you finding the place so far?
+- Agatha: How are you finding the place so far?
 *[Nice enough.]
     Yes, I suppose so. Not *cough* much, but it's enough.
     Works well for me, because they don't put me to work.
@@ -427,7 +427,8 @@ So, needless to say, I'll be voting to stay.
 
 =agatha_conversation_body
 ~ temp questions_asked = 0
-<>{questions_asked==0:Now w|W}hat did you want to talk about?
+Agatha:
+<>{questions_asked==0: Now w|W}hat did you want to talk about?
 ~ questions_asked +=1
 *[Do you know anything about stolen tapes?]
     Tapes? Like... cassette tapes? Dear, it's not 1980 anymore.
