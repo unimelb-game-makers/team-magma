@@ -51,6 +51,12 @@ namespace NPC
         public void InteractWithNpc()
         {
             if (!IsPlayerInRange()) return;
+
+            if (PlayerStateManager.Instance.IsCombat())
+            {
+                Debug.Log("Can't interact with NPC during combat!");
+                return;
+            }
             
             if (CurrentState == NpcState.Idle)
             {
