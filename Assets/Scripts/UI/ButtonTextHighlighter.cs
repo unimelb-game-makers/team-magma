@@ -2,8 +2,9 @@ using UnityEngine;
 using TMPro; // For TextMeshPro
 using UnityEngine.UI; // For standard Text
 using System.Collections;
+using UnityEngine.EventSystems;
 
-public class ButtonTextHighlighter : MonoBehaviour
+public class ButtonTextHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public TextMeshProUGUI tmpText; // Assign this for TMP
     public Text uiText; // Assign this for standard Text
@@ -16,81 +17,52 @@ public class ButtonTextHighlighter : MonoBehaviour
 
     private Coroutine colorCoroutine;
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (isTMP || uiText != null)
+        {
+            if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+            HighlightText();
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (isTMP || uiText != null)
+        {
+            if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+            UnHighlightText();
+        }
+    }
+
     public void HighlightText()
     {
         if (isTMP)
         {
-            Debug.Log("hi");
-            tmpText.fontStyle = FontStyles.Bold; // TMP-specific bold
+            tmpText.fontStyle = FontStyles.Bold;
+            tmpText.color = highlightColor; // Directly change color
         }
         else if (uiText != null)
         {
-            uiText.fontStyle = FontStyle.Bold; // Unity Text bold
+            uiText.fontStyle = FontStyle.Bold;
+            uiText.color = highlightColor; // Directly change color
         }
-
-        // Start the color transition
-        StartColorTransition(highlightColor);
     }
 
     public void UnHighlightText()
     {
         if (isTMP)
         {
-            tmpText.fontStyle = FontStyles.Normal; // TMP-specific normal
+            tmpText.fontStyle = FontStyles.Normal;
+            tmpText.color = normalColor; // Directly change color
         }
         else if (uiText != null)
         {
-            uiText.fontStyle = FontStyle.Normal; // Unity Text normal
-        }
-
-        // Start the color transition back to normal
-        StartColorTransition(normalColor);
-    }
-
-    private void StartColorTransition(Color targetColor)
-    {
-        if (colorCoroutine != null)
-        {
-            StopCoroutine(colorCoroutine);
-        }
-
-        if (isTMP)
-        {
-            colorCoroutine = StartCoroutine(ColorTransition(tmpText, targetColor));
-        }
-        else if (uiText != null)
-        {
-            colorCoroutine = StartCoroutine(ColorTransition(uiText, targetColor));
+            uiText.fontStyle = FontStyle.Normal;
+            uiText.color = normalColor; // Directly change color
         }
     }
 
-    private IEnumerator ColorTransition(TextMeshProUGUI text, Color targetColor)
-    {
-        Color currentColor = text.color;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < transitionDuration)
-        {
-            text.color = Color.Lerp(currentColor, targetColor, elapsedTime / transitionDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        text.color = targetColor;
-    }
-
-    private IEnumerator ColorTransition(Text text, Color targetColor)
-    {
-        Color currentColor = text.color;
-        float elapsedTime = 0f;
-
-        while (elapsedTime < transitionDuration)
-        {
-            text.color = Color.Lerp(currentColor, targetColor, elapsedTime / transitionDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        text.color = targetColor;
-    }
 }
+
+

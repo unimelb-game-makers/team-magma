@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PauseMenuController : MonoBehaviour
 {
+    public SettingsManager settingsManager;
     public CanvasGroup pauseMenuCanvasGroup;
     public float fadeDuration = 0.5f; // Duration for the fade effect
     public PauseObjectController pauseObjectController;
@@ -15,7 +16,7 @@ public class PauseMenuController : MonoBehaviour
     void Update()
     {
         // Toggle the pause menu when pressing the Escape key
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !settingsManager.CheckIfSettings())
         {
             TogglePauseMenu();
             isPauseMenu = !isPauseMenu;

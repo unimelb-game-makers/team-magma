@@ -106,6 +106,24 @@ namespace NPC
         {
             _storylets_manager?.Tick();//JASPER WROTE THIS
 
+            if (Input.GetMouseButtonDown(0))  // Left mouse button
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    // Get the hit object
+                    GameObject hitObject = hit.collider.gameObject;
+
+                    // Check if the hit object is this object or a child of this object
+                    if (hitObject == gameObject || hitObject.transform.IsChildOf(transform))
+                    {
+                        InteractWithNpc();
+                    }
+                }
+            }
+
             if (CurrentState == NpcState.Walking)
             {
                 Debug.Log("Patrolling");
