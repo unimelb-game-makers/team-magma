@@ -410,7 +410,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ???
+  m_text: character name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
   m_sharedMaterial: {fileID: -2566534041612927758, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
@@ -576,9 +576,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3214324031508678442}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Narrative.DialogueUI, Assembly-CSharp
-          m_MethodName: OnPlayerClick
+          m_MethodName: NextPage
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1039,12 +1039,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
+  m_fontSize: 24
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 1
-  m_fontSizeMin: 22
-  m_fontSizeMax: 26
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -1217,11 +1217,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueText: {fileID: 1282044492655162613}
-  characterNameText: {fileID: 2091071147581772376}
   choiceButtonPrefab: {fileID: 8959173525596321029, guid: d3e51abb105f445a5a30fd8d5ff65df2, type: 3}
   dialogueUiPanel: {fileID: 9094403756782023453}
   choicePanel: {fileID: 4106752250908009400}
-  charactersPerPage: 200
+  charactersPerPage: 250
   maxLinesPerPage: 5
   typingSpeed: 0.01
   nextIndicator: {fileID: 1876850790559258466}

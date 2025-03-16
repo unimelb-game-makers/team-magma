@@ -15,9 +15,8 @@ namespace Narrative
     public class DialogueUI : Singleton<DialogueUI>, IUIHandler
     {
 
-        [Header("UI Elements")]
-        [SerializeField] private TextMeshProUGUI dialogueText; // The main text field for displaying dialogue
-        [SerializeField] private TextMeshProUGUI characterNameText; // The text field for displaying character name
+        [Header("UI Elements")] [SerializeField]
+        private TextMeshProUGUI dialogueText; // The main text field for displaying dialogue
         
         [SerializeField] private GameObject choiceButtonPrefab; // A prefab for a button that represents a choice
         [SerializeField] private GameObject dialogueUiPanel; // A prefab for a button that represents a choice
@@ -32,9 +31,6 @@ namespace Narrative
 
         private string[] pages;
         private int currentPage = 0;
-
-        private bool isTyping = false;  // Flag to track whether text is still being typed
-        private Coroutine currentCoroutine;
         
         private Story _story;
         
@@ -45,9 +41,6 @@ namespace Narrative
         
         public void TalkToNpc(Story story, string knot) //JASPER WROTE THIS
         {
-            // default name
-            characterNameText.text = "???";
-
             SetStory(story, knot);
             ShowUI();
         }
@@ -169,22 +162,8 @@ namespace Narrative
             int charactersInCurrentPage = 0;  // Tracks the number of characters in the current page
 
             string[] lines = text.Split('\n'); // Split the text by new lines (to preserve line structure)
-            foreach (string originalLine in lines)
+            foreach (string line in lines)
             {
-                string line = originalLine;  // Create a new variable to store the modified line
-
-                // Check if the line looks like "characterName: xxx"
-                if (line.Contains(":"))
-                {
-                    string characterName = line.Substring(0, line.IndexOf(":")).Trim();  // Extract character name
-
-                    // Set the character name text
-                    characterNameText.text = characterName;
-                    
-                    // Remove the character name and the colon
-                    line = line.Substring(line.IndexOf(":") + 1).Trim();  // Remove the character name and colon
-                }
-
                 // Split the line if it's longer than the max allowed characters per line
                 if (line.Length > charactersPerPage)
                 {
@@ -253,10 +232,11 @@ namespace Narrative
 
         private void ShowCurrentPage()
         {
+            dialogueText.text = ""; // Clear text for the new page
             nextIndicator.SetActive(false);
             closeIndicator.SetActive(false);
 
-            StartTyping(pages[currentPage]);
+            StartCoroutine(TypeText(pages[currentPage]));
 
             DisplayChoices();
         }
@@ -275,52 +255,13 @@ namespace Narrative
             }
         }
 
-        // Method to start typing the text
-        public void StartTyping(string text)
-        {
-            if (isTyping)
-            {
-                // If already typing, stop the current typing coroutine and show full text
-                StopCoroutine(currentCoroutine);
-                dialogueText.text = text;  // Show the full text immediately
-                isTyping = false;  // Set the flag to false since the text is fully revealed
-            }
-            else
-            {
-                // Start the typewriter effect
-                currentCoroutine = StartCoroutine(TypeText(text));
-            }
-        }
-
-        // Coroutine for typewriter effect
         private IEnumerator TypeText(string text)
         {
-            isTyping = true;  // Set the flag to true when typing starts
-            dialogueText.text = "";  // Clear the text initially
-
-            foreach (char letter in text)
+            dialogueText.text = "";
+            foreach (char c in text)
             {
-                dialogueText.text += letter;  // Add one letter at a time
+                dialogueText.text += c;
                 yield return new WaitForSeconds(typingSpeed);
-            }
-
-            isTyping = false;  // Set the flag to false when typing is complete
-        }
-
-        // Method to handle player clicking during typing
-        public void OnPlayerClick()
-        {
-            if (isTyping)
-            {
-                // Stop the typing coroutine and show the full text
-                StopCoroutine(currentCoroutine);
-                dialogueText.text = pages[currentPage];  // Show the full text of the current page
-                isTyping = false;
-            }
-            else
-            {
-                // Proceed to the next page or handle any other logic when not typing
-                NextPage();
             }
         }
     }
