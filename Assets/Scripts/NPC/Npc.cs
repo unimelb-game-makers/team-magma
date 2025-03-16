@@ -52,6 +52,8 @@ namespace NPC
         
         public void InteractWithNpc()
         {
+            UserInterface.InteractIndicator.Instance.HideUI();
+
             if (!IsPlayerInRange()) return;
 
             if (PlayerStateManager.Instance.IsCombat())
@@ -63,7 +65,7 @@ namespace NPC
             if (CurrentState == NpcState.Idle)
             {
                 string _storylet_to_play = _storylets_manager.PickPlayableStorylet(); //JASPER WROTE THIS . This provides a KnotID string which, presumably we can pass to the Ink story to play content from?
-                DialogueUi.Instance.TalkToNpc(_story, _storylet_to_play);
+                DialogueUI.Instance.TalkToNpc(_story, _storylet_to_play);
             }
             
             _playerInRangeCheckCoroutine = StartCoroutine(PlayerInRangeCheck());
@@ -90,7 +92,7 @@ namespace NPC
                 {
                     StopCoroutine(_playerInRangeCheckCoroutine);
                     _playerInRangeCheckCoroutine = null;
-                    DialogueUi.Instance.HideUI();
+                    DialogueUI.Instance.HideUI();
                     yield break;
                 }
                 yield return new WaitForSeconds(1f);
