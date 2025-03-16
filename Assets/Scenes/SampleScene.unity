@@ -1813,6 +1813,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9a1c6bbcd44594ba3eedceec480376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &781217628 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1531962639630439624, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+  m_PrefabInstance: {fileID: 38014523285561577}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0cade9ee9a0724889e321d55a9beec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &812073401
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4817,6 +4828,10 @@ PrefabInstance:
       propertyPath: settingsManager
       value: 
       objectReference: {fileID: 149064955}
+    - target: {fileID: 6366453097645807377, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: sceneFadeManager
+      value: 
+      objectReference: {fileID: 781217628}
     - target: {fileID: 6557148348751267590, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
