@@ -58,7 +58,6 @@ public class SettingsManager : MonoBehaviour
     {
         if (musicTimeline != null)
         {
-            Debug.Log("why?");
             musicTimeline.SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", 1.0f) * value);
         }
 
