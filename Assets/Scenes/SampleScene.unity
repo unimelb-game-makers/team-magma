@@ -427,17 +427,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1892051433}
   m_LocalEulerAnglesHint: {x: 212, y: -9, z: -100}
---- !u!114 &149064955 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4405511219425992561, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-  m_PrefabInstance: {fileID: 38014523285561577}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 630939483bffa274cb47c2c7e4bde072, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &168559059 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4001376803769049072, guid: 6033645b16414654f8ea4c4c72eda2f8, type: 3}
@@ -1001,6 +990,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409813335}
   m_Mesh: {fileID: 589887750089677092, guid: 43d67fb5552ae7a488b8359c6043ee33, type: 3}
+--- !u!114 &438231259 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7635195147286302133, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+  m_PrefabInstance: {fileID: 38014523285561577}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5620f771c107254596d5cc328e26689, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &468751431
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,17 +1811,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da9a1c6bbcd44594ba3eedceec480376, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &781217628 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1531962639630439624, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-  m_PrefabInstance: {fileID: 38014523285561577}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef0cade9ee9a0724889e321d55a9beec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &812073401
@@ -4135,17 +4124,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicManager: {fileID: 771204924}
   _intensity: 3
---- !u!114 &1890429821 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6025492995967083497, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-  m_PrefabInstance: {fileID: 38014523285561577}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1892051432
 GameObject:
   m_ObjectHideFlags: 0
@@ -4688,6 +4666,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2150774083243141814, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 438231259}
+    - target: {fileID: 2150774083243141814, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UseTapeDefault
+      objectReference: {fileID: 0}
     - target: {fileID: 2731126914536264922, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4824,45 +4810,33 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6366453097645807377, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: settingsManager
-      value: 
-      objectReference: {fileID: 149064955}
-    - target: {fileID: 6366453097645807377, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: sceneFadeManager
-      value: 
-      objectReference: {fileID: 781217628}
     - target: {fileID: 6557148348751267590, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 638768908}
+    - target: {fileID: 7449147592945298850, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 438231259}
+    - target: {fileID: 7449147592945298850, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UseTapeSlow
+      objectReference: {fileID: 0}
     - target: {fileID: 7479578486098461109, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7824860217483547929, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: hoverColor.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7824860217483547929, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: hoverColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7824860217483547929, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: hoverColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7824860217483547929, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: hoverColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7824860217483547929, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: backgroundImage
-      value: 
-      objectReference: {fileID: 1890429821}
     - target: {fileID: 8345192456953151483, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8686464841528021425, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 438231259}
+    - target: {fileID: 8686464841528021425, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UseTapeFast
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

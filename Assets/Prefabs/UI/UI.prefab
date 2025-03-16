@@ -2184,8 +2184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf8f04194b4f01549af04c2d8976af3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundImage: {fileID: 0}
-  hoverScale: 1.2
+  backgroundImage: {fileID: 6025492995967083497}
+  hoverColor: {r: 1, g: 1, b: 1, a: 0}
   animationDuration: 0.2
 --- !u!1 &2042610757926141310
 GameObject:
@@ -2278,6 +2278,7 @@ MonoBehaviour:
   pauseMenuCanvasGroup: {fileID: 983798245291613340}
   fadeDuration: 0.3
   pauseObjectController: {fileID: 4620789955820396207}
+  sceneFadeManager: {fileID: 1531962639630439624}
   isPauseMenu: 0
 --- !u!114 &4620789955820396207
 MonoBehaviour:
