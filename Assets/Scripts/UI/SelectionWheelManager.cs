@@ -58,6 +58,24 @@ public class SelectionWheelManager : MonoBehaviour
         {
             ToggleWheel();
         }
+
+        if (isWheelActive)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                UseTapeSlow();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                UseTapeDefault();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                UseTapeFast();
+            }
+        }
     }
 
     public void UseTapeDefault() {
@@ -80,9 +98,7 @@ public class SelectionWheelManager : MonoBehaviour
             o.Affect(TapeType.Slow, 5, 0.5f); // Why is TapeType in Platforms namespace?
         }
     
-
         UseTape();
-        
     }
 
     public void UseTapeFast() {
