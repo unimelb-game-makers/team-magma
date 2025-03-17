@@ -5,23 +5,27 @@ using Tempo;
 using Utilities.ServiceLocator;
 using Timeline;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class SelectionWheelManager : MonoBehaviour
 {
 
     public GameObject selectionWheel; // The UI wheel to display
+    public GameObject selectionWheelPanel; // The UI wheel to display
     public string inputName = "Tape"; // Input name as defined in the Input Manager
     private bool isWheelActive = false; // Track if the wheel is active
     public PauseObjectController pauseObjectController;
     public BatteryManager batteryManager;
     public PauseMenuController pauseMenuController;
     public float batteryNeeded = 50;
-
+    public float fadeDuration = 0.2f;
     [SerializeField] private AudioPlayerTest TapeEffectSoundPlayer;
     private GameObject musicManager;
 
 
     void Awake() {
+        selectionWheelPanel.transform.localScale = Vector3.zero;
+
         musicManager = GameObject.FindGameObjectWithTag("RhythmManager");
     }    
     
@@ -33,7 +37,7 @@ public class SelectionWheelManager : MonoBehaviour
             {
                 isWheelActive = !isWheelActive;
 
-                selectionWheel.SetActive(isWheelActive);
+                selectionWheelPanel.transform.localScale = Vector3.zero;
 
                 // Blur background
                 PostProcessVolume ppVolume = Camera.main.gameObject.GetComponent<PostProcessVolume>();
@@ -101,25 +105,52 @@ public class SelectionWheelManager : MonoBehaviour
 
     public void ToggleWheel()
     {
-        if (!isWheelActive) 
+        if (!isWheelActive)
         {
+            // Pause game and disable objects when the wheel is shown
             PauseManager.PauseGame();
             pauseObjectController.DisableObjects();
+
+            // Fade in the wheel panel and scale it back to normal size
+            StartCoroutine(ShowWheel());
         }
-        else 
+        else
         {
+            // Resume game and enable objects when the wheel is hidden
             PauseManager.ResumeGame();
             pauseObjectController.EnableObjects();
-        
+
+            // Fade out the wheel panel and scale it down to 0
+            StartCoroutine(HideWheel());
         }
-        
+
+        // Toggle the wheel visibility
         isWheelActive = !isWheelActive;
 
-        selectionWheel.SetActive(isWheelActive);
-
-        // Blur background
+        // Blur background when the wheel is active/inactive
         PostProcessVolume ppVolume = Camera.main.gameObject.GetComponent<PostProcessVolume>();
         ppVolume.enabled = !ppVolume.enabled;
+    }
+
+    private System.Collections.IEnumerator ShowWheel()
+    {
+        // First, set the scale to 0 and fade in
+        selectionWheelPanel.transform.localScale = Vector3.zero;
+
+        // Animate scale back to normal size (for example, (1,1,1))
+        selectionWheelPanel.transform.DOScale(Vector3.one, fadeDuration).SetEase(Ease.OutQuad).SetUpdate(UpdateType.Normal, true)  // Use unscaledDeltaTime
+            .WaitForCompletion();
+
+        yield return null;
+    }
+
+    private System.Collections.IEnumerator HideWheel()
+    {
+        // Animate scale down to 0
+        selectionWheelPanel.transform.DOScale(Vector3.zero, fadeDuration).SetEase(Ease.InOutQuad).SetUpdate(UpdateType.Normal, true)  // Use unscaledDeltaTime
+            .WaitForCompletion();
+
+        yield return null;
     }
 
     public void UseTape()
@@ -129,7 +160,5 @@ public class SelectionWheelManager : MonoBehaviour
             ToggleWheel();
         }
     }
-
-
 }
 

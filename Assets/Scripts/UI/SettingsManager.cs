@@ -7,7 +7,6 @@ using System.Collections;
 
 public class SettingsManager : MonoBehaviour
 {
-    public SceneFadeManager sceneFadeManager;
     public CanvasGroup settingsCanvasGroup;
     public float fadeDuration = 0.5f; // Duration for the fade effect
     
@@ -155,7 +154,7 @@ public class SettingsManager : MonoBehaviour
 
     public void OpenSettings()
     {
-        StartCoroutine(sceneFadeManager.FadeCanvasGroup(settingsCanvasGroup, 0, 1, fadeDuration));
+        StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(settingsCanvasGroup, 0, 1, fadeDuration));
         settingsCanvasGroup.gameObject.SetActive(true);
     }
 
@@ -173,7 +172,7 @@ public class SettingsManager : MonoBehaviour
 
     private IEnumerator FadeOutSettings()
     {
-        yield return sceneFadeManager.FadeCanvasGroup(settingsCanvasGroup, 1, 0, fadeDuration);
+        yield return SceneFadeManager.Instance.FadeCanvasGroup(settingsCanvasGroup, 1, 0, fadeDuration);
 
         // Deactivate and disable raycasts
         settingsCanvasGroup.gameObject.SetActive(false);

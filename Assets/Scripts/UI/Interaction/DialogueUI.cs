@@ -173,8 +173,6 @@ namespace Narrative
             {
                 string line = originalLine;  // Create a new variable to store the modified line
 
-                Debug.Log(line);
-
                 // Check if the line looks like "characterName: xxx"
                 if (line.Contains(":"))
                 {
