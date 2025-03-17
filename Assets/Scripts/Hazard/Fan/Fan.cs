@@ -63,7 +63,6 @@ namespace Hazard
         private Vector3 _forceDirection;
 
         private Coroutine resetFanCoroutine;
-        private bool canBeReset = true;
 
         public void Awake()
         {
