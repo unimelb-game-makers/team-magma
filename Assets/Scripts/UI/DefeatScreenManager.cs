@@ -8,8 +8,15 @@ public class DefeatScreenManager : MonoBehaviour
     public float fadeDuration = 1.0f; // Duration of the fade-in
     public float delayBeforeFade = 0.5f; // Optional delay before the fade
 
+    void Start()
+    {
+        defeatScreenCanvasGroup.gameObject.SetActive(false);
+        defeatScreenCanvasGroup.alpha = 0;
+    }
+
     public void ShowDefeatScreen()
     {
+        defeatScreenCanvasGroup.gameObject.SetActive(true);
         StartCoroutine(FadeInDefeatScreen());
     }
 
@@ -19,6 +26,5 @@ public class DefeatScreenManager : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeFade);
 
         StartCoroutine(sceneFadeManager.FadeCanvasGroup(defeatScreenCanvasGroup, 0, 1, fadeDuration));
-        defeatScreenCanvasGroup.gameObject.SetActive(true);
     }
 }

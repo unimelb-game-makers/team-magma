@@ -43,7 +43,6 @@ public class PauseMenuController : MonoBehaviour
         {
             // Pause the game and fade in the menu
             ShowUI();
-            Time.timeScale = 0;
             StartCoroutine(sceneFadeManager.FadeCanvasGroup(pauseMenuCanvasGroup, 0, 1, fadeDuration));
             PauseManager.PauseGame();
             pauseObjectController.DisableObjects();
