@@ -6,22 +6,27 @@ using Utilities.ServiceLocator;
 using Timeline;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class SelectionWheelManager : MonoBehaviour
 {
 
-    public GameObject selectionWheel; // The UI wheel to display
-    public GameObject selectionWheelPanel; // The UI wheel to display
-    public string inputName = "Tape"; // Input name as defined in the Input Manager
-    private bool isWheelActive = false; // Track if the wheel is active
-    public PauseObjectController pauseObjectController;
-    public BatteryManager batteryManager;
-    public PauseMenuController pauseMenuController;
-    public float batteryNeeded = 50;
-    public float fadeDuration = 0.2f;
+    [SerializeField] private GameObject selectionWheel; // The UI wheel to display
+    [SerializeField] private GameObject selectionWheelPanel; // The UI wheel to display
+    [SerializeField] private string inputName = "Tape"; // Input name as defined in the Input Manager
+    [SerializeField] private PauseObjectController pauseObjectController;
+    [SerializeField] private BatteryManager batteryManager;
+    [SerializeField] private PauseMenuController pauseMenuController;
+    [SerializeField] private float batteryNeeded = 50;
+    [SerializeField] private float fadeDuration = 0.2f;
     [SerializeField] private AudioPlayerTest TapeEffectSoundPlayer;
+    [SerializeField] private List<Button> tapeButtons;
+    [SerializeField] private float scrollSpeed = 1f;  // Set the scroll speed
+    private bool isWheelActive = false; // Track if the wheel is active
     private GameObject musicManager;
 
+    private bool isScrolled = false;
+    private int currentIndex = 0; // Index to track the current selection
 
     void Awake() {
         selectionWheelPanel.transform.localScale = Vector3.zero;
@@ -45,36 +50,95 @@ public class SelectionWheelManager : MonoBehaviour
             }
             return;
         }
+
+        if (isWheelActive)
+        {
+            // Get the mouse scroll wheel input (positive for up, negative for down)
+            float scroll = Input.mouseScrollDelta.y;
+
+            // If scroll input is detected, update the selection
+            if (scroll != 0)
+            {
+                isScrolled = true;
+
+                // Call OnPointerExit on the previously selected tape (if any)
+                if (currentIndex >= 0 && currentIndex < tapeButtons.Count)
+                {
+                    TapeSelectionHoverEffect previousHoverScript = tapeButtons[currentIndex].GetComponent<TapeSelectionHoverEffect>();
+                    if (previousHoverScript != null)
+                    {
+                        previousHoverScript.OnPointerExit(null);
+                    }
+                }
+
+                // Update the index based on the scroll direction
+                currentIndex += (int)(scroll * scrollSpeed);
+
+                // Loop the index to ensure it stays within bounds of the tapes array
+                if (currentIndex >= tapeButtons.Count)
+                {
+                    currentIndex = 0; // Loop back to the first item
+                }
+                else if (currentIndex < 0)
+                {
+                    currentIndex = tapeButtons.Count - 1; // Loop to the last item
+                }
+
+                // Update the UI display with the new selection
+                TapeSelectionHoverEffect hoverScript = tapeButtons[currentIndex].GetComponent<TapeSelectionHoverEffect>();
+
+                if (hoverScript != null)
+                {
+                    // Call OnPointerEnter on the newly selected tape
+                    hoverScript.OnPointerEnter(null);
+                }
+            }
+        }
+        
         HandleInput();
     }
 
     private void HandleInput()
     {
-        if (Input.GetButtonDown(inputName))
+        if (Input.GetButtonDown(inputName) || Input.GetButtonDown("Fire2"))
         {
-            ToggleWheel();
+            if (isWheelActive && isScrolled) {
+                switch (currentIndex) 
+                {
+                    case 0: // Slow Tape
+                        UseTapeSlow();
+                        return;
+                    case 1: // Default Tape
+                        UseTapeDefault();
+                        return;
+                    case 2: // Fast Tape
+                        UseTapeFast();
+                        return;
+                    default:
+                        Debug.LogWarning("Invalid tape type: " + currentIndex);
+                        return;
+                }
+            }
+            else
+            {
+                ToggleWheel();
+            }
+            
         }
-        if (Input.GetButtonDown("Fire2"))
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            ToggleWheel();
+            UseTapeSlow();
         }
 
-        if (isWheelActive)
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                UseTapeSlow();
-            }
+            UseTapeDefault();
+        }
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                UseTapeDefault();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                UseTapeFast();
-            }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            UseTapeFast();
         }
     }
 
@@ -121,6 +185,7 @@ public class SelectionWheelManager : MonoBehaviour
 
     public void ToggleWheel()
     {
+        isScrolled = false;
         if (!isWheelActive)
         {
             // Pause game and disable objects when the wheel is shown

@@ -2263,8 +2263,13 @@ MonoBehaviour:
   batteryManager: {fileID: 4846281510990022718}
   pauseMenuController: {fileID: 6366453097645807377}
   batteryNeeded: 50
-  fadeDuration: 0.3
+  fadeDuration: 0.2
   TapeEffectSoundPlayer: {fileID: 1402838813973056151}
+  tapeButtons:
+  - {fileID: 7449147592945298850}
+  - {fileID: 8686464841528021425}
+  - {fileID: 2150774083243141814}
+  scrollSpeed: 1
 --- !u!114 &6366453097645807377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3998,7 +4003,6 @@ GameObject:
   - component: {fileID: 4642406387482021362}
   - component: {fileID: 3841007028419785226}
   - component: {fileID: 2150774083243141814}
-  - component: {fileID: 9023507662751133926}
   - component: {fileID: 532414519264465227}
   m_Layer: 5
   m_Name: DefaultTape
@@ -4123,51 +4127,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
---- !u!114 &9023507662751133926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3510917912444161698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 685672577268534104}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 1
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 685672577268534104}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
 --- !u!114 &532414519264465227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4185,6 +4144,9 @@ MonoBehaviour:
   hoverWidth: 30
   duration: 0.2
   hoverDirection: {x: 0, y: 1}
+  descriptionText: {fileID: 685672577268534104}
+  hoverColor: {r: 0.7529412, g: 0.7529412, b: 0.7529412, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &3562417424954048584
 GameObject:
   m_ObjectHideFlags: 0
@@ -4544,41 +4506,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!1 &3902210823253745943
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9149774826511310523}
-  m_Layer: 5
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &9149774826511310523
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3902210823253745943}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7112588423323669046}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3978037701101668103
 GameObject:
   m_ObjectHideFlags: 0
@@ -7981,7 +7908,6 @@ GameObject:
   - component: {fileID: 7134854077556661404}
   - component: {fileID: 295362760910628490}
   - component: {fileID: 8686464841528021425}
-  - component: {fileID: 8021901548870168354}
   - component: {fileID: 5121702268067830637}
   m_Layer: 5
   m_Name: FastTape
@@ -8005,7 +7931,6 @@ RectTransform:
   - {fileID: 2971310119616657973}
   - {fileID: 3877942114527301171}
   - {fileID: 2552715988931071733}
-  - {fileID: 9149774826511310523}
   m_Father: {fileID: 6881416333649572966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.635}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -8107,51 +8032,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
---- !u!114 &8021901548870168354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7009000308226398901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 489259640853017813}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 1
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 489259640853017813}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
 --- !u!114 &5121702268067830637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8169,6 +8049,9 @@ MonoBehaviour:
   hoverWidth: 20
   duration: 0.2
   hoverDirection: {x: 1, y: -1}
+  descriptionText: {fileID: 489259640853017813}
+  hoverColor: {r: 0.7529412, g: 0.7529412, b: 0.7529412, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &7026257271836217607
 GameObject:
   m_ObjectHideFlags: 0
@@ -8843,7 +8726,6 @@ GameObject:
   - component: {fileID: 7160959277710092165}
   - component: {fileID: 1577148141869832821}
   - component: {fileID: 7449147592945298850}
-  - component: {fileID: 3469190023988490161}
   - component: {fileID: 2895469256939583545}
   m_Layer: 5
   m_Name: SlowTape
@@ -8867,7 +8749,6 @@ RectTransform:
   - {fileID: 6291615425502853017}
   - {fileID: 2161687246812917788}
   - {fileID: 3879714196869499623}
-  - {fileID: 3508536170576578129}
   m_Father: {fileID: 6881416333649572966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 120.017}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -8969,51 +8850,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
---- !u!114 &3469190023988490161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7311231463233036990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8604008415704105169}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 1
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8604008415704105169}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
 --- !u!114 &2895469256939583545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9031,6 +8867,9 @@ MonoBehaviour:
   hoverWidth: 20
   duration: 0.2
   hoverDirection: {x: -1, y: -1}
+  descriptionText: {fileID: 8604008415704105169}
+  hoverColor: {r: 0.7529412, g: 0.7529412, b: 0.7529412, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &7358298598353077785
 GameObject:
   m_ObjectHideFlags: 0
@@ -9946,41 +9785,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &8043200693184465508
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3508536170576578129}
-  m_Layer: 5
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &3508536170576578129
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8043200693184465508}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8292564979433114162}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8067816020424741895
 GameObject:
   m_ObjectHideFlags: 0
