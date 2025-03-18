@@ -423,7 +423,8 @@ So, needless to say, I'll be voting to stay.
     ->agatha_conversation_body
 *[The tea is bad.]
     ~agatha_trust -= 1
-    It's an *acquired taste,* dear. Your palate just maybe isn't refined enough. ->agatha_conversation_body
+    It's an *acquired taste,* dear. Your palate just maybe isn't refined enough.
+    ->agatha_conversation_body
 
 =agatha_conversation_body
 ~ temp questions_asked = 0
