@@ -22,12 +22,14 @@ namespace Hazard.Train
         private Coroutine _spawnTrainCoroutine;
         
         private void OnEnable()
-        {
+        {            
+            if(ServiceLocator.Instance == null) return;
             ServiceLocator.Instance.Register(this);
         }
         
         private void OnDisable()
         {
+            if(ServiceLocator.Instance == null) return;
             ServiceLocator.Instance.Unregister(this);
         }
         

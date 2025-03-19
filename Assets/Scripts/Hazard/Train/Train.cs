@@ -21,11 +21,13 @@ namespace Hazard.Train
 
         private void OnEnable()
         {
+            if(ServiceLocator.Instance == null) return;
             ServiceLocator.Instance.Register(this);
         }
         
         private void OnDisable()
         {
+            if(ServiceLocator.Instance == null) return;
             ServiceLocator.Instance.Unregister(this);
         }
 
