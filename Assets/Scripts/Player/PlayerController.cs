@@ -120,6 +120,7 @@ namespace Player
             
             Move();
 
+            if(!PlayerStateManager.Instance) return;
             if (PlayerStateManager.Instance.IsCombat()) {
                 Attack();
             }
