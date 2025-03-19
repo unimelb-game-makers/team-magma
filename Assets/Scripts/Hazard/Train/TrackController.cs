@@ -13,16 +13,25 @@ namespace Hazard.Train
     public class TrackController : MonoBehaviour, ISyncable
     {
         [SerializeField] private PathCreator pathCreator;
-        
         [SerializeField] private GameObject trainPrefab;
+        [SerializeField] private GameObject start;
+        [SerializeField] private GameObject end;
         [SerializeField] private float _spawnInterval = 5f;
         private Coroutine _spawnTrainCoroutine;
         
         private void Start()
         {
             _spawnTrainCoroutine = StartCoroutine(TrainSpawner());
+            SetTrackEnds();
         }
 
+        private void SetTrackEnds()
+        {
+            start.transform.position = pathCreator.path.GetPoint(0);
+            start.transform.rotation = pathCreator.path.GetRotationAtDistance(0);
+            end.transform.position = pathCreator.path.GetPoint(pathCreator.path.NumPoints - 1);
+            end.transform.rotation = pathCreator.path.GetRotationAtDistance(pathCreator.path.length);
+        }
 
         private void SpawnTrain()
         {

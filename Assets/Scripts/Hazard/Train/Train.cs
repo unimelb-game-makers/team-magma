@@ -19,7 +19,6 @@ namespace Hazard.Train
         {
             
         }
-        
         //Move along the path
         public void Update()
         {
