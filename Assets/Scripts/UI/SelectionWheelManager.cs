@@ -236,7 +236,7 @@ public class SelectionWheelManager : MonoBehaviour
 
     public void UseTape()
     {
-        if (batteryManager.UseBattery(batteryNeeded))
+        if (batteryManager.UseBattery(batteryNeeded) && isWheelActive)
         {
             ToggleWheel();
         }
