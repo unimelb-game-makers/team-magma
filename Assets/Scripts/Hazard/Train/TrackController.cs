@@ -7,17 +7,29 @@ using UnityEngine;
 using PathCreation;
 using Platforms;
 using Tempo;
+using Utilities.ServiceLocator;
 
 namespace Hazard.Train
 {
-    public class TrackController : MonoBehaviour, ISyncable
+    public class TrackController : Hazard
     {
         [SerializeField] private PathCreator pathCreator;
         [SerializeField] private GameObject trainPrefab;
         [SerializeField] private GameObject start;
         [SerializeField] private GameObject end;
         [SerializeField] private float _spawnInterval = 5f;
+        [SerializeField] private float _normalSpawnInterval = 20f;
         private Coroutine _spawnTrainCoroutine;
+        
+        private void OnEnable()
+        {
+            ServiceLocator.Instance.Register(this);
+        }
+        
+        private void OnDisable()
+        {
+            ServiceLocator.Instance.Unregister(this);
+        }
         
         private void Start()
         {
@@ -59,9 +71,34 @@ namespace Hazard.Train
             _spawnTrainCoroutine = StartCoroutine(TrainSpawner());
         }
 
-        public void Affect(TapeType tapeType, float duration, float effectValue)
+        public override void Affect(TapeType tapeType, float duration, float effectValue)
         {
-            
+            switch (tapeType)
+            {
+                case TapeType.Slow:
+                    StartCoroutine(SlowTempo(duration, effectValue));
+                    break;
+                case TapeType.Fast:
+                    StartCoroutine(FastTempo(duration, effectValue));
+                    break;
+                default:
+                    _spawnInterval = _normalSpawnInterval;
+                    break;
+            }
+        }
+        
+        private IEnumerator SlowTempo(float duration, float effectValue)
+        {
+            _spawnInterval *= effectValue;
+            yield return new WaitForSeconds(duration);
+            _spawnInterval = _normalSpawnInterval;
+        }
+        
+        private IEnumerator FastTempo(float duration, float effectValue)
+        {
+            _spawnInterval *= effectValue;
+            yield return new WaitForSeconds(duration);
+            _spawnInterval = _normalSpawnInterval;
         }
     }
 }
