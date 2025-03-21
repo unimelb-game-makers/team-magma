@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 3129257989765949340}
   - component: {fileID: 3389323145556921452}
   - component: {fileID: 5052632225794662629}
+  - component: {fileID: 7028637824802135433}
   m_Layer: 0
   m_Name: Enemy_Ranged
   m_TagString: Enemy
@@ -240,7 +241,7 @@ MonoBehaviour:
   originalDamage: 40
   originalAttackCooldown: 0.2
   outsideAttackRangeDuration: 0.5
-  patrolPointRange: 1.5
+  destinationToleranceRange: 1.5
   sightRange: 10
   attackRange: 8
   slowTempo: 0
@@ -255,7 +256,6 @@ MonoBehaviour:
   fleeSpeed: 12
   fleeRange: 6
   moveToRange: 6
-  fleeLocationRange: 1.5
 --- !u!114 &3389323145556921452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,3 +283,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c5823497149a9449b3a97377d694b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &7028637824802135433
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3262465192185934057}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
