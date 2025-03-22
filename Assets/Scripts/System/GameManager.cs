@@ -26,8 +26,26 @@ namespace System
                 return _playerCharacter;
             }
         }
-
         
+        private BeatSpawner _beatSpawner;
+
+        public BeatSpawner BeatSpawner
+        {
+            get
+            {
+                if (!_beatSpawner)
+                {
+                    _beatSpawner = FindObjectOfType<BeatSpawner>();
+                    if (!_beatSpawner)
+                    {
+                        throw new Exception("No BeatSpawner found in the scene.");
+                    }
+                }
+                return _beatSpawner;
+            }
+        }
+
+
         [SerializeField] private string defaultScenename = "SampleScene";
         
         /// <summary>
@@ -42,10 +60,15 @@ namespace System
         
         private int _currentLevelIndex = 0;
 
+        protected override void Awake()
+        {
+            base.Awake();
+        }
 
         private void Start()
         {
             //check if player data exists
+            DontDestroyOnLoad(PlayerCharacter.gameObject);
             //if the player exist
                 //load the current scene
                     //load the player data
@@ -81,11 +104,14 @@ namespace System
         private void LoadingLevel()
         {
             Debug.Log("Level loaded.");
+            PlayerCharacter.gameObject.SetActive(false);
             //Freeze all actions
         }
         private void LevelLoaded()
         {
             Debug.Log("Level loaded.");
+            PlayerCharacter.transform.position = SubGameManager.Instance.LevelSpawnPoint.position;
+            PlayerCharacter.gameObject.SetActive(true);
             //Load player data
         }
 
