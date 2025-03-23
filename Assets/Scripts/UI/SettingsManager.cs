@@ -15,7 +15,6 @@ public class SettingsManager : MonoBehaviour
     public TMPro.TextMeshProUGUI masterVolumeText;
     public Slider musicVolumeSlider;
     public TMPro.TextMeshProUGUI musicVolumeText;
-    public MusicTimeline musicTimeline;
     public Slider sfxVolumeSlider;
     public TMPro.TextMeshProUGUI sfxVolumeText;
 
@@ -55,9 +54,9 @@ public class SettingsManager : MonoBehaviour
 
     private void SetMasterVolume(float value)
     {
-        if (musicTimeline != null)
+        if (MusicTimeline.instance != null)
         {
-            musicTimeline.SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", 1.0f) * value);
+            MusicTimeline.instance.SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", 1.0f) * value);
         }
 
         PlayerPrefs.SetFloat("MasterVolume", value);
@@ -71,9 +70,9 @@ public class SettingsManager : MonoBehaviour
 
     private void SetMusicVolume(float value)
     {
-        if (musicTimeline != null)
+        if (MusicTimeline.instance != null)
         {
-            musicTimeline.SetMusicVolume(PlayerPrefs.GetFloat("MasterVolume", 1.0f) * value);
+            MusicTimeline.instance.SetMusicVolume(PlayerPrefs.GetFloat("MasterVolume", 1.0f) * value);
         }
         PlayerPrefs.SetFloat("MusicVolume", value);
 
@@ -98,7 +97,6 @@ public class SettingsManager : MonoBehaviour
 
     private void SetBrightness(float value)
     {
-        Debug.Log(value);
         brightnessOverlay.color = new Color(0, 0, 0, 1 - value);
         PlayerPrefs.SetFloat("Brightness", value);
 
