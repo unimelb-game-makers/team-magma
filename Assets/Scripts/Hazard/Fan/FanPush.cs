@@ -29,7 +29,7 @@ namespace Hazard
         public void OnTriggerStay(Collider other)
         {
             // Push player or enemies.
-            if (other.CompareTag("Player") || other.CompareTag("Enemy"))
+            if (other.CompareTag("Player"))
             {
                 // Check if the object has a Rigidbody to apply the force.
                 Rigidbody rb = other.attachedRigidbody;

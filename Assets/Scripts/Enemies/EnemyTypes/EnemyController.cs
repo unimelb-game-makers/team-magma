@@ -16,7 +16,24 @@ namespace Enemy
     public abstract class EnemyController : MonoBehaviour, ISyncable
     {
         #region Enemy Variables
-        protected PlayerController player;
+
+        private PlayerController _player;
+
+        protected PlayerController Player
+        {
+            get
+            {
+                if (!_player)
+                {
+                    _player = GameManager.Instance.PlayerCharacter.GetComponent<PlayerController>();
+                }
+                if(!_player)
+                {
+                    Debug.LogError("Player not found");
+                }
+                return _player;
+            }
+        }
         protected NavMeshAgent agent;
 
         [SerializeField] private float health = 100f;
@@ -105,7 +122,6 @@ namespace Enemy
         */
 
         #region Enemy State Getters and Setters
-        public PlayerController GetPlayerController() { return player; }
         public NavMeshAgent GetNavMeshAgent() { return agent; }
         
         // Health
@@ -145,13 +161,8 @@ namespace Enemy
         #endregion
         
         protected virtual void Awake() {
-            player = GameObject.Find("Player").GetComponent<PlayerController>();
             agent = GetComponent<NavMeshAgent>();
             agent.speed = patrolSpeed;
-
-            // timeline = FindObjectOfType<MusicTimeline>();
-            // animator = GetComponent<Animator>();
-            // audioSource = GetComponent<AudioSource>();
             
             AddStates();
             
@@ -165,14 +176,19 @@ namespace Enemy
             DefaultTempo();
         }
         
+        private void Start()
+        {
+            Debug.Log("Player: " + Player);
+        }
+        
         protected virtual void AddStates()
         {
             _states = new Dictionary<EnemyState, BaseEnemyState>()
             {
-                { EnemyState.Idle, new IdleState(this, agent, player) },
-                { EnemyState.Patrol, new PatrolState(this, agent, player) },
-                { EnemyState.Chase, new ChaseState(this, agent, player) },
-                { EnemyState.Attack, new AttackState(this, agent, player) },
+                { EnemyState.Idle, new IdleState(this, agent, Player) },
+                { EnemyState.Patrol, new PatrolState(this, agent, Player) },
+                { EnemyState.Chase, new ChaseState(this, agent, Player) },
+                { EnemyState.Attack, new AttackState(this, agent, Player) },
             };
         }
 
@@ -183,11 +199,8 @@ namespace Enemy
         public virtual void Update() {
             // Update ranges
             enemyInDestinationRange = Vector3.Distance(transform.position, currentPatrolPoint) <= destinationToleranceRange;
-            if (player != null)
-            {
-                playerInSightRange = Vector3.Distance(transform.position, player.transform.position) <= sightRange;
-                playerInAttackRange = Vector3.Distance(transform.position, player.transform.position) <= attackRange;
-            }
+            playerInSightRange = Vector3.Distance(transform.position, Player.transform.position) <= sightRange;
+            playerInAttackRange = Vector3.Distance(transform.position, Player.transform.position) <= attackRange;
 
             _currentState.UpdateState();
 
@@ -232,7 +245,7 @@ namespace Enemy
             currentPlayerLocationCheckTime -= Time.deltaTime;
             if (currentPlayerLocationCheckTime > 0) return;
             currentPlayerLocationCheckTime = playerLocationCheckInterval;
-            agent.SetDestination(player.transform.position);
+            agent.SetDestination(Player.transform.position);
         }
 
         public abstract void Attack();

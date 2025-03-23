@@ -12,7 +12,6 @@ public class PatrolState : BaseEnemyState
                         base(enemyController, navMeshAgent, playerController) { }
 
     public override void EnterState() {
-        Debug.Log("Entering Patrol State");
         // enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), true);
         navMeshAgent.destination = enemyController.GetCurrentPatrolPoint();
         navMeshAgent.speed = enemyController.GetPatrolSpeed();

@@ -20,7 +20,7 @@ namespace System
                     _playerCharacter = FindObjectOfType<PlayerCharacter>();
                     if (_playerCharacter == null)
                     {
-                        throw new Exception("No PlayerCharacter found in the scene.");
+                        Debug.LogError("No PlayerCharacter found in the scene.");
                     }
                 }
                 return _playerCharacter;

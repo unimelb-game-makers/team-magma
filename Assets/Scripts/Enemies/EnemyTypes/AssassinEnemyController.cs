@@ -37,7 +37,7 @@ public class AssassinEnemyController : EnemyController
             UpdateDash();
         }
         else {
-            transform.LookAt(player.transform.position);
+            transform.LookAt(Player.transform.position);
 
             if (!IsAttacking())
             {
@@ -55,7 +55,7 @@ public class AssassinEnemyController : EnemyController
         GetNavMeshAgent().enabled = false;
         // The dash cannot change direction midway.
         // Calculate the direction without y, so enemy stays on the ground.
-        Vector3 dashDirectionWithY = GetPlayerController().transform.position - transform.position;
+        Vector3 dashDirectionWithY = Player.transform.position - transform.position;
         dashDirection = new Vector3(dashDirectionWithY.x, 0f, dashDirectionWithY.z).normalized;
         currentDashTime = dashDuration;
     }
@@ -76,7 +76,7 @@ public class AssassinEnemyController : EnemyController
 
                 // Apply a knockback:
                 // Calculate the direction without y, so enemy stays on the ground.
-                Vector3 knockbackDirectionWithY = transform.position - GetPlayerController().transform.position;
+                Vector3 knockbackDirectionWithY = transform.position - Player.transform.position;
                 Vector3 knockbackDirection = new Vector3(knockbackDirectionWithY.x, 0f, knockbackDirectionWithY.z).normalized;
                 //GetRigidbody().AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
 

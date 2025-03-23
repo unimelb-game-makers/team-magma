@@ -35,8 +35,7 @@ namespace Enemies.EnemyTypes
         public override void Update()
         {
             // Update flee ranges
-            if (player != null)
-                enemyInFleeRange = Vector3.Distance(transform.position, player.transform.position) <= fleeRange;
+            enemyInFleeRange = Vector3.Distance(transform.position, Player.transform.position) <= fleeRange;
             enemyMovedToFleeLocation = Vector3.Distance(transform.position, fleeLocation) <= destinationToleranceRange;
             
             base.Update();
@@ -46,11 +45,11 @@ namespace Enemies.EnemyTypes
         {
             _states = new Dictionary<EnemyState, BaseEnemyState>()
             {
-                { EnemyState.Idle, new IdleState(this, agent, player) },
-                { EnemyState.Patrol, new PatrolState(this, agent, player) },
-                { EnemyState.Chase, new ChaseState(this, agent, player) },
-                { EnemyState.Attack, new AttackState(this, agent, player) },
-                { EnemyState.Flee, new FleeState(this, agent, player) }
+                { EnemyState.Idle, new IdleState(this, agent, Player) },
+                { EnemyState.Patrol, new PatrolState(this, agent, Player) },
+                { EnemyState.Chase, new ChaseState(this, agent, Player) },
+                { EnemyState.Attack, new AttackState(this, agent, Player) },
+                { EnemyState.Flee, new FleeState(this, agent, Player) }
             };
         }
         
@@ -64,7 +63,7 @@ namespace Enemies.EnemyTypes
                 SetIsAttacking(true);
 
                 // If the player is still alive.
-                if (GetPlayerController())
+                if (!Player)
                     StartCoroutine(PerformStrikeSequence());
 
                 /*
@@ -108,7 +107,7 @@ namespace Enemies.EnemyTypes
 
         private void SpawnProjectile() {
             // The projectile should move in this direction
-            Vector3 direction = (player.transform.position - transform.position).normalized;
+            Vector3 direction = (Player.transform.position - transform.position).normalized;
 
             GameObject projectile = Instantiate(projectilePrefab, transform.position + direction, transform.rotation);
 
@@ -130,7 +129,7 @@ namespace Enemies.EnemyTypes
                 // Introduce random inaccuracy
                 direction = ApplyInaccuracy(direction, inaccuracyAmount);
 
-                projectileComponent.SetInitialDirection(new Vector3(direction.x, 0f, direction.z), player.gameObject);
+                projectileComponent.SetInitialDirection(new Vector3(direction.x, 0f, direction.z), Player.gameObject);
             }
         }
 

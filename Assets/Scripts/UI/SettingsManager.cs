@@ -99,7 +99,6 @@ public class SettingsManager : MonoBehaviour
 
     private void SetBrightness(float value)
     {
-        Debug.Log(value);
         brightnessOverlay.color = new Color(0, 0, 0, 1 - value);
         PlayerPrefs.SetFloat("Brightness", value);
 
