@@ -23,15 +23,11 @@ public class SelectionWheelManager : MonoBehaviour
     [SerializeField] private List<Button> tapeButtons;
     [SerializeField] private float scrollSpeed = 1f;  // Set the scroll speed
     private bool isWheelActive = false; // Track if the wheel is active
-    private GameObject musicManager;
-
     private bool isScrolled = false;
     private int currentIndex = 0; // Index to track the current selection
 
     void Awake() {
         selectionWheelPanel.transform.localScale = Vector3.zero;
-
-        musicManager = GameObject.FindGameObjectWithTag("RhythmManager");
     }    
     
     void Update()
@@ -143,16 +139,13 @@ public class SelectionWheelManager : MonoBehaviour
     }
 
     public void UseTapeDefault() {
-        MusicTimeline timelineComponent = musicManager.GetComponent<MusicTimeline>();
-        timelineComponent.SetIntensity(2);
+        MusicTimeline.instance.SetIntensity(2);
         UseTape();
         PlayTapeEffect(TapeType.Slow, 0.01f, 0.5f);
     }
 
     public void UseTapeSlow() {
-        MusicTimeline timelineComponent = musicManager.GetComponent<MusicTimeline>();
-        timelineComponent.SetIntensity(1);
-        
+        MusicTimeline.instance.SetIntensity(1);
         TapeEffectSoundPlayer.Play();
         // Play Slow Tape Effect
         //get IAffectServices from service locator
@@ -166,9 +159,7 @@ public class SelectionWheelManager : MonoBehaviour
     }
 
     public void UseTapeFast() {
-
-        MusicTimeline timelineComponent = musicManager.GetComponent<MusicTimeline>();
-        timelineComponent.SetIntensity(3);
+        MusicTimeline.instance.SetIntensity(3);
         UseTape();
         PlayTapeEffect(TapeType.Fast, 5, 0.5f);
     }
