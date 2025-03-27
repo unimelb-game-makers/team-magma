@@ -49,6 +49,9 @@ namespace Hazard
             height1 = transform.Find("Height1").gameObject.transform.position.y;
             height2 = transform.Find("Height2").gameObject.transform.position.y;
             height3 = transform.Find("Height3").gameObject.transform.position.y;
+
+            // The default position of the killArea should be height2.
+            killArea.transform.position = new Vector3(killArea.transform.position.x, height2, killArea.transform.position.z);
         }
 
         public void Start()
@@ -94,6 +97,7 @@ namespace Hazard
          */
         public override void Affect(TapeType tapeType, float duration, float effectValue)
         {
+            Debug.Log("Kill area is being moved to some height i dont know what");
             if(tapeType == TapeType.Slow)
             {
                 // Move the 'KillArea' object to height1.
