@@ -55,13 +55,18 @@ namespace Hazard
         [Tooltip("The force with which the characters are knockbacked when at slow tempo.")]
         [SerializeField] private float _slowKnockbackForce = 50;
 
+        [Tooltip("The force with which the enemies are knockbacked.")]
+        [SerializeField] private float _defaultEnemyKnockbackForce = 5;
+        [SerializeField] private float _fastEnemyKnockbackForce = 8;
+        [SerializeField] private float _slowEnemyKnockbackForce = 2;
+
         [Header("Force and Direction")]
         [Tooltip("The force with which the fan pushes/pulls player.")]
         [SerializeField] private float _defaultForceAmount = 800;
         [SerializeField] private float _fastForceAmount = 1000;
         [Tooltip("The 'force' with which the fan pushes/pulls enemies.")]
-        [SerializeField] private float _defaultMovementAmount = 5;
-        [SerializeField] private float _fastMovementAmount = 10;
+        [SerializeField] private float _defaultEnemyMovementAmount = 5;
+        [SerializeField] private float _fastEnemyMovementAmount = 10;
         [Tooltip("The direction of the force in which the fan pushes/pulls player and enemies.")]
         private Vector3 _forceDirection;
 
@@ -81,27 +86,26 @@ namespace Hazard
             foreach (Transform fanBlade in fanBlades.transform)
             {
                 fanBlade.GetComponent<FanDamager>().SetDamage(_defaultDamage);
-                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_defaultKnockbackForce);
-                fanBlade.GetComponent<FanDamager>().SetKnockbackDirection(_forceDirection);
+                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_defaultKnockbackForce, _defaultEnemyKnockbackForce);
             }
 
             // The 'FanPush' object is the child of the 'Fan' object.
             fanPushDefault = transform.Find("FanPush_Default").gameObject;
-            fanPushDefault.GetComponent<FanPush>().SetForcesAmount(_defaultForceAmount, _defaultMovementAmount);
-            fanPushDefault.GetComponent<FanPush>().SetForceDirection(_forceDirection);
+            fanPushDefault.GetComponent<FanArea>().SetForcesAmount(_defaultForceAmount, _defaultEnemyMovementAmount);
+            fanPushDefault.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             fanPushFast = transform.Find("FanPush_Fast").gameObject;
-            fanPushFast.GetComponent<FanPush>().SetForcesAmount(_defaultForceAmount, _fastMovementAmount);
-            fanPushFast.GetComponent<FanPush>().SetForceDirection(_forceDirection);
+            fanPushFast.GetComponent<FanArea>().SetForcesAmount(_defaultForceAmount, _fastEnemyMovementAmount);
+            fanPushFast.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             // The 'FanPull' object is the child of the 'Fan' object.
             fanPullDefault = transform.Find("FanPull_Default").gameObject;
-            fanPullDefault.GetComponent<FanPull>().SetForcesAmount(_defaultForceAmount, _defaultMovementAmount);
-            fanPullDefault.GetComponent<FanPull>().SetForceDirection(_forceDirection);
+            fanPullDefault.GetComponent<FanArea>().SetForcesAmount(_defaultForceAmount, _defaultEnemyMovementAmount);
+            fanPullDefault.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             fanPullFast = transform.Find("FanPull_Fast").gameObject;
-            fanPullFast.GetComponent<FanPull>().SetForcesAmount(_defaultForceAmount, _fastMovementAmount);
-            fanPullFast.GetComponent<FanPull>().SetForceDirection(_forceDirection);
+            fanPullFast.GetComponent<FanArea>().SetForcesAmount(_defaultForceAmount, _fastEnemyMovementAmount);
+            fanPullFast.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             // The 'FanStopper' object is the child of the 'Fan' object.
             fanStopper = transform.Find("FanStopper").gameObject;
@@ -148,17 +152,17 @@ namespace Hazard
                 foreach (Transform fanBlade in fanBlades.transform)
                 {
                     fanBlade.GetComponent<FanDamager>().SetDamage(_slowDamage);
-                    fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_slowKnockbackForce);
+                    fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_slowKnockbackForce, _slowEnemyKnockbackForce);
                 }
                 
                 // Disable the 'fanPush' object so no characters are pushed.
                 if (fanPushDefault.activeSelf)
                 {
-                    fanPushDefault.GetComponent<FanPush>().RemoveAllObjects();
+                    fanPushDefault.GetComponent<FanArea>().RemoveAllObjects();
                 }
                 if (fanPushFast.activeSelf)
                 {
-                    fanPushFast.GetComponent<FanPush>().RemoveAllObjects();
+                    fanPushFast.GetComponent<FanArea>().RemoveAllObjects();
                 }
                 fanPushDefault.SetActive(false);
                 fanPushFast.SetActive(false);
@@ -166,11 +170,11 @@ namespace Hazard
                 // Disable the 'fanPull' object so no characters are pushed.
                 if (fanPullDefault.activeSelf)
                 {
-                    fanPullDefault.GetComponent<FanPull>().RemoveAllObjects();
+                    fanPullDefault.GetComponent<FanArea>().RemoveAllObjects();
                 }
                 if (fanPullFast.activeSelf)
                 {
-                    fanPullFast.GetComponent<FanPull>().RemoveAllObjects();
+                    fanPullFast.GetComponent<FanArea>().RemoveAllObjects();
                 }
                 fanPullDefault.SetActive(false);
                 fanPullFast.SetActive(false);
@@ -193,19 +197,19 @@ namespace Hazard
                 foreach (Transform fanBlade in fanBlades.transform)
                 {
                     fanBlade.GetComponent<FanDamager>().SetDamage(_fastDamage);
-                    fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_fastKnockbackForce);
+                    fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_fastKnockbackForce, _fastEnemyKnockbackForce);
                 }
 
                 if (fanPushDefault.activeSelf)
                 {
-                    fanPushDefault.GetComponent<FanPush>().RemoveAllObjects();
+                    fanPushDefault.GetComponent<FanArea>().RemoveAllObjects();
                 }
                 fanPushDefault.SetActive(false);
                 fanPushFast.SetActive(true);
                 
                 if (fanPullDefault.activeSelf)
                 {
-                    fanPullDefault.GetComponent<FanPull>().RemoveAllObjects();
+                    fanPullDefault.GetComponent<FanArea>().RemoveAllObjects();
                 }
                 fanPullDefault.SetActive(false);
                 fanPullFast.SetActive(true);
@@ -230,20 +234,20 @@ namespace Hazard
             foreach (Transform fanBlade in fanBlades.transform)
             {
                 fanBlade.GetComponent<FanDamager>().SetDamage(_defaultDamage);
-                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_defaultKnockbackForce);
+                fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_defaultKnockbackForce, _defaultEnemyKnockbackForce);
             }
 
             fanPushDefault.SetActive(true);
             if (fanPushFast.activeSelf)
             {
-                fanPushFast.GetComponent<FanPush>().RemoveAllObjects();
+                fanPushFast.GetComponent<FanArea>().RemoveAllObjects();
             }
             fanPushFast.SetActive(false);
 
             fanPullDefault.SetActive(true);
             if (fanPullFast.activeSelf)
             {
-                fanPullFast.GetComponent<FanPull>().RemoveAllObjects();
+                fanPullFast.GetComponent<FanArea>().RemoveAllObjects();
             }
             fanPullFast.SetActive(false);
 

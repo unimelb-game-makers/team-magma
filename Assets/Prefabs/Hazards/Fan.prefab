@@ -461,10 +461,13 @@ MonoBehaviour:
   _defaultKnockbackForce: 75
   _fastKnockbackForce: 100
   _slowKnockbackForce: 50
+  _defaultEnemyKnockbackForce: 5
+  _fastEnemyKnockbackForce: 8
+  _slowEnemyKnockbackForce: 2
   _defaultForceAmount: 600
   _fastForceAmount: 800
-  _defaultMovementAmount: 5
-  _fastMovementAmount: 10
+  _defaultEnemyMovementAmount: 5
+  _fastEnemyMovementAmount: 10
   isSlowTempo: 0
   isFastTempo: 0
 --- !u!1 &3830662666819368295
@@ -526,7 +529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3086362064020397720}
   - component: {fileID: 2612093871156376957}
-  - component: {fileID: 4879151263929820489}
+  - component: {fileID: 8268191896686741347}
   m_Layer: 0
   m_Name: FanPull_Fast
   m_TagString: Untagged
@@ -570,7 +573,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4879151263929820489
+--- !u!114 &8268191896686741347
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -579,7 +582,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4453617691447217698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7808ffadbb260fa479586790555e2b97, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b0ee593b209514a88bbe1078c7726e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4564702690302244241
@@ -726,7 +729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1293086671760394675}
   - component: {fileID: 3529191812572244012}
-  - component: {fileID: 5963202291759073433}
+  - component: {fileID: 1667584908226916123}
   m_Layer: 0
   m_Name: FanPull_Default
   m_TagString: Untagged
@@ -770,7 +773,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5963202291759073433
+--- !u!114 &1667584908226916123
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -779,7 +782,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5029518305871923242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7808ffadbb260fa479586790555e2b97, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b0ee593b209514a88bbe1078c7726e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5203695047324914837

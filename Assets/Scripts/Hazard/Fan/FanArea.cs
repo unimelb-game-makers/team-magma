@@ -1,5 +1,5 @@
 // Author : William Alexander Tang Wai @ Jalapeno
-// 12/01/2025 14:33
+// 11/01/2025 22:20
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +8,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Hazard
 {
-    public class FanPull : MonoBehaviour
+    public class FanArea : MonoBehaviour
     {
         private float movementAmount;
         private float forceAmount;
@@ -39,31 +39,42 @@ namespace Hazard
             Debug.Log("All objects have stopped being affected by " + gameObject);
         }
 
-        // The objects should be pulled in the fixed update
+        // The objects should be pushed/pulled in the fixed update
         void FixedUpdate()
         {
-            // Apply the force in the specified direction and magnitude.
+            // Apply the force in the specified direction and magnitude for the player.
             Vector3 force = forceAmount * forceDirection.normalized;
             if (player)
             {
-                // ForceMode.Force for continuous force.
                 player.AddForce(force, ForceMode.Acceleration);
-                Debug.Log("Player is being pulled!");
+                Debug.Log("Player is being pushed!");
             }
 
             // How much should the enemies be affected.
             Vector3 moveDirection = Time.fixedDeltaTime * movementAmount * forceDirection.normalized;
-            foreach (NavMeshAgent agent in _agents)
+            for (int i = _agents.Count - 1; i >= 0; i--)
             {
-                // Move the agent towards the fan (adjust the force as needed).
-                agent.Move(moveDirection);
-                Debug.Log("Enemies are being pulled!");
+                if (_agents[i] == null)
+                {
+                    _agents.RemoveAt(i);
+                    continue;
+                }
+
+                _agents[i].Move(moveDirection);
+
+                // So the agent is not pulled into the fan.
+                if (_agents[i].GetComponent<Collider>().isTrigger)
+                {
+                    _agents[i].GetComponent<Collider>().isTrigger = false;
+                }
+
+                Debug.Log("Enemies are being pushed/pulled!");
             }
         }
 
         public void OnTriggerEnter(Collider other)
         {
-            // Pull player.
+            // Add player to the 'affected' list.
             if (other.CompareTag("Player") && !player)
             {
                 // Get a reference to the player's rb
@@ -73,12 +84,12 @@ namespace Hazard
                     player = rb;
                 }
             }
-            // Pull enemies.
+            // Add enemies to the 'affected' list.
             else if (other.CompareTag("Enemy") && !_agents.Contains(other.GetComponent<NavMeshAgent>()))
             {
                 // Get a reference to the enemy's transform.
                 _agents.Add(other.GetComponent<NavMeshAgent>());
-                Debug.Log("Enemy has entered the pull area!");
+                Debug.Log("Enemy has entered the fan area!");
             }
         }
 
@@ -92,8 +103,9 @@ namespace Hazard
 
             if (other.CompareTag("Enemy") && _agents.Contains(other.GetComponent<NavMeshAgent>()))
             {
+                other.GetComponent<Collider>().isTrigger = true;
                 _agents.Remove(other.GetComponent<NavMeshAgent>());
-                Debug.Log("Enemy has left the pull area!");
+                Debug.Log("Enemy has left the fan area!");
             }
         }
     }
