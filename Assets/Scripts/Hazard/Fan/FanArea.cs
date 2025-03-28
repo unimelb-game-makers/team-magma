@@ -36,7 +36,7 @@ namespace Hazard
             }
             _agents.Clear();
 
-            Debug.Log("All objects have stopped being affected by " + gameObject);
+            // Debug.Log("All objects have stopped being affected by " + gameObject);
         }
 
         // The objects should be pushed/pulled in the fixed update
@@ -47,7 +47,7 @@ namespace Hazard
             if (player)
             {
                 player.AddForce(force, ForceMode.Acceleration);
-                Debug.Log("Player is being pushed!");
+                // Debug.Log("Player is being pushed/pulled!");
             }
 
             // How much should the enemies be affected.
@@ -68,7 +68,7 @@ namespace Hazard
                     _agents[i].GetComponent<Collider>().isTrigger = false;
                 }
 
-                Debug.Log("Enemies are being pushed/pulled!");
+                // Debug.Log("Enemies are being pushed/pulled!");
             }
         }
 
@@ -89,7 +89,7 @@ namespace Hazard
             {
                 // Get a reference to the enemy's transform.
                 _agents.Add(other.GetComponent<NavMeshAgent>());
-                Debug.Log("Enemy has entered the fan area!");
+                // Debug.Log("Enemy has entered the fan area!");
             }
         }
 
@@ -105,7 +105,7 @@ namespace Hazard
             {
                 other.GetComponent<Collider>().isTrigger = true;
                 _agents.Remove(other.GetComponent<NavMeshAgent>());
-                Debug.Log("Enemy has left the fan area!");
+                // Debug.Log("Enemy has left the fan area!");
             }
         }
     }
