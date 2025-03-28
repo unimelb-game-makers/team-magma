@@ -1,22 +1,25 @@
 // Author : William Alexander Tang Wai @ Jalapeno
 // 12/01/2025 14:33
 
-using System.Collections;
 using System.Collections.Generic;
-using Enemy;
 using UnityEngine;
 using UnityEngine.AI;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Hazard
 {
     public class FanPull : MonoBehaviour
     {
+        private float movementAmount;
         private float forceAmount;
         private Vector3 forceDirection;
+        private Rigidbody player;
+        private List<NavMeshAgent> _agents = new();
 
-        public void SetForceAmount(float amount)
+        public void SetForcesAmount(float forceAmount, float movementAmount)
         {
-            forceAmount = amount;
+            this.forceAmount = forceAmount;
+            this.movementAmount = movementAmount;
         }
 
         public void SetForceDirection(Vector3 direction)
@@ -24,55 +27,73 @@ namespace Hazard
             forceDirection = direction;
         }
 
-        /**
-         * When characters stay in the fanPull, pull them.
-         */
-        public void OnTriggerStay(Collider other)
+        public void RemoveAllObjects()
         {
-            // Pull player or enemies
-            if (other.CompareTag("Player") || other.CompareTag("Enemy"))
+            if (player)
             {
-                // Check if the object has a Rigidbody to apply the force.
+                player.velocity = Vector3.zero;
+                player = null;
+            }
+            _agents.Clear();
+
+            Debug.Log("All objects have stopped being affected by " + gameObject);
+        }
+
+        // The objects should be pulled in the fixed update
+        void FixedUpdate()
+        {
+            // Apply the force in the specified direction and magnitude.
+            Vector3 force = forceAmount * forceDirection.normalized;
+            if (player)
+            {
+                // ForceMode.Force for continuous force.
+                player.AddForce(force, ForceMode.Acceleration);
+                Debug.Log("Player is being pulled!");
+            }
+
+            // How much should the enemies be affected.
+            Vector3 moveDirection = Time.fixedDeltaTime * movementAmount * forceDirection.normalized;
+            foreach (NavMeshAgent agent in _agents)
+            {
+                // Move the agent towards the fan (adjust the force as needed).
+                agent.Move(moveDirection);
+                Debug.Log("Enemies are being pulled!");
+            }
+        }
+
+        public void OnTriggerEnter(Collider other)
+        {
+            // Pull player.
+            if (other.CompareTag("Player") && !player)
+            {
+                // Get a reference to the player's rb
                 Rigidbody rb = other.attachedRigidbody;
                 if (rb != null)
                 {
-                    // Apply the force in the specified direction and magnitude.
-                    Vector3 force = forceDirection.normalized * forceAmount;
-                    // Clamp velocity to prevent "yeeting"
-                    rb.velocity = Vector3.ClampMagnitude(rb.velocity, 10f);
-                    // ForceMode.Force for continuous force.
-                    rb.AddForce(force, ForceMode.Acceleration);
-
-                    Debug.Log("Player/Enemies are being pulled!");
+                    player = rb;
                 }
             }
-
-            // To test later
-            // else if (other.CompareTag("Enemy"))
-            // {
-            //     // Check if the object has a Rigidbody to apply the force.
-            //     Rigidbody rb = other.attachedRigidbody;
-            //     if (rb != null)
-            //     {
-            //         // Enemies could be moving at different speeds or be stationary (when attacking)
-            //         // All enemies moves at the same speed no matter the state.
-            //         float currentMaxSpeed = other.GetComponent<EnemyController>().GetCurrentMaxSpeed();
-            //         float pullSpeed = Mathf.Abs(currentMaxSpeed - 2);
-
-            //         rb.velocity += pullSpeed * Time.deltaTime * forceDirection.normalized;
-
-            //         Debug.Log("Enemies are being pulled!");
-            //     }
-            // }
+            // Pull enemies.
+            else if (other.CompareTag("Enemy") && !_agents.Contains(other.GetComponent<NavMeshAgent>()))
+            {
+                // Get a reference to the enemy's transform.
+                _agents.Add(other.GetComponent<NavMeshAgent>());
+                Debug.Log("Enemy has entered the pull area!");
+            }
         }
 
         public void OnTriggerExit(Collider other)
         {
-            // Check if the object has a Rigidbody to remove the force.
-            Rigidbody rb = other.attachedRigidbody;
-            if (rb != null)
+            if (other.CompareTag("Player") && player)
             {
-                rb.velocity = Vector3.zero;
+                player.velocity = Vector3.zero;
+                player = null;
+            }
+
+            if (other.CompareTag("Enemy") && _agents.Contains(other.GetComponent<NavMeshAgent>()))
+            {
+                _agents.Remove(other.GetComponent<NavMeshAgent>());
+                Debug.Log("Enemy has left the pull area!");
             }
         }
     }
