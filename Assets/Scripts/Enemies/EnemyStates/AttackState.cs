@@ -15,7 +15,7 @@ public class AttackState : BaseEnemyState
                         base(enemyController, navMeshAgent, playerController) { }
 
     public override void EnterState() {
-        Debug.Log("Entering Attack State");
+        // Debug.Log("Entering Attack State");
         
         //ToDo: the animation should be reimplemented according Our Requirements
         // enemyController.GetAnimator().SetBool(enemyController.GetIdleAttackAnimationBool(), true);
@@ -31,10 +31,6 @@ public class AttackState : BaseEnemyState
         // If the enemy is currently attacking/knockbacked, wait for the
         // attack to finish first.
         if (enemyController.IsAttacking()) return;
-        // Temporary code until knockback is included in base class.
-        else if (enemyController is AssassinEnemyController aController && aController.isKnockback) {
-            return;
-        }
         // If the player was killed, transition to patrol state.
         else if (!playerController) {
             enemyController.TransitionToState(EnemyState.Patrol);
