@@ -1946,12 +1946,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba873601e4f84648b6256300da64032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicManager: {fileID: 0}
   beatPrefab: {fileID: 4737753236498233995, guid: f8d2164f527688f4b8c86d5f18751341, type: 3}
-  spawnPoint: {fileID: 824614953}
-  beatSpeed: 0.3
-  beatInterval: 0.5
-  useBeatManager: 0
+  spawnPointLeft: {fileID: 0}
+  spawnPointRight: {fileID: 0}
+  hexagonLeft: {fileID: 0}
+  hexagonRight: {fileID: 0}
+  hitTolerance: 25
 --- !u!1 &307924383
 GameObject:
   m_ObjectHideFlags: 0
@@ -2339,7 +2339,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
   m_sharedMaterial: {fileID: -2566534041612927758, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -2566534041612927758, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -3285,7 +3286,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
   m_sharedMaterial: {fileID: -2566534041612927758, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -2566534041612927758, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -4715,7 +4717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundImage: {fileID: 63038302}
-  hoverScale: 1.2
+  hoverColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   animationDuration: 0.2
 --- !u!114 &771244170
 MonoBehaviour:
@@ -5349,7 +5351,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
   m_sharedMaterial: {fileID: -2566534041612927758, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -2566534041612927758, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -6039,21 +6042,21 @@ MonoBehaviour:
   jumpForce: 2
   lookOrientation: 0
   moveOrientation: 0
-  projectilePrefab: {fileID: 3345562608605307880, guid: d20f1b4b149104c94b88ac30db2413f0, type: 3}
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64
   rotationSpeed: 20
   MeleeAttackPrefab: {fileID: 3345562608605307880, guid: 320ad44a5e6169c4e8aad40d4f02f2f6, type: 3}
-  hitRange: 0.7
-  meleeAttackRecoverTime: 0.7
-  attackDamage: 10
+  weakAttackRange: 1
+  strongAttackRange: 2
+  weakMeleeAttackRecoverTime: 0.5
+  strongMeleeAttackRecoverTime: 0.3
+  weakAttackDamage: 10
+  strongAttackDamage: 20
   dodgeSpeed: 40
   dodgeRecoverTime: 1
   dodgeTime: 0.15
   isInvulnerableTime: 0.1
-  detectionZone: {fileID: 1986011258}
-  detectionRadius: 25
 --- !u!114 &1056587389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6229,7 +6232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundImage: {fileID: 866064364}
-  hoverScale: 1.2
+  hoverColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   animationDuration: 0.2
 --- !u!114 &1061732820
 MonoBehaviour:
@@ -7071,7 +7074,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
   m_sharedMaterial: {fileID: -2566534041612927758, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -2566534041612927758, guid: 6dc1e06fc86269d47bc313186ee99087, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -7402,11 +7406,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionWheel: {fileID: 537481497}
+  selectionWheelPanel: {fileID: 0}
   inputName: Tape
   pauseObjectController: {fileID: 1547979753}
   batteryManager: {fileID: 1547979750}
   pauseMenuController: {fileID: 1547979752}
   batteryNeeded: 50
+  fadeDuration: 0.2
+  TapeEffectSoundPlayer: {fileID: 0}
+  tapeButtons: []
+  scrollSpeed: 1
 --- !u!114 &1547979752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8717,7 +8726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundImage: {fileID: 612247160}
-  hoverScale: 1.2
+  hoverColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   animationDuration: 0.2
 --- !u!114 &1872059746
 MonoBehaviour:
@@ -9176,6 +9185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  failColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2030516637
 GameObject:
   m_ObjectHideFlags: 0
