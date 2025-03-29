@@ -14,7 +14,7 @@ public class IdleState : BaseEnemyState
                     base(enemyController, navMeshAgent, playerController) { }
 
     public override void EnterState() {
-        Debug.Log("Entering Idle State");
+        // Debug.Log("Entering Idle State");
         // enemyController.GetAnimator().SetBool(enemyController.GetIdleAnimationBool(), true);
         idleDuration = enemyController.GetIdleDuration();
         idleTime = idleDuration;

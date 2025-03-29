@@ -14,7 +14,7 @@ public class ChaseState : BaseEnemyState
                     base(enemyController, navMeshAgent, playerController) { }
 
     public override void EnterState() {
-        Debug.Log("Entering Chase State");
+        // Debug.Log("Entering Chase State");
         // enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), true);
         navMeshAgent.speed = enemyController.GetChaseSpeed();
         chaseDuration = enemyController.GetChaseDuration();
