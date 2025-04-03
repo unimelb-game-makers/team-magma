@@ -2134,6 +2134,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7541268101758166500}
   - component: {fileID: 480532585491181692}
+  - component: {fileID: 1913418911313761471}
+  - component: {fileID: 1685183256448005167}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -2214,6 +2216,70 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1913418911313761471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1950230708482036300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 14
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2260817650222889855}
+          m_TargetAssemblyTypeName: AudioPlayer, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+  - eventID: 5
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1685183256448005167}
+          m_TargetAssemblyTypeName: AudioPlayer, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+--- !u!114 &1685183256448005167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1950230708482036300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a5aaa25c5290b44a0b6087ca79417a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventReference:
+    Guid:
+      Data1: 430206639
+      Data2: 1288931373
+      Data3: 1120617407
+      Data4: 1721628204
+    Path: event:/UI/Hover
 --- !u!1 &1985657300273058728
 GameObject:
   m_ObjectHideFlags: 0
@@ -5835,6 +5901,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1286126411526186783}
   - component: {fileID: 7492072316227279193}
+  - component: {fileID: 3629874393736214431}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -5915,6 +5982,35 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3629874393736214431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4111008111663013949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 14
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2260817650222889855}
+          m_TargetAssemblyTypeName: AudioPlayer, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
 --- !u!1 &4113516264284148826
 GameObject:
   m_ObjectHideFlags: 0
@@ -6206,6 +6302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7809887714997809732}
   - component: {fileID: 2395579652743682017}
+  - component: {fileID: 8774519047548136462}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -6286,6 +6383,35 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8774519047548136462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378112495056708429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 14
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2260817650222889855}
+          m_TargetAssemblyTypeName: AudioPlayer, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &4499787210609997258
 GameObject:
   m_ObjectHideFlags: 0
@@ -7047,6 +7173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 783109676433961246}
   - component: {fileID: 221017313461837530}
+  - component: {fileID: 7568758806058172501}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -7127,6 +7254,35 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7568758806058172501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5131875247297159873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 14
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2260817650222889855}
+          m_TargetAssemblyTypeName: AudioPlayer, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
 --- !u!1 &5195954348971964859
 GameObject:
   m_ObjectHideFlags: 0
@@ -7254,6 +7410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4481591741670940467}
   - component: {fileID: 8761943263347382147}
+  - component: {fileID: 2260817650222889855}
   m_Layer: 5
   m_Name: SettingsPanel
   m_TagString: Untagged
@@ -7296,6 +7453,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5327700921324189383}
   m_CullTransparentMesh: 1
+--- !u!114 &2260817650222889855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5327700921324189383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a5aaa25c5290b44a0b6087ca79417a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventReference:
+    Guid:
+      Data1: 822178224
+      Data2: 1289621269
+      Data3: -848814202
+      Data4: -1765603695
+    Path: event:/UI/Select
 --- !u!1 &5535605154256806125
 GameObject:
   m_ObjectHideFlags: 0
@@ -8067,6 +8243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4955268510581308502}
   - component: {fileID: 5741662053861884467}
+  - component: {fileID: 1197527314644854794}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -8147,6 +8324,35 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1197527314644854794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6208876232102308355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 6
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2260817650222889855}
+          m_TargetAssemblyTypeName: AudioPlayer, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
 --- !u!1 &6245956264133121935
 GameObject:
   m_ObjectHideFlags: 0
