@@ -1718,8 +1718,7 @@ GameObject:
   - component: {fileID: 4494883346862483327}
   - component: {fileID: 8277480095381148431}
   - component: {fileID: 5052124196525585107}
-  - component: {fileID: 3295526992688294516}
-  - component: {fileID: 6107165481885006077}
+  - component: {fileID: 2672835271877333754}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -1859,7 +1858,7 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   transitionDuration: 0.2
---- !u!114 &3295526992688294516
+--- !u!114 &2672835271877333754
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1868,59 +1867,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1718692336359221420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: 30723c71a66725d4395d4bcc96b4ecca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  hoverEventReference:
     Guid:
       Data1: 430206639
       Data2: 1288931373
       Data3: 1120617407
       Data4: 1721628204
     Path: event:/UI/Hover
-  Event: 
-  EventPlayTrigger: 17
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!114 &6107165481885006077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1718692336359221420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  clickEventReference:
     Guid:
       Data1: 822178224
       Data2: 1289621269
       Data3: -848814202
       Data4: -1765603695
     Path: event:/UI/Select
-  Event: 
-  EventPlayTrigger: 20
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &1804970430588758110
 GameObject:
   m_ObjectHideFlags: 0
@@ -2398,8 +2361,7 @@ GameObject:
   - component: {fileID: 8474759282050328301}
   - component: {fileID: 4852917628218961457}
   - component: {fileID: 7824860217483547929}
-  - component: {fileID: 6110299947025906791}
-  - component: {fileID: 5047230483833230149}
+  - component: {fileID: 3462912374117018864}
   m_Layer: 5
   m_Name: SaveButton
   m_TagString: Untagged
@@ -2537,7 +2499,7 @@ MonoBehaviour:
   backgroundImage: {fileID: 6025492995967083497}
   hoverColor: {r: 1, g: 1, b: 1, a: 0}
   animationDuration: 0.2
---- !u!114 &6110299947025906791
+--- !u!114 &3462912374117018864
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2546,59 +2508,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1989197723028163678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: 30723c71a66725d4395d4bcc96b4ecca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  hoverEventReference:
     Guid:
       Data1: 430206639
       Data2: 1288931373
       Data3: 1120617407
       Data4: 1721628204
     Path: event:/UI/Hover
-  Event: 
-  EventPlayTrigger: 17
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!114 &5047230483833230149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989197723028163678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  clickEventReference:
     Guid:
       Data1: 822178224
       Data2: 1289621269
       Data3: -848814202
       Data4: -1765603695
     Path: event:/UI/Select
-  Event: 
-  EventPlayTrigger: 20
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &2042610757926141310
 GameObject:
   m_ObjectHideFlags: 0
@@ -5612,8 +5538,7 @@ GameObject:
   - component: {fileID: 7394289551852557461}
   - component: {fileID: 6928282796443740557}
   - component: {fileID: 7005035974313491157}
-  - component: {fileID: 987905051758152124}
-  - component: {fileID: 983867917715812706}
+  - component: {fileID: 4272022624550202619}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -5753,7 +5678,7 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   transitionDuration: 0.2
---- !u!114 &987905051758152124
+--- !u!114 &4272022624550202619
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5762,59 +5687,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 4054617451957655456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: 30723c71a66725d4395d4bcc96b4ecca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  hoverEventReference:
     Guid:
       Data1: 430206639
       Data2: 1288931373
       Data3: 1120617407
       Data4: 1721628204
     Path: event:/UI/Hover
-  Event: 
-  EventPlayTrigger: 17
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!114 &983867917715812706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4054617451957655456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  clickEventReference:
     Guid:
       Data1: 822178224
       Data2: 1289621269
       Data3: -848814202
       Data4: -1765603695
     Path: event:/UI/Select
-  Event: 
-  EventPlayTrigger: 20
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &4055735913935702018
 GameObject:
   m_ObjectHideFlags: 0
@@ -6531,8 +6420,7 @@ GameObject:
   - component: {fileID: 1367502406428104401}
   - component: {fileID: 4067217905368398739}
   - component: {fileID: 715097352735134642}
-  - component: {fileID: 4736633978889585611}
-  - component: {fileID: 5929732759609848227}
+  - component: {fileID: 5401415376820276219}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -6672,7 +6560,7 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   transitionDuration: 0.2
---- !u!114 &4736633978889585611
+--- !u!114 &5401415376820276219
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6681,59 +6569,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 4711910426529263929}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: 30723c71a66725d4395d4bcc96b4ecca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  hoverEventReference:
     Guid:
       Data1: 430206639
       Data2: 1288931373
       Data3: 1120617407
       Data4: 1721628204
     Path: event:/UI/Hover
-  Event: 
-  EventPlayTrigger: 17
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!114 &5929732759609848227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4711910426529263929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  clickEventReference:
     Guid:
       Data1: 822178224
       Data2: 1289621269
       Data3: -848814202
       Data4: -1765603695
     Path: event:/UI/Select
-  Event: 
-  EventPlayTrigger: 20
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &4860406974100263817
 GameObject:
   m_ObjectHideFlags: 0

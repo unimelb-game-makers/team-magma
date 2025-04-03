@@ -1718,6 +1718,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1892051433}
   m_LocalEulerAnglesHint: {x: 50, y: -57, z: 0}
+--- !u!1 &733451518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1718692336359221420, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+  m_PrefabInstance: {fileID: 38014523285561577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &733451526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733451518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30723c71a66725d4395d4bcc96b4ecca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverEventReference:
+    Guid:
+      Data1: 430206639
+      Data2: 1288931373
+      Data3: 1120617407
+      Data4: 1721628204
+    Path: event:/UI/Hover
+  clickEventReference:
+    Guid:
+      Data1: 822178224
+      Data2: 1289621269
+      Data3: -848814202
+      Data4: -1765603695
+    Path: event:/UI/Select
+--- !u!1 &750218692 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4054617451957655456, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+  m_PrefabInstance: {fileID: 38014523285561577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &750218700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750218692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30723c71a66725d4395d4bcc96b4ecca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverEventReference:
+    Guid:
+      Data1: 430206639
+      Data2: 1288931373
+      Data3: 1120617407
+      Data4: 1721628204
+    Path: event:/UI/Hover
+  clickEventReference:
+    Guid:
+      Data1: 822178224
+      Data2: 1289621269
+      Data3: -848814202
+      Data4: -1765603695
+    Path: event:/UI/Select
 --- !u!1 &771204924 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8111772465522756104, guid: 85d672202f9c7cc458ea719c91604a0a, type: 3}
@@ -2672,6 +2734,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1217467976}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1250109798 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4711910426529263929, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+  m_PrefabInstance: {fileID: 38014523285561577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1250109806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250109798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30723c71a66725d4395d4bcc96b4ecca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverEventReference:
+    Guid:
+      Data1: 430206639
+      Data2: 1288931373
+      Data3: 1120617407
+      Data4: 1721628204
+    Path: event:/UI/Hover
+  clickEventReference:
+    Guid:
+      Data1: 822178224
+      Data2: 1289621269
+      Data3: -848814202
+      Data4: -1765603695
+    Path: event:/UI/Select
 --- !u!1 &1253633154
 GameObject:
   m_ObjectHideFlags: 0
@@ -4377,6 +4470,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2117810623}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2129749132 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1989197723028163678, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+  m_PrefabInstance: {fileID: 38014523285561577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2129749140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129749132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30723c71a66725d4395d4bcc96b4ecca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverEventReference:
+    Guid:
+      Data1: 430206639
+      Data2: 1288931373
+      Data3: 1120617407
+      Data4: 1721628204
+    Path: event:/UI/Hover
+  clickEventReference:
+    Guid:
+      Data1: 822178224
+      Data2: 1289621269
+      Data3: -848814202
+      Data4: -1765603695
+    Path: event:/UI/Select
 --- !u!1001 &38014523285561577
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4585,10 +4709,30 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 983867917715812706, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+    - {fileID: 987905051758152124, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+    - {fileID: 3295526992688294516, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+    - {fileID: 6107165481885006077, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+    - {fileID: 4736633978889585611, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+    - {fileID: 5929732759609848227, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+    - {fileID: 6110299947025906791, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+    - {fileID: 5047230483833230149, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1989197723028163678, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2129749140}
+    - targetCorrespondingSourceObject: {fileID: 4054617451957655456, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 750218700}
+    - targetCorrespondingSourceObject: {fileID: 1718692336359221420, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 733451526}
+    - targetCorrespondingSourceObject: {fileID: 4711910426529263929, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1250109806}
   m_SourcePrefab: {fileID: 100100000, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
 --- !u!1001 &3122858186301560600
 PrefabInstance:

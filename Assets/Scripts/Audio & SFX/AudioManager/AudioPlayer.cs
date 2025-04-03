@@ -4,49 +4,30 @@ using Managers.AudioManager;
 
 public class AudioPlayer : MonoBehaviour
 {
-    [SerializeField]
-    private EventReference eventReference; // FMOD Event Reference
-
-    private IAudioEventPlayer audioPlayer; // Audio event player interface
-    private IAudioEventReference reference; // Audio event reference
-
+    [SerializeField] private EventReference eventReference; // FMOD Event Reference
     private FMOD.Studio.EventInstance eventInstance; // Event instance declaration
 
     void Start()
     {
-        // Get the AudioEventPlayer from the scene
-        audioPlayer = FindObjectOfType<AudioEventPlayer>();
-
-        if (audioPlayer == null)
-        {
-            Debug.LogError("AudioPlayerTest: No AudioEventPlayer found in the scene.");
-            return;
-        }
-
-        // Create the audio event reference from the FMOD EventReference
-        reference = new FMODAudioEventReference(eventReference);
-
         // Create the FMOD event instance from the EventReference
         eventInstance = FMODUnity.RuntimeManager.CreateInstance(eventReference);
     }
 
     public void Play()
     {
-        if (audioPlayer == null || reference == null)
-        {
-            Debug.LogError("AudioPlayerTest: Missing audioPlayer or reference.");
-            return;
-        }
-
-        int instanceId = audioPlayer.PlayEventInstance(reference, null, releaseOnFinish: true);
+        SetVolumeBasedOnSetting();
+        eventInstance.start();
     }
 
-    public void SetVolume(float volume)
+    // Set the initial volume based on PlayerPrefs or default value
+    private void SetVolumeBasedOnSetting()
     {
-        // Ensure volume is between 0.0 (mute) and 1.0 (full volume)
+        float sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1.0f);  // Default to 1 (100%) if not set
+        float masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1.0f);  // Default to 1 (100%) if not set
+
         if (eventInstance.isValid())
         {
-            eventInstance.setVolume(Mathf.Clamp(volume, 0.0f, 1.0f)); // Set volume
+            eventInstance.setVolume(sfxVolume * masterVolume); // Set volume
         }
     }
 
