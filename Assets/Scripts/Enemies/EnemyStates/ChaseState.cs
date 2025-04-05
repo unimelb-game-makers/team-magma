@@ -10,6 +10,11 @@ public class ChaseState : BaseEnemyState
     private float chaseTime;
     private float chaseDuration;
 
+    private float stepInterval = 0.5f;
+    private readonly float lowStepInterval = 0.7f;
+    private readonly float highStepInterval = 0.3f;
+    private float stepElapsedTime = 0;
+
     public ChaseState(EnemyController enemyController, NavMeshAgent navMeshAgent, PlayerController playerController) : 
                     base(enemyController, navMeshAgent, playerController) { }
 
@@ -23,6 +28,14 @@ public class ChaseState : BaseEnemyState
 
     public override void UpdateState() {
         enemyController.Chase();
+
+        // Footsteps sound.
+        stepElapsedTime += Time.deltaTime;
+        if (stepElapsedTime > stepInterval) {
+            stepElapsedTime = 0;
+            enemyController.GetChaseSound().start();
+            stepInterval = Random.Range(lowStepInterval, highStepInterval);
+        }
 
         // If the player was killed, transition to patrol state.
         if (playerController == null) {
@@ -46,6 +59,7 @@ public class ChaseState : BaseEnemyState
     }
 
     public override void ExitState() {
+        enemyController.GetChaseSound().stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         // enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), false);
     }
 }

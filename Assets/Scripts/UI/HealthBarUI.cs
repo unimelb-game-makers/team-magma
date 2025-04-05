@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Player;
 using Player.Stats;
+using System.Collections;
 
 namespace UI
 {

@@ -29,6 +29,10 @@ public class AudioPlayer : MonoBehaviour
         {
             eventInstance.setVolume(sfxVolume * masterVolume); // Set volume
         }
+
+        if (gameObject.name == "SettingsPanel") {
+            SoundManager.Instance.SetGameObjectsSFXVolume();
+        }
     }
 
     void OnDestroy()

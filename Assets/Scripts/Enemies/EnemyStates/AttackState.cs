@@ -55,6 +55,7 @@ public class AttackState : BaseEnemyState
     }
 
     public override void ExitState() {
+        enemyController.GetAttackSound().stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         // enemyController.GetAnimator().SetBool(enemyController.GetIdleAttackAnimationBool(), false);
     }
 }
