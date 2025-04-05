@@ -85,7 +85,6 @@ public class SettingsManager : MonoBehaviour
 
     private void SetSFXVolume(float value)
     {
-        // TODO: implement the actual setting
         PlayerPrefs.SetFloat("SFXVolume", value);
 
         // Update the text to show the new volume value

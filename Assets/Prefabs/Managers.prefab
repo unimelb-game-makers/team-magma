@@ -82,7 +82,6 @@ GameObject:
   m_Component:
   - component: {fileID: 167019525399685017}
   - component: {fileID: 7079655081050361277}
-  - component: {fileID: 6226449188722017207}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: AudioManager
@@ -117,25 +116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05210986d8274e83bf3f99524260e84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6226449188722017207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2556768739024586054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c6824ad533943ab9991c9c22b5b989a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myEventReference:
-    Guid:
-      Data1: 708724966
-      Data2: 1130599676
-      Data3: -768382828
-      Data4: 8080861
-    Path: event:/UI/Cancel
 --- !u!1 &8111772465522756104
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +171,7 @@ MonoBehaviour:
       Data3: 651052185
       Data4: -1957406073
     Path: event:/Music/Level 03
+  _volume: 1
 --- !u!114 &7014823530575747517
 MonoBehaviour:
   m_ObjectHideFlags: 0

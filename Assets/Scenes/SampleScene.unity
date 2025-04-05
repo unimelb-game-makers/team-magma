@@ -1795,17 +1795,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8111772465522756104, guid: 85d672202f9c7cc458ea719c91604a0a, type: 3}
   m_PrefabInstance: {fileID: 3122858186301560600}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &771204929 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7025496366650524308, guid: 85d672202f9c7cc458ea719c91604a0a, type: 3}
-  m_PrefabInstance: {fileID: 3122858186301560600}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771204924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da9a1c6bbcd44594ba3eedceec480376, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &812073401
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4601,10 +4590,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4405511219425992561, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      propertyPath: musicTimeline
-      value: 
-      objectReference: {fileID: 771204929}
     - target: {fileID: 4853757593021783718, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
