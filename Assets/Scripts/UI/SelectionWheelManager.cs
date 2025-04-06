@@ -19,19 +19,15 @@ public class SelectionWheelManager : MonoBehaviour
     [SerializeField] private PauseMenuController pauseMenuController;
     [SerializeField] private float batteryNeeded = 50;
     [SerializeField] private float fadeDuration = 0.2f;
-    [SerializeField] private AudioPlayerTest TapeEffectSoundPlayer;
+    [SerializeField] private AudioPlayer TapeEffectSoundPlayer;
     [SerializeField] private List<Button> tapeButtons;
     [SerializeField] private float scrollSpeed = 1f;  // Set the scroll speed
     private bool isWheelActive = false; // Track if the wheel is active
-    private GameObject musicManager;
-
     private bool isScrolled = false;
     private int currentIndex = 0; // Index to track the current selection
 
     void Awake() {
         selectionWheelPanel.transform.localScale = Vector3.zero;
-
-        musicManager = GameObject.FindGameObjectWithTag("RhythmManager");
     }    
     
     void Update()
@@ -143,34 +139,48 @@ public class SelectionWheelManager : MonoBehaviour
     }
 
     public void UseTapeDefault() {
-        MusicTimeline timelineComponent = musicManager.GetComponent<MusicTimeline>();
-        timelineComponent.SetIntensity(2);
-        UseTape();
-        PlayTapeEffect(TapeType.Slow, 0.01f, 0.5f);
+        if (batteryManager.UseBattery(batteryNeeded))
+        {
+            MusicTimeline.instance.SetIntensity(2);
+            TapeEffectSoundPlayer.Play();
+            PlayTapeEffect(TapeType.Slow, 0.01f, 0.5f);
+
+            if (isWheelActive) {
+                ToggleWheel();
+            }
+        }
     }
 
     public void UseTapeSlow() {
-        MusicTimeline timelineComponent = musicManager.GetComponent<MusicTimeline>();
-        timelineComponent.SetIntensity(1);
-        
-        TapeEffectSoundPlayer.Play();
-        // Play Slow Tape Effect
-        //get IAffectServices from service locator
-        var affectServices = ServiceLocator.Instance.Get<ISyncable>();
-        foreach (var o in affectServices)
+        if (batteryManager.UseBattery(batteryNeeded))
         {
-            o.Affect(TapeType.Slow, 5, 0.5f); // Why is TapeType in Platforms namespace?
+            MusicTimeline.instance.SetIntensity(1);
+            TapeEffectSoundPlayer.Play();
+
+            //get IAffectServices from service locator
+            var affectServices = ServiceLocator.Instance.Get<ISyncable>();
+            foreach (var o in affectServices)
+            {
+                o.Affect(TapeType.Slow, 5, 0.5f); // Why is TapeType in Platforms namespace?
+            }
+        
+            if (isWheelActive) {
+                ToggleWheel();
+            }
         }
-    
-        UseTape();
     }
 
     public void UseTapeFast() {
+        if (batteryManager.UseBattery(batteryNeeded))
+        {
+            MusicTimeline.instance.SetIntensity(3);
+            TapeEffectSoundPlayer.Play();
+            PlayTapeEffect(TapeType.Fast, 5, 0.5f);
 
-        MusicTimeline timelineComponent = musicManager.GetComponent<MusicTimeline>();
-        timelineComponent.SetIntensity(3);
-        UseTape();
-        PlayTapeEffect(TapeType.Fast, 5, 0.5f);
+            if (isWheelActive) {
+                ToggleWheel();
+            }
+        } 
     }
 
     public void PlayTapeEffect(TapeType Type, float duration, float effectValue)
@@ -238,6 +248,7 @@ public class SelectionWheelManager : MonoBehaviour
     {
         if (batteryManager.UseBattery(batteryNeeded) && isWheelActive)
         {
+            UseTape();
             ToggleWheel();
         }
     }

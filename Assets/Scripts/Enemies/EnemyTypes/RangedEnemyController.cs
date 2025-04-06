@@ -9,6 +9,10 @@ namespace Enemies.EnemyTypes
 {
     public class RangedEnemyController : EnemyController
     {
+        [Header("Audio SFX")]
+        [SerializeField] private FMODUnity.EventReference fleeSoundReference;
+        private FMOD.Studio.EventInstance fleeSound;
+
         [Header("Ranged Attack Variables")]
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private float originalWindUpTime = 0.3f;
@@ -31,6 +35,10 @@ namespace Enemies.EnemyTypes
         public float GetFleeSpeed() { return fleeSpeed; }
         public bool EnemyIsInFleeRange() { return enemyInFleeRange; }
         public bool EnemyHasMovedToFleeLocation() { return enemyMovedToFleeLocation; }
+
+        public FMOD.Studio.EventInstance GetFleeSound() {
+            return fleeSound;
+        }
 
         public override void Update()
         {
@@ -64,8 +72,9 @@ namespace Enemies.EnemyTypes
                 SetIsAttacking(true);
 
                 // If the player is still alive.
-                if (GetPlayerController())
+                if (GetPlayerController()) {
                     StartCoroutine(PerformStrikeSequence());
+                }
 
                 /*
                 * NOTE: This event audio is triggered using a StudioEventEmitter component attached to this enemy.
@@ -99,6 +108,7 @@ namespace Enemies.EnemyTypes
             // 2) Fire projectile
             // ---------------------------------------
             SpawnProjectile();
+            GetAttackSound().start();
 
             // ---------------------------------------
             // 3) END Attack
@@ -178,6 +188,14 @@ namespace Enemies.EnemyTypes
             }
             
             return fleeLocation;
+        }
+
+        public override void SetAudioVolume(float masterVolume, float sfxVolume)
+        {
+            base.SetAudioVolume(masterVolume, sfxVolume);
+            if (fleeSound.isValid()) {
+                fleeSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
         }
 
         #region Tempo Overrides

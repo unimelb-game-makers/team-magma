@@ -14,10 +14,12 @@ public class IdleState : BaseEnemyState
                     base(enemyController, navMeshAgent, playerController) { }
 
     public override void EnterState() {
-        Debug.Log("Entering Idle State");
+        // Debug.Log("Entering Idle State");
         // enemyController.GetAnimator().SetBool(enemyController.GetIdleAnimationBool(), true);
         idleDuration = enemyController.GetIdleDuration();
         idleTime = idleDuration;
+
+        // enemyController.GetIdleSound().start();
     }
 
     public override void UpdateState() {
@@ -35,6 +37,7 @@ public class IdleState : BaseEnemyState
     }
 
     public override void ExitState() {
+        // enemyController.GetIdleSound().stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         // enemyController.GetAnimator().SetBool(enemyController.GetIdleAnimationBool(), false);
     }
 }

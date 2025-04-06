@@ -1358,21 +1358,21 @@ MonoBehaviour:
   jumpForce: 2
   lookOrientation: 0
   moveOrientation: 0
-  projectilePrefab: {fileID: 3345562608605307880, guid: d20f1b4b149104c94b88ac30db2413f0, type: 3}
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64
   rotationSpeed: 20
   MeleeAttackPrefab: {fileID: 3345562608605307880, guid: 320ad44a5e6169c4e8aad40d4f02f2f6, type: 3}
-  hitRange: 0.7
-  meleeAttackRecoverTime: 0.7
-  attackDamage: 10
+  weakAttackRange: 1
+  strongAttackRange: 2
+  weakMeleeAttackRecoverTime: 0.5
+  strongMeleeAttackRecoverTime: 0.3
+  weakAttackDamage: 10
+  strongAttackDamage: 20
   dodgeSpeed: 40
   dodgeRecoverTime: 1
   dodgeTime: 0.15
   isInvulnerableTime: 0.1
-  detectionZone: {fileID: 0}
-  detectionRadius: 0.5
 --- !u!114 &1056587389
 MonoBehaviour:
   m_ObjectHideFlags: 0

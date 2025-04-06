@@ -7,7 +7,7 @@ using UnityEngine;
 namespace System
 {
     public class GameManager : PersistentSingleton<GameManager>
-    { 
+    {
         private PlayerCharacter _playerCharacter;
 
         public PlayerCharacter PlayerCharacter
