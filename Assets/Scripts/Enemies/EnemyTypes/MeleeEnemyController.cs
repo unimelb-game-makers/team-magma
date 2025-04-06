@@ -13,7 +13,7 @@ namespace Enemies.EnemyTypes
 
         [Header("Melee Attack Variables")]
         [SerializeField] private GameObject damageAreaPrefab;
-        [SerializeField] protected float originalWindUpTime = 0.3f;
+        [SerializeField] protected float originalWindUpTime = 0.1f;
         [SerializeField] protected float originalDamageRadius = 2.5f;
         [SerializeField] protected float originalDamageAngle = 90f;
         protected float windUpTime;
@@ -54,6 +54,8 @@ namespace Enemies.EnemyTypes
 
             // Start the coroutine for the entire wind-up → damage → dash flow
             StartCoroutine(PerformStrikeSequence(areaDamage));
+
+            GetAttackSound().start();
         }
 
         /// <summary>

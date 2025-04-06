@@ -207,7 +207,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 5
-  m_Acceleration: 15
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 360
   m_StoppingDistance: 0
@@ -217,7 +217,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
+  m_ObstacleAvoidanceType: 1
 --- !u!114 &3129257989765949340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,12 +240,47 @@ MonoBehaviour:
   playerLocationCheckInterval: 0.1
   originalDamage: 40
   originalAttackCooldown: 0.2
-  outsideAttackRangeDuration: 0.5
+  outsideAttackRangeDuration: 0.1
   destinationToleranceRange: 1.5
   sightRange: 10
   attackRange: 8
+  idleSoundReference:
+    Guid:
+      Data1: 347416895
+      Data2: 1223030430
+      Data3: 47099559
+      Data4: -643625871
+    Path: event:/Character/Enemy Footsteps
+  patrolSoundReference:
+    Guid:
+      Data1: 347416895
+      Data2: 1223030430
+      Data3: 47099559
+      Data4: -643625871
+    Path: event:/Character/Enemy Footsteps
+  chaseSoundReference:
+    Guid:
+      Data1: 347416895
+      Data2: 1223030430
+      Data3: 47099559
+      Data4: -643625871
+    Path: event:/Character/Enemy Footsteps
+  attackSoundReference:
+    Guid:
+      Data1: -373839110
+      Data2: 1100164592
+      Data3: 1319579315
+      Data4: -1597025449
+    Path: event:/Weapons/Machine Gun
   slowTempo: 0
   fastTempo: 0
+  fleeSoundReference:
+    Guid:
+      Data1: 347416895
+      Data2: 1223030430
+      Data3: 47099559
+      Data4: -643625871
+    Path: event:/Character/Enemy Footsteps
   projectilePrefab: {fileID: 3345562608605307880, guid: d20f1b4b149104c94b88ac30db2413f0, type: 3}
   originalWindUpTime: 0.3
   originalInaccuracyAmount: 5

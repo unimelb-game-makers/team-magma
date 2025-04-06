@@ -67,11 +67,28 @@ namespace Enemy
         protected BaseEnemyState CurrentState => _currentState;
         #endregion
 
+        #region Audio SFX
+        [Header("Audio SFX")]
+        // In FMOD, store all enemy sounds, and other sfx sounds under a sfx folder.
+        // Then, when you want to reduce volume of sfx sounds, you could call a method
+        // like ChangeVolume(float volume) from the sliders in the UI, then set the
+        // bus containing the sfx (sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");)
+        // sfxBus.setVolume(volume).
+        // Note that I have not tested this so it may not work.
+        [SerializeField] private FMODUnity.EventReference idleSoundReference;
+        [SerializeField] private FMODUnity.EventReference patrolSoundReference;
+        [SerializeField] private FMODUnity.EventReference chaseSoundReference;
+        [SerializeField] private FMODUnity.EventReference attackSoundReference;
+        private FMOD.Studio.EventInstance idleSound;
+        private FMOD.Studio.EventInstance patrolSound;
+        private FMOD.Studio.EventInstance chaseSound;
+        private FMOD.Studio.EventInstance attackSound;
+        #endregion
+
         /*
         #region Music Timeline, Animations and Audio
         private MusicTimeline timeline;
         private Animator animator;
-        private AudioSource audioSource;
 
         [Header("Animations and Audio")]
         [SerializeField] private string idleAnimationBool = "isIdle";
@@ -80,12 +97,6 @@ namespace Enemy
         [SerializeField] private string attackAnimationTrigger = "isAttack";
         [SerializeField] private string idleAttackAnimationBool = "isAttackIdle";
         
-        [SerializeField] private AudioClip idleAudio;
-        [SerializeField] private AudioClip patrolAudio;
-        [SerializeField] private AudioClip chaseAudio;
-        [SerializeField] private AudioClip attackAudio;
-        [SerializeField] private AudioClip idleAttackAudio;
-
         public MusicTimeline GetMusicTimeline() {return timeline; }
 
         public Animator GetAnimator() { return animator; }
@@ -94,13 +105,6 @@ namespace Enemy
         public string GetChaseAnimationBool() { return chaseAnimationBool; }
         public string GetAttackAnimationTrigger() { return attackAnimationTrigger; }
         public string GetIdleAttackAnimationBool() { return idleAttackAnimationBool; }
-
-        public AudioSource GetAudioSource() { return audioSource; }
-        public AudioClip GetIdleAudio() { return idleAudio; }
-        public AudioClip GetPatrolAudio() { return patrolAudio; }
-        public AudioClip GetChaseAudio() { return chaseAudio; }
-        public AudioClip GetAttackAudio() { return attackAudio; }
-        public AudioClip GetIdleAttackAudio() { return idleAttackAudio; }
         #endregion
         */
 
@@ -118,6 +122,7 @@ namespace Enemy
         
         // State Variables
         public float GetIdleDuration() { return idleDuration; }
+        public bool GetPresetPatrolPoints() {return presetPatrolRoute; }
         public float GetPatrolSpeed() { return patrolSpeed; }
         public Vector3 GetCurrentPatrolPoint() { return currentPatrolPoint; }
         public float GetChaseDuration() { return chaseDuration; }
@@ -133,6 +138,19 @@ namespace Enemy
         public bool EnemyIsInDestinationRange() { return enemyInDestinationRange; }
         public bool PlayerIsInSightRange() { return playerInSightRange; }
         public bool PlayerIsInAttackRange() { return playerInAttackRange; }
+
+        public FMOD.Studio.EventInstance GetIdleSound() {
+            return idleSound;
+        }
+        public FMOD.Studio.EventInstance GetPatrolSound() {
+            return patrolSound;
+        }
+        public FMOD.Studio.EventInstance GetChaseSound() {
+            return chaseSound;
+        }
+        public FMOD.Studio.EventInstance GetAttackSound() {
+            return attackSound;
+        }
         
         public BaseEnemyState GetState(EnemyState state)
         {
@@ -145,24 +163,36 @@ namespace Enemy
         #endregion
         
         protected virtual void Awake() {
-            player = GameObject.Find("Player").GetComponent<PlayerController>();
             agent = GetComponent<NavMeshAgent>();
             agent.speed = patrolSpeed;
 
+            idleSound = FMODUnity.RuntimeManager.CreateInstance(idleSoundReference);
+            patrolSound = FMODUnity.RuntimeManager.CreateInstance(patrolSoundReference);
+            chaseSound = FMODUnity.RuntimeManager.CreateInstance(chaseSoundReference);
+            attackSound = FMODUnity.RuntimeManager.CreateInstance(attackSoundReference);
+
+            // To move to Update, update the position every few frames?
+            idleSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+            patrolSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+            chaseSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+            attackSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
             // timeline = FindObjectOfType<MusicTimeline>();
             // animator = GetComponent<Animator>();
-            // audioSource = GetComponent<AudioSource>();
-            
-            AddStates();
-            
-            _currentState = GetState(EnemyState.Idle);
-            _currentState.EnterState();
 
             if (patrolPoints.Count > 0)
                 currentPatrolPoint = patrolPoints[patrolIndex].position;
             else
                 currentPatrolPoint = transform.position;
             DefaultTempo();
+        }
+
+        protected virtual void Start() {
+            player = GameObject.Find("Player").GetComponent<PlayerController>();
+            AddStates();
+            
+            _currentState = GetState(EnemyState.Idle);
+            _currentState.EnterState();
         }
         
         protected virtual void AddStates()
@@ -264,6 +294,21 @@ namespace Enemy
             }
 
             agent.isStopped = false;
+        }
+
+        public virtual void SetAudioVolume(float masterVolume, float sfxVolume) {
+            if (idleSound.isValid()) {
+                idleSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
+            if (patrolSound.isValid()) {
+                patrolSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
+            if (chaseSound.isValid()) {
+                chaseSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
+            if (attackSound.isValid()) {
+                attackSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
         }
 
         #region Tempo Overrides
