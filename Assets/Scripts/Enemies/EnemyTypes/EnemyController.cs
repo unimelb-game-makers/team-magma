@@ -23,29 +23,38 @@ namespace Enemy
 
         // Idle Variables
         [Header("Idle Variables")]
+        [Tooltip("How long the enemy will idle before switching to patrol states.")]
         [SerializeField] private float idleDuration = 3f;
         
         // Patrol Variables
         [Header("Patrol Variables")]
+        [Tooltip("Does the enemy have a preset patrol route (In the inspector)?")]
         [SerializeField] private bool presetPatrolRoute = false;
         [SerializeField] private float patrolSpeed = 5f;
         private Vector3 currentPatrolPoint;
 
         // Manually set the patrol points.
+        [Tooltip("The preset patrol points.")]
         [SerializeField] private List<Transform> patrolPoints;
         private int patrolIndex = 0;
         
         // Chase Variables
         [Header("Chase Variables")]
         [SerializeField] private float chaseSpeed = 12f;
+        [Tooltip("How long the enemy will chase the player outside its sight range before stopping.")]
         [SerializeField] private float chaseDuration = 3f;
-        [SerializeField] private float playerLocationCheckInterval = 0.1f;
-        private float currentPlayerLocationCheckTime = 0f;
+        [Tooltip("How often the enemy checks the player's location - Lower means more resource-intensive and can cause lag.")]
+        [SerializeField] private float locationCheckInterval = 0.1f;
+        private float currentLocationCheckTime_Chase = 0f;
+        private float currentLocationCheckTime_General = 0f;
         
         // Attack Variables
         [Header("Attack Variables")]
+        [Tooltip("How much damage the enemy deals at default tempo.")]
         [SerializeField] protected float originalDamage;
+        [Tooltip("The attack cooldown at default tempo.")]
         [SerializeField] protected float originalAttackCooldown;
+        [Tooltip("How long the enemy will try to attack the player outside its attack range before stopping.")]
         [SerializeField] protected float outsideAttackRangeDuration;
         private bool isAttacking;
         
@@ -55,8 +64,11 @@ namespace Enemy
 
         // Destination, Sight, Attack Ranges
         [Header("Destination Tolerance, Sight, Attack Ranges")]
+        [Tooltip("How close to the patrol point the enemy should be to register as having arrived.")]
         [SerializeField] protected float destinationToleranceRange = 1.5f;
+        [Tooltip("The aggro range.")]
         [SerializeField] protected float sightRange = 10f;
+        [Tooltip("The attack range.")]
         [SerializeField] protected float attackRange = 2f;
         private bool enemyInDestinationRange, playerInSightRange, playerInAttackRange;
 
@@ -75,9 +87,13 @@ namespace Enemy
         // bus containing the sfx (sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");)
         // sfxBus.setVolume(volume).
         // Note that I have not tested this so it may not work.
+        [Tooltip("Idling sound.")]
         [SerializeField] private FMODUnity.EventReference idleSoundReference;
+        [Tooltip("Patrol sound.")]
         [SerializeField] private FMODUnity.EventReference patrolSoundReference;
+        [Tooltip("Chase sound.")]
         [SerializeField] private FMODUnity.EventReference chaseSoundReference;
+        [Tooltip("Attack sound.")]
         [SerializeField] private FMODUnity.EventReference attackSoundReference;
         private FMOD.Studio.EventInstance idleSound;
         private FMOD.Studio.EventInstance patrolSound;
@@ -211,12 +227,18 @@ namespace Enemy
         [SerializeField] private bool fastTempo = false;
         
         public virtual void Update() {
-            // Update ranges
-            enemyInDestinationRange = Vector3.Distance(transform.position, currentPatrolPoint) <= destinationToleranceRange;
-            if (player != null)
-            {
-                playerInSightRange = Vector3.Distance(transform.position, player.transform.position) <= sightRange;
-                playerInAttackRange = Vector3.Distance(transform.position, player.transform.position) <= attackRange;
+            // No need to check update locations every frame.
+            currentLocationCheckTime_General -= Time.deltaTime;
+            if (currentLocationCheckTime_General < 0) {
+                currentLocationCheckTime_General = locationCheckInterval;
+
+                // Update ranges
+                enemyInDestinationRange = Vector3.Distance(transform.position, currentPatrolPoint) <= destinationToleranceRange;
+                if (player != null)
+                {
+                    playerInSightRange = Vector3.Distance(transform.position, player.transform.position) <= sightRange;
+                    playerInAttackRange = Vector3.Distance(transform.position, player.transform.position) <= attackRange;
+                }
             }
 
             _currentState.UpdateState();
@@ -259,10 +281,12 @@ namespace Enemy
 
         public virtual void Chase() {    
             // No need to check player location every frame.
-            currentPlayerLocationCheckTime -= Time.deltaTime;
-            if (currentPlayerLocationCheckTime > 0) return;
-            currentPlayerLocationCheckTime = playerLocationCheckInterval;
-            agent.SetDestination(player.transform.position);
+            currentLocationCheckTime_Chase -= Time.deltaTime;
+            if (currentLocationCheckTime_Chase > 0) return;
+            currentLocationCheckTime_Chase = locationCheckInterval;
+            if (player != null) {
+                agent.SetDestination(player.transform.position);
+            }
         }
 
         public abstract void Attack();
@@ -271,8 +295,10 @@ namespace Enemy
         public void ApplyKnockback(Vector3 direction, float distance)
         {
             // Apply knockback, then resume enemy AI after
-            agent.isStopped = true;
-            StartCoroutine(KnockbackRoutine(direction, distance));
+            if (agent.isOnNavMesh) {
+                agent.isStopped = true;
+                StartCoroutine(KnockbackRoutine(direction, distance));
+            }
         }
 
         private IEnumerator KnockbackRoutine(Vector3 direction, float distance)
