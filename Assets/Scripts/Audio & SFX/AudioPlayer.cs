@@ -1,6 +1,5 @@
 using UnityEngine;
 using FMODUnity; // Required for FMOD EventReference
-using Managers.AudioManager;
 
 public class AudioPlayer : MonoBehaviour
 {
