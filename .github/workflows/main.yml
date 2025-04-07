@@ -2,11 +2,11 @@
 #  UNITY_LICENSE: Unity license file content
 #  UNITY_EMAIL: Unity account email
 #  UNITY_PASSWORD: Unity account password
-#  BUTLER_API_KEY: Itch.io account API key
-#  USER_GAME: Itch.io Project website( e.g. https://itch.io/user/game-name )
+#  BUTLER_API_KEY: Itch.io account API key (Unused)
+#  USER_GAME: Itch.io Project website (e.g. https://itch.io/user/game-name) (Unused)
 
 #  Github Action Variables:
-#  UNITY_VERSION: Unity version (e.g. 2023.2.9f1)
+#  UNITY_VERSION: Unity version (2022.3.39f1)
 
 name: Actions 😎
 on: [push, pull_request]
@@ -24,14 +24,12 @@ jobs:
             echo "UNITY_LICENSE is not set"
             exit 1
           fi
-
       - name: Check Unity Email
         run: |
           if [ -z "${{ secrets.UNITY_EMAIL }}" ]; then
             echo "UNITY_EMAIL is not set"
             exit 1
           fi
-
       - name: Check Unity Password
         run: |
           if [ -z "${{ secrets.UNITY_PASSWORD }}" ]; then
@@ -53,14 +51,14 @@ jobs:
       matrix:
         targetPlatform: [WebGL, StandaloneWindows64]
 
-        
+
     steps:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           lfs: true
-          
+
       # Git LFS
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
@@ -77,8 +75,6 @@ jobs:
           git lfs pull
           git add .
           git reset --hard
-
-
       # Cache
       - uses: actions/cache@v4
         with:
@@ -86,7 +82,6 @@ jobs:
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}-${{ matrix.targetPlatform }}
           restore-keys: |
             Library--${{ matrix.targetPlatform }}
-
       # Build
       - name: Build project 
         uses: game-ci/unity-builder@v4
@@ -97,31 +92,3 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           unityVersion: ${{ vars.UNITY_VERSION }}
-
-      # Output
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
-      
-      # Release on itch 
-      # stuck in login 
-      
-      # - name : Install Itch butler
-      #  run: |
-      #     curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-      #     unzip butler.zip 
-      #     chmod +x butler
-      #     sudo mv butler /usr/local/bin
-      
-      # - name: Login to Itch
-      #   env:
-      #     ITCHIO_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-      #   run: |
-      #     echo $ITCHIO_API_KEY | butler login
-      
-      # - name: upload to Itch
-      #   env:
-      #     USER_GAME: ${{ secrets.USER_GAME }}
-      #   run: |
-      #     butler push build/${{matrix.targetPlatform}}  USER_GAME:${{matrix.targetPlatform}}
