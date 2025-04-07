@@ -9,7 +9,7 @@
 #  UNITY_VERSION: Unity version (2022.3.39f1)
 
 name: Actions 😎
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
 
