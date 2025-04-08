@@ -1,34 +1,38 @@
 using System.Collections;
+using Scenes;
 using UnityEngine;
 
-public class DefeatScreenManager : MonoBehaviour
+namespace UI
 {
-    public SceneFadeManager sceneFadeManager;
-    public CanvasGroup defeatScreenCanvasGroup;
-    public float fadeDuration = 1.0f; // Duration of the fade-in
-    public float delayBeforeFade = 0.5f; // Optional delay before the fade
-
-    void Start()
+    public class DefeatScreenManager : Singleton<DefeatScreenManager>
     {
-        Time.timeScale = 1f;
-        defeatScreenCanvasGroup.gameObject.SetActive(false);
-        defeatScreenCanvasGroup.alpha = 0;
-    }
+        public SceneFadeManager sceneFadeManager;
+        public CanvasGroup defeatScreenCanvasGroup;
+        public float fadeDuration = 1.0f; // Duration of the fade-in
+        public float delayBeforeFade = 0.5f; // Optional delay before the fade
 
-    public void ShowDefeatScreen()
-    {
-        defeatScreenCanvasGroup.gameObject.SetActive(true);
-        StartCoroutine(FadeInDefeatScreen());
-    }
+        void Start()
+        {
+            Time.timeScale = 1f;
+            defeatScreenCanvasGroup.gameObject.SetActive(false);
+            defeatScreenCanvasGroup.alpha = 0;
+        }
 
-    private IEnumerator FadeInDefeatScreen()
-    {
-        // Optional delay before the fade-in starts
-        yield return new WaitForSeconds(delayBeforeFade);
+        public void ShowDefeatScreen()
+        {
+            defeatScreenCanvasGroup.gameObject.SetActive(true);
+            StartCoroutine(FadeInDefeatScreen());
+        }
 
-        // Start the fade-in and wait for it to complete
-        yield return StartCoroutine(sceneFadeManager.FadeCanvasGroup(defeatScreenCanvasGroup, 0, 1, fadeDuration));
+        private IEnumerator FadeInDefeatScreen()
+        {
+            // Optional delay before the fade-in starts
+            yield return new WaitForSeconds(delayBeforeFade);
 
-        Time.timeScale = 0f;
+            // Start the fade-in and wait for it to complete
+            yield return StartCoroutine(sceneFadeManager.FadeCanvasGroup(defeatScreenCanvasGroup, 0, 1, fadeDuration));
+
+            Time.timeScale = 0f;
+        }
     }
 }
