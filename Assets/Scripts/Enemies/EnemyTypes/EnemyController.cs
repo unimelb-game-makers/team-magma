@@ -24,7 +24,7 @@ namespace Enemy
             get
             {
                 if (!_player)
-                {
+                { 
                     _player = GameManager.Instance.PlayerCharacter.GetComponent<PlayerController>();
                 }
                 if(!_player)

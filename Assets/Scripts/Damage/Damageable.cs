@@ -45,8 +45,17 @@ namespace Damage
                 
                 if (healthManager.IsDead())
                 {
-                    Debug.Log("GameObject has died!");
-                    Destroy(gameObject);
+                    //if is player character, dont destroy
+                    if (gameObject.GetComponent<PlayerCharacter>() != null)
+                    {
+                        //Debug.Log("Player character is dead");
+                        // Do nothing, player character should not be destroyed
+                    }
+                    else
+                    {
+                        // Destroy the game object
+                        Destroy(gameObject);
+                    }
                 }
                 else if (rend != null)
                 {

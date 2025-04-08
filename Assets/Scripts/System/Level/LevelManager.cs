@@ -73,12 +73,31 @@ namespace System.Level
         }
 
         /// <summary>
-        /// Reloads the current active scene.
+        /// Reloads the current active scene asynchronously.
         /// </summary>
+        /// <param name="onComplete">Callback executed after the scene finishes reloading.</param>
         public void ReloadCurrentLevel(Action onComplete)
         {
-            Scene activeScene = SceneManager.GetActiveScene();
-            LoadLevel(activeScene.name, onComplete);
+            StartCoroutine(ReloadCurrentLevelAsyncRoutine(onComplete));
         }
+
+        private IEnumerator ReloadCurrentLevelAsyncRoutine(Action onComplete)
+        {
+            var activeScene = SceneManager.GetActiveScene();
+            var sceneName = activeScene.name;
+            Debug.Log("Reloading scene: " + sceneName);
+            
+            // Load the scene asynchronously
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(activeScene.buildIndex);
+            while (loadOperation is { isDone: false })
+            {
+                // Optionally, update a UI progress bar here using loadOperation.progress
+                yield return null;
+            }
+            
+            // Update state and invoke the callback
+            onComplete?.Invoke();
+        }
+        
     }
 }

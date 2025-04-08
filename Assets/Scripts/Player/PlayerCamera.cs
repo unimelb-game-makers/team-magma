@@ -35,5 +35,13 @@ namespace Player
             }
         }
         
+        public void FindActiveCamera()
+        {
+            _camera = Camera.main;
+            if (_camera == null)
+            {
+                Debug.LogError("No camera found in the scene.");
+            }
+        }
     }
 }

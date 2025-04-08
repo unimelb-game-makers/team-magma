@@ -48,6 +48,7 @@ namespace Player.Stats
         private void OnDeath()
         {
             Debug.Log("PlayerStats Player died");
+            GameManager.Instance.ReloadLevel();
         }
 
         private void OnDamaged(float health)
@@ -58,6 +59,11 @@ namespace Player.Stats
         private void OnImmune()
         {
             Debug.Log("PlayerStats Player is immune to damage");
+        }
+        
+        public void OnReset()
+        {
+            healthStat.Reset();
         }
     }
 }

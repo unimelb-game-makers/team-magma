@@ -87,8 +87,6 @@ namespace System
             _currentLevelIndex++;
         }
         
-        
-        
         private void LoadLevel(string sceneName)
         {
             LoadingLevel();
@@ -98,7 +96,7 @@ namespace System
         public void ReloadLevel()
         {
             LoadingLevel();
-            LevelManager.Instance.ReloadCurrentLevel(LevelLoaded);
+            LevelManager.Instance.ReloadCurrentLevel(LevelReloaded);
         }
         
         private void LoadingLevel()
@@ -112,8 +110,18 @@ namespace System
             Debug.Log("Level loaded.");
             PlayerCharacter.transform.position = SubGameManager.Instance.LevelSpawnPoint.position;
             PlayerCharacter.gameObject.SetActive(true);
-            //Load player data
+            var cameraComponent = PlayerCharacter.GetComponent<PlayerCamera>();
+            cameraComponent.FindActiveCamera();
         }
 
+        private void LevelReloaded()
+        {
+            Debug.Log("Level reloaded.");
+            PlayerCharacter.transform.position = SubGameManager.Instance.LevelSpawnPoint.position;
+            PlayerCharacter.gameObject.SetActive(true);
+            var cameraComponent = PlayerCharacter.GetComponent<PlayerCamera>();
+            cameraComponent.FindActiveCamera();
+            PlayerCharacter.PlayerStats.OnReset();
+        }
     }
 }
