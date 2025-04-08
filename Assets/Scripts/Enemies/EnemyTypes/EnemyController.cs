@@ -16,7 +16,6 @@ namespace Enemy
     public abstract class EnemyController : MonoBehaviour, ISyncable
     {
         #region Enemy Variables
-        protected PlayerController player;
         protected NavMeshAgent agent;
 
         [SerializeField] private float health = 100f;
@@ -41,7 +40,7 @@ namespace Enemy
         // Chase Variables
         [Header("Chase Variables")]
         [SerializeField] private float chaseSpeed = 12f;
-        [Tooltip("How long the enemy will chase the player outside its sight range before stopping.")]
+        [Tooltip("How long the enemy will chase the Player outside its sight range before stopping.")]
         [SerializeField] private float chaseDuration = 3f;
         [Tooltip("How often the enemy checks the player's location - Lower means more resource-intensive and can cause lag.")]
         public float locationCheckInterval = 0.1f; // WARNING - DO NOT CHANGE TO PRIVATE OR SERIALIZABLE, CAUSES BUILD ERRORS
@@ -54,7 +53,7 @@ namespace Enemy
         [SerializeField] protected float originalDamage;
         [Tooltip("The attack cooldown at default tempo.")]
         [SerializeField] protected float originalAttackCooldown;
-        [Tooltip("How long the enemy will try to attack the player outside its attack range before stopping.")]
+        [Tooltip("How long the enemy will try to attack the Player outside its attack range before stopping.")]
         [SerializeField] protected float outsideAttackRangeDuration;
         private bool isAttacking;
         
@@ -70,7 +69,7 @@ namespace Enemy
         [SerializeField] protected float sightRange = 10f;
         [Tooltip("The attack range.")]
         [SerializeField] protected float attackRange = 2f;
-        private bool enemyInDestinationRange, playerInSightRange, playerInAttackRange;
+        private bool enemyInDestinationRange, PlayerInSightRange, PlayerInAttackRange;
 
         // States
         [Header("States")]
@@ -100,32 +99,21 @@ namespace Enemy
         private FMOD.Studio.EventInstance chaseSound;
         private FMOD.Studio.EventInstance attackSound;
         #endregion
-
-        /*
-        #region Music Timeline, Animations and Audio
-        private MusicTimeline timeline;
-        private Animator animator;
-
-        [Header("Animations and Audio")]
-        [SerializeField] private string idleAnimationBool = "isIdle";
-        [SerializeField] private string patrolAnimationBool = "isPatrol";
-        [SerializeField] private string chaseAnimationBool = "isChase";
-        [SerializeField] private string attackAnimationTrigger = "isAttack";
-        [SerializeField] private string idleAttackAnimationBool = "isAttackIdle";
         
-        public MusicTimeline GetMusicTimeline() {return timeline; }
-
-        public Animator GetAnimator() { return animator; }
-        public string GetIdleAnimationBool() { return idleAnimationBool; }
-        public string GetPatrolAnimationBool() { return patrolAnimationBool; }
-        public string GetChaseAnimationBool() { return chaseAnimationBool; }
-        public string GetAttackAnimationTrigger() { return attackAnimationTrigger; }
-        public string GetIdleAttackAnimationBool() { return idleAttackAnimationBool; }
-        #endregion
-        */
-
         #region Enemy State Getters and Setters
-        public PlayerController GetPlayerController() { return player; }
+
+        private PlayerController _Player;
+        public PlayerController Player
+        {
+            get
+            {
+                if(!_Player)
+                {
+                    _Player = GameManager.Instance.PlayerController;
+                }
+                return _Player;
+            }
+        }
         public NavMeshAgent GetNavMeshAgent() { return agent; }
         
         // Health
@@ -152,8 +140,8 @@ namespace Enemy
         }
 
         public bool EnemyIsInDestinationRange() { return enemyInDestinationRange; }
-        public bool PlayerIsInSightRange() { return playerInSightRange; }
-        public bool PlayerIsInAttackRange() { return playerInAttackRange; }
+        public bool PlayerIsInSightRange() { return PlayerInSightRange; }
+        public bool PlayerIsInAttackRange() { return PlayerInAttackRange; }
 
         public FMOD.Studio.EventInstance GetIdleSound() {
             return idleSound;
@@ -204,9 +192,7 @@ namespace Enemy
         }
 
         protected virtual void Start() {
-            player = GameObject.Find("Player").GetComponent<PlayerController>();
             AddStates();
-            
             _currentState = GetState(EnemyState.Idle);
             _currentState.EnterState();
         }
@@ -215,10 +201,10 @@ namespace Enemy
         {
             _states = new Dictionary<EnemyState, BaseEnemyState>()
             {
-                { EnemyState.Idle, new IdleState(this, agent, player) },
-                { EnemyState.Patrol, new PatrolState(this, agent, player) },
-                { EnemyState.Chase, new ChaseState(this, agent, player) },
-                { EnemyState.Attack, new AttackState(this, agent, player) },
+                { EnemyState.Idle, new IdleState(this, agent, Player) },
+                { EnemyState.Patrol, new PatrolState(this, agent, Player) },
+                { EnemyState.Chase, new ChaseState(this, agent, Player) },
+                { EnemyState.Attack, new AttackState(this, agent, Player) },
             };
         }
 
@@ -234,14 +220,14 @@ namespace Enemy
 
                 // Update ranges
                 enemyInDestinationRange = Vector3.Distance(transform.position, currentPatrolPoint) <= destinationToleranceRange;
-                if (player != null)
+                if (Player != null)
                 {
-                    playerInSightRange = Vector3.Distance(transform.position, player.transform.position) <= sightRange;
-                    playerInAttackRange = Vector3.Distance(transform.position, player.transform.position) <= attackRange;
+                    PlayerInSightRange = Vector3.Distance(transform.position, Player.transform.position) <= sightRange;
+                    PlayerInAttackRange = Vector3.Distance(transform.position, Player.transform.position) <= attackRange;
                 }
             }
 
-            _currentState.UpdateState();
+            _currentState?.UpdateState();
 
             // Temporary code for testing
             if (slowTempo)
@@ -280,12 +266,12 @@ namespace Enemy
         }
 
         public virtual void Chase() {    
-            // No need to check player location every frame.
+            // No need to check Player location every frame.
             currentLocationCheckTime_Chase -= Time.deltaTime;
             if (currentLocationCheckTime_Chase > 0) return;
             currentLocationCheckTime_Chase = locationCheckInterval;
-            if (player != null) {
-                agent.SetDestination(player.transform.position);
+            if (Player != null) {
+                agent.SetDestination(Player.transform.position);
             }
         }
 

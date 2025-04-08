@@ -24,7 +24,7 @@ namespace Enemies.EnemyTypes
         protected override void Awake()
         {
             base.Awake();
-
+            
             damageable = GetComponent<Damageable>();
             damageable.setIsInvulnerable(true);
 

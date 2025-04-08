@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
 namespace Player.Stats
@@ -47,7 +48,7 @@ namespace Player.Stats
 
         private void OnDeath()
         {
-            Debug.Log("PlayerStats Player died");
+            DefeatScreenManager.Instance.ShowDefeatScreen();
         }
 
         private void OnDamaged(float health)
@@ -58,6 +59,11 @@ namespace Player.Stats
         private void OnImmune()
         {
             Debug.Log("PlayerStats Player is immune to damage");
+        }
+        
+        public void OnReset()
+        {
+            healthStat.Reset();
         }
     }
 }

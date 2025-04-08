@@ -71,5 +71,13 @@ namespace Player.Stats
             yield return new WaitForSeconds(damageImmuneTime);
             _damageImmuneCoroutine = null;
         }
+
+        public void Reset()
+        {
+            // Reset the player's health to the maximum value
+            CurrentValue = MaxValue;
+            _damageImmuneCoroutine = null;
+            // Optionally, you can also reset other properties or states here
+        }
     }
 }

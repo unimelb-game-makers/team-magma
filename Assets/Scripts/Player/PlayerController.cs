@@ -54,7 +54,7 @@ namespace Player
             {
                 if (beatSpawner == null)
                 {
-                    beatSpawner = BeatSpawner.Instance;
+                    beatSpawner = GameManager.Instance.BeatSpawner;
                     if (beatSpawner == null)
                     {
                         throw new Exception("No BeatSpawner found in the scene. please attach to somewhere in the scene");
@@ -76,7 +76,23 @@ namespace Player
 
         private bool _leftMouseButtonDown;
         private bool _DodgeButtonDown;
-        private Camera _mainCamera;  // Reference to the main camera
+        private Camera _mainCamera;
+
+        private Camera Camera
+        {
+            get
+            {
+                if (_mainCamera == null)
+                {
+                    _mainCamera = Camera.main;
+                    if (_mainCamera == null)
+                    {
+                        throw new Exception("No Camera found in the scene.");
+                    }
+                }
+                return _mainCamera;
+            }
+        }
 
         private MeleeAttackBox _meleeAttackBox = null;
 
@@ -101,8 +117,6 @@ namespace Player
                 Debug.LogError("Rigidbody component is missing from the player object.");
             }
             // Get the main camera
-            _mainCamera = Camera.main;
-
             _previousMeleeAttack = Time.time - weakMeleeAttackRecoverTime;
             _previousDodge = Time.time - dodgeRecoverTime;
         }
@@ -228,14 +242,14 @@ namespace Player
                     case OrientationType.BasedOnInput:
                         //if (TrackMovementInput()) {
                             // Rotate the movement vector direction based on camera angle
-                            movement = Quaternion.AngleAxis(_mainCamera.transform.rotation.eulerAngles.y, Vector3.up) * movement;
+                            movement = Quaternion.AngleAxis(Camera.transform.rotation.eulerAngles.y, Vector3.up) * movement;
                         //}
                         break;
 
                     // Movement besides foward is a bit weird but it works.
                     case OrientationType.TowardMouse: 
                         // Get the mouse position in the world space
-                        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+                        Ray ray = Camera.ScreenPointToRay(Input.mousePosition);
                         Plane groundPlane = new Plane(Vector3.up, Vector3.down);  // Define a plane at the ground level
 
                         // Check where the ray intersects the plane
@@ -328,14 +342,14 @@ namespace Player
             {
                 case OrientationType.BasedOnInput:
                     if (TrackMovementInput()) {
-                        targetRotation = Quaternion.LookRotation(Quaternion.AngleAxis(_mainCamera.transform.rotation.eulerAngles.y, Vector3.up) * new Vector3(_horizontalInput, 0, _verticalInput));
+                        targetRotation = Quaternion.LookRotation(Quaternion.AngleAxis(Camera.transform.rotation.eulerAngles.y, Vector3.up) * new Vector3(_horizontalInput, 0, _verticalInput));
                         // Smoothly rotate towards the target rotation
                         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
                     }
                     break;
                 case OrientationType.TowardMouse:
                     // Get the mouse position in the world space
-                    Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+                    Ray ray = Camera.ScreenPointToRay(Input.mousePosition);
                     Plane groundPlane = new Plane(Vector3.up, Vector3.down);  // Define a plane at the ground level
 
                     // Check where the ray intersects the plane
