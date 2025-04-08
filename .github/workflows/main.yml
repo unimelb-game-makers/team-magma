@@ -9,7 +9,7 @@
 #  UNITY_VERSION: Unity version (2022.3.39f1)
 
 name: Actions 😎
-on:
+on: # Only build on merges with main
   workflow_dispatch:
   push:
     branches:
