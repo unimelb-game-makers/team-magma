@@ -104,7 +104,6 @@ namespace Hazard
                 StartCoroutine(MoveKillAreaToHeight(height1));
 
                 // Code for Animations and Sounds.
-
                 StartCoroutine(AffectTimer(duration));
             }
 
@@ -125,7 +124,6 @@ namespace Hazard
         private IEnumerator AffectTimer(float duration)
         {
             yield return new WaitForSeconds(duration);
-
             // Code for Animations and Sounds.
 
             // Move the 'KillArea' object to height3.

@@ -83,7 +83,7 @@ namespace Timeline
         }
         void Start()
         {
-            beatSpawner = BeatSpawner.Instance;
+            beatSpawner = GameManager.Instance.BeatSpawner;
             // Explicitly create the delegate object and assign it to a member so it doesn't get freed
             // by the garbage collected while it's being used
             beatCallback = new FMOD.Studio.EVENT_CALLBACK(BeatEventCallback);

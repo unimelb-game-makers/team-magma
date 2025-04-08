@@ -113,7 +113,6 @@ namespace UI
         /// </summary>
         private void UpdateDamageImmune()
         {
-            Debug.Log("HealthUI Player is immune to damage");
         }
         
         private void UpdateDeath()

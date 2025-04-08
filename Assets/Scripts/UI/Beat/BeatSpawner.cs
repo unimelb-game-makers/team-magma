@@ -3,7 +3,7 @@ using Timeline;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-public class BeatSpawner : Singleton<BeatSpawner>
+public class BeatSpawner : MonoBehaviour
 {
     public GameObject beatPrefab;  // The Beat prefab
     public Transform spawnPointLeft;  // Where beats spawn on the left
