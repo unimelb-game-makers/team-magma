@@ -11,7 +11,7 @@ namespace System
     /// </summary>
     public class SubGameManager : Singleton<SubGameManager>
     {
-        [SerializeField] private LevelSpawnPoint _levelSpawnPoint;
+        private LevelSpawnPoint _levelSpawnPoint;
         public Transform LevelSpawnPoint
         {
             get

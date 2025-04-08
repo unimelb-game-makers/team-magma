@@ -53,9 +53,14 @@ namespace System
         /// </summary>
         private List<string> levelNames = new List<string>()
         {
-            "Level1Rooms1-3_DEMO",
-            "Level1Rooms4-6_DEMO",
-            "Level1Rooms7-9_DEMO",
+            "Room1",
+            "Room2",
+            "Room3",
+            "Room4",
+            "Room5",
+            "Room6",
+            "Room7",
+            "Room8-9",
         };
         
         
@@ -91,6 +96,7 @@ namespace System
         private void LoadLevel(string sceneName)
         {
             LoadingLevel();
+            Debug.Log("Loading level: " + sceneName);
             LevelManager.Instance.LoadLevel(sceneName, LevelLoaded);
         }
         

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace System.Level
 {
-    public class LevelSpawnPoint : Singleton<LevelSpawnPoint>
+    public class LevelSpawnPoint : MonoBehaviour
     {
         
     }

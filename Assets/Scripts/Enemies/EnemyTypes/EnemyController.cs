@@ -204,9 +204,7 @@ namespace Enemy
         }
 
         protected virtual void Start() {
-            player = GameObject.Find("Player").GetComponent<PlayerController>();
             AddStates();
-            
             _currentState = GetState(EnemyState.Idle);
             _currentState.EnterState();
         }
