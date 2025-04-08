@@ -9,6 +9,7 @@ using System.Numerics;
 using Vector3 = UnityEngine.Vector3;
 using UnityEngine.AI;
 using System.Data;
+using Ink.Parsed;
 
 public class FanDamager : MonoBehaviour, IDamageManager
 {
@@ -72,6 +73,7 @@ public class FanDamager : MonoBehaviour, IDamageManager
             else if (target.CompareTag("Enemy"))
             {
                 var agent = target.GetComponent<NavMeshAgent>();
+                if (agent == null) return;
                 var originalDestination = agent.destination;
 
                 // Calculate new position after knockback

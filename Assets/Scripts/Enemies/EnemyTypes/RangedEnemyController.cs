@@ -117,6 +117,7 @@ namespace Enemies.EnemyTypes
         }
 
         private void SpawnProjectile() {
+            if (player == null) return;
             // The projectile should move in this direction
             Vector3 direction = (player.transform.position - transform.position).normalized;
 
