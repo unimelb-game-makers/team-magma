@@ -8,10 +8,17 @@ using Player;
 
 public class PatrolState : BaseEnemyState
 {
+    private float stepInterval = 1f;
+    private readonly float lowStepInterval = 1.2f;
+    private readonly float highStepInterval = 0.8f;
+
+    private float stepElapsedTime = 0;
+
     public PatrolState(EnemyController enemyController, NavMeshAgent navMeshAgent, PlayerController playerController) : 
                         base(enemyController, navMeshAgent, playerController) { }
 
     public override void EnterState() {
+        // Debug.Log("Entering Patrol State");
         // enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), true);
         navMeshAgent.destination = enemyController.GetCurrentPatrolPoint();
         navMeshAgent.speed = enemyController.GetPatrolSpeed();
@@ -29,9 +36,21 @@ public class PatrolState : BaseEnemyState
             enemyController.NextPatrolPoint();
             enemyController.TransitionToState(EnemyState.Idle);
         }
+
+        // Footsteps sound.
+        // If the enemy has no patrol points, it does not move and must not make sound.
+        if (enemyController.GetPresetPatrolPoints() == true) {
+            stepElapsedTime += Time.deltaTime;
+            if (stepElapsedTime > stepInterval) {
+                stepElapsedTime = 0;
+                enemyController.GetPatrolSound().start();
+                stepInterval = Random.Range(lowStepInterval, highStepInterval);
+            }
+        }
     }
 
     public override void ExitState() {
+        enemyController.GetPatrolSound().stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         // enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), false);
     }
 }

@@ -225,5 +225,21 @@ namespace Timeline
             _volume = Mathf.Clamp(volume, 0.0f, 1.0f);
             musicInstance.setVolume(_volume);
         }
+
+        public void PauseMusic()
+        {
+            if (musicInstance.isValid())
+            {
+                musicInstance.setPaused(true);
+            }
+
+        }
+        public void ResumeMusic()
+        {
+            if (musicInstance.isValid())
+            {
+                musicInstance.setPaused(false);
+            }
+        }
     }
 }

@@ -9,6 +9,10 @@ namespace Enemies.EnemyTypes
 {
     public class RangedEnemyController : EnemyController
     {
+        [Header("Audio SFX")]
+        [SerializeField] private FMODUnity.EventReference fleeSoundReference;
+        private FMOD.Studio.EventInstance fleeSound;
+
         [Header("Ranged Attack Variables")]
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private float originalWindUpTime = 0.3f;
@@ -32,10 +36,15 @@ namespace Enemies.EnemyTypes
         public bool EnemyIsInFleeRange() { return enemyInFleeRange; }
         public bool EnemyHasMovedToFleeLocation() { return enemyMovedToFleeLocation; }
 
+        public FMOD.Studio.EventInstance GetFleeSound() {
+            return fleeSound;
+        }
+
         public override void Update()
         {
             // Update flee ranges
-            enemyInFleeRange = Vector3.Distance(transform.position, Player.transform.position) <= fleeRange;
+            if (player != null)
+                enemyInFleeRange = Vector3.Distance(transform.position, player.transform.position) <= fleeRange;
             enemyMovedToFleeLocation = Vector3.Distance(transform.position, fleeLocation) <= destinationToleranceRange;
             
             base.Update();
@@ -45,11 +54,11 @@ namespace Enemies.EnemyTypes
         {
             _states = new Dictionary<EnemyState, BaseEnemyState>()
             {
-                { EnemyState.Idle, new IdleState(this, agent, Player) },
-                { EnemyState.Patrol, new PatrolState(this, agent, Player) },
-                { EnemyState.Chase, new ChaseState(this, agent, Player) },
-                { EnemyState.Attack, new AttackState(this, agent, Player) },
-                { EnemyState.Flee, new FleeState(this, agent, Player) }
+                { EnemyState.Idle, new IdleState(this, agent, player) },
+                { EnemyState.Patrol, new PatrolState(this, agent, player) },
+                { EnemyState.Chase, new ChaseState(this, agent, player) },
+                { EnemyState.Attack, new AttackState(this, agent, player) },
+                { EnemyState.Flee, new FleeState(this, agent, player) }
             };
         }
         
@@ -63,8 +72,9 @@ namespace Enemies.EnemyTypes
                 SetIsAttacking(true);
 
                 // If the player is still alive.
-                if (!Player)
+                if (GetPlayerController()) {
                     StartCoroutine(PerformStrikeSequence());
+                }
 
                 /*
                 * NOTE: This event audio is triggered using a StudioEventEmitter component attached to this enemy.
@@ -98,6 +108,7 @@ namespace Enemies.EnemyTypes
             // 2) Fire projectile
             // ---------------------------------------
             SpawnProjectile();
+            GetAttackSound().start();
 
             // ---------------------------------------
             // 3) END Attack
@@ -106,8 +117,9 @@ namespace Enemies.EnemyTypes
         }
 
         private void SpawnProjectile() {
+            if (player == null) return;
             // The projectile should move in this direction
-            Vector3 direction = (Player.transform.position - transform.position).normalized;
+            Vector3 direction = (player.transform.position - transform.position).normalized;
 
             GameObject projectile = Instantiate(projectilePrefab, transform.position + direction, transform.rotation);
 
@@ -129,7 +141,7 @@ namespace Enemies.EnemyTypes
                 // Introduce random inaccuracy
                 direction = ApplyInaccuracy(direction, inaccuracyAmount);
 
-                projectileComponent.SetInitialDirection(new Vector3(direction.x, 0f, direction.z), Player.gameObject);
+                projectileComponent.SetInitialDirection(new Vector3(direction.x, 0f, direction.z), player.gameObject);
             }
         }
 
@@ -177,6 +189,14 @@ namespace Enemies.EnemyTypes
             }
             
             return fleeLocation;
+        }
+
+        public override void SetAudioVolume(float masterVolume, float sfxVolume)
+        {
+            base.SetAudioVolume(masterVolume, sfxVolume);
+            if (fleeSound.isValid()) {
+                fleeSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
         }
 
         #region Tempo Overrides

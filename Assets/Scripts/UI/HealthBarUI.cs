@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Player;
 using Player.Stats;
+using System.Collections;
 
 namespace UI
 {
@@ -20,6 +21,7 @@ namespace UI
         public Color warningColor = new Color(1.0f, 0.65f, 0.0f);
         public float dangerRatio = 0.2f;
         public Color dangerColor = Color.red;
+        public DefeatScreenManager defeatScreenManager;
         // Start is called before the first frame update
         private PlayerStats _playerStats;
 
@@ -116,7 +118,7 @@ namespace UI
         
         private void UpdateDeath()
         {
-            Debug.Log("HealthUI Player died");
+            defeatScreenManager.ShowDefeatScreen();
         }
     }
 }

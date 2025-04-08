@@ -11,6 +11,8 @@ namespace Damage
         [SerializeField] private Color hitColor = Color.red;
         [SerializeField] private float hitEffectDuration = 0.5f;
         [SerializeField] private float colorChangeDuration = 0.2f;
+
+        [SerializeField] private AudioPlayer takeDamageAudioPlayer;
         
         private Renderer rend;  // The Renderer component of the cube  // The color to change to when hit
         private Color originalColor;  // To store the original color of the cube
@@ -41,6 +43,10 @@ namespace Damage
         {
             if (!isInvulnerable) {
                 //Debug.Log(healthManager);
+                if (takeDamageAudioPlayer != null) {
+                    takeDamageAudioPlayer.Play();
+                }
+
                 healthManager.TakeDamage(damage);
                 
                 if (healthManager.IsDead())

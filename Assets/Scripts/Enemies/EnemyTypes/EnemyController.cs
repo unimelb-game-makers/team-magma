@@ -16,53 +16,45 @@ namespace Enemy
     public abstract class EnemyController : MonoBehaviour, ISyncable
     {
         #region Enemy Variables
-
-        private PlayerController _player;
-
-        protected PlayerController Player
-        {
-            get
-            {
-                if (!_player)
-                { 
-                    _player = GameManager.Instance.PlayerCharacter.GetComponent<PlayerController>();
-                }
-                if(!_player)
-                {
-                    Debug.LogError("Player not found");
-                }
-                return _player;
-            }
-        }
+        protected PlayerController player;
         protected NavMeshAgent agent;
 
         [SerializeField] private float health = 100f;
 
         // Idle Variables
         [Header("Idle Variables")]
+        [Tooltip("How long the enemy will idle before switching to patrol states.")]
         [SerializeField] private float idleDuration = 3f;
         
         // Patrol Variables
         [Header("Patrol Variables")]
+        [Tooltip("Does the enemy have a preset patrol route (In the inspector)?")]
         [SerializeField] private bool presetPatrolRoute = false;
         [SerializeField] private float patrolSpeed = 5f;
         private Vector3 currentPatrolPoint;
 
         // Manually set the patrol points.
+        [Tooltip("The preset patrol points.")]
         [SerializeField] private List<Transform> patrolPoints;
         private int patrolIndex = 0;
         
         // Chase Variables
         [Header("Chase Variables")]
         [SerializeField] private float chaseSpeed = 12f;
+        [Tooltip("How long the enemy will chase the player outside its sight range before stopping.")]
         [SerializeField] private float chaseDuration = 3f;
-        [SerializeField] private float playerLocationCheckInterval = 0.1f;
-        private float currentPlayerLocationCheckTime = 0f;
+        [Tooltip("How often the enemy checks the player's location - Lower means more resource-intensive and can cause lag.")]
+        [SerializeField] private float locationCheckInterval = 0.1f;
+        private float currentLocationCheckTime_Chase = 0f;
+        private float currentLocationCheckTime_General = 0f;
         
         // Attack Variables
         [Header("Attack Variables")]
+        [Tooltip("How much damage the enemy deals at default tempo.")]
         [SerializeField] protected float originalDamage;
+        [Tooltip("The attack cooldown at default tempo.")]
         [SerializeField] protected float originalAttackCooldown;
+        [Tooltip("How long the enemy will try to attack the player outside its attack range before stopping.")]
         [SerializeField] protected float outsideAttackRangeDuration;
         private bool isAttacking;
         
@@ -72,8 +64,11 @@ namespace Enemy
 
         // Destination, Sight, Attack Ranges
         [Header("Destination Tolerance, Sight, Attack Ranges")]
+        [Tooltip("How close to the patrol point the enemy should be to register as having arrived.")]
         [SerializeField] protected float destinationToleranceRange = 1.5f;
+        [Tooltip("The aggro range.")]
         [SerializeField] protected float sightRange = 10f;
+        [Tooltip("The attack range.")]
         [SerializeField] protected float attackRange = 2f;
         private bool enemyInDestinationRange, playerInSightRange, playerInAttackRange;
 
@@ -84,11 +79,32 @@ namespace Enemy
         protected BaseEnemyState CurrentState => _currentState;
         #endregion
 
+        #region Audio SFX
+        [Header("Audio SFX")]
+        // In FMOD, store all enemy sounds, and other sfx sounds under a sfx folder.
+        // Then, when you want to reduce volume of sfx sounds, you could call a method
+        // like ChangeVolume(float volume) from the sliders in the UI, then set the
+        // bus containing the sfx (sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");)
+        // sfxBus.setVolume(volume).
+        // Note that I have not tested this so it may not work.
+        [Tooltip("Idling sound.")]
+        [SerializeField] private FMODUnity.EventReference idleSoundReference;
+        [Tooltip("Patrol sound.")]
+        [SerializeField] private FMODUnity.EventReference patrolSoundReference;
+        [Tooltip("Chase sound.")]
+        [SerializeField] private FMODUnity.EventReference chaseSoundReference;
+        [Tooltip("Attack sound.")]
+        [SerializeField] private FMODUnity.EventReference attackSoundReference;
+        private FMOD.Studio.EventInstance idleSound;
+        private FMOD.Studio.EventInstance patrolSound;
+        private FMOD.Studio.EventInstance chaseSound;
+        private FMOD.Studio.EventInstance attackSound;
+        #endregion
+
         /*
         #region Music Timeline, Animations and Audio
         private MusicTimeline timeline;
         private Animator animator;
-        private AudioSource audioSource;
 
         [Header("Animations and Audio")]
         [SerializeField] private string idleAnimationBool = "isIdle";
@@ -97,12 +113,6 @@ namespace Enemy
         [SerializeField] private string attackAnimationTrigger = "isAttack";
         [SerializeField] private string idleAttackAnimationBool = "isAttackIdle";
         
-        [SerializeField] private AudioClip idleAudio;
-        [SerializeField] private AudioClip patrolAudio;
-        [SerializeField] private AudioClip chaseAudio;
-        [SerializeField] private AudioClip attackAudio;
-        [SerializeField] private AudioClip idleAttackAudio;
-
         public MusicTimeline GetMusicTimeline() {return timeline; }
 
         public Animator GetAnimator() { return animator; }
@@ -111,17 +121,11 @@ namespace Enemy
         public string GetChaseAnimationBool() { return chaseAnimationBool; }
         public string GetAttackAnimationTrigger() { return attackAnimationTrigger; }
         public string GetIdleAttackAnimationBool() { return idleAttackAnimationBool; }
-
-        public AudioSource GetAudioSource() { return audioSource; }
-        public AudioClip GetIdleAudio() { return idleAudio; }
-        public AudioClip GetPatrolAudio() { return patrolAudio; }
-        public AudioClip GetChaseAudio() { return chaseAudio; }
-        public AudioClip GetAttackAudio() { return attackAudio; }
-        public AudioClip GetIdleAttackAudio() { return idleAttackAudio; }
         #endregion
         */
 
         #region Enemy State Getters and Setters
+        public PlayerController GetPlayerController() { return player; }
         public NavMeshAgent GetNavMeshAgent() { return agent; }
         
         // Health
@@ -134,6 +138,7 @@ namespace Enemy
         
         // State Variables
         public float GetIdleDuration() { return idleDuration; }
+        public bool GetPresetPatrolPoints() {return presetPatrolRoute; }
         public float GetPatrolSpeed() { return patrolSpeed; }
         public Vector3 GetCurrentPatrolPoint() { return currentPatrolPoint; }
         public float GetChaseDuration() { return chaseDuration; }
@@ -149,6 +154,19 @@ namespace Enemy
         public bool EnemyIsInDestinationRange() { return enemyInDestinationRange; }
         public bool PlayerIsInSightRange() { return playerInSightRange; }
         public bool PlayerIsInAttackRange() { return playerInAttackRange; }
+
+        public FMOD.Studio.EventInstance GetIdleSound() {
+            return idleSound;
+        }
+        public FMOD.Studio.EventInstance GetPatrolSound() {
+            return patrolSound;
+        }
+        public FMOD.Studio.EventInstance GetChaseSound() {
+            return chaseSound;
+        }
+        public FMOD.Studio.EventInstance GetAttackSound() {
+            return attackSound;
+        }
         
         public BaseEnemyState GetState(EnemyState state)
         {
@@ -163,11 +181,20 @@ namespace Enemy
         protected virtual void Awake() {
             agent = GetComponent<NavMeshAgent>();
             agent.speed = patrolSpeed;
-            
-            AddStates();
-            
-            _currentState = GetState(EnemyState.Idle);
-            _currentState.EnterState();
+
+            idleSound = FMODUnity.RuntimeManager.CreateInstance(idleSoundReference);
+            patrolSound = FMODUnity.RuntimeManager.CreateInstance(patrolSoundReference);
+            chaseSound = FMODUnity.RuntimeManager.CreateInstance(chaseSoundReference);
+            attackSound = FMODUnity.RuntimeManager.CreateInstance(attackSoundReference);
+
+            // To move to Update, update the position every few frames?
+            idleSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+            patrolSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+            chaseSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+            attackSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+            // timeline = FindObjectOfType<MusicTimeline>();
+            // animator = GetComponent<Animator>();
 
             if (patrolPoints.Count > 0)
                 currentPatrolPoint = patrolPoints[patrolIndex].position;
@@ -175,20 +202,23 @@ namespace Enemy
                 currentPatrolPoint = transform.position;
             DefaultTempo();
         }
-        
-        private void Start()
-        {
-            Debug.Log("Player: " + Player);
+
+        protected virtual void Start() {
+            player = GameObject.Find("Player").GetComponent<PlayerController>();
+            AddStates();
+            
+            _currentState = GetState(EnemyState.Idle);
+            _currentState.EnterState();
         }
         
         protected virtual void AddStates()
         {
             _states = new Dictionary<EnemyState, BaseEnemyState>()
             {
-                { EnemyState.Idle, new IdleState(this, agent, Player) },
-                { EnemyState.Patrol, new PatrolState(this, agent, Player) },
-                { EnemyState.Chase, new ChaseState(this, agent, Player) },
-                { EnemyState.Attack, new AttackState(this, agent, Player) },
+                { EnemyState.Idle, new IdleState(this, agent, player) },
+                { EnemyState.Patrol, new PatrolState(this, agent, player) },
+                { EnemyState.Chase, new ChaseState(this, agent, player) },
+                { EnemyState.Attack, new AttackState(this, agent, player) },
             };
         }
 
@@ -197,10 +227,19 @@ namespace Enemy
         [SerializeField] private bool fastTempo = false;
         
         public virtual void Update() {
-            // Update ranges
-            enemyInDestinationRange = Vector3.Distance(transform.position, currentPatrolPoint) <= destinationToleranceRange;
-            playerInSightRange = Vector3.Distance(transform.position, Player.transform.position) <= sightRange;
-            playerInAttackRange = Vector3.Distance(transform.position, Player.transform.position) <= attackRange;
+            // No need to check update locations every frame.
+            currentLocationCheckTime_General -= Time.deltaTime;
+            if (currentLocationCheckTime_General < 0) {
+                currentLocationCheckTime_General = locationCheckInterval;
+
+                // Update ranges
+                enemyInDestinationRange = Vector3.Distance(transform.position, currentPatrolPoint) <= destinationToleranceRange;
+                if (player != null)
+                {
+                    playerInSightRange = Vector3.Distance(transform.position, player.transform.position) <= sightRange;
+                    playerInAttackRange = Vector3.Distance(transform.position, player.transform.position) <= attackRange;
+                }
+            }
 
             _currentState.UpdateState();
 
@@ -242,10 +281,12 @@ namespace Enemy
 
         public virtual void Chase() {    
             // No need to check player location every frame.
-            currentPlayerLocationCheckTime -= Time.deltaTime;
-            if (currentPlayerLocationCheckTime > 0) return;
-            currentPlayerLocationCheckTime = playerLocationCheckInterval;
-            agent.SetDestination(Player.transform.position);
+            currentLocationCheckTime_Chase -= Time.deltaTime;
+            if (currentLocationCheckTime_Chase > 0) return;
+            currentLocationCheckTime_Chase = locationCheckInterval;
+            if (player != null) {
+                agent.SetDestination(player.transform.position);
+            }
         }
 
         public abstract void Attack();
@@ -254,8 +295,10 @@ namespace Enemy
         public void ApplyKnockback(Vector3 direction, float distance)
         {
             // Apply knockback, then resume enemy AI after
-            agent.isStopped = true;
-            StartCoroutine(KnockbackRoutine(direction, distance));
+            if (agent.isOnNavMesh) {
+                agent.isStopped = true;
+                StartCoroutine(KnockbackRoutine(direction, distance));
+            }
         }
 
         private IEnumerator KnockbackRoutine(Vector3 direction, float distance)
@@ -277,6 +320,21 @@ namespace Enemy
             }
 
             agent.isStopped = false;
+        }
+
+        public virtual void SetAudioVolume(float masterVolume, float sfxVolume) {
+            if (idleSound.isValid()) {
+                idleSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
+            if (patrolSound.isValid()) {
+                patrolSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
+            if (chaseSound.isValid()) {
+                chaseSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
+            if (attackSound.isValid()) {
+                attackSound.setVolume(sfxVolume * masterVolume); // Set volume
+            }
         }
 
         #region Tempo Overrides

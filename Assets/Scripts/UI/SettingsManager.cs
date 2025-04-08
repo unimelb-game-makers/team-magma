@@ -7,7 +7,6 @@ using System.Collections;
 
 public class SettingsManager : MonoBehaviour
 {
-    public SceneFadeManager sceneFadeManager;
     public CanvasGroup settingsCanvasGroup;
     public float fadeDuration = 0.5f; // Duration for the fade effect
     
@@ -16,7 +15,6 @@ public class SettingsManager : MonoBehaviour
     public TMPro.TextMeshProUGUI masterVolumeText;
     public Slider musicVolumeSlider;
     public TMPro.TextMeshProUGUI musicVolumeText;
-    public MusicTimeline musicTimeline;
     public Slider sfxVolumeSlider;
     public TMPro.TextMeshProUGUI sfxVolumeText;
 
@@ -56,9 +54,9 @@ public class SettingsManager : MonoBehaviour
 
     private void SetMasterVolume(float value)
     {
-        if (musicTimeline != null)
+        if (MusicTimeline.instance != null)
         {
-            musicTimeline.SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", 1.0f) * value);
+            MusicTimeline.instance.SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", 1.0f) * value);
         }
 
         PlayerPrefs.SetFloat("MasterVolume", value);
@@ -72,9 +70,9 @@ public class SettingsManager : MonoBehaviour
 
     private void SetMusicVolume(float value)
     {
-        if (musicTimeline != null)
+        if (MusicTimeline.instance != null)
         {
-            musicTimeline.SetMusicVolume(PlayerPrefs.GetFloat("MasterVolume", 1.0f) * value);
+            MusicTimeline.instance.SetMusicVolume(PlayerPrefs.GetFloat("MasterVolume", 1.0f) * value);
         }
         PlayerPrefs.SetFloat("MusicVolume", value);
 
@@ -87,7 +85,6 @@ public class SettingsManager : MonoBehaviour
 
     private void SetSFXVolume(float value)
     {
-        // TODO: implement the actual setting
         PlayerPrefs.SetFloat("SFXVolume", value);
 
         // Update the text to show the new volume value
@@ -154,7 +151,7 @@ public class SettingsManager : MonoBehaviour
 
     public void OpenSettings()
     {
-        StartCoroutine(sceneFadeManager.FadeCanvasGroup(settingsCanvasGroup, 0, 1, fadeDuration));
+        StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(settingsCanvasGroup, 0, 1, fadeDuration));
         settingsCanvasGroup.gameObject.SetActive(true);
     }
 
@@ -172,7 +169,7 @@ public class SettingsManager : MonoBehaviour
 
     private IEnumerator FadeOutSettings()
     {
-        yield return sceneFadeManager.FadeCanvasGroup(settingsCanvasGroup, 1, 0, fadeDuration);
+        yield return SceneFadeManager.Instance.FadeCanvasGroup(settingsCanvasGroup, 1, 0, fadeDuration);
 
         // Deactivate and disable raycasts
         settingsCanvasGroup.gameObject.SetActive(false);

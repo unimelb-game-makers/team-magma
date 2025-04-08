@@ -134,6 +134,7 @@ namespace Player
             
             Move();
 
+            if (PlayerStateManager.Instance == null) return;
             if (PlayerStateManager.Instance.IsCombat()) {
                 Attack();
             }
@@ -156,11 +157,11 @@ namespace Player
                 // Check if the attack was on beat here
                 if (BeatSpawner.HitOnBeat()) {
                     // Strong melee attack
-                    Debug.Log("Strong Melee attack");
+                    // Debug.Log("Strong Melee attack");
                     MeleeAttack(strongAttackRange, strongMeleeAttackRecoverTime, strongAttackDamage);
                 } else {
                     // Weak melee attack
-                    Debug.Log("Weak Melee attack");
+                    // Debug.Log("Weak Melee attack");
                     MeleeAttack(weakAttackRange, weakMeleeAttackRecoverTime, weakAttackDamage);
                 }
 
