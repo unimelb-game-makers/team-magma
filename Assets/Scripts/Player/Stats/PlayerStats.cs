@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
 namespace Player.Stats
@@ -47,8 +48,7 @@ namespace Player.Stats
 
         private void OnDeath()
         {
-            Debug.Log("PlayerStats Player died");
-            GameManager.Instance.ReloadLevel();
+            DefeatScreenManager.Instance.ShowDefeatScreen();
         }
 
         private void OnDamaged(float health)
