@@ -90,6 +90,7 @@ namespace System
         {
             //check if player data exists
             DontDestroyOnLoad(PlayerCharacter.gameObject);
+            DontDestroyOnLoad(UI);
             //if the player exist
                 //load the current scene
                     //load the player data
