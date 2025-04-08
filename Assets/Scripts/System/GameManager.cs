@@ -10,25 +10,39 @@ namespace System
 {
     public class GameManager : PersistentSingleton<GameManager>
     {
-        private PlayerCharacter _playerCharacter;
+        [SerializeField] private PlayerCharacter _playerCharacter;
         public PlayerCharacter PlayerCharacter
         {
             get
             {
                 if (_playerCharacter == null)
                 {
-                    _playerCharacter = FindObjectOfType<PlayerCharacter>();
-                    if (_playerCharacter == null)
-                    {
-                        Debug.LogError("No PlayerCharacter found in the scene.");
-                    }
+                    throw new Exception("Add player manually.");
                 }
                 return _playerCharacter;
             }
         }
         
+        private PlayerController _playerController;
+        public PlayerController PlayerController
+        {
+            get
+            {
+                if (!_playerController)
+                {
+                    if (PlayerCharacter)
+                    {
+                        _playerController = PlayerCharacter.GetComponent<PlayerController>();
+                    }
+                }
+                return _playerController;
+            }
+        }
+        
         private BeatSpawner _beatSpawner;
 
+        
+        
         public BeatSpawner BeatSpawner
         {
             get
@@ -47,7 +61,8 @@ namespace System
 
 
         [SerializeField] private string defaultScenename = "SampleScene";
-        
+
+        [SerializeField] private GameObject UI;
         /// <summary>
         /// Add Levels here
         /// </summary>

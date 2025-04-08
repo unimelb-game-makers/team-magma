@@ -13,7 +13,6 @@ namespace Enemies
         {
             enemyController = GetComponent<EnemyController>();
         }
-
         public void TakeDamage(float damage)
         {
             var health = enemyController.GetHealth();

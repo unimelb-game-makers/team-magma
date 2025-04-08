@@ -38,9 +38,13 @@ namespace Player
         public void FindActiveCamera()
         {
             _camera = Camera.main;
-            if (_camera == null)
+            if (!_camera)
             {
                 Debug.LogError("No camera found in the scene.");
+            }
+            else
+            {
+                Debug.Log("Camera found: " + _camera.name);
             }
         }
     }

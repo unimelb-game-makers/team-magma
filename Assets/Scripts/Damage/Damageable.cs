@@ -59,7 +59,6 @@ namespace Damage
                     }
                     else
                     {
-                        // Destroy the game object
                         Destroy(gameObject);
                     }
                 }
