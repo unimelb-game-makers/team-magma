@@ -205,6 +205,11 @@ namespace Enemies.EnemyTypes
             fleeSound.setPaused(pause);
         }
 
+        public override void StopSFX() {
+            base.StopSFX();
+            fleeSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+
         #region Tempo Overrides
         protected override void DefaultTempo()
         {

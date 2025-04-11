@@ -326,6 +326,13 @@ namespace Enemy
             attackSound.setPaused(pause);
         }
 
+        public virtual void StopSFX() {
+            idleSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            patrolSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            chaseSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            attackSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+
         #region Tempo Overrides
         public void Affect(TapeType tapeType, float duration, float effectValue)
         {
