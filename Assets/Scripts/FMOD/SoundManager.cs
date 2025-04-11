@@ -39,6 +39,11 @@ public class SoundManager : MonoBehaviour
         SetGameObjectsSFXVolume();
     }
 
+    // Pause all SFX in the scene.
+    public void PauseAllSFXSounds(bool pause) {
+        PauseEnemiesSFX(pause);
+    }
+
     // Set the volume of all game objects that use SFX sounds.
     public void SetGameObjectsSFXVolume() {
         float sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1.0f);  // Default to 1 (100%) if not set
@@ -50,8 +55,16 @@ public class SoundManager : MonoBehaviour
     public void SetEnemiesSFXVolume(float masterVolume, float sfxVolume) {
         EnemyController[] enemyControllers = FindObjectsOfType<EnemyController>();
         foreach (EnemyController enemyController in enemyControllers) {
-            Debug.Log("The enemy's sound was changed!");
             enemyController.SetAudioVolume(masterVolume, sfxVolume);
         }
     }
+
+    // Pause/Unpause enemies SFX.
+    public void PauseEnemiesSFX(bool pause) {
+        EnemyController[] enemyControllers = FindObjectsOfType<EnemyController>();
+        foreach (EnemyController enemyController in enemyControllers) {
+            Debug.Log("The enemy's audio was paused!");
+            enemyController.PauseAudio(pause);
+        }
+    } 
 }

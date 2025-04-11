@@ -95,7 +95,7 @@ namespace Hazard
             fanPushDefault.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             fanPushFast = transform.Find("FanPush_Fast").gameObject;
-            fanPushFast.GetComponent<FanArea>().SetForcesAmount(_defaultForceAmount, _fastEnemyMovementAmount);
+            fanPushFast.GetComponent<FanArea>().SetForcesAmount(_fastForceAmount, _fastEnemyMovementAmount);
             fanPushFast.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             // The 'FanPull' object is the child of the 'Fan' object.
@@ -104,7 +104,7 @@ namespace Hazard
             fanPullDefault.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             fanPullFast = transform.Find("FanPull_Fast").gameObject;
-            fanPullFast.GetComponent<FanArea>().SetForcesAmount(_defaultForceAmount, _fastEnemyMovementAmount);
+            fanPullFast.GetComponent<FanArea>().SetForcesAmount(_fastForceAmount, _fastEnemyMovementAmount);
             fanPullFast.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             // The 'FanStopper' object is the child of the 'Fan' object.

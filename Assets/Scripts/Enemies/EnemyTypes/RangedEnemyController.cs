@@ -199,6 +199,12 @@ namespace Enemies.EnemyTypes
             }
         }
 
+        public override void PauseAudio(bool pause)
+        {
+            base.PauseAudio(pause);
+            fleeSound.setPaused(pause);
+        }
+
         #region Tempo Overrides
         protected override void DefaultTempo()
         {

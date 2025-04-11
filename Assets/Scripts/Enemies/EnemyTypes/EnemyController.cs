@@ -319,6 +319,13 @@ namespace Enemy
             }
         }
 
+        public virtual void PauseAudio(bool pause) {
+            idleSound.setPaused(pause);
+            patrolSound.setPaused(pause);
+            chaseSound.setPaused(pause);
+            attackSound.setPaused(pause);
+        }
+
         #region Tempo Overrides
         public void Affect(TapeType tapeType, float duration, float effectValue)
         {
