@@ -42,8 +42,8 @@ namespace Enemy
         [SerializeField] private float chaseSpeed = 12f;
         [Tooltip("How long the enemy will chase the Player outside its sight range before stopping.")]
         [SerializeField] private float chaseDuration = 3f;
-        [Tooltip("How often the enemy checks the Player's location - Lower means more resource-intensive and can cause lag.")]
-        [SerializeField] private float locationCheckInterval = 0.1f;
+        [Tooltip("How often the enemy checks the player's location - Lower means more resource-intensive and can cause lag.")]
+        public float locationCheckInterval = 0.1f; // WARNING - DO NOT CHANGE TO PRIVATE OR SERIALIZABLE, CAUSES BUILD ERRORS
         private float currentLocationCheckTime_Chase = 0f;
         private float currentLocationCheckTime_General = 0f;
         

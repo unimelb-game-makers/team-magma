@@ -1,0 +1,102 @@
+#  GitHub Action Secret:
+#  UNITY_LICENSE: Unity license file content
+#  UNITY_EMAIL: Unity account email
+#  UNITY_PASSWORD: Unity account password
+#  BUTLER_API_KEY: Itch.io account API key (Unused)
+#  USER_GAME: Itch.io Project website (e.g. https://itch.io/user/game-name) (Unused)
+
+#  Github Action Variables:
+#  UNITY_VERSION: Unity version (2022.3.39f1)
+
+name: Actions 😎
+#on: # Only build on merges with main
+#  workflow_dispatch:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - main
+on: [push, pull_request, workflow_dispatch] # temp
+
+jobs:
+
+  # check if the variables and secrets are set
+  validation:
+    name : Check secret and variable
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Unity License
+        run: |
+          if [ -z "${{ secrets.UNITY_LICENSE }}" ]; then
+            echo "UNITY_LICENSE is not set"
+            exit 1
+          fi
+      - name: Check Unity Email
+        run: |
+          if [ -z "${{ secrets.UNITY_EMAIL }}" ]; then
+            echo "UNITY_EMAIL is not set"
+            exit 1
+          fi
+      - name: Check Unity Password
+        run: |
+          if [ -z "${{ secrets.UNITY_PASSWORD }}" ]; then
+            echo "UNITY_PASSWORD is not set"
+            exit 1
+          fi
+      - name: Check Unity Version
+        run: |
+          if [ -z "${{ vars.UNITY_VERSION }}" ]; then
+            echo "UNITY_VERSION is not set"
+            exit 1
+          fi
+  
+
+  build:
+    name: Build my project ✨
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        targetPlatform: [WebGL, StandaloneWindows64]
+
+
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # Git LFS
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v3
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+      # Cache
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library--${{ matrix.targetPlatform }}
+      # Build
+      - name: Build project 
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          unityVersion: ${{ vars.UNITY_VERSION }}
