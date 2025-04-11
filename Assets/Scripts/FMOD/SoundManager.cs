@@ -14,6 +14,7 @@ using Enemy;
 using Player;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -25,9 +26,16 @@ public class SoundManager : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
+
+        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the event
     }
 
-    public void Start() {
+    void OnDestroy() {
+        SceneManager.sceneLoaded -= OnSceneLoaded; // Unsubscribe to prevent memory leaks
+    }
+
+    // Runs once when a scene is loaded.
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         SetGameObjectsSFXVolume();
     }
 
@@ -42,6 +50,7 @@ public class SoundManager : MonoBehaviour
     public void SetEnemiesSFXVolume(float masterVolume, float sfxVolume) {
         EnemyController[] enemyControllers = FindObjectsOfType<EnemyController>();
         foreach (EnemyController enemyController in enemyControllers) {
+            Debug.Log("The enemy's sound was changed!");
             enemyController.SetAudioVolume(masterVolume, sfxVolume);
         }
     }
