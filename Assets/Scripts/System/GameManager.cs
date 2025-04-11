@@ -15,7 +15,7 @@ namespace System
         {
             get
             {
-                if (_playerCharacter == null)
+                if (!_playerCharacter)
                 {
                     throw new Exception("Add player manually.");
                 }
