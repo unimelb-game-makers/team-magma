@@ -9,6 +9,7 @@ namespace Hazard.Electric_Fence
 {
     public class ElectricFence : Hazard
     {
+        [Header("Electric Fence Variables")]
         [SerializeField] private GameObject door;
         [SerializeField] private DamageVolume damageVolume;
         [SerializeField] private float doorSpeed = 5f;
@@ -41,10 +42,18 @@ namespace Hazard.Electric_Fence
             switch (tapeType)
             {
                 case TapeType.Slow:
-                    StartCoroutine(FastTempo(duration));
+                    if (useDefaultEffectTimeValues) {
+                        StartCoroutine(FastTempo(duration));
+                    } else {
+                        StartCoroutine(FastTempo(_slowEffectTime));
+                    }
                     break;
                 case TapeType.Fast:
-                    StartCoroutine(SlowTempo(duration));
+                    if (useDefaultEffectTimeValues) {
+                        StartCoroutine(SlowTempo(duration));
+                    } else {
+                        StartCoroutine(SlowTempo(_fastEffectTime));
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(tapeType), tapeType, null);

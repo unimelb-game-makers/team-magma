@@ -95,7 +95,7 @@ namespace Hazard
             fanPushDefault.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             fanPushFast = transform.Find("FanPush_Fast").gameObject;
-            fanPushFast.GetComponent<FanArea>().SetForcesAmount(_defaultForceAmount, _fastEnemyMovementAmount);
+            fanPushFast.GetComponent<FanArea>().SetForcesAmount(_fastForceAmount, _fastEnemyMovementAmount);
             fanPushFast.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             // The 'FanPull' object is the child of the 'Fan' object.
@@ -104,7 +104,7 @@ namespace Hazard
             fanPullDefault.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             fanPullFast = transform.Find("FanPull_Fast").gameObject;
-            fanPullFast.GetComponent<FanArea>().SetForcesAmount(_defaultForceAmount, _fastEnemyMovementAmount);
+            fanPullFast.GetComponent<FanArea>().SetForcesAmount(_fastForceAmount, _fastEnemyMovementAmount);
             fanPullFast.GetComponent<FanArea>().SetForceDirection(_forceDirection);
 
             // The 'FanStopper' object is the child of the 'Fan' object.
@@ -119,27 +119,6 @@ namespace Hazard
         {
             ServiceLocator.Instance.Register<ISyncable>(this);
         }
-
-
-        // ***************************************************************************************************
-        // Testing Purposes only - This whole block can be deleted safely.
-        [SerializeField] private bool isSlowTempo = false;
-        [SerializeField] private bool isFastTempo = false;
-        public void Update()
-        {
-            if (isSlowTempo)
-            {
-                Affect(TapeType.Slow, 5f, 0);
-                isSlowTempo = false;
-            }
-
-            if (isFastTempo)
-            {
-                Affect(TapeType.Fast, 5f, 0);
-                isFastTempo = false;
-            }
-        }
-        // ***************************************************************************************************
 
         /**
          * Change the fan speed and damage for 'duration' seconds.
@@ -187,7 +166,12 @@ namespace Hazard
                 // If there was a previous timer to return the fan to default configuration,
                 // then reset it.
                 if (resetFanCoroutine != null) StopCoroutine(resetFanCoroutine);
-                resetFanCoroutine = StartCoroutine(AffectTimer(duration));
+
+                if (useDefaultEffectTimeValues) {
+                    resetFanCoroutine = StartCoroutine(AffectTimer(duration));
+                } else {
+                    resetFanCoroutine = StartCoroutine(AffectTimer(_slowEffectTime));
+                }
             }
 
             // if TapeType.Fast, switch to fanPush_Fast
@@ -217,7 +201,12 @@ namespace Hazard
                 fanStopper.SetActive(true);
 
                 if (resetFanCoroutine != null) StopCoroutine(resetFanCoroutine);
-                resetFanCoroutine = StartCoroutine(AffectTimer(duration));
+
+                if (useDefaultEffectTimeValues) {
+                    resetFanCoroutine = StartCoroutine(AffectTimer(duration));
+                } else {
+                    resetFanCoroutine = StartCoroutine(AffectTimer(_fastEffectTime));
+                }
             }
         }
 
