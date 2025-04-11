@@ -336,14 +336,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 320fbdffb01f4ffa881ba8fc008b740b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 50
   idleDuration: 3
   presetPatrolRoute: 0
   patrolSpeed: 3
   patrolPoints: []
-  chaseSpeed: 8
+  chaseSpeed: 5
   chaseDuration: 3
-  playerLocationCheckInterval: 0.1
+  locationCheckInterval: 0.1
   originalDamage: 50
   originalAttackCooldown: 0.5
   outsideAttackRangeDuration: 0.1
@@ -403,6 +403,7 @@ MonoBehaviour:
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
+  takeDamageAudioPlayer: {fileID: 0}
 --- !u!114 &950781163649989898
 MonoBehaviour:
   m_ObjectHideFlags: 0
