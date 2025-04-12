@@ -325,6 +325,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 637715663628156843, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: isStartMenu
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 864803176651759038, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -404,6 +408,10 @@ PrefabInstance:
     - target: {fileID: 3544114070154509505, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3847680495876232078, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4067217905368398739, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
