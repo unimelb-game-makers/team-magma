@@ -80,12 +80,8 @@ namespace Enemy
 
         #region Audio SFX
         [Header("Audio SFX")]
-        // In FMOD, store all enemy sounds, and other sfx sounds under a sfx folder.
-        // Then, when you want to reduce volume of sfx sounds, you could call a method
-        // like ChangeVolume(float volume) from the sliders in the UI, then set the
-        // bus containing the sfx (sfxBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");)
-        // sfxBus.setVolume(volume).
-        // Note that I have not tested this so it may not work.
+        [Tooltip("How loud the enemy sfx should be.")]
+        [SerializeField] protected float sfxModifier = 0.2f;
         [Tooltip("Idling sound.")]
         [SerializeField] private FMODUnity.EventReference idleSoundReference;
         [Tooltip("Patrol sound.")]
@@ -310,17 +306,31 @@ namespace Enemy
 
         public virtual void SetAudioVolume(float masterVolume, float sfxVolume) {
             if (idleSound.isValid()) {
-                idleSound.setVolume(sfxVolume * masterVolume); // Set volume
+                idleSound.setVolume(sfxVolume * masterVolume * sfxModifier);
             }
             if (patrolSound.isValid()) {
-                patrolSound.setVolume(sfxVolume * masterVolume); // Set volume
+                patrolSound.setVolume(sfxVolume * masterVolume * sfxModifier);
             }
             if (chaseSound.isValid()) {
-                chaseSound.setVolume(sfxVolume * masterVolume); // Set volume
+                chaseSound.setVolume(sfxVolume * masterVolume * sfxModifier);
             }
             if (attackSound.isValid()) {
-                attackSound.setVolume(sfxVolume * masterVolume); // Set volume
+                attackSound.setVolume(sfxVolume * masterVolume * sfxModifier);
             }
+        }
+
+        public virtual void PauseAudio(bool pause) {
+            idleSound.setPaused(pause);
+            patrolSound.setPaused(pause);
+            chaseSound.setPaused(pause);
+            attackSound.setPaused(pause);
+        }
+
+        public virtual void StopSFX() {
+            idleSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            patrolSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            chaseSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            attackSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
 
         #region Tempo Overrides

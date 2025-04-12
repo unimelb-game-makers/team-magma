@@ -9,6 +9,7 @@ public class PauseManager : MonoBehaviour
         IsPaused = true;
         Time.timeScale = 0f;
         MusicTimeline.instance.PauseMusic();
+        if (SoundManager.Instance) SoundManager.Instance.PauseAllSFXSounds(true);
     }
 
     public static void ResumeGame()
@@ -16,6 +17,7 @@ public class PauseManager : MonoBehaviour
         IsPaused = false;
         Time.timeScale = 1f;
         MusicTimeline.instance.ResumeMusic();
+        if (SoundManager.Instance) SoundManager.Instance.PauseAllSFXSounds(false);
     }
 
     public static void TogglePause()

@@ -32,6 +32,8 @@ namespace UI
             yield return StartCoroutine(sceneFadeManager.FadeCanvasGroup(defeatScreenCanvasGroup, 0, 1, fadeDuration));
 
             Time.timeScale = 0f;
+
+            SoundManager.Instance.StopAllSFX();
         }
 
         public void HideDefeatScreen()

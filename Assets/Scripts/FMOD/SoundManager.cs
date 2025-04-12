@@ -14,6 +14,7 @@ using Enemy;
 using Player;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -25,9 +26,16 @@ public class SoundManager : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
+
+        SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the event
     }
 
-    public void Start() {
+    void OnDestroy() {
+        SceneManager.sceneLoaded -= OnSceneLoaded; // Unsubscribe to prevent memory leaks
+    }
+
+    // Runs once when a scene is loaded.
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         SetGameObjectsSFXVolume();
     }
 
@@ -38,11 +46,37 @@ public class SoundManager : MonoBehaviour
         SetEnemiesSFXVolume(masterVolume, sfxVolume);
     }
 
+    // Pause all SFX in the scene.
+    public void PauseAllSFXSounds(bool pause) {
+        PauseEnemiesSFX(pause);
+    }
+
+    // Immediately stop all the SFX in the scene.
+    public void StopAllSFX() {
+        StopAllEnemiesSFX();
+    }
+
     // Set the volume of enemies SFX.
     public void SetEnemiesSFXVolume(float masterVolume, float sfxVolume) {
         EnemyController[] enemyControllers = FindObjectsOfType<EnemyController>();
         foreach (EnemyController enemyController in enemyControllers) {
             enemyController.SetAudioVolume(masterVolume, sfxVolume);
+        }
+    }
+
+    // Pause/Unpause enemies SFX.
+    public void PauseEnemiesSFX(bool pause) {
+        EnemyController[] enemyControllers = FindObjectsOfType<EnemyController>();
+        foreach (EnemyController enemyController in enemyControllers) {
+            enemyController.PauseAudio(pause);
+        }
+    }
+
+    // Immediately stop all the enemies' SFX in the scene.
+    public void StopAllEnemiesSFX() {
+        EnemyController[] enemyControllers = FindObjectsOfType<EnemyController>();
+        foreach (EnemyController enemyController in enemyControllers) {
+            enemyController.StopSFX();
         }
     }
 }
