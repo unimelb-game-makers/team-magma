@@ -58,16 +58,13 @@ namespace System.Level
                 Debug.LogError("Loaded scene is not valid: " + sceneName);
             }
 
-            // Unload the original scene if it is different from the new scene.
-            if (currentScene.name != sceneName)
+            // Unload the original scene
+            AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(currentScene);
+            while (unloadOperation is { isDone: false })
             {
-                AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(currentScene);
-                while (unloadOperation is { isDone: false })
-                {
-                    yield return null;
-                }
+                yield return null;
             }
-
+            
             // Update state, notify that the level has loaded, and invoke the callback.
             onComplete?.Invoke();
         }

@@ -1,10 +1,13 @@
 // Author : Peiyu Wang @ Daphatus
 // 10 03 2025 03 07
 
+// Update: Lyu
+
 using System.Collections.Generic;
 using System.Level;
 using Player;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace System
 {
@@ -60,9 +63,8 @@ namespace System
         }
 
 
-        [SerializeField] private string defaultScenename = "SampleScene";
+        [SerializeField] private string defaultScenename = "Room1";
 
-        [SerializeField] private GameObject UI;
         /// <summary>
         /// Add Levels here
         /// </summary>
@@ -90,7 +92,6 @@ namespace System
         {
             //check if player data exists
             DontDestroyOnLoad(PlayerCharacter.gameObject);
-            DontDestroyOnLoad(UI);
             //if the player exist
                 //load the current scene
                     //load the player data
@@ -103,10 +104,33 @@ namespace System
         {
             if(_currentLevelIndex >= levelNames.Count)
             {
+                // TODO: add success screen
                 throw new Exception("No more levels to load.");
             }
             LoadLevel(levelNames[_currentLevelIndex]);
             _currentLevelIndex++;
+        }
+
+        public void LoadNewGame()
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            if (currentScene.name != levelNames[0])
+            {
+                LoadLevel(levelNames[0]);
+                _currentLevelIndex = 1;
+                PlayerCharacter.PlayerStats.OnReset();
+            }
+            else
+            {
+                ReloadLevel();
+            } 
+        }
+
+        public void LoadContinueGame()
+        {
+            PlayerCharacter.PlayerStats.OnReset();
+            LoadLevel(levelNames[Math.Max(_currentLevelIndex-1, 0)]);
+            _currentLevelIndex = Math.Max(_currentLevelIndex, 1);
         }
         
         private void LoadLevel(string sceneName)

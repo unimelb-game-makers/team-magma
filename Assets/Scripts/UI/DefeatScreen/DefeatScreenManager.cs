@@ -14,8 +14,7 @@ namespace UI
         void Start()
         {
             Time.timeScale = 1f;
-            defeatScreenCanvasGroup.gameObject.SetActive(false);
-            defeatScreenCanvasGroup.alpha = 0;
+            HideDefeatScreen();
         }
 
         public void ShowDefeatScreen()
@@ -33,6 +32,12 @@ namespace UI
             yield return StartCoroutine(sceneFadeManager.FadeCanvasGroup(defeatScreenCanvasGroup, 0, 1, fadeDuration));
 
             Time.timeScale = 0f;
+        }
+
+        public void HideDefeatScreen()
+        {
+            defeatScreenCanvasGroup.gameObject.SetActive(false);
+            defeatScreenCanvasGroup.alpha = 0;
         }
     }
 }
