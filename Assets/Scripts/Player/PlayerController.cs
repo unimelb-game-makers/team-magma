@@ -43,6 +43,7 @@ namespace Player
         [SerializeField] private float dodgeRecoverTime = 1f;
         [SerializeField] private float dodgeTime = 0.15f;
         [SerializeField] private float isInvulnerableTime = 0.1f;
+        [SerializeField] private float dodgeForce = 20f; // New parameter for dodge force
 
         [Space(10)]
         
@@ -107,6 +108,8 @@ namespace Player
 
         private float _horizontalInput;
         private float _verticalInput;
+
+        private bool _isDodging;
 
         private void Start()
         {
@@ -175,24 +178,16 @@ namespace Player
             {
                 _leftMouseButtonDown = false;
             }
-            
-            if (Input.GetButtonDown("Fire2"))
-            {
-                // Reconfiging this to use Selection Wheel
-                //PlayTapeEffect();
-            }
         }
 
         private void Move()
         {
-            // Get input from the horizontal and vertical axes
-            
-
-            if (Input.GetButtonDown("Dodge") && !_DodgeButtonDown && Time.time > _previousDodge + dodgeRecoverTime)
+            if (Input.GetButtonDown("Dodge") && !_DodgeButtonDown && Time.time > _previousDodge + dodgeRecoverTime && !_isDodging)
             {
                 _dodgeDirection = transform.forward; 
                 _previousDodge = Time.time;
                 _DodgeButtonDown = true;
+                _isDodging = true;
 
                 if (!TrackMovementInput()) {
                     // Move toward the direction the player is facing
@@ -200,6 +195,9 @@ namespace Player
                 }
 
                 GetComponent<Damage.Damageable>().setIsInvulnerable(true);
+                
+                // Apply dodge force instead of using MovePosition
+                _rigidbody.AddForce(_dodgeDirection * dodgeForce, ForceMode.Impulse);
             }
 
             if (Input.GetButtonUp("Dodge"))
@@ -208,23 +206,19 @@ namespace Player
             }
 
             if(Input.GetButtonDown("Jump") && _isGrounded){
-    
-    			_rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
-    			_isGrounded = false;
-    		}
+                _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
+                _isGrounded = false;
+            }
 
             if (Time.time > _previousDodge + isInvulnerableTime && GetComponent<Damageable>().getIsInvulnerable()) {
                 GetComponent<Damageable>().setIsInvulnerable(false);
             }
 
-            if (Time.time > _previousDodge && Time.time < _previousDodge + dodgeTime)
-            // If boost of movement is needed (for dodge)
-            {
-                // Apply the movement to the Rigidbody
-                _rigidbody.MovePosition(_rigidbody.position + _dodgeDirection * dodgeSpeed * Time.deltaTime);
+            if (Time.time > _previousDodge + dodgeTime) {
+                _isDodging = false;
             }
-            else
-            {
+
+            if (!_isDodging) {
                 Vector3 movement;
                 // Calculate the movement vector
                 // Slow down the speed by 1/sqrt(2) if both keys pressed

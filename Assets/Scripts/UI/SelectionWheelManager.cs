@@ -14,9 +14,7 @@ public class SelectionWheelManager : MonoBehaviour
     [SerializeField] private GameObject selectionWheel; // The UI wheel to display
     [SerializeField] private GameObject selectionWheelPanel; // The UI wheel to display
     [SerializeField] private string inputName = "Tape"; // Input name as defined in the Input Manager
-    [SerializeField] private PauseObjectController pauseObjectController;
     [SerializeField] private BatteryManager batteryManager;
-    [SerializeField] private PauseMenuController pauseMenuController;
     [SerializeField] private float batteryNeeded = 50;
     [SerializeField] private float fadeDuration = 0.2f;
     [SerializeField] private AudioPlayer TapeEffectSoundPlayer;
@@ -32,7 +30,7 @@ public class SelectionWheelManager : MonoBehaviour
     
     void Update()
     {
-        if (PauseManager.IsPaused && pauseMenuController.isPauseMenu) 
+        if (PauseManager.IsPaused && (PauseMenuController.Instance.isPauseMenu || StartMenuManager.Instance.isStartMenu))
         {
             if (isWheelActive)
             {
@@ -90,8 +88,10 @@ public class SelectionWheelManager : MonoBehaviour
                 }
             }
         }
-        
-        HandleInput();
+        if (!PauseMenuController.Instance.isPauseMenu && !StartMenuManager.Instance.isStartMenu)
+        {
+            HandleInput();
+        }
     }
 
     private void HandleInput()
@@ -200,7 +200,6 @@ public class SelectionWheelManager : MonoBehaviour
         {
             // Pause game and disable objects when the wheel is shown
             PauseManager.PauseGame();
-            pauseObjectController.DisableObjects();
 
             // Fade in the wheel panel and scale it back to normal size
             StartCoroutine(ShowWheel());
@@ -209,7 +208,6 @@ public class SelectionWheelManager : MonoBehaviour
         {
             // Resume game and enable objects when the wheel is hidden
             PauseManager.ResumeGame();
-            pauseObjectController.EnableObjects();
 
             // Fade out the wheel panel and scale it down to 0
             StartCoroutine(HideWheel());

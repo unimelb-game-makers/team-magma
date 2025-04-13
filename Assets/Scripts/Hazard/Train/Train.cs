@@ -36,10 +36,18 @@ namespace Hazard.Train
             switch (tapeType)
             {
                 case TapeType.Slow:
-                    StartCoroutine(SlowTempo(duration, effectValue));
+                    if (useDefaultEffectTimeValues) {
+                        StartCoroutine(SlowTempo(duration, effectValue));
+                    } else {
+                        StartCoroutine(SlowTempo(_slowEffectTime, _slowEffectValue));
+                    }
                     break;
                 case TapeType.Fast:
-                    StartCoroutine(FastTempo(duration, effectValue));
+                    if (useDefaultEffectTimeValues) {
+                        StartCoroutine(FastTempo(duration, effectValue));
+                    } else {
+                        StartCoroutine(FastTempo(_fastEffectTime, _fastEffectValue));
+                    }
                     break;
                 default:
                     speed = normalSpeed;

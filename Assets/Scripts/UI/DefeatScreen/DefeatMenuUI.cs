@@ -1,10 +1,13 @@
 // Author : Peiyu Wang @ Daphatus
 // 08 04 2025 04 45
 
+// Update: LYU
+
 using System;
 using Scenes;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace UI
 {
@@ -22,21 +25,29 @@ namespace UI
             quitButton.GetComponent<Button>().onClick.AddListener(OnQuitButtonClicked);
         }
 
-        private void OnContinueButtonClicked()
+        public void OnContinueButtonClicked()
         {
             GameManager.Instance.ReloadLevel();
-            SceneFadeManager.Instance.StartCoroutine(SceneFadeManager.Instance.FadeIn());
+            DefeatMenuUI.Instance.gameObject.SetActive(false);
             PauseManager.ResumeGame();
+
+            // Deselect the currently selected UI element
+            EventSystem.current.SetSelectedGameObject(null);
         }
         private void OnSettingsButtonClicked()
         {
             SettingsManager.Instance.OpenSettings();
+
+            // Deselect the currently selected UI element
+            EventSystem.current.SetSelectedGameObject(null);
         }
         private void OnQuitButtonClicked()
         {
-            // Quit the game
-            Debug.Log("Quit button clicked");
-            Application.Quit();
+            StartMenuManager.Instance.OpenStartMenu();
+            DefeatScreenManager.Instance.HideDefeatScreen();
+
+            // Deselect the currently selected UI element
+            EventSystem.current.SetSelectedGameObject(null);
         }
     }
 }

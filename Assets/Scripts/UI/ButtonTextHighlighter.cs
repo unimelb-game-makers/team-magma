@@ -17,6 +17,17 @@ public class ButtonTextHighlighter : MonoBehaviour, IPointerEnterHandler, IPoint
 
     private Coroutine colorCoroutine;
 
+    void Awake()
+    {
+        UnHighlightText();
+    }
+
+    void OnDisable()
+    {
+        // Ensure text resets if the object is disabled
+        UnHighlightText();
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (isTMP || uiText != null)

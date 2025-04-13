@@ -39,6 +39,8 @@ namespace Hazard
         [Tooltip("The damage which the KillArea deals.")]
         [SerializeField] private float _damage = 999;
 
+        private Coroutine resetWaterCoroutine;
+
         public void Awake()
         {
             // The 'KillArea' object is the child of the 'FlowingWater' object.
@@ -58,20 +60,6 @@ namespace Hazard
         {
             ServiceLocator.Instance.Register<ISyncable>(this);
         }
-
-
-        // ***************************************************************************************************
-        // Testing Purposes only - This whole block can be deleted safely.
-        [SerializeField] private bool isSlowTempo = false;
-        public void Update()
-        {
-            if (isSlowTempo)
-            {
-                Affect(TapeType.Slow, 5f, 0);
-                isSlowTempo = false;
-            }
-        }
-        // ***************************************************************************************************
 
         private IEnumerator MoveKillAreaToHeight(float targetHeight)
         {
@@ -97,14 +85,22 @@ namespace Hazard
          */
         public override void Affect(TapeType tapeType, float duration, float effectValue)
         {
-            Debug.Log("Kill area is being moved to some height i dont know what");
             if(tapeType == TapeType.Slow)
             {
                 // Move the 'KillArea' object to height1.
                 StartCoroutine(MoveKillAreaToHeight(height1));
 
                 // Code for Animations and Sounds.
-                StartCoroutine(AffectTimer(duration));
+
+                // If there was a previous timer to return the water to default configuration,
+                // then reset it.
+                if (resetWaterCoroutine != null) StopCoroutine(resetWaterCoroutine);
+
+                if (useDefaultEffectTimeValues) {
+                    resetWaterCoroutine = StartCoroutine(AffectTimer(duration));
+                } else {
+                    resetWaterCoroutine = StartCoroutine(AffectTimer(_slowEffectTime));
+                }
             }
 
             if(tapeType == TapeType.Fast)
@@ -113,8 +109,13 @@ namespace Hazard
                 StartCoroutine(MoveKillAreaToHeight(height3));
 
                 // Code for Animations and Sounds.
+                if (resetWaterCoroutine != null) StopCoroutine(resetWaterCoroutine);
 
-                StartCoroutine(AffectTimer(duration));
+                if (useDefaultEffectTimeValues) {
+                    resetWaterCoroutine = StartCoroutine(AffectTimer(duration));
+                } else {
+                    resetWaterCoroutine = StartCoroutine(AffectTimer(_fastEffectTime));
+                }
             }
         }
 

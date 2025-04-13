@@ -173,7 +173,7 @@ namespace Enemies.EnemyTypes
 
             // Get a random distance within moveToRange
             // Avoid too close distances
-            float randomDistance = Random.Range(0.5f * moveToRange, moveToRange);
+            float randomDistance = Random.Range(moveToRange, moveToRange);
 
             // Calculate the flee position
             fleeLocation = transform.position + fleeDirection * randomDistance;
@@ -195,8 +195,19 @@ namespace Enemies.EnemyTypes
         {
             base.SetAudioVolume(masterVolume, sfxVolume);
             if (fleeSound.isValid()) {
-                fleeSound.setVolume(sfxVolume * masterVolume); // Set volume
+                fleeSound.setVolume(sfxVolume * masterVolume * sfxModifier);
             }
+        }
+
+        public override void PauseAudio(bool pause)
+        {
+            base.PauseAudio(pause);
+            fleeSound.setPaused(pause);
+        }
+
+        public override void StopSFX() {
+            base.StopSFX();
+            fleeSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
 
         #region Tempo Overrides
