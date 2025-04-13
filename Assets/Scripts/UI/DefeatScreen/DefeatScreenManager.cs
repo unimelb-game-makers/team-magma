@@ -6,7 +6,6 @@ namespace UI
 {
     public class DefeatScreenManager : Singleton<DefeatScreenManager>
     {
-        public SceneFadeManager sceneFadeManager;
         public CanvasGroup defeatScreenCanvasGroup;
         public float fadeDuration = 1.0f; // Duration of the fade-in
         public float delayBeforeFade = 0.5f; // Optional delay before the fade
@@ -29,7 +28,7 @@ namespace UI
             yield return new WaitForSeconds(delayBeforeFade);
 
             // Start the fade-in and wait for it to complete
-            yield return StartCoroutine(sceneFadeManager.FadeCanvasGroup(defeatScreenCanvasGroup, 0, 1, fadeDuration));
+            yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(defeatScreenCanvasGroup, 0, 1, fadeDuration));
 
             Time.timeScale = 0f;
 

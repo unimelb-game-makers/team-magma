@@ -27,7 +27,6 @@ namespace Scenes
         public void ChangeScene(string sceneName)
         {
             StartCoroutine(FadeOutAndSwitchScene(sceneName));
-            GameManager.Instance.LoadNextLevel();
         }
 
         /// <summary>
@@ -45,8 +44,6 @@ namespace Scenes
                 yield return null;
             }
             fadeImage.color = new Color(0, 0, 0, 0); // Fully transparent
-            
-            DefeatMenuUI.Instance.gameObject.SetActive(false); // Hide the defeat menu
         }
 
         /// <summary>
@@ -67,6 +64,7 @@ namespace Scenes
             fadeImage.color = new Color(0, 0, 0, 1); // Fully black
 
             // Switch to the new scene
+            SceneManager.LoadScene(sceneName);
         }
 
         /// <summary>

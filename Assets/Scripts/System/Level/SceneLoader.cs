@@ -15,5 +15,6 @@ namespace System.Level
                 GameManager.Instance.LoadNextLevel();
             }
         }
+
     }
 }

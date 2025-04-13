@@ -1,7 +1,6 @@
-// Author : Peiyu Wang @ Daphatus
-// 08 04 2025 04 45
-
-// Update: LYU
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 using System;
 using Scenes;
@@ -11,32 +10,23 @@ using UnityEngine.EventSystems;
 
 namespace UI
 {
-    public class DefeatMenuUI : Singleton<DefeatMenuUI>
+    public class SuccessScreenUI : Singleton<SuccessScreenUI>
     {
         [SerializeField] private GameObject continueButton;
-        [SerializeField] private GameObject settingsButton;
         [SerializeField] private GameObject quitButton;
         
         //bind the buttons to the functions
         private void Start()
         {
             continueButton.GetComponent<Button>().onClick.AddListener(OnContinueButtonClicked);
-            settingsButton.GetComponent<Button>().onClick.AddListener(OnSettingsButtonClicked);
             quitButton.GetComponent<Button>().onClick.AddListener(OnQuitButtonClicked);
         }
-
+    
         public void OnContinueButtonClicked()
         {
-            GameManager.Instance.ReloadLevel();
-            DefeatMenuUI.Instance.gameObject.SetActive(false);
+            GameManager.Instance.LoadNextLevel();
+            SuccessScreenManager.Instance.HideSuccessScreen();
             PauseManager.ResumeGame();
-
-            // Deselect the currently selected UI element
-            EventSystem.current.SetSelectedGameObject(null);
-        }
-        private void OnSettingsButtonClicked()
-        {
-            SettingsManager.Instance.OpenSettings();
 
             // Deselect the currently selected UI element
             EventSystem.current.SetSelectedGameObject(null);
@@ -44,7 +34,7 @@ namespace UI
         private void OnQuitButtonClicked()
         {
             StartMenuManager.Instance.OpenStartMenu();
-            DefeatScreenManager.Instance.HideDefeatScreen();
+            SuccessScreenManager.Instance.HideSuccessScreen();
 
             // Deselect the currently selected UI element
             EventSystem.current.SetSelectedGameObject(null);
