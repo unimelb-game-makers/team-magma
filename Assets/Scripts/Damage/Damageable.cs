@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Player;
+using Enemy;
 
 namespace Damage
 {
@@ -56,8 +57,14 @@ namespace Damage
                     {
                         //Debug.Log("Player character is dead");
                         // Do nothing, player character should not be destroyed
+                        
+                        // To add: A Die() method in player that just returns for now.
                     }
-                    else
+                    else if (gameObject.GetComponent<EnemyController>())
+                    {
+                        // if it is an enemy, call the enemy die method.
+                        gameObject.GetComponent<EnemyController>().Die();
+                    } else
                     {
                         Destroy(gameObject);
                     }
