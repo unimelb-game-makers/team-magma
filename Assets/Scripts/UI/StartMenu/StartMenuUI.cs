@@ -46,7 +46,7 @@ namespace UI
         }
         private void OnCreditButtonClicked()
         {
-            // TODO
+            CreditPageManager.Instance.ShowFirstCreditPage();
         }
         private void OnSettingsButtonClicked()
         {
