@@ -13,7 +13,6 @@ public class PlayerStateManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-
             // set the initial state
             SetState(initialState);
         }

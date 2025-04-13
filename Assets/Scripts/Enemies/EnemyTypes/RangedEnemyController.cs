@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Enemies.EnemyStates;
 using Enemy;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -159,6 +160,7 @@ namespace Enemies.EnemyTypes
         private void EndShot()
         {
             SetIsAttacking(false);
+            GetAttackSound().stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
         #endregion
 
@@ -208,6 +210,12 @@ namespace Enemies.EnemyTypes
         public override void StopSFX() {
             base.StopSFX();
             fleeSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+
+        protected override void ReleaseSFX()
+        {
+            base.ReleaseSFX();
+            fleeSound.release();
         }
 
         #region Tempo Overrides
