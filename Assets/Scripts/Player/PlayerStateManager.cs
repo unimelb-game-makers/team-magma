@@ -5,14 +5,16 @@ public class PlayerStateManager : MonoBehaviour
     public static PlayerStateManager Instance { get; private set; }
     public PlayerState CurrentState { get; private set; }
 
+    public PlayerState initialState = PlayerState.Combat;
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            SetState(PlayerState.Combat);
-            Debug.Log("PlayerStateManager initialized");
+            // set the initial state
+            SetState(initialState);
         }
         else
         {
