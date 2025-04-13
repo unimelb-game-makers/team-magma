@@ -12,9 +12,6 @@ public class SuccessScreenTriggerTest : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
-                // make sure the enemy sfx is stopped
-                SoundManager.Instance.StopAllSFX();
-
                 SuccessScreenManager.Instance.ShowSuccessScreen();
             }
         }

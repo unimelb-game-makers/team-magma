@@ -175,12 +175,6 @@ namespace Player
             {
                 _leftMouseButtonDown = false;
             }
-            
-            if (Input.GetButtonDown("Fire2"))
-            {
-                // Reconfiging this to use Selection Wheel
-                //PlayTapeEffect();
-            }
         }
 
         private void Move()

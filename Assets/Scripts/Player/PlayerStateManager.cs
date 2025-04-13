@@ -11,7 +11,7 @@ public class PlayerStateManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            SetState(PlayerState.Normal);
+            SetState(PlayerState.Combat);
             Debug.Log("PlayerStateManager initialized");
         }
         else
