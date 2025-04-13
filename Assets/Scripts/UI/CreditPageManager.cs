@@ -30,9 +30,6 @@ namespace UI
         {
             secondCreditPageCanvasGroup.gameObject.SetActive(true);
             StartCoroutine(FadeIn(secondCreditPageCanvasGroup));
-
-            firstCreditPageCanvasGroup.gameObject.SetActive(false);
-            firstCreditPageCanvasGroup.alpha = 0;
         }
 
         private IEnumerator FadeIn(CanvasGroup canvasGroup)
@@ -43,6 +40,9 @@ namespace UI
 
         public void CloseCreditPage()
         {
+            firstCreditPageCanvasGroup.gameObject.SetActive(false);
+            firstCreditPageCanvasGroup.alpha = 0;
+            
             StartCoroutine(FadeOutCreditPage());
         }
 

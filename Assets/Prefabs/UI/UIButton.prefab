@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8477452506824475742}
   - component: {fileID: 7090656579484655724}
   - component: {fileID: 1024234863928083394}
-  - component: {fileID: 4983313388680936086}
   m_Layer: 5
   m_Name: UIButton
   m_TagString: Untagged
@@ -138,18 +137,6 @@ MonoBehaviour:
   normalSprite: {fileID: 21300000, guid: 242035c5eb40dd04fae6eda478ddfcb0, type: 3}
   hoverSprite: {fileID: 21300000, guid: 386c4fa98db0c484a9a0681b8fd34c0b, type: 3}
   transitionDuration: 0.3
---- !u!114 &4983313388680936086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3204886642653493893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30723c71a66725d4395d4bcc96b4ecca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   hoverEventReference:
     Guid:
       Data1: 430206639
