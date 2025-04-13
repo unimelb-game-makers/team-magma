@@ -2,11 +2,10 @@ using Scenes;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PauseMenuController : MonoBehaviour
+public class PauseMenuController : Singleton<PauseMenuController>
 {
     public CanvasGroup pauseMenuCanvasGroup;
     public float fadeDuration = 0.5f; // Duration for the fade effect
-    public PauseObjectController pauseObjectController;
     public bool isPauseMenu = false;
     private float inputCooldown = 0.1f;  // Cooldown period (seconds)
     private float lastResumeTime;
@@ -45,7 +44,6 @@ public class PauseMenuController : MonoBehaviour
             ShowUI();
             StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(pauseMenuCanvasGroup, 0, 1, fadeDuration));
             PauseManager.PauseGame();
-            pauseObjectController.DisableObjects();
         }
         else
         {
@@ -59,7 +57,6 @@ public class PauseMenuController : MonoBehaviour
     {
         yield return SceneFadeManager.Instance.FadeCanvasGroup(pauseMenuCanvasGroup, 1, 0, fadeDuration);
         PauseManager.ResumeGame();
-        pauseObjectController.EnableObjects();
 
         // Deselect the currently selected UI element
         EventSystem.current.SetSelectedGameObject(null);

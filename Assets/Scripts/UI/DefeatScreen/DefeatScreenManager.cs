@@ -14,8 +14,7 @@ namespace UI
         void Start()
         {
             Time.timeScale = 1f;
-            defeatScreenCanvasGroup.gameObject.SetActive(false);
-            defeatScreenCanvasGroup.alpha = 0;
+            HideDefeatScreen();
         }
 
         public void ShowDefeatScreen()
@@ -35,6 +34,12 @@ namespace UI
             Time.timeScale = 0f;
 
             SoundManager.Instance.StopAllSFX();
+        }
+
+        public void HideDefeatScreen()
+        {
+            defeatScreenCanvasGroup.gameObject.SetActive(false);
+            defeatScreenCanvasGroup.alpha = 0;
         }
     }
 }
