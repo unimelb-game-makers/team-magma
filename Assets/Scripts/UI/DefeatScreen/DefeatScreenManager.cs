@@ -9,17 +9,23 @@ namespace UI
         public CanvasGroup defeatScreenCanvasGroup;
         public float fadeDuration = 1.0f; // Duration of the fade-in
         public float delayBeforeFade = 0.5f; // Optional delay before the fade
+        private bool isDefeatScreen = false;
 
         void Start()
         {
             Time.timeScale = 1f;
             HideDefeatScreen();
+            isDefeatScreen = false;
         }
 
         public void ShowDefeatScreen()
         {
-            defeatScreenCanvasGroup.gameObject.SetActive(true);
-            StartCoroutine(FadeInDefeatScreen());
+            if (!isDefeatScreen)
+            {
+                isDefeatScreen = true;
+                defeatScreenCanvasGroup.gameObject.SetActive(true);
+                StartCoroutine(FadeInDefeatScreen());
+            }
         }
 
         private IEnumerator FadeInDefeatScreen()
@@ -39,6 +45,7 @@ namespace UI
         {
             defeatScreenCanvasGroup.gameObject.SetActive(false);
             defeatScreenCanvasGroup.alpha = 0;
+            isDefeatScreen = false;
         }
     }
 }
