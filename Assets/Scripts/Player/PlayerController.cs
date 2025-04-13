@@ -126,7 +126,7 @@ namespace Player
         private void Update()
         {
             if (PauseManager.IsPaused) return;
-            if (DefeatScreenManager.Instance.isDefeat()) return;
+            if (DefeatScreenManager.Instance.IsDefeat()) return;
             
             _horizontalInput = Input.GetAxis("Horizontal");
             _verticalInput = Input.GetAxis("Vertical");

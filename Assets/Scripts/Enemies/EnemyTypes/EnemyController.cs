@@ -7,6 +7,7 @@ using Platforms;
 using Player;
 using Tempo;
 using Timeline;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -209,6 +210,9 @@ namespace Enemy
         [SerializeField] private bool fastTempo = false;
         
         public virtual void Update() {
+            if (PauseManager.IsPaused) return;
+            if (DefeatScreenManager.Instance.IsDefeat()) return;
+
             // No need to check update locations every frame.
             currentLocationCheckTime_General -= Time.deltaTime;
             if (currentLocationCheckTime_General < 0) {

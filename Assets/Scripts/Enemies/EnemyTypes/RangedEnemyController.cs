@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Enemies.EnemyStates;
 using Enemy;
+using UI;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -42,6 +43,9 @@ namespace Enemies.EnemyTypes
 
         public override void Update()
         {
+            if (PauseManager.IsPaused) return;
+            if (DefeatScreenManager.Instance.IsDefeat()) return;
+            
             // Update flee ranges
             if (Player != null)
                 enemyInFleeRange = Vector3.Distance(transform.position, Player.transform.position) <= fleeRange;
@@ -159,6 +163,7 @@ namespace Enemies.EnemyTypes
         private void EndShot()
         {
             SetIsAttacking(false);
+            GetAttackSound().stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
         #endregion
 

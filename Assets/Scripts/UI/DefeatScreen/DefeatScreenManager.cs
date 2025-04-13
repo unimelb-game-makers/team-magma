@@ -1,6 +1,7 @@
 using System.Collections;
 using Scenes;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UI
 {
@@ -11,14 +12,24 @@ namespace UI
         public float delayBeforeFade = 0.5f; // Optional delay before the fade
         private bool isDefeatScreen = false;
 
-        void Start()
+        protected override void Awake()
         {
+            base.Awake();
+            SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the event
+        }
+
+        void OnDestroy() {
+            SceneManager.sceneLoaded -= OnSceneLoaded; // Unsubscribe to prevent memory leaks
+        }
+
+        // Runs once when a scene is loaded.
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
             Time.timeScale = 1f;
             HideDefeatScreen();
             isDefeatScreen = false;
         }
 
-        public bool isDefeat()
+        public bool IsDefeat()
         {
             return isDefeatScreen;
         }
@@ -38,12 +49,11 @@ namespace UI
             // Optional delay before the fade-in starts
             yield return new WaitForSeconds(delayBeforeFade);
 
+            // Stop all SFX in the scene.
+            if (SoundManager.Instance) SoundManager.Instance.StopAllSFX();
+
             // Start the fade-in and wait for it to complete
             yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(defeatScreenCanvasGroup, 0, 1, fadeDuration));
-
-            Time.timeScale = 0f;
-
-            SoundManager.Instance.StopAllSFX();
         }
 
         public void HideDefeatScreen()
