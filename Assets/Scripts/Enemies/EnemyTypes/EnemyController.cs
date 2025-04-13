@@ -16,7 +16,9 @@ namespace Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     public abstract class EnemyController : MonoBehaviour, ISyncable
     {
+        private bool wasGamePaused = false;
         #region Enemy Variables
+        private bool agentStatus;
         protected NavMeshAgent agent;
 
         [SerializeField] private float health = 100f;
@@ -172,12 +174,6 @@ namespace Enemy
             chaseSound = FMODUnity.RuntimeManager.CreateInstance(chaseSoundReference);
             attackSound = FMODUnity.RuntimeManager.CreateInstance(attackSoundReference);
 
-            // To move to Update, update the position every few frames?
-            idleSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-            patrolSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-            chaseSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-            attackSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-
             // timeline = FindObjectOfType<MusicTimeline>();
             // animator = GetComponent<Animator>();
 
@@ -204,16 +200,26 @@ namespace Enemy
                 { EnemyState.Attack, new AttackState(this, agent, Player) },
             };
         }
-
-        // Temporary variables for testing
-        [SerializeField] private bool slowTempo = false;
-        [SerializeField] private bool fastTempo = false;
         
         public virtual void Update() {
-            if (PauseManager.IsPaused) return;
-            if (DefeatScreenManager.Instance.IsDefeat()) return;
+            if (PauseManager.IsPaused && !wasGamePaused) {
+                wasGamePaused = true;
+                agentStatus = agent.isStopped;
+                agent.isStopped = true;
+                return;
+            } else if (!PauseManager.IsPaused && wasGamePaused) {
+                wasGamePaused = false;
+                agent.isStopped = agentStatus;
+            } else if (wasGamePaused) {
+                return;
+            }
 
-            // No need to check update locations every frame.
+            if (DefeatScreenManager.Instance.IsDefeat()) {
+                agent.isStopped = true;
+                return;
+            }
+
+            // No need to check update locations/sounds every frame.
             currentLocationCheckTime_General -= Time.deltaTime;
             if (currentLocationCheckTime_General < 0) {
                 currentLocationCheckTime_General = locationCheckInterval;
@@ -225,20 +231,15 @@ namespace Enemy
                     PlayerInSightRange = Vector3.Distance(transform.position, Player.transform.position) <= sightRange;
                     PlayerInAttackRange = Vector3.Distance(transform.position, Player.transform.position) <= attackRange;
                 }
+
+                // Update the locations where the sounds should be played.
+                idleSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+                patrolSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+                chaseSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+                attackSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
             }
 
             _currentState?.UpdateState();
-
-            // Temporary code for testing
-            if (slowTempo)
-            {
-                slowTempo = false;
-                Affect(TapeType.Slow, 30f, 0);
-            } else if (fastTempo)
-            {
-                fastTempo = false;
-                Affect(TapeType.Fast, 30f, 0);
-            }
         }
 
         // Exit the current state, and enter the new state.
@@ -308,6 +309,21 @@ namespace Enemy
             agent.isStopped = false;
         }
 
+        public void Die() {
+            _currentState.ExitState();
+            StopSFX();
+            ReleaseSFX();
+            Destroy(gameObject);
+        }
+
+        // Safeguard in case the enemy is destroyed without calling Die method.
+        void OnDestroy()
+        {
+            _currentState.ExitState();
+            StopSFX();
+            ReleaseSFX();
+        }
+
         public virtual void SetAudioVolume(float masterVolume, float sfxVolume) {
             if (idleSound.isValid()) {
                 idleSound.setVolume(sfxVolume * masterVolume * sfxModifier);
@@ -335,6 +351,14 @@ namespace Enemy
             patrolSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             chaseSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             attackSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+
+        // Release the sounds so FMOD can discard them.
+        protected virtual void ReleaseSFX() {
+            idleSound.release();
+            patrolSound.release();
+            chaseSound.release();
+            attackSound.release();
         }
 
         #region Tempo Overrides

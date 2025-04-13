@@ -46,8 +46,10 @@ namespace UI
 
         private IEnumerator FadeInDefeatScreen()
         {
+            Time.timeScale = 0;
+
             // Optional delay before the fade-in starts
-            yield return new WaitForSeconds(delayBeforeFade);
+            yield return new WaitForSecondsRealtime(delayBeforeFade);
 
             // Stop all SFX in the scene.
             if (SoundManager.Instance) SoundManager.Instance.StopAllSFX();

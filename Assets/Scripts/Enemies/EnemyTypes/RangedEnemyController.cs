@@ -43,9 +43,6 @@ namespace Enemies.EnemyTypes
 
         public override void Update()
         {
-            if (PauseManager.IsPaused) return;
-            if (DefeatScreenManager.Instance.IsDefeat()) return;
-            
             // Update flee ranges
             if (Player != null)
                 enemyInFleeRange = Vector3.Distance(transform.position, Player.transform.position) <= fleeRange;
@@ -213,6 +210,12 @@ namespace Enemies.EnemyTypes
         public override void StopSFX() {
             base.StopSFX();
             fleeSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+
+        protected override void ReleaseSFX()
+        {
+            base.ReleaseSFX();
+            fleeSound.release();
         }
 
         #region Tempo Overrides
