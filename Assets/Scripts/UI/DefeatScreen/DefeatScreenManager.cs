@@ -18,6 +18,11 @@ namespace UI
             isDefeatScreen = false;
         }
 
+        public bool isDefeat()
+        {
+            return isDefeatScreen;
+        }
+
         public void ShowDefeatScreen()
         {
             if (!isDefeatScreen)

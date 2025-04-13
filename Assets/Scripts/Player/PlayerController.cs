@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Platforms; // Why is TapeType in platforms?
 using Tempo;
 using Utilities.ServiceLocator;
+using UI;
 
 namespace Player
 {
@@ -116,6 +117,7 @@ namespace Player
             {
                 Debug.LogError("Rigidbody component is missing from the player object.");
             }
+
             // Get the main camera
             _previousMeleeAttack = Time.time - weakMeleeAttackRecoverTime;
             _previousDodge = Time.time - dodgeRecoverTime;
@@ -124,6 +126,7 @@ namespace Player
         private void Update()
         {
             if (PauseManager.IsPaused) return;
+            if (DefeatScreenManager.Instance.isDefeat()) return;
             
             _horizontalInput = Input.GetAxis("Horizontal");
             _verticalInput = Input.GetAxis("Vertical");
