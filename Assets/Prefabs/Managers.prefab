@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9196833226898165580}
   - component: {fileID: 1721843424394274163}
   - component: {fileID: 3978908077854457429}
-  - component: {fileID: 1355504209097782172}
+  - component: {fileID: 7590572894203060588}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCharacter: {fileID: 0}
   defaultScenename: SampleScene
+  UI: {fileID: 0}
 --- !u!114 &1721843424394274163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,7 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa9c57640d7a9640a019fa9ade41651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1355504209097782172
+  initialState: 1
+--- !u!114 &7590572894203060588
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
