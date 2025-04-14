@@ -3024,11 +3024,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2237626104586702171, guid: 6033645b16414654f8ea4c4c72eda2f8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.35
+      value: -3.44
       objectReference: {fileID: 0}
     - target: {fileID: 2356578161700696677, guid: 6033645b16414654f8ea4c4c72eda2f8, type: 3}
       propertyPath: m_Name
       value: Sewer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495396369944630177, guid: 6033645b16414654f8ea4c4c72eda2f8, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4001376803769049072, guid: 6033645b16414654f8ea4c4c72eda2f8, type: 3}
       propertyPath: m_LocalScale.x
@@ -3086,9 +3090,21 @@ PrefabInstance:
       propertyPath: isSlowTempo
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4560752972738586925, guid: 6033645b16414654f8ea4c4c72eda2f8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4614926226008870444, guid: 6033645b16414654f8ea4c4c72eda2f8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.22
+      objectReference: {fileID: 0}
     - target: {fileID: 5434429784484887244, guid: 6033645b16414654f8ea4c4c72eda2f8, type: 3}
       propertyPath: m_LocalPosition.y
       value: -5.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922289327228155624, guid: 6033645b16414654f8ea4c4c72eda2f8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
