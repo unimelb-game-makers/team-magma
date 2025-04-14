@@ -247,7 +247,7 @@ namespace Player
                     case OrientationType.TowardMouse: 
                         // Get the mouse position in the world space
                         Ray ray = Camera.ScreenPointToRay(Input.mousePosition);
-                        Plane groundPlane = new Plane(Vector3.up, Vector3.down);  // Define a plane at the ground level
+                        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);  // Define a plane at the ground level
 
                         // Check where the ray intersects the plane
                         if (groundPlane.Raycast(ray, out float distance))
@@ -266,7 +266,7 @@ namespace Player
                 //_rigidbody.MovePosition(_rigidbody.position + movement * Time.deltaTime);
 
                 // Apply velocity to the Rigidbody
-                _rigidbody.velocity = movement;
+                _rigidbody.velocity = new Vector3(movement.x, _rigidbody.velocity.y, movement.z);
             }
         }
 
