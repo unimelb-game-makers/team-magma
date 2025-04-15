@@ -106,15 +106,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 15
-  orientation: 0
   jumpHeight: 2
   jumpForce: 5
-  lookOrientation: 1
+  maxAirJumps: 1
+  lookOrientation: 0
   moveOrientation: 1
   enemyLayers:
     serializedVersion: 2
     m_Bits: 0
-  rotationSpeed: 10
+  rotationSpeed: 20
   MeleeAttackPrefab: {fileID: 3345562608605307880, guid: 320ad44a5e6169c4e8aad40d4f02f2f6, type: 3}
   weakAttackRange: 1
   strongAttackRange: 2
@@ -126,6 +126,7 @@ MonoBehaviour:
   dodgeRecoverTime: 1
   dodgeTime: 0.15
   isInvulnerableTime: 0.1
+  dodgeForce: 20
 --- !u!114 &965972200123550745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +274,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4176051907566790841}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b5ddf4fdd2daa1945868b061bcc9c0bd, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
