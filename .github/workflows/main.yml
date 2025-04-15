@@ -24,7 +24,7 @@ jobs:
   # check if the variables and secrets are set
   validation:
     name : Check secret and variable
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Check Unity License
         run: |
@@ -54,7 +54,7 @@ jobs:
 
   build:
     name: Build my project ✨
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       matrix:
         targetPlatform: [WebGL, StandaloneWindows64]
