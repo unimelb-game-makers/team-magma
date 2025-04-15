@@ -17,6 +17,8 @@ namespace Player
         [SerializeField] private OrientationType orientation;
         [SerializeField] private float jumpHeight = 2.0f;
     	[SerializeField] private float jumpForce = 2.0f;
+        [SerializeField] private int maxAirJumps = 1;
+        private int airJumpsRemaining = 0;
     
     	
         [SerializeField] private OrientationType lookOrientation;
@@ -208,9 +210,17 @@ namespace Player
                 _DodgeButtonDown = false;
             }
 
-            if(Input.GetButtonDown("Jump") && _isGrounded){
-                _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
-                _isGrounded = false;
+            if(Input.GetButtonDown("Jump")) {
+                if (_isGrounded) {
+                    _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z); // Reset Y
+                    _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
+                    airJumpsRemaining = maxAirJumps; // Reset air jumps on ground
+                    _isGrounded = false;
+                } else if (airJumpsRemaining > 0) {
+                    _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z); // Reset Y
+                    _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
+                    airJumpsRemaining--;
+                }
             }
 
             if (Time.time > _previousDodge + isInvulnerableTime && GetComponent<Damageable>().getIsInvulnerable()) {
@@ -247,7 +257,7 @@ namespace Player
                     case OrientationType.TowardMouse: 
                         // Get the mouse position in the world space
                         Ray ray = Camera.ScreenPointToRay(Input.mousePosition);
-                        Plane groundPlane = new Plane(Vector3.up, Vector3.down);  // Define a plane at the ground level
+                        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);  // Define a plane at the ground level
 
                         // Check where the ray intersects the plane
                         if (groundPlane.Raycast(ray, out float distance))
@@ -266,7 +276,7 @@ namespace Player
                 //_rigidbody.MovePosition(_rigidbody.position + movement * Time.deltaTime);
 
                 // Apply velocity to the Rigidbody
-                _rigidbody.velocity = movement;
+                _rigidbody.velocity = new Vector3(movement.x, _rigidbody.velocity.y, movement.z);
             }
         }
 
@@ -385,9 +395,24 @@ namespace Player
             return _isMovingHorizontally || _isMovingVertically; 
         }
 
-        void OnCollisionStay()
+        void OnCollisionStay(Collision collision)
     	{
-    		_isGrounded = true;
+    		foreach (ContactPoint contact in collision.contacts)
+            {
+                // Check if the normal of the contact is pointing mostly upwards
+                if (Vector3.Angle(contact.normal, Vector3.up) < 45f)
+                {
+                    _isGrounded = true;
+                    return;
+                }
+            }
+
+            _isGrounded = false; // In case all contacts are walls/ceilings
     	}
+
+        void OnCollisionExit(Collision collision)
+        {
+            _isGrounded = false;
+        }
     }
 }

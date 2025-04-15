@@ -1,4 +1,5 @@
 using Scenes;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -26,7 +27,9 @@ public class PauseMenuController : Singleton<PauseMenuController>
         // Toggle the pause menu when pressing the Escape key
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TogglePauseMenu();
+            if (!DefeatScreenManager.Instance.IsDefeat()) {
+                TogglePauseMenu();
+            }
         }
     }
 
