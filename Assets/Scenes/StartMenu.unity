@@ -396,6 +396,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2832915577401938429, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 2014757341}
+    - target: {fileID: 2832915577401938429, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_RenderMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2832915577401938429, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2996537354740115176, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -549,6 +561,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+--- !u!20 &2014757341 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 197375675056847014, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
+  m_PrefabInstance: {fileID: 148121931}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2055755767 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 142032139593856738, guid: 4a0bd3be14cb7495f9ed6ebbaec7f5c0, type: 3}
