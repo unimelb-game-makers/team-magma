@@ -14,7 +14,6 @@ namespace Player
         // Movement speed of the player
         [Header("Movement Setup")]
         [SerializeField] private float movementSpeed = 15f;
-        [SerializeField] private OrientationType orientation;
         [SerializeField] private float jumpHeight = 2.0f;
     	[SerializeField] private float jumpForce = 2.0f;
         [SerializeField] private int maxAirJumps = 1;
@@ -355,19 +354,24 @@ namespace Player
                     }
                     break;
                 case OrientationType.TowardMouse:
-                    // Get the mouse position in the world space
+                    // Cast a ray from the camera through the mouse position
                     Ray ray = Camera.ScreenPointToRay(Input.mousePosition);
-                    Plane groundPlane = new Plane(Vector3.up, Vector3.down);  // Define a plane at the ground level
+                    
+                    // Define a flat ground plane at y = transform.position.y (same height as player)
+                    Plane groundPlane = new Plane(Vector3.up, new Vector3(0, transform.position.y, 0));
 
-                    // Check where the ray intersects the plane
+                    // Check intersection with the plane
                     if (groundPlane.Raycast(ray, out float distance))
                     {
-                        Vector3 targetPoint = ray.GetPoint(distance);  // Get the point on the plane
-                        Vector3 direction = (targetPoint - transform.position).normalized;  // Calculate the direction
+                        Vector3 hitPoint = ray.GetPoint(distance); // Where the mouse points on the plane
+                        Vector3 direction = hitPoint - transform.position;
+                        direction.y = 0f; // Ignore vertical difference
 
-                        targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-                        // Smoothly rotate towards the target rotation
-                        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                        if (direction.sqrMagnitude > 0.001f)
+                        {
+                            targetRotation = Quaternion.LookRotation(direction);
+                            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                        }
                     }
                     break;
             }
