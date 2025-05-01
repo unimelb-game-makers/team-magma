@@ -11,9 +11,19 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
+        private static readonly int Speed = Animator.StringToHash("speed");
+
         // Movement speed of the player
         [Header("Movement Setup")]
         [SerializeField] private float movementSpeed = 15f;
+        [SerializeField] private Animator animator;
+        static readonly int SpeedID = Animator.StringToHash("speed");
+        public Animator Animator => animator;
+        public float MovementSpeed
+        {
+            get => movementSpeed;
+            set => movementSpeed = value;
+        }
         [SerializeField] private float jumpHeight = 2.0f;
     	[SerializeField] private float jumpForce = 2.0f;
         [SerializeField] private int maxAirJumps = 1;
@@ -236,11 +246,11 @@ namespace Player
                 // Slow down the speed by 1/sqrt(2) if both keys pressed
                 if (_isMovingHorizontally && _isMovingVertically)
                 {
-                    movement = new Vector3(_horizontalInput * movementSpeed * 0.69f, _rigidbody.velocity.y, _verticalInput * movementSpeed * 0.69f);
+                    movement = new Vector3(_horizontalInput * MovementSpeed * 0.69f, _rigidbody.velocity.y, _verticalInput * MovementSpeed * 0.69f);
                 }
                 else
                 {
-                    movement = new Vector3(_horizontalInput * movementSpeed, _rigidbody.velocity.y, _verticalInput * movementSpeed);
+                    movement = new Vector3(_horizontalInput * MovementSpeed, _rigidbody.velocity.y, _verticalInput * MovementSpeed);
                 }
 
                 switch (moveOrientation)
@@ -276,6 +286,9 @@ namespace Player
 
                 // Apply velocity to the Rigidbody
                 _rigidbody.velocity = new Vector3(movement.x, _rigidbody.velocity.y, movement.z);
+                //set animation speed
+                Debug.Log("Player speed: " + movement.magnitude/MovementSpeed);
+                Animator.SetFloat(SpeedID, movement.magnitude/MovementSpeed);
             }
         }
 
