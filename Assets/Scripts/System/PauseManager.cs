@@ -4,11 +4,11 @@ public class PauseManager : MonoBehaviour
 {
     public static bool IsPaused { get; private set; }
 
-    public static void PauseGame()
+    public static void PauseGame(bool isMusicPaused = true)
     {
         IsPaused = true;
         Time.timeScale = 0f;
-        MusicTimeline.instance.PauseMusic();
+        if (isMusicPaused) MusicTimeline.instance.PauseMusic();
         if (SoundManager.Instance) SoundManager.Instance.PauseAllSFXSounds(true);
     }
 

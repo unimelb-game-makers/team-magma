@@ -2,12 +2,27 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using Microsoft.Unity.VisualStudio.Editor;
 using Scenes;
+using Timeline;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace UI
 {
-    public class TutorialInstructionScreenManager : Singleton<TutorialInstructionScreenManager>
+    public enum TutorialScreenType
+    {
+        Move,
+        HP,
+        Beat,
+        Tape
+    }
+
+    public enum ButtonToClose
+    {
+        Enter,
+        A
+    }
+
+    public class TutorialInstructionScreenManager : MonoBehaviour
     {
         private int currentPage;
         [SerializeField] private CanvasGroup[] moveCanvasGroup;
@@ -62,7 +77,8 @@ namespace UI
             }
             else if (currentPage == 0)
             {
-                PauseManager.PauseGame();
+                // Do not pause music
+                PauseManager.PauseGame(false);
             }
 
             StartCoroutine(FadeInScreen(canvasGroups[currentPage]));

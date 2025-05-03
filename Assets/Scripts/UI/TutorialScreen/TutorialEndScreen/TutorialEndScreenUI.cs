@@ -9,8 +9,9 @@ using UnityEngine.EventSystems;
 
 namespace UI
 {
-    public class TutorialEndScreenUI : Singleton<TutorialEndScreenUI>
+    public class TutorialEndScreenUI : MonoBehaviour
     {
+        [SerializeField] private TutorialEndScreenManager tutorialEndScreenManager;
         [SerializeField] private GameObject quitButton;
         
         //bind the buttons to the functions
@@ -22,7 +23,7 @@ namespace UI
         private void OnQuitButtonClicked()
         {
             StartMenuManager.Instance.OpenStartMenu();
-            TutorialEndScreenManager.Instance.HideTutorialEndScreen();
+            tutorialEndScreenManager.HideTutorialEndScreen();
 
             // Deselect the currently selected UI element
             EventSystem.current.SetSelectedGameObject(null);

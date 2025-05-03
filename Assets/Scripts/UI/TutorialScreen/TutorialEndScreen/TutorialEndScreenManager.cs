@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UI
 {
-    public class TutorialEndScreenManager : Singleton<TutorialEndScreenManager>
+    public class TutorialEndScreenManager : MonoBehaviour
     {
         public CanvasGroup tutorialEndScreenCanvasGroup;
         public float fadeDuration = 0.3f; // Duration of the fade-in

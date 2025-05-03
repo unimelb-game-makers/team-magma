@@ -6,11 +6,13 @@ using UI;
 [RequireComponent(typeof(Collider))]
 public class TutorialEndTrigger : MonoBehaviour
 {
+    [SerializeField] private TutorialEndScreenManager tutorialEndScreenManager;
+
     private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
         {
-            if (other.CompareTag("Player"))
-            {
-                TutorialEndScreenManager.Instance.ShowTutorialEndScreen();
-            }
+            tutorialEndScreenManager.ShowTutorialEndScreen();
         }
+    }
 }
