@@ -17,6 +17,7 @@ public class TriggerTutorialInstruction : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
+            PauseMenuController.BlockEscapeKey(true);
             isTriggered = true;
             switch (screenToShow)
             {
@@ -43,6 +44,7 @@ public class TriggerTutorialInstruction : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
+            PauseMenuController.BlockEscapeKey(false);
             Destroy(gameObject);
         }
     }
