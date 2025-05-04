@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/// <summary>
+/// basic script for Tutorial message display
+/// </summary>
 public class TutorialInfo : MonoBehaviour
 {
     public GameObject messageCanvas;
-    void Start()
-    {
-    }
 
     void Update()
     {
