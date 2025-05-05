@@ -139,6 +139,21 @@ namespace System
             Debug.Log("Loading level: " + sceneName);
             LevelManager.Instance.LoadLevel(sceneName, LevelLoaded);
         }
+
+        public void LoadLevelNumber(int number)
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            if (currentScene.name != levelNames[number-1])
+            {
+                LoadLevel(levelNames[number-1]);
+                _currentLevelIndex = number;
+                PlayerCharacter.PlayerStats.OnReset();
+            }
+            else
+            {
+                ReloadLevel();
+            } 
+        }
         
         public void ReloadLevel()
         {
