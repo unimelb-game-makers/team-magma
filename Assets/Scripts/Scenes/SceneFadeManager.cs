@@ -101,6 +101,8 @@ namespace Scenes
 
                 elapsedTime += Time.unscaledDeltaTime;
                 yield return null;
+
+                // The canvas groups keep getting destroyed after this line
             }
 
             // Ensure the final alpha value is set and blocksRaycasts is updated

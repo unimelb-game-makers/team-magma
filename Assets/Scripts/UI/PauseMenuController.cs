@@ -8,6 +8,7 @@ public class PauseMenuController : Singleton<PauseMenuController>
     public CanvasGroup pauseMenuCanvasGroup;
     public float fadeDuration = 0.5f; // Duration for the fade effect
     public bool isPauseMenu = false;
+    private static bool isEscapeBlocked = false;
     private float inputCooldown = 0.1f;  // Cooldown period (seconds)
     private float lastResumeTime;
 
@@ -24,6 +25,8 @@ public class PauseMenuController : Singleton<PauseMenuController>
             return;
         }
 
+        if (isEscapeBlocked) return;
+
         // Toggle the pause menu when pressing the Escape key
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -31,6 +34,11 @@ public class PauseMenuController : Singleton<PauseMenuController>
                 TogglePauseMenu();
             }
         }
+    }
+
+    public static void BlockEscapeKey(bool block)
+    {
+        isEscapeBlocked = block;
     }
 
     public void TogglePauseMenu()

@@ -99,6 +99,13 @@ namespace System
                 //load the first scene
                     //create a new player
         }
+
+        public void LoadTutorial(string sceneName)
+        {
+            LoadingLevel();
+            Debug.Log("Loading level: " + sceneName);
+            LevelManager.Instance.LoadLevel(sceneName, LevelLoaded);
+        }
         
         public void LoadNextLevel()
         {
