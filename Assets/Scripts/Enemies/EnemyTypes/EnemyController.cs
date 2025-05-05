@@ -310,7 +310,7 @@ namespace Enemy
         }
 
         public void Die() {
-            _currentState.ExitState();
+            _currentState?.ExitState();
             StopSFX();
             ReleaseSFX();
             Destroy(gameObject);
@@ -319,7 +319,7 @@ namespace Enemy
         // Safeguard in case the enemy is destroyed without calling Die method.
         void OnDestroy()
         {
-            _currentState.ExitState();
+            _currentState?.ExitState();
             StopSFX();
             ReleaseSFX();
         }
