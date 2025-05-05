@@ -201,6 +201,22 @@ Transform:
   - {fileID: 545143435}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &213997509
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539969438}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.031000001, y: 0.027, z: 0.019000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.024, y: 0.21400002, z: 0.030000001}
+  m_TimeToStationary: 0.5
 --- !u!1 &255193333 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7146521406498821007, guid: 1095e6f38d1eff24d8453f71324da143, type: 3}
@@ -475,6 +491,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6474337499960266081, guid: a42f70080915b8c4f8d4fab8d72d45dc, type: 3}
   m_PrefabInstance: {fileID: 334505417}
   m_PrefabAsset: {fileID: 0}
+--- !u!208 &401321566
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539969441}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.063, z: 0.019000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.124000005, y: 0.30900002, z: 0.030000001}
+  m_TimeToStationary: 0.5
 --- !u!1001 &405212334
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1410,6 +1442,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2454634519608151991, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+--- !u!208 &997427405
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539969440}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.09200001, z: 0.019000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.007, y: -0.22600001, z: 0.030000001}
+  m_TimeToStationary: 0.5
 --- !u!64 &1002164117
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2136,21 +2184,39 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9072119300365709304, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1782315310}
+    - targetCorrespondingSourceObject: {fileID: 9072119300365709304, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1782315311}
     - targetCorrespondingSourceObject: {fileID: -5977608664771484044, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4554311}
+    - targetCorrespondingSourceObject: {fileID: -5977608664771484044, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 401321566}
     - targetCorrespondingSourceObject: {fileID: 6917527982145812875, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1002164117}
+    - targetCorrespondingSourceObject: {fileID: 6917527982145812875, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 997427405}
     - targetCorrespondingSourceObject: {fileID: 8537576227933577899, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2083207189}
+    - targetCorrespondingSourceObject: {fileID: 8537576227933577899, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2083207190}
     - targetCorrespondingSourceObject: {fileID: 7541143317573133423, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 302977890}
+    - targetCorrespondingSourceObject: {fileID: 7541143317573133423, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 213997509}
     - targetCorrespondingSourceObject: {fileID: -4252930274654657127, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1633375174}
+    - targetCorrespondingSourceObject: {fileID: -4252930274654657127, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1633375175}
   m_SourcePrefab: {fileID: 100100000, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
 --- !u!1 &1539969437 stripped
 GameObject:
@@ -2369,7 +2435,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.010000001, y: 0.010000001, z: 0.010000001}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.012, y: 0.052, z: 0.018000001}
   m_TimeToStationary: 0.5
@@ -2385,7 +2451,7 @@ NavMeshObstacle:
   m_Shape: 0
   m_Extents: {x: 0.024, y: 0.024, z: 0.024}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.012, y: 0.069000006, z: 0.040000003}
   m_TimeToStationary: 0.5
@@ -2423,7 +2489,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.010000001, y: 0.010000001, z: 0.010000001}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.024, y: 0.054, z: -0.042000003}
   m_TimeToStationary: 0.5
@@ -2546,6 +2612,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2603709885696835050, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+--- !u!208 &1633375175
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539969437}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.031000001, y: 0.027, z: 0.019000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.097, y: 0.21400002, z: 0.030000001}
+  m_TimeToStationary: 0.5
 --- !u!1 &1647338001
 GameObject:
   m_ObjectHideFlags: 0
@@ -2903,6 +2985,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7115071187641461416, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+--- !u!208 &1782315311
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539969442}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.063, z: 0.019000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.052, y: 0.30900002, z: 0.030000001}
+  m_TimeToStationary: 0.5
 --- !u!1 &1802433688 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -208595431880416365, guid: 1095e6f38d1eff24d8453f71324da143, type: 3}
@@ -2942,7 +3040,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.010000001, y: 0.010000001, z: 0.010000001}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.022000002, y: -0.089, z: 0.080000006}
   m_TimeToStationary: 0.5
@@ -3192,6 +3290,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6573609691645733900, guid: ce3c194863d2e0340bc7a64e85521b6a, type: 3}
+--- !u!208 &2083207190
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539969439}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.003, y: 0.09200001, z: 0.019000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.07700001, y: 0.003, z: 0.030000001}
+  m_TimeToStationary: 0.5
 --- !u!1001 &2104454718
 PrefabInstance:
   m_ObjectHideFlags: 0
