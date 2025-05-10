@@ -13,9 +13,7 @@ namespace UI
         Move,
         Jump,
         SlowTape,
-        HP,
-        Beat,
-        Tape
+        Temp
     }
 
     public enum ButtonToClose
@@ -30,9 +28,6 @@ namespace UI
         [SerializeField] private CanvasGroup[] moveCanvasGroup;
         [SerializeField] private CanvasGroup[] jumpCanvasGroup;
         [SerializeField] private CanvasGroup[] slowTapeCanvasGroup;
-        [SerializeField] private CanvasGroup[] hpCanvasGroup;
-        [SerializeField] private CanvasGroup[] beatCanvasGroup;
-        [SerializeField] private CanvasGroup[] tapeCanvasGroup;
         [SerializeField] private float fadeDuration = 0.3f;
 
         void Start()
@@ -60,21 +55,6 @@ namespace UI
         public void ShowSlowTapeScreen()
         {
             ShowNextScreen(slowTapeCanvasGroup);
-        }
-
-        public void ShowHPScreen()
-        {
-            ShowNextScreen(hpCanvasGroup);
-        }
-
-        public void ShowBeatScreen()
-        {
-            ShowNextScreen(beatCanvasGroup);
-        }
-
-        public void ShowTapeScreen()
-        {
-            ShowNextScreen(tapeCanvasGroup);
         }
 
         private void ShowNextScreen(CanvasGroup[] canvasGroups)
@@ -136,18 +116,6 @@ namespace UI
                 HideScreen(canvasGroup);
             }
             foreach (CanvasGroup canvasGroup in slowTapeCanvasGroup)
-            {
-                HideScreen(canvasGroup);
-            }
-            foreach (CanvasGroup canvasGroup in hpCanvasGroup)
-            {
-                HideScreen(canvasGroup);
-            }
-            foreach (CanvasGroup canvasGroup in beatCanvasGroup)
-            {
-                HideScreen(canvasGroup);
-            }
-            foreach (CanvasGroup canvasGroup in tapeCanvasGroup)
             {
                 HideScreen(canvasGroup);
             }

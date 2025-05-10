@@ -30,15 +30,6 @@ public class TriggerTutorialInstruction : MonoBehaviour
                 case TutorialScreenType.SlowTape:
                     tutorialInstructionScreenManager.ShowSlowTapeScreen();
                     break;
-                case TutorialScreenType.HP:
-                    tutorialInstructionScreenManager.ShowHPScreen();
-                    break;
-                case TutorialScreenType.Beat:
-                    tutorialInstructionScreenManager.ShowBeatScreen();
-                    break;
-                case TutorialScreenType.Tape:
-                    tutorialInstructionScreenManager.ShowTapeScreen();
-                    break;
             }
         }
     }
