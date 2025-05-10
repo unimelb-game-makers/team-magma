@@ -24,6 +24,12 @@ public class TriggerTutorialInstruction : MonoBehaviour
                 case TutorialScreenType.Move:
                     tutorialInstructionScreenManager.ShowMoveScreen();
                     break;
+                case TutorialScreenType.Jump:
+                    tutorialInstructionScreenManager.ShowJumpScreen();
+                    break;
+                case TutorialScreenType.SlowTape:
+                    tutorialInstructionScreenManager.ShowSlowTapeScreen();
+                    break;
                 case TutorialScreenType.HP:
                     tutorialInstructionScreenManager.ShowHPScreen();
                     break;

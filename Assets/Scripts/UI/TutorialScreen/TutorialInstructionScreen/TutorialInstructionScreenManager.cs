@@ -11,6 +11,8 @@ namespace UI
     public enum TutorialScreenType
     {
         Move,
+        Jump,
+        SlowTape,
         HP,
         Beat,
         Tape
@@ -26,10 +28,12 @@ namespace UI
     {
         private int currentPage;
         [SerializeField] private CanvasGroup[] moveCanvasGroup;
+        [SerializeField] private CanvasGroup[] jumpCanvasGroup;
+        [SerializeField] private CanvasGroup[] slowTapeCanvasGroup;
         [SerializeField] private CanvasGroup[] hpCanvasGroup;
         [SerializeField] private CanvasGroup[] beatCanvasGroup;
         [SerializeField] private CanvasGroup[] tapeCanvasGroup;
-        [SerializeField] private float fadeDuration = 0.1f;
+        [SerializeField] private float fadeDuration = 0.3f;
 
         void Start()
         {
@@ -46,6 +50,16 @@ namespace UI
         public void ShowMoveScreen()
         {
             ShowNextScreen(moveCanvasGroup);
+        }
+
+        public void ShowJumpScreen()
+        {
+            ShowNextScreen(jumpCanvasGroup);
+        }
+
+        public void ShowSlowTapeScreen()
+        {
+            ShowNextScreen(slowTapeCanvasGroup);
         }
 
         public void ShowHPScreen()
@@ -81,6 +95,8 @@ namespace UI
                 PauseManager.PauseGame(false);
             }
 
+            print(currentPage);
+
             StartCoroutine(FadeInScreen(canvasGroups[currentPage]));
         }
 
@@ -113,6 +129,14 @@ namespace UI
             foreach (CanvasGroup canvasGroup in moveCanvasGroup)
             {
                 // Hide the children (i.e. images) first
+                HideScreen(canvasGroup);
+            }
+            foreach (CanvasGroup canvasGroup in jumpCanvasGroup)
+            {
+                HideScreen(canvasGroup);
+            }
+            foreach (CanvasGroup canvasGroup in slowTapeCanvasGroup)
+            {
                 HideScreen(canvasGroup);
             }
             foreach (CanvasGroup canvasGroup in hpCanvasGroup)
