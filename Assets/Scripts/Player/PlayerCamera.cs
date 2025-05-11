@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UI;
 
 namespace Player
 {
@@ -10,22 +11,44 @@ namespace Player
         [SerializeField] private Transform _player;
         [SerializeField] private Vector3 _offset = new Vector3(0, 5, -10);
         [SerializeField] private float mouseSensitivity = 3f;
-        [SerializeField] private float verticalClamp = 80f;
+        // Only do horizonal rotation
+        // [SerializeField] private float verticalClamp = 80f;
+
+        private bool _canMove = true;
 
         private float _yaw = 0f;
-        private float _pitch = 20f;
+        // private float _pitch = 20f;
 
         public AnimationCurve curve;
+
+        private void Start()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
         private void OnEnable()
         {
             _camera = Camera.main;
-            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void Update()
         {
             if (_player == null || _camera == null) return;
+
+            if (!_canMove) return;
+
+            if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat())
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                return;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
 
             // Only capture horizontal mouse movement
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -53,5 +76,16 @@ namespace Player
                 Debug.Log("Camera found: " + _camera.name);
             }
         }
+
+        public void SetYaw(float newYaw)
+        {
+            _yaw = newYaw;
+        }
+
+        public void SetControlEnabled(bool enabled)
+        {
+            _canMove = enabled;
+        }
+
     }
 }

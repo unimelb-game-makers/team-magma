@@ -141,7 +141,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 8275842858017041580}
   _offset: {x: 6, y: 4.72, z: 6}
-  _rotation: {x: 26.57, y: 225, z: 0}
+  mouseSensitivity: 3
+  verticalClamp: 80
   curve:
     serializedVersion: 2
     m_Curve: []
