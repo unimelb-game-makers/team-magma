@@ -56,6 +56,7 @@ namespace UI
                 }
 
                 PauseMenuController.BlockEscapeKey(false);
+                SelectionWheelManager.BlockRightClick(false);
 
                 // Deselect the currently selected UI element
                 EventSystem.current.SetSelectedGameObject(null);

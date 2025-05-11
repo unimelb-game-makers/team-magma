@@ -105,6 +105,7 @@ namespace System
             LoadingLevel();
             Debug.Log("Loading level: " + sceneName);
             LevelManager.Instance.LoadLevel(sceneName, LevelLoaded);
+            PlayerCharacter.PlayerStats.OnReset();
         }
         
         public void LoadNextLevel()

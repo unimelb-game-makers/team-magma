@@ -35,6 +35,9 @@ public class TriggerInstructionAndSpawnEnemy : MonoBehaviour
                 break;
         }
 
+        PauseMenuController.BlockEscapeKey(true);
+        SelectionWheelManager.BlockRightClick(true);
+
         spawnEnemy.SetActive(true);
     }
 }

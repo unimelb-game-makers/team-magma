@@ -66,6 +66,7 @@ namespace UI
 
         public void ShowMoveScreen()
         {
+            HideAllInstructionScreens();
             // Pause the game, but do not pause music
             PauseManager.PauseGame(false);
             StartCoroutine(FadeInScreen(moveCanvasGroup));
@@ -81,6 +82,7 @@ namespace UI
 
         public void ShowJumpScreen()
         {
+            HideAllInstructionScreens();
             // Pause the game, but do not pause music
             PauseManager.PauseGame(false);
             StartCoroutine(FadeInScreen(jumpCanvasGroup));
@@ -96,6 +98,7 @@ namespace UI
 
         public void ShowSlowTapeScreen()
         {
+            HideAllInstructionScreens();
             // Pause the game, but do not pause music
             PauseManager.PauseGame(false);
             StartCoroutine(FadeInScreen(slowTapeCanvasGroup));
@@ -111,18 +114,21 @@ namespace UI
 
         public void ShowBasicAttack1Screen()
         {
+            HideAllInstructionScreens();
             // Pause the game, but do not pause music
             PauseManager.PauseGame(false);
             StartCoroutine(FadeInScreen(basicAttack1CanvasGroup));
         }
         public void ShowBasicAttack2Screen()
         {
+            HideAllInstructionScreens();
             // Pause the game, but do not pause music
             PauseManager.PauseGame(false);
             StartCoroutine(FadeInScreen(basicAttack2CanvasGroup));
         }
         public void ShowBasicAttack3Screen()
         {
+            HideAllInstructionScreens();
             // Pause the game, but do not pause music
             PauseManager.PauseGame(false);
             StartCoroutine(FadeInScreen(basicAttack3CanvasGroup));
@@ -140,6 +146,7 @@ namespace UI
 
         public void ShowRangedAttackScreen()
         {
+            HideAllInstructionScreens();
             // Pause the game, but do not pause music
             PauseManager.PauseGame(false);
             StartCoroutine(FadeInScreen(rangedAttackCanvasGroup));
@@ -155,6 +162,7 @@ namespace UI
 
         public void ShowShieldAttackScreen()
         {
+            HideAllInstructionScreens();
             // Pause the game, but do not pause music
             PauseManager.PauseGame(false);
             StartCoroutine(FadeInScreen(shieldAttackCanvasGroup));
@@ -170,6 +178,7 @@ namespace UI
 
         public void ShowHPScreen()
         {
+            HideAllInstructionScreens();
             // Pause the game, but do not pause music
             PauseManager.PauseGame(false);
             StartCoroutine(FadeInScreen(HPCanvasGroup));

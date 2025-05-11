@@ -24,6 +24,12 @@ public class SelectionWheelManager : MonoBehaviour
     private bool isScrolled = false;
     private int currentIndex = 0; // Index to track the current selection
 
+    private static bool isRightClickBlocked = false;    // For tutorial UI
+    public static void BlockRightClick(bool block)
+    {
+        isRightClickBlocked = block;
+    }
+
     void Awake() {
         selectionWheelPanel.transform.localScale = Vector3.zero;
     }    
@@ -96,6 +102,9 @@ public class SelectionWheelManager : MonoBehaviour
 
     private void HandleInput()
     {
+        // if in tutorial ui screen, cannot open wheel selection
+        if (isRightClickBlocked) return;
+
         if (Input.GetButtonDown(inputName) || Input.GetButtonDown("Fire2"))
         {
             if (isWheelActive && isScrolled) {

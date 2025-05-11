@@ -18,6 +18,7 @@ public class TriggerTutorialInstruction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             PauseMenuController.BlockEscapeKey(true);
+            SelectionWheelManager.BlockRightClick(true);
             isTriggered = true;
             switch (screenToShow)
             {
@@ -45,6 +46,7 @@ public class TriggerTutorialInstruction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             PauseMenuController.BlockEscapeKey(false);
+            SelectionWheelManager.BlockRightClick(false);
             Destroy(gameObject);
         }
     }

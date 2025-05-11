@@ -35,6 +35,8 @@ namespace UI {
                     if (!hasDisplayed) {
                         hasDisplayed = true;
                         tutorialInstructionScreenManager.ShowHPScreen();
+                        PauseMenuController.BlockEscapeKey(true);
+                        SelectionWheelManager.BlockRightClick(true);
                     }
                 }
             }
