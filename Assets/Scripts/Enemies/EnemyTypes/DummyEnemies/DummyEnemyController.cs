@@ -11,6 +11,13 @@ namespace Enemies.EnemyTypes
     {
         public override void Attack()
         {
+            // Do nothing
+        }
+
+        public override void Die() {
+            // Call the other instruction screen and spawn the other enemy
+            GetComponent<TriggerInstructionAndSpawnEnemy>().ShowInstructionScreen();
+            base.Die();
         }
 
         protected override IEnumerator FastTempo(float duration)

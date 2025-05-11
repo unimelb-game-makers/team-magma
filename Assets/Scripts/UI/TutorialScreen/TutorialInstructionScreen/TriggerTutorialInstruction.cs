@@ -33,21 +33,6 @@ public class TriggerTutorialInstruction : MonoBehaviour
                 case TutorialScreenType.BasicAttack1:
                     tutorialInstructionScreenManager.ShowBasicAttack1Screen();
                     break;
-                case TutorialScreenType.BasicAttack2:
-                    tutorialInstructionScreenManager.ShowBasicAttack2Screen();
-                    break;
-                case TutorialScreenType.BasicAttack3:
-                    tutorialInstructionScreenManager.ShowBasicAttack3Screen();
-                    break;
-                case TutorialScreenType.RangedAttack:
-                    tutorialInstructionScreenManager.ShowRangedAttackScreen();
-                    break;
-                case TutorialScreenType.ShieldAttack:
-                    tutorialInstructionScreenManager.ShowShieldAttackScreen();
-                    break;
-                case TutorialScreenType.HP:
-                    tutorialInstructionScreenManager.ShowHPScreen();
-                    break;
             }
         }
     }

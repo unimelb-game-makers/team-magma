@@ -13,9 +13,14 @@ namespace UI
     {
         [SerializeField] private TutorialInstructionScreenManager tutorialInstructionScreenManager;
         [SerializeField] private TutorialScreenType screenToShow;
+        [SerializeField] private float timerDuration = 1f;
+        private float timer = 0;
 
         private void Update()
         {
+            timer += Time.unscaledDeltaTime;
+            if (timer < timerDuration) return;
+
             // If any key is pressed
             if (Input.anyKeyDown)
             {
@@ -49,6 +54,8 @@ namespace UI
                         tutorialInstructionScreenManager.HideHPScreen();
                         break;
                 }
+
+                PauseMenuController.BlockEscapeKey(false);
 
                 // Deselect the currently selected UI element
                 EventSystem.current.SetSelectedGameObject(null);

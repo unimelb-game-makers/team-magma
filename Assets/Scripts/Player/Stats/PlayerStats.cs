@@ -11,6 +11,9 @@ namespace Player.Stats
         private PlayerCharacter playerCharacter;
         [SerializeField] private PlayerHealth healthStat;
         public PlayerHealth HealthStat => healthStat;
+
+        public bool isDamaged = false;     // For tutorial UI only
+
         public void Awake()
         {
             playerCharacter = GetComponent<PlayerCharacter>();
@@ -54,6 +57,7 @@ namespace Player.Stats
         private void OnDamaged(float health)
         {
             Debug.Log("PlayerStats Player health: " + health);
+            isDamaged = true;
         }
         
         private void OnImmune()

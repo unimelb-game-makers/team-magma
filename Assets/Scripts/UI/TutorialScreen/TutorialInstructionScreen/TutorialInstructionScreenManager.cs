@@ -45,7 +45,18 @@ namespace UI
 
         [SerializeField] private CanvasGroup HPCanvasGroup;
 
-        [SerializeField] private float fadeDuration = 0.3f;
+        [SerializeField] private float screenFadeDuration = 0.5f;
+
+        [SerializeField] private float textTimeToAppear = 1f;
+        [SerializeField] private float textFadeDuration = 1.5f;
+
+        public float GetTimeToAppear() {
+            return textTimeToAppear;
+        }
+
+        public float GetTextFadeDuration() {
+            return textFadeDuration;
+        }
 
         void Start()
         {
@@ -60,12 +71,12 @@ namespace UI
             StartCoroutine(FadeInScreen(moveCanvasGroup));
         }
         public void ShowSmallMoveScreen() {
-            HideScreen(moveCanvasGroup);
+            StartCoroutine(FadeOutScreen(moveCanvasGroup));
             PauseManager.ResumeGame();
             StartCoroutine(FadeInScreen(smallMoveCanvasGroup));
         }
         public void HideSmallMoveScreen() {
-            HideScreen(smallMoveCanvasGroup);
+            StartCoroutine(FadeOutScreen(smallMoveCanvasGroup));
         }
 
         public void ShowJumpScreen()
@@ -75,12 +86,12 @@ namespace UI
             StartCoroutine(FadeInScreen(jumpCanvasGroup));
         }
         public void ShowSmallJumpScreen() {
-            HideScreen(jumpCanvasGroup);
+            StartCoroutine(FadeOutScreen(jumpCanvasGroup));
             PauseManager.ResumeGame();
             StartCoroutine(FadeInScreen(smallJumpCanvasGroup));
         }
         public void HideSmallJumpScreen() {
-            HideScreen(smallJumpCanvasGroup);
+            StartCoroutine(FadeOutScreen(smallJumpCanvasGroup));
         }
 
         public void ShowSlowTapeScreen()
@@ -90,12 +101,12 @@ namespace UI
             StartCoroutine(FadeInScreen(slowTapeCanvasGroup));
         }
         public void ShowSmallSlowTapeScreen() {
-            HideScreen(slowTapeCanvasGroup);
+            StartCoroutine(FadeOutScreen(slowTapeCanvasGroup));
             PauseManager.ResumeGame();
             StartCoroutine(FadeInScreen(smallSlowTapeCanvasGroup));
         }
         public void HideSmallSlowTapeScreen() {
-            HideScreen(smallSlowTapeCanvasGroup);
+            StartCoroutine(FadeOutScreen(smallSlowTapeCanvasGroup));
         }
 
         public void ShowBasicAttack1Screen()
@@ -117,14 +128,14 @@ namespace UI
             StartCoroutine(FadeInScreen(basicAttack3CanvasGroup));
         }
         public void ShowSmallBasicAttack1Screen() {
-            HideScreen(basicAttack1CanvasGroup);
-            HideScreen(basicAttack2CanvasGroup);
-            HideScreen(basicAttack3CanvasGroup);
+            StartCoroutine(FadeOutScreen(basicAttack1CanvasGroup));
+            StartCoroutine(FadeOutScreen(basicAttack2CanvasGroup));
+            StartCoroutine(FadeOutScreen(basicAttack3CanvasGroup));
             PauseManager.ResumeGame();
             StartCoroutine(FadeInScreen(smallBasicAttack1CanvasGroup));
         }
         public void HideSmallBasicAttack1Screen() {
-            HideScreen(smallBasicAttack1CanvasGroup);
+            StartCoroutine(FadeOutScreen(smallBasicAttack1CanvasGroup));
         }
 
         public void ShowRangedAttackScreen()
@@ -134,12 +145,12 @@ namespace UI
             StartCoroutine(FadeInScreen(rangedAttackCanvasGroup));
         }
         public void ShowSmallRangedAttackScreen() {
-            HideScreen(rangedAttackCanvasGroup);
+            StartCoroutine(FadeOutScreen(rangedAttackCanvasGroup));
             PauseManager.ResumeGame();
             StartCoroutine(FadeInScreen(smallRangedAttackCanvasGroup));
         }
         public void HideSmallRangedAttackScreen() {
-            HideScreen(smallRangedAttackCanvasGroup);
+            StartCoroutine(FadeOutScreen(smallRangedAttackCanvasGroup));
         }
 
         public void ShowShieldAttackScreen()
@@ -149,12 +160,12 @@ namespace UI
             StartCoroutine(FadeInScreen(shieldAttackCanvasGroup));
         }
         public void ShowSmallShieldAttackScreen() {
-            HideScreen(shieldAttackCanvasGroup);
+            StartCoroutine(FadeOutScreen(shieldAttackCanvasGroup));
             PauseManager.ResumeGame();
             StartCoroutine(FadeInScreen(smallShieldAttackCanvasGroup));
         }
         public void HideSmallShieldAttackScreen() {
-            HideScreen(smallShieldAttackCanvasGroup);
+            StartCoroutine(FadeOutScreen(smallShieldAttackCanvasGroup));
         }
 
         public void ShowHPScreen()
@@ -164,20 +175,22 @@ namespace UI
             StartCoroutine(FadeInScreen(HPCanvasGroup));
         }
         public void HideHPScreen() {
-            HideScreen(HPCanvasGroup);
+            StartCoroutine(FadeOutScreen(HPCanvasGroup));
             PauseManager.ResumeGame();
         }
 
         private IEnumerator FadeInScreen(CanvasGroup canvasGroup)
         {
             canvasGroup.gameObject.SetActive(true);
-            canvasGroup.alpha = 1;
-
             // Start the fade-in and wait for it to complete
-            // yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(canvasGroup, 0, 1, fadeDuration));
-            yield return null;
+            yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(canvasGroup, 0, 1, screenFadeDuration));
+        }
 
-            // Then fade in children
+        private IEnumerator FadeOutScreen(CanvasGroup canvasGroup)
+        {
+            // Start the fade-out and wait for it to complete
+            yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(canvasGroup, 1, 0, screenFadeDuration));
+            canvasGroup.gameObject.SetActive(false);
         }
 
         private void HideScreen(CanvasGroup canvasGroup)
@@ -185,13 +198,6 @@ namespace UI
             canvasGroup.gameObject.SetActive(false);
             canvasGroup.alpha = 0;
         }
-
-        // FadeInImages and HideImages
-
-        // Set all children of a canvas group to inactive first.
-        // Then set the canvas to inactive.
-        // The next time the canvas group is set to active, its children will remain inactive.
-        // Then children can be selected to be set active and fade in.
         private void HideAllInstructionScreens()
         {
             HideScreen(moveCanvasGroup);
@@ -213,6 +219,8 @@ namespace UI
 
             HideScreen(shieldAttackCanvasGroup);
             HideScreen(smallShieldAttackCanvasGroup);
+
+            HideScreen(HPCanvasGroup);
         }
     }
 }
