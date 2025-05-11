@@ -27,14 +27,14 @@ namespace UI {
 
         private void Update()
         {
-            if (hasDisplayed) return;
-
             // If HP is reduced, then show HP screen
             if (Player) {
                 if (Player.GetComponent<PlayerStats>().isDamaged) {
-                    hasDisplayed = true;
-                    tutorialInstructionScreenManager.ShowHPScreen();
-                    Destroy(gameObject);
+                    if (Player) Player.GetComponent<PlayerStats>().ResetIsDamaged();
+                    if (!hasDisplayed) {
+                        hasDisplayed = true;
+                        tutorialInstructionScreenManager.ShowHPScreen();
+                    }
                 }
             }
         }

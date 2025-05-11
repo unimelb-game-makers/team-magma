@@ -12,7 +12,12 @@ namespace Player.Stats
         [SerializeField] private PlayerHealth healthStat;
         public PlayerHealth HealthStat => healthStat;
 
-        public bool isDamaged = false;     // For tutorial UI only
+        // For tutorial UI only ##############
+        public bool isDamaged = false;
+        public void ResetIsDamaged() {
+            isDamaged = false;
+        }
+        // ###################################  
 
         public void Awake()
         {
@@ -22,7 +27,6 @@ namespace Player.Stats
                 throw new Exception("PlayerStats requires a health stat to function.");
             }
         }
-        
         
         private void OnEnable()
         {
@@ -42,6 +46,7 @@ namespace Player.Stats
         {
             var absDamage = Mathf.Abs(damage);
             healthStat.Modify(-absDamage);
+            isDamaged = true;
         }
 
         public bool IsDead()
@@ -57,7 +62,6 @@ namespace Player.Stats
         private void OnDamaged(float health)
         {
             Debug.Log("PlayerStats Player health: " + health);
-            isDamaged = true;
         }
         
         private void OnImmune()
@@ -67,7 +71,6 @@ namespace Player.Stats
         
         public void OnReset()
         {
-            isDamaged = false;
             healthStat.Reset();
         }
     }
