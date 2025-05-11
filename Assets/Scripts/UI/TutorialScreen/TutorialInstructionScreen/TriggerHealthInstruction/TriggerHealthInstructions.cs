@@ -30,7 +30,8 @@ namespace UI {
             // If HP is reduced, then show HP screen
             if (Player) {
                 if (Player.GetComponent<PlayerStats>().isDamaged) {
-                    if (Player) Player.GetComponent<PlayerStats>().ResetIsDamaged();
+                    Player.GetComponent<PlayerStats>().ResetIsDamaged();
+                    if (Player.GetComponent<PlayerStats>().IsDead()) return;
                     if (!hasDisplayed) {
                         hasDisplayed = true;
                         tutorialInstructionScreenManager.ShowHPScreen();
