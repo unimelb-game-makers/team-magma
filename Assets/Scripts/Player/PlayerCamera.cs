@@ -3,38 +3,44 @@ using UnityEngine;
 
 namespace Player
 {
-    /**
-     * Top-down camera for the player.
-     */
     public class PlayerCamera : MonoBehaviour
     {
-        //camera
         private Camera _camera;
-        //player
+
         [SerializeField] private Transform _player;
-        //camera offset
-        [SerializeField] private Vector3 _offset = new Vector3(0, 10, -10);
-        //camera rotation
-        [SerializeField] private Vector3 _rotation = new Vector3(45, 0, 0);
+        [SerializeField] private Vector3 _offset = new Vector3(0, 5, -10);
+        [SerializeField] private float mouseSensitivity = 3f;
+        [SerializeField] private float verticalClamp = 80f;
+
+        private float _yaw = 0f;
+        private float _pitch = 20f;
+
         public AnimationCurve curve;
-        // Start is called before the first frame update
 
         private void OnEnable()
         {
-            //find a camera in the scene
             _camera = Camera.main;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
-        // Update is called once per frame
         private void Update()
         {
             if (_player == null || _camera == null) return;
-            {
-                _camera.transform.position = _player.position + _offset;
-                _camera.transform.rotation = Quaternion.Euler(_rotation);
-            }
+
+            // Only capture horizontal mouse movement
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+
+            // Only yaw (horizontal angle)
+            _yaw += mouseX;
+
+            // Build rotation only around Y axis
+            Quaternion rotation = Quaternion.Euler(0, _yaw, 0);
+            Vector3 targetPosition = _player.position + rotation * _offset;
+
+            _camera.transform.position = targetPosition;
+            _camera.transform.LookAt(_player.position + Vector3.up * 1.5f); // Aim slightly above for head focus
         }
-        
+
         public void FindActiveCamera()
         {
             _camera = Camera.main;
