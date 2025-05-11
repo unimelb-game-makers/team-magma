@@ -38,7 +38,7 @@ namespace Player
 
             if (!_canMove) return;
 
-            if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat())
+            if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || SuccessScreenManager.Instance.IsSuccess())
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;

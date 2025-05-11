@@ -130,7 +130,7 @@ namespace Player
 
         private void Update()
         {
-            if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || !_canControl) return;
+            if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || SuccessScreenManager.Instance.IsSuccess() || !_canControl) return;
             
             _horizontalInput = Input.GetAxis("Horizontal");
             _verticalInput = Input.GetAxis("Vertical");
