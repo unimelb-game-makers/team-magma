@@ -19,6 +19,8 @@ namespace UI
 
                 // Deselect the currently selected UI element
                 EventSystem.current.SetSelectedGameObject(null);
+
+                hasAttacked = false;
             }
         }
     }

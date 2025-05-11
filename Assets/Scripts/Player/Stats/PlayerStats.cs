@@ -67,6 +67,7 @@ namespace Player.Stats
         
         public void OnReset()
         {
+            isDamaged = false;
             healthStat.Reset();
         }
     }
