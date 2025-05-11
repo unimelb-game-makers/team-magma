@@ -14,7 +14,7 @@ namespace Player
         // Only do horizonal rotation
         // [SerializeField] private float verticalClamp = 80f;
 
-        private bool _canMove = true;
+        [SerializeField] private bool _canRotate = true;
 
         private float _yaw = 0f;
         // private float _pitch = 20f;
@@ -23,6 +23,8 @@ namespace Player
 
         private void Start()
         {
+            if (!_canRotate) return;
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
@@ -36,25 +38,23 @@ namespace Player
         {
             if (_player == null || _camera == null) return;
 
-            if (!_canMove) return;
-
-            if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || SuccessScreenManager.Instance.IsSuccess())
+            if (_canRotate)
             {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                return;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
+                if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || SuccessScreenManager.Instance.IsSuccess())
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                    return;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
 
-            // Only capture horizontal mouse movement
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-
-            // Only yaw (horizontal angle)
-            _yaw += mouseX;
+                float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+                _yaw += mouseX;
+            }
 
             // Build rotation only around Y axis
             Quaternion rotation = Quaternion.Euler(0, _yaw, 0);
@@ -84,7 +84,7 @@ namespace Player
 
         public void SetControlEnabled(bool enabled)
         {
-            _canMove = enabled;
+            _canRotate = enabled;
         }
 
     }
