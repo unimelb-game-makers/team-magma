@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Runtime.CompilerServices;
+
+#if UNITY_EDITOR
 using Microsoft.Unity.VisualStudio.Editor;
+#endif
+
 using Scenes;
 using Timeline;
 using UnityEngine;

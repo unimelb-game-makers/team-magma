@@ -1425,11 +1425,6 @@ Transform:
   - {fileID: 1058382627}
   m_Father: {fileID: 699640227}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &687109424 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5195954348971964859, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-  m_PrefabInstance: {fileID: 38014523285561577}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &691046532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4472,16 +4467,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9196833226898165580, guid: 85d672202f9c7cc458ea719c91604a0a, type: 3}
-      propertyPath: UI
-      value: 
-      objectReference: {fileID: 687109424}
-    - target: {fileID: 9196833226898165580, guid: 85d672202f9c7cc458ea719c91604a0a, type: 3}
       propertyPath: _playerCharacter
       value: 
       objectReference: {fileID: 1641990052}
     - target: {fileID: 9196833226898165580, guid: 85d672202f9c7cc458ea719c91604a0a, type: 3}
-      propertyPath: defaultScenename
-      value: Room1
+      propertyPath: delayAfterLoading
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4549,7 +4540,6 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 38014523285561577}
   - {fileID: 6048269817799648929}
   - {fileID: 247107991}
   - {fileID: 3122858186301560600}
@@ -4564,3 +4554,4 @@ SceneRoots:
   - {fileID: 1506422742}
   - {fileID: 838566445}
   - {fileID: 178990230}
+  - {fileID: 38014523285561577}
