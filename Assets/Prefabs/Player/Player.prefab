@@ -65,7 +65,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   rotationSpeed: 20
-  MeleeAttackPrefab: {fileID: 3345562608605307880, guid: 320ad44a5e6169c4e8aad40d4f02f2f6, type: 3}
+  MeleeAttackPrefab: {fileID: 6389406066330802589, guid: 9a76280e54a3acc4fa93c8e294be4ecc, type: 3}
   weakAttackRange: 1
   strongAttackRange: 2
   weakMeleeAttackRecoverTime: 0.5
@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthStat: {fileID: 2666474838408712682}
+  isDamaged: 0
 --- !u!114 &6169043454981276182
 MonoBehaviour:
   m_ObjectHideFlags: 0

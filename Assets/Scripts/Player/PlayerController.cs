@@ -324,8 +324,12 @@ namespace Player
                 _previousMeleeAttack = Time.time;
 
                 //spawn damage area and adjust its size
-                GameObject attackBox = Instantiate(MeleeAttackPrefab, forward, transform.rotation);
-                attackBox.transform.localScale = new Vector3(attackRange, 1, attackRange);
+                GameObject attackBox = Instantiate(MeleeAttackPrefab, forward, Quaternion.LookRotation(transform.forward));
+                attackBox.transform.Rotate(-90f, 0f, 0f);
+
+                float scale = attackRange * 0.3f;
+                attackBox.transform.localScale = new Vector3(scale, scale, scale);
+
                 
                 // the meleeAttackBox will move together with the player
                 _meleeAttackBox = attackBox.GetComponent<MeleeAttackBox>();
