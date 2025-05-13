@@ -4,6 +4,7 @@
 // Update: Lyu
 
 using System.Collections.Generic;
+using System.Collections;
 using System.Level;
 using Player;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace System
     public class GameManager : PersistentSingleton<GameManager>
     {
         [SerializeField] private PlayerCharacter _playerCharacter;
+        [SerializeField] private float delayAfterLoading = 0.5f;
         public PlayerCharacter PlayerCharacter
         {
             get
@@ -61,9 +63,6 @@ namespace System
                 return _beatSpawner;
             }
         }
-
-
-        [SerializeField] private string defaultScenename = "Room1";
 
         /// <summary>
         /// Add Levels here
@@ -177,19 +176,28 @@ namespace System
         private void LevelLoaded()
         {
             Debug.Log("Level loaded.");
+
             PlayerCharacter.transform.position = SubGameManager.Instance.LevelSpawnPoint.position;
+            PlayerCharacter.transform.rotation = SubGameManager.Instance.LevelSpawnPoint.rotation;
             PlayerCharacter.gameObject.SetActive(true);
+
             var cameraComponent = PlayerCharacter.GetComponent<PlayerCamera>();
             cameraComponent.FindActiveCamera();
+            cameraComponent.SetYaw(SubGameManager.Instance.LevelSpawnPoint.eulerAngles.y);
         }
 
         private void LevelReloaded()
         {
             Debug.Log("Level reloaded.");
+
             PlayerCharacter.transform.position = SubGameManager.Instance.LevelSpawnPoint.position;
+            PlayerCharacter.transform.rotation = SubGameManager.Instance.LevelSpawnPoint.rotation;
             PlayerCharacter.gameObject.SetActive(true);
+
             var cameraComponent = PlayerCharacter.GetComponent<PlayerCamera>();
             cameraComponent.FindActiveCamera();
+            cameraComponent.SetYaw(SubGameManager.Instance.LevelSpawnPoint.eulerAngles.y);
+
             PlayerCharacter.PlayerStats.OnReset();
         }
     }

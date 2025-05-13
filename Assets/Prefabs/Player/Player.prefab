@@ -122,7 +122,6 @@ MonoBehaviour:
   strongMeleeAttackRecoverTime: 0.3
   weakAttackDamage: 10
   strongAttackDamage: 20
-  dodgeSpeed: 40
   dodgeRecoverTime: 1
   dodgeTime: 0.15
   isInvulnerableTime: 0.1
@@ -141,7 +140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 8275842858017041580}
   _offset: {x: 6, y: 4.72, z: 6}
-  _rotation: {x: 26.57, y: 225, z: 0}
+  mouseSensitivity: 3
+  _canRotate: 0
   curve:
     serializedVersion: 2
     m_Curve: []
