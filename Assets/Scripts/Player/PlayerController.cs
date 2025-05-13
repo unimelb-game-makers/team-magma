@@ -51,7 +51,6 @@ namespace Player
         [Space(10)]
 
         [Header("Dodge Setup")]
-        [SerializeField] private float dodgeSpeed = 40f;
         [SerializeField] private float dodgeRecoverTime = 1f;
         [SerializeField] private float dodgeTime = 0.15f;
         [SerializeField] private float isInvulnerableTime = 0.1f;
@@ -123,6 +122,8 @@ namespace Player
 
         private bool _isDodging;
 
+        private bool _canControl = true;
+
         private void Start()
         {
             // Get the Rigidbody component attached to this GameObject
@@ -139,8 +140,7 @@ namespace Player
 
         private void Update()
         {
-            if (PauseManager.IsPaused) return;
-            if (DefeatScreenManager.Instance.IsDefeat()) return;
+            if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || SuccessScreenManager.Instance.IsSuccess() || !_canControl) return;
             
             _horizontalInput = Input.GetAxis("Horizontal");
             _verticalInput = Input.GetAxis("Vertical");
@@ -155,15 +155,6 @@ namespace Player
             if (PlayerStateManager.Instance.IsCombat()) {
                 Attack();
             }
-        }
-
-        private void FixedUpdate()
-        {
-            //Move();
-
-            //Rotate();
-
-            //Attack();
         }
 
         private void Attack()
@@ -294,6 +285,11 @@ namespace Player
                 Debug.Log("Player speed: " + movement.magnitude/MovementSpeed);
                 Animator.SetFloat(SpeedID, movement.magnitude/MovementSpeed);
             }
+        }
+
+        public void SetControlEnabled(bool enabled)
+        {
+            _canControl = enabled;
         }
 
         private Vector3 GetMouseWorldPosition()

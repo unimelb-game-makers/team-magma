@@ -1,40 +1,69 @@
 using System;
 using UnityEngine;
+using UI;
 
 namespace Player
 {
-    /**
-     * Top-down camera for the player.
-     */
     public class PlayerCamera : MonoBehaviour
     {
-        //camera
         private Camera _camera;
-        //player
+
         [SerializeField] private Transform _player;
-        //camera offset
-        [SerializeField] private Vector3 _offset = new Vector3(0, 10, -10);
-        //camera rotation
-        [SerializeField] private Vector3 _rotation = new Vector3(45, 0, 0);
+        [SerializeField] private Vector3 _offset = new Vector3(0, 5, -10);
+        [SerializeField] private float mouseSensitivity = 3f;
+        // Only do horizonal rotation
+        // [SerializeField] private float verticalClamp = 80f;
+
+        [SerializeField] private bool _canRotate = true;
+
+        private float _yaw = 0f;
+        // private float _pitch = 20f;
+
         public AnimationCurve curve;
-        // Start is called before the first frame update
+
+        private void Start()
+        {
+            if (!_canRotate) return;
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
         private void OnEnable()
         {
-            //find a camera in the scene
             _camera = Camera.main;
         }
 
-        // Update is called once per frame
         private void Update()
         {
             if (_player == null || _camera == null) return;
+
+            if (_canRotate)
             {
-                _camera.transform.position = _player.position + _offset;
-                _camera.transform.rotation = Quaternion.Euler(_rotation);
+                if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || SuccessScreenManager.Instance.IsSuccess())
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                    return;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+
+                float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+                _yaw += mouseX;
             }
+
+            // Build rotation only around Y axis
+            Quaternion rotation = Quaternion.Euler(0, _yaw, 0);
+            Vector3 targetPosition = _player.position + rotation * _offset;
+
+            _camera.transform.position = targetPosition;
+            _camera.transform.LookAt(_player.position + Vector3.up * 1.5f); // Aim slightly above for head focus
         }
-        
+
         public void FindActiveCamera()
         {
             _camera = Camera.main;
@@ -47,5 +76,16 @@ namespace Player
                 Debug.Log("Camera found: " + _camera.name);
             }
         }
+
+        public void SetYaw(float newYaw)
+        {
+            _yaw = newYaw;
+        }
+
+        public void SetControlEnabled(bool enabled)
+        {
+            _canRotate = enabled;
+        }
+
     }
 }

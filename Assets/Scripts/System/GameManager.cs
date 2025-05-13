@@ -4,6 +4,7 @@
 // Update: Lyu
 
 using System.Collections.Generic;
+using System.Collections;
 using System.Level;
 using Player;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace System
     public class GameManager : PersistentSingleton<GameManager>
     {
         [SerializeField] private PlayerCharacter _playerCharacter;
+        [SerializeField] private float delayAfterLoading = 0.5f;
         public PlayerCharacter PlayerCharacter
         {
             get
@@ -62,9 +64,6 @@ namespace System
             }
         }
 
-
-        [SerializeField] private string defaultScenename = "Room1";
-
         /// <summary>
         /// Add Levels here
         /// </summary>
@@ -98,6 +97,13 @@ namespace System
             //else
                 //load the first scene
                     //create a new player
+        }
+
+        public void LoadTutorial(string sceneName)
+        {
+            LoadingLevel();
+            Debug.Log("Loading level: " + sceneName);
+            LevelManager.Instance.LoadLevel(sceneName, LevelLoaded);
         }
         
         public void LoadNextLevel()
@@ -139,6 +145,21 @@ namespace System
             Debug.Log("Loading level: " + sceneName);
             LevelManager.Instance.LoadLevel(sceneName, LevelLoaded);
         }
+
+        public void LoadLevelNumber(int number)
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            if (currentScene.name != levelNames[number-1])
+            {
+                LoadLevel(levelNames[number-1]);
+                _currentLevelIndex = number;
+                PlayerCharacter.PlayerStats.OnReset();
+            }
+            else
+            {
+                ReloadLevel();
+            } 
+        }
         
         public void ReloadLevel()
         {
@@ -155,19 +176,28 @@ namespace System
         private void LevelLoaded()
         {
             Debug.Log("Level loaded.");
+
             PlayerCharacter.transform.position = SubGameManager.Instance.LevelSpawnPoint.position;
+            PlayerCharacter.transform.rotation = SubGameManager.Instance.LevelSpawnPoint.rotation;
             PlayerCharacter.gameObject.SetActive(true);
+
             var cameraComponent = PlayerCharacter.GetComponent<PlayerCamera>();
             cameraComponent.FindActiveCamera();
+            cameraComponent.SetYaw(SubGameManager.Instance.LevelSpawnPoint.eulerAngles.y);
         }
 
         private void LevelReloaded()
         {
             Debug.Log("Level reloaded.");
+
             PlayerCharacter.transform.position = SubGameManager.Instance.LevelSpawnPoint.position;
+            PlayerCharacter.transform.rotation = SubGameManager.Instance.LevelSpawnPoint.rotation;
             PlayerCharacter.gameObject.SetActive(true);
+
             var cameraComponent = PlayerCharacter.GetComponent<PlayerCamera>();
             cameraComponent.FindActiveCamera();
+            cameraComponent.SetYaw(SubGameManager.Instance.LevelSpawnPoint.eulerAngles.y);
+
             PlayerCharacter.PlayerStats.OnReset();
         }
     }
