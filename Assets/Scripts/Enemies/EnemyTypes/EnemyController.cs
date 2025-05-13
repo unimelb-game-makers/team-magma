@@ -309,7 +309,7 @@ namespace Enemy
             agent.isStopped = false;
         }
 
-        public void Die() {
+        public virtual void Die() {
             _currentState?.ExitState();
             StopSFX();
             ReleaseSFX();

@@ -15,89 +15,195 @@ namespace UI
     public enum TutorialScreenType
     {
         Move,
-        HP,
-        Beat,
-        Tape
-    }
-
-    public enum ButtonToClose
-    {
-        Enter,
-        A
+        Jump,
+        SlowTape,
+        BasicAttack1,
+        BasicAttack2,
+        BasicAttack3,
+        RangedAttack,
+        ShieldAttack,
+        HP
     }
 
     public class TutorialInstructionScreenManager : MonoBehaviour
     {
-        private int currentPage;
-        [SerializeField] private CanvasGroup[] moveCanvasGroup;
-        [SerializeField] private CanvasGroup[] hpCanvasGroup;
-        [SerializeField] private CanvasGroup[] beatCanvasGroup;
-        [SerializeField] private CanvasGroup[] tapeCanvasGroup;
-        [SerializeField] private float fadeDuration = 0.1f;
+        [SerializeField] private CanvasGroup moveCanvasGroup;
+        [SerializeField] private CanvasGroup smallMoveCanvasGroup;
+
+        [SerializeField] private CanvasGroup jumpCanvasGroup;
+        [SerializeField] private CanvasGroup smallJumpCanvasGroup;
+
+        [SerializeField] private CanvasGroup slowTapeCanvasGroup;
+        [SerializeField] private CanvasGroup smallSlowTapeCanvasGroup;
+
+        [SerializeField] private CanvasGroup basicAttack1CanvasGroup;
+        [SerializeField] private CanvasGroup basicAttack2CanvasGroup;
+        [SerializeField] private CanvasGroup basicAttack3CanvasGroup;
+        [SerializeField] private CanvasGroup smallBasicAttack1CanvasGroup;
+
+        [SerializeField] private CanvasGroup rangedAttackCanvasGroup;
+        [SerializeField] private CanvasGroup smallRangedAttackCanvasGroup;
+
+        [SerializeField] private CanvasGroup shieldAttackCanvasGroup;
+        [SerializeField] private CanvasGroup smallShieldAttackCanvasGroup;
+
+        [SerializeField] private CanvasGroup HPCanvasGroup;
+
+        [SerializeField] private float screenFadeDuration = 0.5f;
+
+        [SerializeField] private float textTimeToAppear = 1f;
+        [SerializeField] private float textFadeDuration = 1.5f;
+
+        public float GetTimeToAppear() {
+            return textTimeToAppear;
+        }
+
+        public float GetTextFadeDuration() {
+            return textFadeDuration;
+        }
 
         void Start()
         {
             Time.timeScale = 1f;
             HideAllInstructionScreens();
-            ResetCurrentPage();
-        }
-
-        private void ResetCurrentPage()
-        {
-            currentPage = -1;
         }
 
         public void ShowMoveScreen()
         {
-            ShowNextScreen(moveCanvasGroup);
+            HideAllInstructionScreens();
+            // Pause the game, but do not pause music
+            PauseManager.PauseGame(false);
+            StartCoroutine(FadeInScreen(moveCanvasGroup));
+        }
+        public void ShowSmallMoveScreen() {
+            StartCoroutine(FadeOutScreen(moveCanvasGroup));
+            PauseManager.ResumeGame();
+            StartCoroutine(FadeInScreen(smallMoveCanvasGroup));
+        }
+        public void HideSmallMoveScreen() {
+            StartCoroutine(FadeOutScreen(smallMoveCanvasGroup));
+        }
+
+        public void ShowJumpScreen()
+        {
+            HideAllInstructionScreens();
+            // Pause the game, but do not pause music
+            PauseManager.PauseGame(false);
+            StartCoroutine(FadeInScreen(jumpCanvasGroup));
+        }
+        public void ShowSmallJumpScreen() {
+            StartCoroutine(FadeOutScreen(jumpCanvasGroup));
+            PauseManager.ResumeGame();
+            StartCoroutine(FadeInScreen(smallJumpCanvasGroup));
+        }
+        public void HideSmallJumpScreen() {
+            StartCoroutine(FadeOutScreen(smallJumpCanvasGroup));
+        }
+
+        public void ShowSlowTapeScreen()
+        {
+            HideAllInstructionScreens();
+            // Pause the game, but do not pause music
+            PauseManager.PauseGame(false);
+            StartCoroutine(FadeInScreen(slowTapeCanvasGroup));
+        }
+        public void ShowSmallSlowTapeScreen() {
+            StartCoroutine(FadeOutScreen(slowTapeCanvasGroup));
+            PauseManager.ResumeGame();
+            StartCoroutine(FadeInScreen(smallSlowTapeCanvasGroup));
+        }
+        public void HideSmallSlowTapeScreen() {
+            StartCoroutine(FadeOutScreen(smallSlowTapeCanvasGroup));
+        }
+
+        public void ShowBasicAttack1Screen()
+        {
+            HideAllInstructionScreens();
+            // Pause the game, but do not pause music
+            PauseManager.PauseGame(false);
+            StartCoroutine(FadeInScreen(basicAttack1CanvasGroup));
+        }
+        public void ShowBasicAttack2Screen()
+        {
+            HideAllInstructionScreens();
+            // Pause the game, but do not pause music
+            PauseManager.PauseGame(false);
+            StartCoroutine(FadeInScreen(basicAttack2CanvasGroup));
+        }
+        public void ShowBasicAttack3Screen()
+        {
+            HideAllInstructionScreens();
+            // Pause the game, but do not pause music
+            PauseManager.PauseGame(false);
+            StartCoroutine(FadeInScreen(basicAttack3CanvasGroup));
+        }
+        public void ShowSmallBasicAttack1Screen() {
+            StartCoroutine(FadeOutScreen(basicAttack1CanvasGroup));
+            StartCoroutine(FadeOutScreen(basicAttack2CanvasGroup));
+            StartCoroutine(FadeOutScreen(basicAttack3CanvasGroup));
+            PauseManager.ResumeGame();
+            StartCoroutine(FadeInScreen(smallBasicAttack1CanvasGroup));
+        }
+        public void HideSmallBasicAttack1Screen() {
+            StartCoroutine(FadeOutScreen(smallBasicAttack1CanvasGroup));
+        }
+
+        public void ShowRangedAttackScreen()
+        {
+            HideAllInstructionScreens();
+            // Pause the game, but do not pause music
+            PauseManager.PauseGame(false);
+            StartCoroutine(FadeInScreen(rangedAttackCanvasGroup));
+        }
+        public void ShowSmallRangedAttackScreen() {
+            StartCoroutine(FadeOutScreen(rangedAttackCanvasGroup));
+            PauseManager.ResumeGame();
+            StartCoroutine(FadeInScreen(smallRangedAttackCanvasGroup));
+        }
+        public void HideSmallRangedAttackScreen() {
+            StartCoroutine(FadeOutScreen(smallRangedAttackCanvasGroup));
+        }
+
+        public void ShowShieldAttackScreen()
+        {
+            HideAllInstructionScreens();
+            // Pause the game, but do not pause music
+            PauseManager.PauseGame(false);
+            StartCoroutine(FadeInScreen(shieldAttackCanvasGroup));
+        }
+        public void ShowSmallShieldAttackScreen() {
+            StartCoroutine(FadeOutScreen(shieldAttackCanvasGroup));
+            PauseManager.ResumeGame();
+            StartCoroutine(FadeInScreen(smallShieldAttackCanvasGroup));
+        }
+        public void HideSmallShieldAttackScreen() {
+            StartCoroutine(FadeOutScreen(smallShieldAttackCanvasGroup));
         }
 
         public void ShowHPScreen()
         {
-            ShowNextScreen(hpCanvasGroup);
+            HideAllInstructionScreens();
+            // Pause the game, but do not pause music
+            PauseManager.PauseGame(false);
+            StartCoroutine(FadeInScreen(HPCanvasGroup));
         }
-
-        public void ShowBeatScreen()
-        {
-            ShowNextScreen(beatCanvasGroup);
-        }
-
-        public void ShowTapeScreen()
-        {
-            ShowNextScreen(tapeCanvasGroup);
-        }
-
-        private void ShowNextScreen(CanvasGroup[] canvasGroups)
-        {
-            if (currentPage != -1) HideScreen(canvasGroups[currentPage]);
-            currentPage++;
-
-            // If no more move pages, return
-            if (currentPage == canvasGroups.Length) 
-            {
-                PauseManager.ResumeGame();
-                ResetCurrentPage();
-                return;
-            }
-            else if (currentPage == 0)
-            {
-                // Do not pause music
-                PauseManager.PauseGame(false);
-            }
-
-            StartCoroutine(FadeInScreen(canvasGroups[currentPage]));
+        public void HideHPScreen() {
+            StartCoroutine(FadeOutScreen(HPCanvasGroup));
+            PauseManager.ResumeGame();
         }
 
         private IEnumerator FadeInScreen(CanvasGroup canvasGroup)
         {
             canvasGroup.gameObject.SetActive(true);
-            canvasGroup.alpha = 1;
-
             // Start the fade-in and wait for it to complete
-            // yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(canvasGroup, 0, 1, fadeDuration));
-            yield return null;
+            yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(canvasGroup, 0, 1, screenFadeDuration));
+        }
 
-            // Then fade in children
+        private IEnumerator FadeOutScreen(CanvasGroup canvasGroup)
+        {
+            // Start the fade-out and wait for it to complete
+            yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(canvasGroup, 1, 0, screenFadeDuration));
+            canvasGroup.gameObject.SetActive(false);
         }
 
         private void HideScreen(CanvasGroup canvasGroup)
@@ -105,32 +211,29 @@ namespace UI
             canvasGroup.gameObject.SetActive(false);
             canvasGroup.alpha = 0;
         }
-
-        // FadeInImages and HideImages
-
-        // Set all children of a canvas group to inactive first.
-        // Then set the canvas to inactive.
-        // The next time the canvas group is set to active, its children will remain inactive.
-        // Then children can be selected to be set active and fade in.
         private void HideAllInstructionScreens()
         {
-            foreach (CanvasGroup canvasGroup in moveCanvasGroup)
-            {
-                // Hide the children (i.e. images) first
-                HideScreen(canvasGroup);
-            }
-            foreach (CanvasGroup canvasGroup in hpCanvasGroup)
-            {
-                HideScreen(canvasGroup);
-            }
-            foreach (CanvasGroup canvasGroup in beatCanvasGroup)
-            {
-                HideScreen(canvasGroup);
-            }
-            foreach (CanvasGroup canvasGroup in tapeCanvasGroup)
-            {
-                HideScreen(canvasGroup);
-            }
+            HideScreen(moveCanvasGroup);
+            HideScreen(smallMoveCanvasGroup);
+
+            HideScreen(jumpCanvasGroup);
+            HideScreen(smallJumpCanvasGroup);
+
+            HideScreen(slowTapeCanvasGroup);
+            HideScreen(smallSlowTapeCanvasGroup);
+
+            HideScreen(basicAttack1CanvasGroup);
+            HideScreen(basicAttack2CanvasGroup);
+            HideScreen(basicAttack3CanvasGroup);
+            HideScreen(smallBasicAttack1CanvasGroup);
+
+            HideScreen(rangedAttackCanvasGroup);
+            HideScreen(smallRangedAttackCanvasGroup);
+
+            HideScreen(shieldAttackCanvasGroup);
+            HideScreen(smallShieldAttackCanvasGroup);
+
+            HideScreen(HPCanvasGroup);
         }
     }
 }

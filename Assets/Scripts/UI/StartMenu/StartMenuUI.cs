@@ -15,7 +15,7 @@ namespace UI
         [SerializeField] private GameObject creditButton;
         [SerializeField] private GameObject quitButton;
 
-        [SerializeField] private readonly string tutorialSceneName = "Scenes/feat-TutorialUI";
+        [SerializeField] private readonly string tutorialSceneName = "Scenes/TutorialLevel";
         
         //bind the buttons to the functions
         private void Start()

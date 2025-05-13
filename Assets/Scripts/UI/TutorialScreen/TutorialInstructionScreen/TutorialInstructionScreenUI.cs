@@ -13,44 +13,51 @@ namespace UI
     {
         [SerializeField] private TutorialInstructionScreenManager tutorialInstructionScreenManager;
         [SerializeField] private TutorialScreenType screenToShow;
-        [SerializeField] private ButtonToClose buttonToClose = ButtonToClose.Enter;
-        private KeyCode keyCode;
-
-        void Start()
-        {
-            switch (buttonToClose)
-            {
-                case ButtonToClose.Enter:
-                    keyCode = KeyCode.Return;
-                    break;
-                case ButtonToClose.A:
-                    keyCode = KeyCode.A;
-                    break;
-            }
-        }
+        [SerializeField] private float timerDuration = 1f;
+        private float timer = 0;
 
         private void Update()
         {
-            // If the Enter key is pressed
-            if (Input.GetKeyDown(keyCode))
+            timer += Time.unscaledDeltaTime;
+            if (timer < timerDuration) return;
+
+            // If any key is pressed
+            if (Input.anyKeyDown)
             {
                 switch (screenToShow)
                 {
                     case TutorialScreenType.Move:
-                        tutorialInstructionScreenManager.ShowMoveScreen();
+                        tutorialInstructionScreenManager.ShowSmallMoveScreen();
+                        break;
+                    case TutorialScreenType.Jump:
+                        tutorialInstructionScreenManager.ShowSmallJumpScreen();
+                        break;
+                    case TutorialScreenType.SlowTape:
+                        tutorialInstructionScreenManager.ShowSmallSlowTapeScreen();
+                        break;
+                    case TutorialScreenType.BasicAttack1:
+                        tutorialInstructionScreenManager.ShowSmallBasicAttack1Screen();
+                        break;
+                    case TutorialScreenType.BasicAttack2:
+                        tutorialInstructionScreenManager.ShowSmallBasicAttack1Screen();
+                        break;
+                    case TutorialScreenType.BasicAttack3:
+                        tutorialInstructionScreenManager.ShowSmallBasicAttack1Screen();
+                        break;
+                    case TutorialScreenType.RangedAttack:
+                        tutorialInstructionScreenManager.ShowSmallRangedAttackScreen();
+                        break;
+                    case TutorialScreenType.ShieldAttack:
+                        tutorialInstructionScreenManager.ShowSmallShieldAttackScreen();
                         break;
                     case TutorialScreenType.HP:
-                        tutorialInstructionScreenManager.ShowHPScreen();
-                        break;
-                    case TutorialScreenType.Beat:
-                        tutorialInstructionScreenManager.ShowBeatScreen();
-                        break;
-                    case TutorialScreenType.Tape:
-                        tutorialInstructionScreenManager.ShowTapeScreen();
+                        tutorialInstructionScreenManager.HideHPScreen();
                         break;
                 }
 
-                // May have to remove this; test
+                PauseMenuController.BlockEscapeKey(false);
+                SelectionWheelManager.BlockRightClick(false);
+
                 // Deselect the currently selected UI element
                 EventSystem.current.SetSelectedGameObject(null);
             }
