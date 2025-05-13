@@ -170,7 +170,7 @@ namespace Player
         {
             //if the player has attacked need to release the mouse to attack again
             if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
-            {
+            {   
                 // Check if the attack was on beat here
                 if (BeatSpawner.HitOnBeat()) {
                     // Strong melee attack
@@ -225,10 +225,14 @@ namespace Player
                     _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
                     airJumpsRemaining = maxAirJumps; // Reset air jumps on ground
                     _isGrounded = false;
+                    animator.SetTrigger("Jump");
+
                 } else if (airJumpsRemaining > 0) {
                     _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z); // Reset Y
                     _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
                     airJumpsRemaining--;
+                    animator.SetTrigger("Jump");
+
                 }
             }
 
@@ -317,9 +321,12 @@ namespace Player
 
             // Check if the player has attacked recently
             if (_meleeAttackBox == null && Time.time > _previousMeleeAttack + attackRecoverTime) {
+                // set attack animation 
+                animator.SetTrigger("Attack");
+
                 // update timer
                 _previousMeleeAttack = Time.time;
-                
+
                 //spawn damage area and adjust its size
                 GameObject attackBox = Instantiate(MeleeAttackPrefab, forward, transform.rotation);
                 attackBox.transform.localScale = new Vector3(attackRange, 1, attackRange);
@@ -420,16 +427,21 @@ namespace Player
                 if (Vector3.Angle(contact.normal, Vector3.up) < 45f)
                 {
                     _isGrounded = true;
+                    Animator.SetBool("inAir", false);
+
                     return;
                 }
             }
 
             _isGrounded = false; // In case all contacts are walls/ceilings
+            Animator.SetBool("inAir", true);
     	}
 
         void OnCollisionExit(Collision collision)
         {
             _isGrounded = false;
+            Animator.SetBool("inAir", true);
+
         }
     }
 }
