@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6389406064814559597}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -37,7 +37,7 @@ Transform:
   - {fileID: 6389406065285787758}
   - {fileID: 6389406065501923864}
   m_Father: {fileID: 6389406066330802588}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!198 &6389406064814559598
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4891,7 +4891,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.2
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -9779,7 +9779,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.35
+    scalar: 0.15
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -14667,7 +14667,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.2
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -19555,7 +19555,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.35
+    scalar: 0.15
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -24452,7 +24452,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.35
+    scalar: 0.15
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -34144,7 +34144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75c0b5e54b1d26b4c86eccd2cc16a15f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 1
+  lifetime: 0.5
 --- !u!65 &4057275786693870658
 BoxCollider:
   m_ObjectHideFlags: 0

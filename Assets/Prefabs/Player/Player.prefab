@@ -72,6 +72,7 @@ MonoBehaviour:
   strongMeleeAttackRecoverTime: 0.3
   weakAttackDamage: 10
   strongAttackDamage: 20
+  attackForwardOffset: 1
   dodgeRecoverTime: 1
   dodgeTime: 0.15
   isInvulnerableTime: 0.1
@@ -314,6 +315,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e7abd303f68734b74bc1684de2414522, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4283264021130854951}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e7abd303f68734b74bc1684de2414522, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 863518015577404760}
   m_SourcePrefab: {fileID: 100100000, guid: e7abd303f68734b74bc1684de2414522, type: 3}
 --- !u!4 &8279001992077649883 stripped
 Transform:
@@ -346,3 +350,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &863518015577404760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8768293924670963041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42d13904a8a1a314a9b61bdec49d2f93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
