@@ -4904,6 +4904,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fan
       objectReference: {fileID: 0}
+    - target: {fileID: 1994314268078764947, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.85
+      objectReference: {fileID: 0}
     - target: {fileID: 2175727238563760613, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -5003,6 +5007,30 @@ PrefabInstance:
     - target: {fileID: 5419268544887989507, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
       propertyPath: m_LocalPosition.z
       value: -1.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: lengthInSec
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8720227184585502536, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5576,6 +5604,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fan (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1994314268078764947, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.53
+      objectReference: {fileID: 0}
     - target: {fileID: 2175727238563760613, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -5675,6 +5707,26 @@ PrefabInstance:
     - target: {fileID: 5419268544887989507, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
       propertyPath: m_LocalPosition.z
       value: -1.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7125155793190875664, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8720227184585502536, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
       propertyPath: m_Materials.Array.data[0]
