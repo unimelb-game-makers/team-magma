@@ -18,20 +18,21 @@ public class TriggerTutorialInstruction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             PauseMenuController.BlockEscapeKey(true);
+            SelectionWheelManager.BlockRightClick(true);
             isTriggered = true;
             switch (screenToShow)
             {
                 case TutorialScreenType.Move:
                     tutorialInstructionScreenManager.ShowMoveScreen();
                     break;
-                case TutorialScreenType.HP:
-                    tutorialInstructionScreenManager.ShowHPScreen();
+                case TutorialScreenType.Jump:
+                    tutorialInstructionScreenManager.ShowJumpScreen();
                     break;
-                case TutorialScreenType.Beat:
-                    tutorialInstructionScreenManager.ShowBeatScreen();
+                case TutorialScreenType.SlowTape:
+                    tutorialInstructionScreenManager.ShowSlowTapeScreen();
                     break;
-                case TutorialScreenType.Tape:
-                    tutorialInstructionScreenManager.ShowTapeScreen();
+                case TutorialScreenType.BasicAttack1:
+                    tutorialInstructionScreenManager.ShowBasicAttack1Screen();
                     break;
             }
         }
@@ -45,6 +46,7 @@ public class TriggerTutorialInstruction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             PauseMenuController.BlockEscapeKey(false);
+            SelectionWheelManager.BlockRightClick(false);
             Destroy(gameObject);
         }
     }

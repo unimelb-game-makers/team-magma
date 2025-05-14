@@ -11,9 +11,19 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
+        private static readonly int Speed = Animator.StringToHash("speed");
+
         // Movement speed of the player
         [Header("Movement Setup")]
         [SerializeField] private float movementSpeed = 15f;
+        [SerializeField] private Animator animator;
+        static readonly int SpeedID = Animator.StringToHash("speed");
+        public Animator Animator => animator;
+        public float MovementSpeed
+        {
+            get => movementSpeed;
+            set => movementSpeed = value;
+        }
         [SerializeField] private float jumpHeight = 2.0f;
     	[SerializeField] private float jumpForce = 2.0f;
         [SerializeField] private int maxAirJumps = 1;
@@ -41,7 +51,6 @@ namespace Player
         [Space(10)]
 
         [Header("Dodge Setup")]
-        [SerializeField] private float dodgeSpeed = 40f;
         [SerializeField] private float dodgeRecoverTime = 1f;
         [SerializeField] private float dodgeTime = 0.15f;
         [SerializeField] private float isInvulnerableTime = 0.1f;
@@ -113,6 +122,8 @@ namespace Player
 
         private bool _isDodging;
 
+        private bool _canControl = true;
+
         private void Start()
         {
             // Get the Rigidbody component attached to this GameObject
@@ -129,8 +140,7 @@ namespace Player
 
         private void Update()
         {
-            if (PauseManager.IsPaused) return;
-            if (DefeatScreenManager.Instance.IsDefeat()) return;
+            if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || SuccessScreenManager.Instance.IsSuccess() || !_canControl) return;
             
             _horizontalInput = Input.GetAxis("Horizontal");
             _verticalInput = Input.GetAxis("Vertical");
@@ -147,20 +157,11 @@ namespace Player
             }
         }
 
-        private void FixedUpdate()
-        {
-            //Move();
-
-            //Rotate();
-
-            //Attack();
-        }
-
         private void Attack()
         {
             //if the player has attacked need to release the mouse to attack again
             if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
-            {
+            {   
                 // Check if the attack was on beat here
                 if (BeatSpawner.HitOnBeat()) {
                     // Strong melee attack
@@ -215,10 +216,14 @@ namespace Player
                     _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
                     airJumpsRemaining = maxAirJumps; // Reset air jumps on ground
                     _isGrounded = false;
+                    animator.SetTrigger("Jump");
+
                 } else if (airJumpsRemaining > 0) {
                     _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z); // Reset Y
                     _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
                     airJumpsRemaining--;
+                    animator.SetTrigger("Jump");
+
                 }
             }
 
@@ -236,11 +241,11 @@ namespace Player
                 // Slow down the speed by 1/sqrt(2) if both keys pressed
                 if (_isMovingHorizontally && _isMovingVertically)
                 {
-                    movement = new Vector3(_horizontalInput * movementSpeed * 0.69f, _rigidbody.velocity.y, _verticalInput * movementSpeed * 0.69f);
+                    movement = new Vector3(_horizontalInput * MovementSpeed * 0.69f, _rigidbody.velocity.y, _verticalInput * MovementSpeed * 0.69f);
                 }
                 else
                 {
-                    movement = new Vector3(_horizontalInput * movementSpeed, _rigidbody.velocity.y, _verticalInput * movementSpeed);
+                    movement = new Vector3(_horizontalInput * MovementSpeed, _rigidbody.velocity.y, _verticalInput * MovementSpeed);
                 }
 
                 switch (moveOrientation)
@@ -276,7 +281,15 @@ namespace Player
 
                 // Apply velocity to the Rigidbody
                 _rigidbody.velocity = new Vector3(movement.x, _rigidbody.velocity.y, movement.z);
+                //set animation speed
+                Debug.Log("Player speed: " + movement.magnitude/MovementSpeed);
+                Animator.SetFloat(SpeedID, movement.magnitude/MovementSpeed);
             }
+        }
+
+        public void SetControlEnabled(bool enabled)
+        {
+            _canControl = enabled;
         }
 
         private Vector3 GetMouseWorldPosition()
@@ -304,9 +317,12 @@ namespace Player
 
             // Check if the player has attacked recently
             if (_meleeAttackBox == null && Time.time > _previousMeleeAttack + attackRecoverTime) {
+                // set attack animation 
+                animator.SetTrigger("Attack");
+
                 // update timer
                 _previousMeleeAttack = Time.time;
-                
+
                 //spawn damage area and adjust its size
                 GameObject attackBox = Instantiate(MeleeAttackPrefab, forward, transform.rotation);
                 attackBox.transform.localScale = new Vector3(attackRange, 1, attackRange);
@@ -407,16 +423,21 @@ namespace Player
                 if (Vector3.Angle(contact.normal, Vector3.up) < 45f)
                 {
                     _isGrounded = true;
+                    Animator.SetBool("inAir", false);
+
                     return;
                 }
             }
 
             _isGrounded = false; // In case all contacts are walls/ceilings
+            Animator.SetBool("inAir", true);
     	}
 
         void OnCollisionExit(Collision collision)
         {
             _isGrounded = false;
+            Animator.SetBool("inAir", true);
+
         }
     }
 }
