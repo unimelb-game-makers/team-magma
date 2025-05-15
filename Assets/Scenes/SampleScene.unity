@@ -883,26 +883,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 692761952}
     m_Modifications:
-    - target: {fileID: 1507046365168833458, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 902a9de891073854d8bb51c9bfd0f88a, type: 2}
     - target: {fileID: 1544049801921743998, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
       propertyPath: m_Name
       value: Fan
       objectReference: {fileID: 0}
-    - target: {fileID: 2175727238563760613, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 902a9de891073854d8bb51c9bfd0f88a, type: 2}
-    - target: {fileID: 2325746156267830301, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 902a9de891073854d8bb51c9bfd0f88a, type: 2}
-    - target: {fileID: 3594462347998736332, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 902a9de891073854d8bb51c9bfd0f88a, type: 2}
     - target: {fileID: 4831678062653901606, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.9
@@ -943,10 +927,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8720227184585502536, guid: 5160e2f1f41738443b44ca2df6e2b982, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 902a9de891073854d8bb51c9bfd0f88a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
