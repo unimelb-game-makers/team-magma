@@ -19,7 +19,9 @@ public class PatrolState : BaseEnemyState
 
     public override void EnterState() {
         // Debug.Log("Entering Patrol State");
-        // enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), true);
+        if(enemyController.GetAnimator()){
+            enemyController.GetAnimator().SetBool("Patrol", true);
+        }
         navMeshAgent.destination = enemyController.GetCurrentPatrolPoint();
         navMeshAgent.speed = enemyController.GetPatrolSpeed();
     }
@@ -51,6 +53,9 @@ public class PatrolState : BaseEnemyState
 
     public override void ExitState() {
         enemyController.GetPatrolSound().stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        // enemyController.GetAnimator().SetBool(enemyController.GetPatrolAnimationBool(), false);
+        if(enemyController.GetAnimator()){
+            enemyController.GetAnimator().SetBool("Patrol", false);
+        }
+
     }
 }

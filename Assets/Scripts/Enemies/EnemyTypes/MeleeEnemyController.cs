@@ -16,9 +16,11 @@ namespace Enemies.EnemyTypes
         [SerializeField] protected float originalWindUpTime = 0.1f;
         [SerializeField] protected float originalDamageRadius = 2.5f;
         [SerializeField] protected float originalDamageAngle = 90f;
+
         protected float windUpTime;
         protected float damageRadius;
         protected float damageAngle;
+
 
         protected override void Awake()
         {
@@ -29,9 +31,10 @@ namespace Enemies.EnemyTypes
         public override void Attack()
         {
             if (!IsAttacking())
-            {
-                // Trigger animation
-                // GetAnimator().SetTrigger(GetAttackAnimationTrigger());
+            {   
+                if (GetAnimator()){
+                    animator.SetTrigger("Attack");
+                }
 
                 SetIsAttacking(true);
                 StartStrike();

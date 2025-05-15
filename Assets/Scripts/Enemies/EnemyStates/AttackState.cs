@@ -17,8 +17,9 @@ public class AttackState : BaseEnemyState
     public override void EnterState() {
         // Debug.Log("Entering Attack State");
         
-        //ToDo: the animation should be reimplemented according Our Requirements
-        // enemyController.GetAnimator().SetBool(enemyController.GetIdleAttackAnimationBool(), true);
+        if(enemyController.GetAnimator()){
+            enemyController.GetAnimator().SetBool("AttackIdle", true);
+        }
         navMeshAgent.SetDestination(enemyController.transform.position);
         outsideAttackRangeDuration = enemyController.GetOutsideAttackRangeDuration();
         outsideAttackRangeTime = outsideAttackRangeDuration;
@@ -56,6 +57,8 @@ public class AttackState : BaseEnemyState
 
     public override void ExitState() {
         enemyController.GetAttackSound().stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        // enemyController.GetAnimator().SetBool(enemyController.GetIdleAttackAnimationBool(), false);
+        if(enemyController.GetAnimator()){
+            enemyController.GetAnimator().SetBool("AttackIdle", false);
+        }    
     }
 }

@@ -20,7 +20,10 @@ public class ChaseState : BaseEnemyState
 
     public override void EnterState() {
         // Debug.Log("Entering Chase State");
-        // enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), true);
+        if(enemyController.GetAnimator()){
+            enemyController.GetAnimator().SetBool("Chase", true);
+        }
+
         navMeshAgent.speed = enemyController.GetChaseSpeed();
         chaseDuration = enemyController.GetChaseDuration();
         chaseTime = chaseDuration;
@@ -60,6 +63,8 @@ public class ChaseState : BaseEnemyState
 
     public override void ExitState() {
         enemyController.GetChaseSound().stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        // enemyController.GetAnimator().SetBool(enemyController.GetChaseAnimationBool(), false);
+        if(enemyController.GetAnimator()){
+            enemyController.GetAnimator().SetBool("Chase", false);
+        }
     }
 }

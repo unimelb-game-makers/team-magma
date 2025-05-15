@@ -103,8 +103,8 @@ MonoBehaviour:
   chaseSpeed: 8
   chaseDuration: 3
   locationCheckInterval: 0.1
-  originalDamage: 40
-  originalAttackCooldown: 0.2
+  originalDamage: 20
+  originalAttackCooldown: 1
   outsideAttackRangeDuration: 0.1
   destinationToleranceRange: 1.5
   sightRange: 10
@@ -138,6 +138,7 @@ MonoBehaviour:
       Data3: 1319579315
       Data4: -1597025449
     Path: event:/Weapons/Machine Gun
+  animator: {fileID: 1599560287778664455}
   fleeSoundReference:
     Guid:
       Data1: 347416895
@@ -281,10 +282,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 56a1c7b79c4b1714881059a98bea61ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1599560287778664455}
   m_SourcePrefab: {fileID: 100100000, guid: 56a1c7b79c4b1714881059a98bea61ba, type: 3}
 --- !u!4 &2585940978075426833 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 56a1c7b79c4b1714881059a98bea61ba, type: 3}
   m_PrefabInstance: {fileID: 2623807354280511482}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2929814977424374443 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 56a1c7b79c4b1714881059a98bea61ba, type: 3}
+  m_PrefabInstance: {fileID: 2623807354280511482}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1599560287778664455
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2929814977424374443}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c6ca40a7a6061d243be1060605021630, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
