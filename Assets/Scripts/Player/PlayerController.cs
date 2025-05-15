@@ -38,13 +38,14 @@ namespace Player
         [Header("Attack Setup")]
         [SerializeField] private LayerMask enemyLayers;  // The layers that should be considered as enemies
         [SerializeField] private float rotationSpeed = 10f;  // Speed at which the player rotates
-        [SerializeField] private GameObject MeleeAttackPrefab;
-        [SerializeField] private float weakAttackRange = 1f;
-        [SerializeField] private float strongAttackRange = 2f;
-        [SerializeField] private float weakMeleeAttackRecoverTime = 0.5f;
-        [SerializeField] private float strongMeleeAttackRecoverTime = 0.3f;
-        [SerializeField] private float weakAttackDamage = 10;
-        [SerializeField] private float strongAttackDamage = 20;
+        [SerializeField] public GameObject MeleeAttackPrefab;
+        [SerializeField] public float weakAttackRange = 1f;
+        [SerializeField] public float strongAttackRange = 2f;
+        [SerializeField] public float weakMeleeAttackRecoverTime = 0.5f;
+        [SerializeField] public float strongMeleeAttackRecoverTime = 0.3f;
+        [SerializeField] public float weakAttackDamage = 10;
+        [SerializeField] public float strongAttackDamage = 20;
+        [SerializeField] public float attackForwardOffset = 1f;
         
         // To implement feat: Knockback
 
@@ -106,8 +107,6 @@ namespace Player
             }
         }
 
-        private MeleeAttackBox _meleeAttackBox = null;
-
         private float _previousMeleeAttack;
 
         private bool _isMovingHorizontally;
@@ -165,17 +164,20 @@ namespace Player
                 // Check if the attack was on beat here
                 if (BeatSpawner.HitOnBeat()) {
                     // Strong melee attack
-                    // Debug.Log("Strong Melee attack");
-                    MeleeAttack(strongAttackRange, strongMeleeAttackRecoverTime, strongAttackDamage);
+                    if (Time.time > _previousMeleeAttack + strongMeleeAttackRecoverTime)
+                    {
+                        animator.SetTrigger("StrongAttack");
+                        // update timer
+                        _previousMeleeAttack = Time.time;
+                    }
                 } else {
-                    // Weak melee attack
-                    // Debug.Log("Weak Melee attack");
-                    MeleeAttack(weakAttackRange, weakMeleeAttackRecoverTime, weakAttackDamage);
+                    if (Time.time > _previousMeleeAttack + weakMeleeAttackRecoverTime)
+                    {
+                        animator.SetTrigger("WeakAttack");
+                        // update timer
+                        _previousMeleeAttack = Time.time;
+                    }
                 }
-
-                // The current fire method should be replaced by melee attack (i.e the player
-                // cannot shoot projectiles, only melee attack)
-                
                 _leftMouseButtonDown = true;
             }
 
@@ -281,8 +283,7 @@ namespace Player
 
                 // Apply velocity to the Rigidbody
                 _rigidbody.velocity = new Vector3(movement.x, _rigidbody.velocity.y, movement.z);
-                //set animation speed
-                Debug.Log("Player speed: " + movement.magnitude/MovementSpeed);
+                // set animation speed
                 Animator.SetFloat(SpeedID, movement.magnitude/MovementSpeed);
             }
         }
@@ -309,40 +310,6 @@ namespace Player
             }
             return Vector3.zero;
         }
-
-        private void MeleeAttack(float attackRange, float attackRecoverTime, float attackDamage)
-        {
-            Vector3 origin = transform.position;
-            Vector3 forward = (transform.forward * weakAttackRange) + origin;
-
-            // Check if the player has attacked recently
-            if (_meleeAttackBox == null && Time.time > _previousMeleeAttack + attackRecoverTime) {
-                // set attack animation 
-                animator.SetTrigger("Attack");
-
-                // update timer
-                _previousMeleeAttack = Time.time;
-
-                //spawn damage area and adjust its size
-                GameObject attackBox = Instantiate(MeleeAttackPrefab, forward, transform.rotation);
-                attackBox.transform.localScale = new Vector3(attackRange, 1, attackRange);
-                
-                // the meleeAttackBox will move together with the player
-                _meleeAttackBox = attackBox.GetComponent<MeleeAttackBox>();
-                _meleeAttackBox.transform.parent = gameObject.transform;
-                
-                // set the attack damage
-                attackBox.GetComponent<MeleeDamager>().Damage = attackDamage;
-
-                // the meleeAttackBox can damage enemies
-                if (_meleeAttackBox != null)
-                {
-                    var canAttackList = new List<string> { "Enemy" };
-                    _meleeAttackBox.SendMessage("EditCanAttack", canAttackList);
-                }
-            }
-        }
-
         
         /**
          * Placeholder for playing the tape effect

@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
-using Platforms;
 using Tempo;
 using Utilities.ServiceLocator;
 using Timeline;
@@ -153,6 +152,7 @@ public class SelectionWheelManager : MonoBehaviour
             MusicTimeline.instance.SetIntensity(2);
             TapeEffectSoundPlayer.Play();
             PlayTapeEffect(TapeType.Slow, 0.01f, 0.5f);
+            TapeNotificationManager.Instance.FadeOutUI();
 
             if (isWheelActive) {
                 ToggleWheel();
@@ -165,13 +165,8 @@ public class SelectionWheelManager : MonoBehaviour
         {
             MusicTimeline.instance.SetIntensity(1);
             TapeEffectSoundPlayer.Play();
-
-            //get IAffectServices from service locator
-            var affectServices = ServiceLocator.Instance.Get<ISyncable>();
-            foreach (var o in affectServices)
-            {
-                o.Affect(TapeType.Slow, 5, 0.5f); // Why is TapeType in Platforms namespace?
-            }
+            PlayTapeEffect(TapeType.Slow, 5, 0.5f);
+            TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Slow, 5);
         
             if (isWheelActive) {
                 ToggleWheel();
@@ -185,6 +180,7 @@ public class SelectionWheelManager : MonoBehaviour
             MusicTimeline.instance.SetIntensity(3);
             TapeEffectSoundPlayer.Play();
             PlayTapeEffect(TapeType.Fast, 5, 0.5f);
+            TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Fast, 5);
 
             if (isWheelActive) {
                 ToggleWheel();
