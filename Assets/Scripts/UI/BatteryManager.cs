@@ -6,6 +6,7 @@ using DG.Tweening;
 public class BatteryManager : MonoBehaviour
 {
     public Image batteryHexagon; // The single hexagon UI element
+    public Image batteryHexagonBg;
     public float maxBattery = 100f; // Maximum battery level
     public float recoveryRate = 10f; // Battery recovery rate per second
     private float currentBattery; // Current battery level
@@ -57,10 +58,10 @@ public class BatteryManager : MonoBehaviour
 
     private void FlashBatteryWarning()
     {
-        if (batteryHexagon == null) return;
+        if (batteryHexagonBg == null) return;
 
         if (originalColor == default)
-            originalColor = batteryHexagon.color;
+            originalColor = batteryHexagonBg.color;
 
         if (flashTween != null && flashTween.IsActive())
         {
@@ -69,12 +70,12 @@ public class BatteryManager : MonoBehaviour
 
         flashTween = DOTween.Sequence()
             .SetUpdate(true) // Use unscaled time
-            .Append(batteryHexagon.DOColor(Color.red, 0.1f))
+            .Append(batteryHexagonBg.DOColor(Color.red, 0.1f))
             .AppendInterval(0.1f)
-            .Append(batteryHexagon.DOColor(originalColor, 0.1f))
+            .Append(batteryHexagonBg.DOColor(originalColor, 0.1f))
             .AppendInterval(0.1f)
-            .Append(batteryHexagon.DOColor(Color.red, 0.1f))
+            .Append(batteryHexagonBg.DOColor(Color.red, 0.1f))
             .AppendInterval(0.1f)
-            .Append(batteryHexagon.DOColor(originalColor, 0.1f));
+            .Append(batteryHexagonBg.DOColor(originalColor, 0.1f));
     }
 }
