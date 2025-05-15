@@ -15,7 +15,6 @@ namespace System
     public class GameManager : PersistentSingleton<GameManager>
     {
         [SerializeField] private PlayerCharacter _playerCharacter;
-        [SerializeField] private float delayAfterLoading = 0.5f;
         public PlayerCharacter PlayerCharacter
         {
             get

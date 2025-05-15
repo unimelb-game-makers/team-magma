@@ -283,8 +283,7 @@ namespace Player
 
                 // Apply velocity to the Rigidbody
                 _rigidbody.velocity = new Vector3(movement.x, _rigidbody.velocity.y, movement.z);
-                //set animation speed
-                Debug.Log("Player speed: " + movement.magnitude/MovementSpeed);
+                // set animation speed
                 Animator.SetFloat(SpeedID, movement.magnitude/MovementSpeed);
             }
         }
