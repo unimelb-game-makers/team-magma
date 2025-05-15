@@ -1214,6 +1214,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room1
       objectReference: {fileID: 0}
+    - target: {fileID: 1237290490690774698, guid: 4686602e1058e924394d88371f711d3b, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237290490690774698, guid: 4686602e1058e924394d88371f711d3b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -6922793697723135513, guid: 4686602e1058e924394d88371f711d3b, type: 3}
+    - target: {fileID: 1237290490690774698, guid: 4686602e1058e924394d88371f711d3b, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: -3846018093981099296, guid: 4686602e1058e924394d88371f711d3b, type: 3}
+    - target: {fileID: 1237290490690774698, guid: 4686602e1058e924394d88371f711d3b, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 4874126678125670354, guid: 4686602e1058e924394d88371f711d3b, type: 3}
+    - target: {fileID: 1237290490690774698, guid: 4686602e1058e924394d88371f711d3b, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 82b4da5db25fcb340be38bbd6d2b47ff, type: 2}
+    - target: {fileID: 1237290490690774698, guid: 4686602e1058e924394d88371f711d3b, type: 3}
+      propertyPath: m_Materials.Array.data[7]
+      value: 
+      objectReference: {fileID: 2100000, guid: 82b4da5db25fcb340be38bbd6d2b47ff, type: 2}
     - target: {fileID: 3626187152506902657, guid: 4686602e1058e924394d88371f711d3b, type: 3}
       propertyPath: m_Layer
       value: 8
