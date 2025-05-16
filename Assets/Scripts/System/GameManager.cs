@@ -9,10 +9,11 @@ using System.Level;
 using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities.ServiceLocator;
 
 namespace System
 {
-    public class GameManager : PersistentSingleton<GameManager>
+    public class GameManager : PersistentSingleton<GameManager>, ISaveLevel
     {
         [SerializeField] private PlayerCharacter _playerCharacter;
         public PlayerCharacter PlayerCharacter
@@ -113,8 +114,9 @@ namespace System
                 // TODO: add success screen
                 throw new Exception("No more levels to load.");
             }
-            LoadLevel(levelNames[_currentLevelIndex]);
             _currentLevelIndex++;
+            LoadLevel(levelNames[_currentLevelIndex]);
+
         }
 
         public void LoadNewGame()
@@ -123,7 +125,7 @@ namespace System
             if (currentScene.name != levelNames[0])
             {
                 LoadLevel(levelNames[0]);
-                _currentLevelIndex = 1;
+                _currentLevelIndex = 0;
                 PlayerCharacter.PlayerStats.OnReset();
             }
             else
@@ -135,8 +137,8 @@ namespace System
         public void LoadContinueGame()
         {
             PlayerCharacter.PlayerStats.OnReset();
-            LoadLevel(levelNames[Math.Max(_currentLevelIndex-1, 0)]);
-            _currentLevelIndex = Math.Max(_currentLevelIndex, 1);
+            LoadLevel(levelNames[Math.Max(_currentLevelIndex - 1, 0)]);
+            _currentLevelIndex = Math.Max(_currentLevelIndex, 0);
         }
         
         private void LoadLevel(string sceneName)
@@ -149,10 +151,10 @@ namespace System
         public void LoadLevelNumber(int number)
         {
             Scene currentScene = SceneManager.GetActiveScene();
-            if (currentScene.name != levelNames[number-1])
+            if (currentScene.name != levelNames[number - 1])
             {
-                LoadLevel(levelNames[number-1]);
-                _currentLevelIndex = number;
+                LoadLevel(levelNames[number - 1]);
+                _currentLevelIndex = number - 1;
                 PlayerCharacter.PlayerStats.OnReset();
             }
             else
@@ -199,6 +201,42 @@ namespace System
             cameraComponent.SetYaw(SubGameManager.Instance.LevelSpawnPoint.eulerAngles.y);
 
             PlayerCharacter.PlayerStats.OnReset();
+        }
+
+        public object OnSaveData()
+        {
+            Debug.Log("Saving level index: " + _currentLevelIndex);
+            return new LevelData(_currentLevelIndex);
+        }
+
+        public void OnLoadData(object data)
+        {
+            var levelData = (LevelData)data;
+            if (levelData != null)
+            {
+                Debug.Log("Loading level index: " + levelData.currentLevelIndex);
+                _currentLevelIndex = levelData.currentLevelIndex;
+            }
+            else
+            {
+                LoadDefaultData();
+            }
+        }
+
+        public void LoadDefaultData()
+        {
+            // set the current level index to 0
+            _currentLevelIndex = 0;
+        }
+    }
+    [Serializable]
+    public class LevelData
+    {
+        public int currentLevelIndex;
+
+        public LevelData(int currentLevelIndex)
+        {
+            this.currentLevelIndex = currentLevelIndex;
         }
     }
 }
