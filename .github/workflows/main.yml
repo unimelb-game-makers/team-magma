@@ -1,0 +1,81 @@
+#  GitHub Action Secret:
+#  UNITY_LICENSE: Unity license file content
+#  UNITY_EMAIL: Unity account email
+#  UNITY_PASSWORD: Unity account password
+#  BUTLER_API_KEY: Itch.io account API key
+#  USER_GAME: Itch.io Project website( e.g. https://itch.io/user/game-name )
+#test cache
+#  Github Action Variables:
+#  UNITY_VERSION: Unity version (2023.2.9f1)
+
+name: Actions 😎
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build my project ✨
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        targetPlatform: [StandaloneWindows64]
+
+        
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.2
+        with:
+          lfs: true
+          
+      # Git LFS
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v4.2.0
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ github.event_name }}-${{ matrix.targetPlatform }}-lfs-${{ hashFiles('.lfs-assets-id') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ github.event_name }}-${{ matrix.targetPlatform }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+
+      # Cache
+      - uses: actions/cache@v4.2.0
+        with:
+          path: Library
+          key: ${{ github.event_name }}-Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+              ${{ github.event_name }}-Library-${{ matrix.targetPlatform }}-
+
+      # Build
+      - name: Build project 
+        uses: game-ci/unity-builder@v4.3.0
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          unityVersion: ${{ vars.UNITY_VERSION }}
+          allowDirtyBuild: true
+          
+
+      # Output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+     
