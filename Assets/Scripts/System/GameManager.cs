@@ -13,7 +13,7 @@ using Utilities.ServiceLocator;
 
 namespace System
 {
-    public class GameManager : PersistentSingleton<GameManager>, ISaveLevel
+    public class GameManager : PersistentSingleton<GameManager>
     {
         [SerializeField] private PlayerCharacter _playerCharacter;
         public PlayerCharacter PlayerCharacter
@@ -27,7 +27,7 @@ namespace System
                 return _playerCharacter;
             }
         }
-        
+
         private PlayerController _playerController;
         public PlayerController PlayerController
         {
@@ -43,11 +43,11 @@ namespace System
                 return _playerController;
             }
         }
-        
+
         private BeatSpawner _beatSpawner;
 
-        
-        
+
+
         public BeatSpawner BeatSpawner
         {
             get
@@ -78,8 +78,8 @@ namespace System
             "Room7",
             "Room8-9",
         };
-        
-        
+
+
         private int _currentLevelIndex = 0;
 
         protected override void Awake()
@@ -92,11 +92,11 @@ namespace System
             //check if player data exists
             DontDestroyOnLoad(PlayerCharacter.gameObject);
             //if the player exist
-                //load the current scene
-                    //load the player data
+            //load the current scene
+            //load the player data
             //else
-                //load the first scene
-                    //create a new player
+            //load the first scene
+            //create a new player
         }
 
         public void LoadTutorial(string sceneName)
@@ -106,10 +106,10 @@ namespace System
             LevelManager.Instance.LoadLevel(sceneName, LevelLoaded);
             PlayerCharacter.PlayerStats.OnReset();
         }
-        
+
         public void LoadNextLevel()
         {
-            if(_currentLevelIndex >= levelNames.Count)
+            if (_currentLevelIndex >= levelNames.Count)
             {
                 // TODO: add success screen
                 throw new Exception("No more levels to load.");
@@ -131,16 +131,16 @@ namespace System
             else
             {
                 ReloadLevel();
-            } 
+            }
         }
 
         public void LoadContinueGame()
         {
             PlayerCharacter.PlayerStats.OnReset();
-            LoadLevel(levelNames[Math.Max(_currentLevelIndex - 1, 0)]);
+            LoadLevel(levelNames[Math.Max(_currentLevelIndex, 0)]);
             _currentLevelIndex = Math.Max(_currentLevelIndex, 0);
         }
-        
+
         private void LoadLevel(string sceneName)
         {
             LoadingLevel();
@@ -160,15 +160,15 @@ namespace System
             else
             {
                 ReloadLevel();
-            } 
+            }
         }
-        
+
         public void ReloadLevel()
         {
             LoadingLevel();
             LevelManager.Instance.ReloadCurrentLevel(LevelReloaded);
         }
-        
+
         private void LoadingLevel()
         {
             Debug.Log("Level loaded.");
@@ -203,40 +203,5 @@ namespace System
             PlayerCharacter.PlayerStats.OnReset();
         }
 
-        public object OnSaveData()
-        {
-            Debug.Log("Saving level index: " + _currentLevelIndex);
-            return new LevelData(_currentLevelIndex);
-        }
-
-        public void OnLoadData(object data)
-        {
-            var levelData = (LevelData)data;
-            if (levelData != null)
-            {
-                Debug.Log("Loading level index: " + levelData.currentLevelIndex);
-                _currentLevelIndex = levelData.currentLevelIndex;
-            }
-            else
-            {
-                LoadDefaultData();
-            }
-        }
-
-        public void LoadDefaultData()
-        {
-            // set the current level index to 0
-            _currentLevelIndex = 0;
-        }
-    }
-    [Serializable]
-    public class LevelData
-    {
-        public int currentLevelIndex;
-
-        public LevelData(int currentLevelIndex)
-        {
-            this.currentLevelIndex = currentLevelIndex;
-        }
     }
 }
