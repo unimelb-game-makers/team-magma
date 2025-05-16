@@ -142,6 +142,11 @@ public class TapeNotificationManager : Singleton<TapeNotificationManager>
         }
 
         // Fully reset
+        ResetTapeNotification();
+    }
+
+    public void ResetTapeNotification()
+    {
         uiGroup.anchoredPosition = initialPosition;
         canvasGroup.alpha = 0f;
         timerText.text = "";
