@@ -67,7 +67,8 @@ namespace Damage
                     {
                         // 3) Get the Damageable component and apply damage
                         var damageable = hit.GetComponent<Damageable>();
-                        if (damageable)
+                        
+                        if (damageable & hit.tag == "Player")
                         {
                             damageable.TakeDamage(_damage);
                         }

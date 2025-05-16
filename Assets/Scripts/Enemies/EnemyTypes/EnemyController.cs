@@ -100,6 +100,7 @@ namespace Enemy
         #endregion
         
         #region Enemy State Getters and Setters
+        [SerializeField] protected Animator animator;
 
         private PlayerController _Player;
         public PlayerController Player
@@ -395,6 +396,9 @@ namespace Enemy
             Gizmos.DrawWireSphere(transform.position, sightRange);
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, destinationToleranceRange);
+        }
+        public Animator GetAnimator(){
+            return animator;
         }
     }
 
