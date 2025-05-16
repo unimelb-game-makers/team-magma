@@ -19,6 +19,7 @@ public class SelectionWheelManager : MonoBehaviour
     [SerializeField] private AudioPlayer TapeEffectSoundPlayer;
     [SerializeField] private List<Button> tapeButtons;
     [SerializeField] private float scrollSpeed = 1f;  // Set the scroll speed
+    [SerializeField] private int tapeEffectDuration = 6;  // Set the effect duration of the tape
     private bool isWheelActive = false; // Track if the wheel is active
     private bool isScrolled = false;
     private int currentIndex = 0; // Index to track the current selection
@@ -165,8 +166,8 @@ public class SelectionWheelManager : MonoBehaviour
         {
             MusicTimeline.instance.SetIntensity(1);
             TapeEffectSoundPlayer.Play();
-            PlayTapeEffect(TapeType.Slow, 5, 0.5f);
-            TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Slow, 5);
+            PlayTapeEffect(TapeType.Slow, tapeEffectDuration, 0.5f);
+            TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Slow, tapeEffectDuration);
         
             if (isWheelActive) {
                 ToggleWheel();
@@ -179,8 +180,8 @@ public class SelectionWheelManager : MonoBehaviour
         {
             MusicTimeline.instance.SetIntensity(3);
             TapeEffectSoundPlayer.Play();
-            PlayTapeEffect(TapeType.Fast, 5, 0.5f);
-            TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Fast, 5);
+            PlayTapeEffect(TapeType.Fast, tapeEffectDuration, 0.5f);
+            TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Fast, tapeEffectDuration);
 
             if (isWheelActive) {
                 ToggleWheel();

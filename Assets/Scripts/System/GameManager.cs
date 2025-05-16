@@ -9,6 +9,7 @@ using System.Level;
 using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities.ServiceLocator;
 
 namespace System
 {
@@ -26,7 +27,7 @@ namespace System
                 return _playerCharacter;
             }
         }
-        
+
         private PlayerController _playerController;
         public PlayerController PlayerController
         {
@@ -42,11 +43,11 @@ namespace System
                 return _playerController;
             }
         }
-        
+
         private BeatSpawner _beatSpawner;
 
-        
-        
+
+
         public BeatSpawner BeatSpawner
         {
             get
@@ -77,8 +78,8 @@ namespace System
             "Room7",
             "Room8-9",
         };
-        
-        
+
+
         private int _currentLevelIndex = 0;
 
         protected override void Awake()
@@ -90,12 +91,7 @@ namespace System
         {
             //check if player data exists
             DontDestroyOnLoad(PlayerCharacter.gameObject);
-            //if the player exist
-                //load the current scene
-                    //load the player data
-            //else
-                //load the first scene
-                    //create a new player
+            _currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", 0);
         }
 
         public void LoadTutorial(string sceneName)
@@ -105,16 +101,19 @@ namespace System
             LevelManager.Instance.LoadLevel(sceneName, LevelLoaded);
             PlayerCharacter.PlayerStats.OnReset();
         }
-        
+
         public void LoadNextLevel()
         {
-            if(_currentLevelIndex >= levelNames.Count)
+            if (_currentLevelIndex >= levelNames.Count)
             {
                 // TODO: add success screen
                 throw new Exception("No more levels to load.");
             }
-            LoadLevel(levelNames[_currentLevelIndex]);
             _currentLevelIndex++;
+            PlayerPrefs.SetInt("CurrentLevelIndex", _currentLevelIndex);
+            PlayerPrefs.Save();
+            LoadLevel(levelNames[_currentLevelIndex]);
+
         }
 
         public void LoadNewGame()
@@ -123,22 +122,26 @@ namespace System
             if (currentScene.name != levelNames[0])
             {
                 LoadLevel(levelNames[0]);
-                _currentLevelIndex = 1;
+                _currentLevelIndex = 0;
+                PlayerPrefs.SetInt("CurrentLevelIndex", _currentLevelIndex);
+                PlayerPrefs.Save();
                 PlayerCharacter.PlayerStats.OnReset();
             }
             else
             {
                 ReloadLevel();
-            } 
+            }
         }
 
         public void LoadContinueGame()
         {
             PlayerCharacter.PlayerStats.OnReset();
-            LoadLevel(levelNames[Math.Max(_currentLevelIndex-1, 0)]);
-            _currentLevelIndex = Math.Max(_currentLevelIndex, 1);
+            LoadLevel(levelNames[Math.Max(_currentLevelIndex, 0)]);
+            _currentLevelIndex = Math.Max(_currentLevelIndex, 0);
+            PlayerPrefs.SetInt("CurrentLevelIndex", _currentLevelIndex);
+            PlayerPrefs.Save();
         }
-        
+
         private void LoadLevel(string sceneName)
         {
             LoadingLevel();
@@ -149,29 +152,30 @@ namespace System
         public void LoadLevelNumber(int number)
         {
             Scene currentScene = SceneManager.GetActiveScene();
-            if (currentScene.name != levelNames[number-1])
+            if (currentScene.name != levelNames[number - 1])
             {
-                LoadLevel(levelNames[number-1]);
-                _currentLevelIndex = number;
+                LoadLevel(levelNames[number - 1]);
+                _currentLevelIndex = number - 1;
+                PlayerPrefs.SetInt("CurrentLevelIndex", _currentLevelIndex);
+                PlayerPrefs.Save();
                 PlayerCharacter.PlayerStats.OnReset();
             }
             else
             {
                 ReloadLevel();
-            } 
+            }
         }
-        
+
         public void ReloadLevel()
         {
             LoadingLevel();
             LevelManager.Instance.ReloadCurrentLevel(LevelReloaded);
         }
-        
+
         private void LoadingLevel()
         {
             Debug.Log("Level loaded.");
             PlayerCharacter.gameObject.SetActive(false);
-            //Freeze all actions
         }
         private void LevelLoaded()
         {
@@ -200,5 +204,6 @@ namespace System
 
             PlayerCharacter.PlayerStats.OnReset();
         }
+
     }
 }
