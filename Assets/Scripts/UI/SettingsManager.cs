@@ -180,12 +180,5 @@ namespace UI
             // Reset selected UI element
             EventSystem.current.SetSelectedGameObject(null);
         }
-
-        public void ResetSettings()
-        {
-            PlayerPrefs.DeleteAll();
-            LoadSettings();
-            Debug.Log("Settings reset to default.");
-        }
     }
 }

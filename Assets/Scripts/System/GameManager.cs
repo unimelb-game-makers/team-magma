@@ -91,12 +91,7 @@ namespace System
         {
             //check if player data exists
             DontDestroyOnLoad(PlayerCharacter.gameObject);
-            //if the player exist
-            //load the current scene
-            //load the player data
-            //else
-            //load the first scene
-            //create a new player
+            _currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", 0);
         }
 
         public void LoadTutorial(string sceneName)
@@ -115,6 +110,8 @@ namespace System
                 throw new Exception("No more levels to load.");
             }
             _currentLevelIndex++;
+            PlayerPrefs.SetInt("CurrentLevelIndex", _currentLevelIndex);
+            PlayerPrefs.Save();
             LoadLevel(levelNames[_currentLevelIndex]);
 
         }
@@ -126,6 +123,8 @@ namespace System
             {
                 LoadLevel(levelNames[0]);
                 _currentLevelIndex = 0;
+                PlayerPrefs.SetInt("CurrentLevelIndex", _currentLevelIndex);
+                PlayerPrefs.Save();
                 PlayerCharacter.PlayerStats.OnReset();
             }
             else
@@ -139,6 +138,8 @@ namespace System
             PlayerCharacter.PlayerStats.OnReset();
             LoadLevel(levelNames[Math.Max(_currentLevelIndex, 0)]);
             _currentLevelIndex = Math.Max(_currentLevelIndex, 0);
+            PlayerPrefs.SetInt("CurrentLevelIndex", _currentLevelIndex);
+            PlayerPrefs.Save();
         }
 
         private void LoadLevel(string sceneName)
@@ -155,6 +156,8 @@ namespace System
             {
                 LoadLevel(levelNames[number - 1]);
                 _currentLevelIndex = number - 1;
+                PlayerPrefs.SetInt("CurrentLevelIndex", _currentLevelIndex);
+                PlayerPrefs.Save();
                 PlayerCharacter.PlayerStats.OnReset();
             }
             else
@@ -173,7 +176,6 @@ namespace System
         {
             Debug.Log("Level loaded.");
             PlayerCharacter.gameObject.SetActive(false);
-            //Freeze all actions
         }
         private void LevelLoaded()
         {
