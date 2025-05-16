@@ -49,7 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e372d8e7b9848f1af922aa0621e6750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerCharacter: {fileID: 142032139593856738, guid: 4a0bd3be14cb7495f9ed6ebbaec7f5c0, type: 3}
+  _playerCharacter: {fileID: 0}
+  delayAfterLoading: 0.5
 --- !u!114 &1721843424394274163
 MonoBehaviour:
   m_ObjectHideFlags: 0

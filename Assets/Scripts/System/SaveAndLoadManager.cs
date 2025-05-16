@@ -26,18 +26,13 @@ namespace System
         public void SaveGame()
         {
             SavePlayer();
-            SaveLevel();
         }
         
         private void SavePlayer()
         {
             _saveSystem.Save<ISavePlayer>();
         }
-        private void SaveLevel()
-        {
-            _saveSystem.Save<ISaveLevel>();
-        }
-
+        
         /// <summary>
         /// Currently, can be called from the editor
         /// </summary>
@@ -45,7 +40,6 @@ namespace System
         public void LoadGame()
         {
             LoadPlayer();
-            LoadLevel();
         }
         
         /// <summary>
@@ -55,10 +49,6 @@ namespace System
         private void LoadPlayer()
         {
             _saveSystem.Load<ISavePlayer>();
-        }
-        private void LoadLevel()
-        {
-            _saveSystem.Load<ISaveLevel>();
         }
     }
 }
