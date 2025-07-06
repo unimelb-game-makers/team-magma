@@ -66,7 +66,7 @@ namespace Timeline
 
         static bool beatTrigger = false;
         static float beatWindowAfter;
-
+        public bool onTempo = false;
         [SerializeField] private float _volume = 1.0f;
 
     #if UNITY_EDITOR
@@ -102,18 +102,23 @@ namespace Timeline
         }
 
         void Update() {
+            if (onTempo) onTempo = false;
+            
             // Wait for some time before spawning beats each time the tempo changes
-            if (currentTempo != timelineInfo.CurrentMusicTempo) {
+            if (currentTempo != timelineInfo.CurrentMusicTempo)
+            {
                 currentChangeTempoTime = changeTempoDuration;
                 currentTempo = timelineInfo.CurrentMusicTempo;
             }
 
             currentChangeTempoTime -= Time.deltaTime;
             if (currentChangeTempoTime <= 0) {
-                if (toSpawnBeat) {
+                if (toSpawnBeat)
+                {
                     toSpawnBeat = false;
                     beatSpawner.SetTempo(currentTempo);
                     beatSpawner.SpawnBeat();
+                    onTempo = true;
                 }
             } else {
                 toSpawnBeat = false;

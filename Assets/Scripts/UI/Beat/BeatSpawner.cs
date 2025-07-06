@@ -10,7 +10,9 @@ public class BeatSpawner : MonoBehaviour
     public Transform spawnPointRight;  // Where beats spawn on the right
     public Transform hexagonLeft;  // Beats spawning on the left move to this
     public Transform hexagonRight;  // Beats spawning on the right move to this
-    private List<Beat> beats = new();  // Stores the active beats
+    private Queue<Beat> beatQueueLeft = new();  // Queue for beats to be processed
+    private Queue<Beat> beatQueueRight = new();  // Queue for beats to be processed
+
     private float beatTravelTime;  // Time for the beat to move from its start to end pos
 
     [Tooltip("Hit range to hit beats on time")]
@@ -34,34 +36,33 @@ public class BeatSpawner : MonoBehaviour
         GameObject beatLeft = Instantiate(beatPrefab, spawnPointLeft.position, Quaternion.identity, transform);
         // Should be the same as parent's rotation otherwise it will be out of shape
         beatLeft.transform.rotation = transform.rotation;
-        beatLeft.GetComponent<Beat>().Initialise(hexagonLeft.GetComponent<TargetHexagon>(), beatTravelTime, hitTolerance);
+        beatLeft.GetComponent<Beat>().Initialise(hexagonLeft.GetComponent<TargetHexagon>(), beatTravelTime, hitTolerance, beatQueueLeft);
 
         GameObject beatRight = Instantiate(beatPrefab, spawnPointRight.position, Quaternion.identity, transform);
         // Should be the same as parent's rotation otherwise it will be out of shape
         beatRight.transform.rotation = transform.rotation;
-        beatRight.GetComponent<Beat>().Initialise(hexagonRight.GetComponent<TargetHexagon>(), beatTravelTime, hitTolerance);
-
-        beats.Add(beatLeft.GetComponent<Beat>());
-        beats.Add(beatRight.GetComponent<Beat>());
+        beatRight.GetComponent<Beat>().Initialise(hexagonRight.GetComponent<TargetHexagon>(), beatTravelTime, hitTolerance, beatQueueRight);
+        
+        beatQueueLeft.Enqueue(beatLeft.GetComponent<Beat>());
+        beatQueueRight.Enqueue(beatRight.GetComponent<Beat>());
     }
 
     // Check for and remove beats that have been hit
     public bool HitOnBeat()
     {
-        float numBeatsHit = 0;
-        for (int i = beats.Count - 1; i >= 0; i--)
+        Beat beatLeft = beatQueueLeft.Peek();
+        Beat beatRight = beatQueueRight.Peek();
+        if (beatLeft.IsHittable() && beatRight.IsHittable())
         {
-            if (beats[i].IsHittable())
-            {
-                beats[i].OnHit();
-                beats.RemoveAt(i);
-
-                numBeatsHit++;
-                if (numBeatsHit >= 2) return true;
-            }
+            // If both beats are hittable, remove them from the queue
+            beatLeft.OnHit();
+            beatRight.OnHit();
+            return true;
         }
 
         return false;
     }
+
+
 }
 
