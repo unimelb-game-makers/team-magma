@@ -69,7 +69,7 @@ public class SoundManager : MonoBehaviour
         EnemyController[] enemyControllers = FindObjectsOfType<EnemyController>();
         foreach (EnemyController enemyController in enemyControllers) {
             enemyController.PauseAudio(pause);
-            Debug.Log("Enemy sound has been paused: " + pause);
+            //Debug.Log("Enemy sound has been paused: " + pause);
         }
     }
 
