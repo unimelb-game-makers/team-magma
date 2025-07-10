@@ -52,6 +52,10 @@ namespace Hazard
         [SerializeField] private float fastRippleDensity = 15f;
 
         [SerializeField] private Material waterMaterial;
+        private static readonly int RippleSpeedID = Shader.PropertyToID("_rippleSpeed"),
+                                    WaveSpeedID = Shader.PropertyToID("_waveSpeed"),
+                                    RippleDensityID = Shader.PropertyToID("_rippleDensity");
+
         private Coroutine resetWaterCoroutine;
 
         public void Awake()
@@ -96,26 +100,26 @@ namespace Hazard
         {
             // Change the material properties over time
             float elapsedTime = 0f;
-            float initialRippleSpeed = waterMaterial.GetFloat("_RippleSpeed");
-            float initialWaveSpeed = waterMaterial.GetFloat("_WaveSpeed");
-            float initialRippleDensity = waterMaterial.GetFloat("_RippleDensity");
+            float initialRippleSpeed = waterMaterial.GetFloat(RippleSpeedID);
+            float initialWaveSpeed = waterMaterial.GetFloat(WaveSpeedID);
+            float initialRippleDensity = waterMaterial.GetFloat(RippleDensityID);
 
             while (elapsedTime < _duration)
             {
                 float t = elapsedTime / _duration;
 
-                waterMaterial.SetFloat("_RippleSpeed", Mathf.Lerp(initialRippleSpeed, targetRippleSpeed, t));
-                waterMaterial.SetFloat("_WaveSpeed", Mathf.Lerp(initialWaveSpeed, targetWaveSpeed, t));
-                waterMaterial.SetFloat("_RippleDensity", Mathf.Lerp(initialRippleDensity, targetRippleDensity, t));
+                waterMaterial.SetFloat(RippleSpeedID, Mathf.Lerp(initialRippleSpeed, targetRippleSpeed, t));
+                waterMaterial.SetFloat(WaveSpeedID, Mathf.Lerp(initialWaveSpeed, targetWaveSpeed, t));
+                waterMaterial.SetFloat(RippleDensityID, Mathf.Lerp(initialRippleDensity, targetRippleDensity, t));
 
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
             // Ensure the exact target values are set
-            waterMaterial.SetFloat("_RippleSpeed", targetRippleSpeed);
-            waterMaterial.SetFloat("_WaveSpeed", targetWaveSpeed);
-            waterMaterial.SetFloat("_RippleDensity", targetRippleDensity);
+            waterMaterial.SetFloat(RippleSpeedID, targetRippleSpeed);
+            waterMaterial.SetFloat(WaveSpeedID, targetWaveSpeed);
+            waterMaterial.SetFloat(RippleDensityID, targetRippleDensity);
         }
         /**
          * Move the 'KillArea' depending on the TapeType.
