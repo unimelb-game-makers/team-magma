@@ -101,7 +101,7 @@ namespace Timeline
             SetIntensity(0);
         }
 
-        void Update() {
+        void LateUpdate() {
             if (onTempo) onTempo = false;
             
             // Wait for some time before spawning beats each time the tempo changes
