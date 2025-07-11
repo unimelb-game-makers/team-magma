@@ -77,23 +77,4 @@ public class AttackState : BaseEnemyState
             enemyController.GetAnimator().SetBool("AttackIdle", false);
         }
     }
-    private BeatSpawner beatSpawner;
-
-    public BeatSpawner BeatSpawner
-    {
-        get
-        {
-            if (beatSpawner == null)
-            {
-                beatSpawner = GameManager.Instance.BeatSpawner;
-                if (beatSpawner == null)
-                {
-                    throw new Exception("No BeatSpawner found in the scene. please attach to somewhere in the scene");
-                }
-            }
-            return beatSpawner;
-
-        }
-    }
-
 }
