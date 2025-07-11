@@ -39,6 +39,23 @@ namespace Hazard
         [Tooltip("The damage which the KillArea deals.")]
         [SerializeField] private float _damage = 999;
 
+        [Header("Shader Speed")]
+        [Tooltip("The speed of the shader effect on the poison.")]
+        [SerializeField] private float slowWaveSpeed = 0.1f;
+        [SerializeField] private float mediumWaveSpeed = 0.2f;
+        [SerializeField] private float fastWaveSpeed = 0.5f;
+        [SerializeField] private float slowRippleSpeed = 1.0f;
+        [SerializeField] private float mediumRippleSpeed = 2.0f;
+        [SerializeField] private float fastRippleSpeed = 5.0f;
+        [SerializeField] private float slowRippleDensity = 10f;
+        [SerializeField] private float mediumRippleDensity = 12f;
+        [SerializeField] private float fastRippleDensity = 15f;
+
+        [SerializeField] private Material waterMaterial;
+        private static readonly int RippleSpeedID = Shader.PropertyToID("_rippleSpeed"),
+                                    WaveSpeedID = Shader.PropertyToID("_waveSpeed"),
+                                    RippleDensityID = Shader.PropertyToID("_rippleDensity");
+
         private Coroutine resetWaterCoroutine;
 
         public void Awake()
@@ -79,16 +96,41 @@ namespace Hazard
             // Ensure the exact target position is set
             killArea.transform.position = targetPosition;
         }
+        private IEnumerator ChangeMaterialDensity(float targetRippleSpeed, float targetWaveSpeed, float targetRippleDensity)
+        {
+            // Change the material properties over time
+            float elapsedTime = 0f;
+            float initialRippleSpeed = waterMaterial.GetFloat(RippleSpeedID);
+            float initialWaveSpeed = waterMaterial.GetFloat(WaveSpeedID);
+            float initialRippleDensity = waterMaterial.GetFloat(RippleDensityID);
 
+            while (elapsedTime < _duration)
+            {
+                float t = elapsedTime / _duration;
+
+                waterMaterial.SetFloat(RippleSpeedID, Mathf.Lerp(initialRippleSpeed, targetRippleSpeed, t));
+                waterMaterial.SetFloat(WaveSpeedID, Mathf.Lerp(initialWaveSpeed, targetWaveSpeed, t));
+                waterMaterial.SetFloat(RippleDensityID, Mathf.Lerp(initialRippleDensity, targetRippleDensity, t));
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            // Ensure the exact target values are set
+            waterMaterial.SetFloat(RippleSpeedID, targetRippleSpeed);
+            waterMaterial.SetFloat(WaveSpeedID, targetWaveSpeed);
+            waterMaterial.SetFloat(RippleDensityID, targetRippleDensity);
+        }
         /**
          * Move the 'KillArea' depending on the TapeType.
          */
         public override void Affect(TapeType tapeType, float duration, float effectValue)
         {
-            if(tapeType == TapeType.Slow)
+            if (tapeType == TapeType.Slow)
             {
                 // Move the 'KillArea' object to height1.
                 StartCoroutine(MoveKillAreaToHeight(height1));
+                StartCoroutine(ChangeMaterialDensity(slowRippleSpeed, slowWaveSpeed, slowRippleDensity));
 
                 // Code for Animations and Sounds.
 
@@ -96,24 +138,31 @@ namespace Hazard
                 // then reset it.
                 if (resetWaterCoroutine != null) StopCoroutine(resetWaterCoroutine);
 
-                if (useDefaultEffectTimeValues) {
+                if (useDefaultEffectTimeValues)
+                {
                     resetWaterCoroutine = StartCoroutine(AffectTimer(duration));
-                } else {
+                }
+                else
+                {
                     resetWaterCoroutine = StartCoroutine(AffectTimer(_slowEffectTime));
                 }
             }
 
-            if(tapeType == TapeType.Fast)
+            if (tapeType == TapeType.Fast)
             {
                 // Move the 'KillArea' object to height1.
                 StartCoroutine(MoveKillAreaToHeight(height3));
+                StartCoroutine(ChangeMaterialDensity(fastRippleSpeed, fastWaveSpeed, fastRippleDensity));
 
                 // Code for Animations and Sounds.
                 if (resetWaterCoroutine != null) StopCoroutine(resetWaterCoroutine);
 
-                if (useDefaultEffectTimeValues) {
+                if (useDefaultEffectTimeValues)
+                {
                     resetWaterCoroutine = StartCoroutine(AffectTimer(duration));
-                } else {
+                }
+                else
+                {
                     resetWaterCoroutine = StartCoroutine(AffectTimer(_fastEffectTime));
                 }
             }
@@ -129,6 +178,8 @@ namespace Hazard
 
             // Move the 'KillArea' object to height3.
             StartCoroutine(MoveKillAreaToHeight(height2));
+            StartCoroutine(ChangeMaterialDensity(mediumRippleSpeed, mediumWaveSpeed, mediumRippleDensity));
         }
     }
+
 }
