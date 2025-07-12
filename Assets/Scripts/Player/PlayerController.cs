@@ -6,6 +6,7 @@ using Platforms; // Why is TapeType in platforms?
 using Tempo;
 using Utilities.ServiceLocator;
 using UI;
+using Player.Stats;
 
 namespace Player
 {
@@ -140,19 +141,25 @@ namespace Player
         private void Update()
         {
             if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || SuccessScreenManager.Instance.IsSuccess() || !_canControl) return;
-            
+
             _horizontalInput = Input.GetAxis("Horizontal");
             _verticalInput = Input.GetAxis("Vertical");
 
             TrackMovementInput();
 
             Rotate();
-            
+
             Move();
 
             if (PlayerStateManager.Instance == null) return;
-            if (PlayerStateManager.Instance.IsCombat()) {
+            if (PlayerStateManager.Instance.IsCombat())
+            {
                 Attack();
+            }
+
+            if (transform.position.y < -500)
+            {
+                GetComponent<PlayerHealth>().Death();
             }
         }
 

@@ -132,7 +132,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 30, y: 0, z: -30}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.73, y: 0.55, z: 1.95}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2036806798009657365}
@@ -153,9 +153,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b397458740e354a91d98b4f8f144ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDefaultEffectTimeValues: 1
+  _fastEffectTime: 5
+  _slowEffectTime: 5
+  _fastEffectValue: 5
+  _slowEffectValue: 5
   _duration: 1
   _damage: 999
-  isSlowTempo: 0
+  slowWaveSpeed: 0.1
+  mediumWaveSpeed: 0.2
+  fastWaveSpeed: 0.5
+  slowRippleSpeed: 1
+  mediumRippleSpeed: 2
+  fastRippleSpeed: 5
+  slowRippleDensity: 10
+  mediumRippleDensity: 12
+  fastRippleDensity: 15
+  waterMaterial: {fileID: 2100000, guid: 68d4a88ca7fe4234e9d169a2ad47b5e0, type: 2}
 --- !u!1 &4968801891981982366
 GameObject:
   m_ObjectHideFlags: 0
