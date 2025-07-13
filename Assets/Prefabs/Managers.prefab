@@ -50,7 +50,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCharacter: {fileID: 0}
-  delayAfterLoading: 0.5
 --- !u!114 &1721843424394274163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9a1c6bbcd44594ba3eedceec480376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: de8b84e6ec9b44477856f33fccc02c06, type: 2}
   _intensity: 0
   changeTempoDuration: 0.5
   _timelineInfoDisplayToggle: 1

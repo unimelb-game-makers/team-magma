@@ -32,6 +32,10 @@ namespace Timeline
     public class MusicTimeline : MonoBehaviour
     {
         public static MusicTimeline instance;
+
+        [SerializeField] private BeatSettings settings;
+        private BeatHandler _beatHandler;
+        
         private BeatSpawner beatSpawner;
 
         [Header("Parameters")]
@@ -77,12 +81,13 @@ namespace Timeline
             }
         #endif
 
-        void Awake()
+        private void Awake()
         {
             instance = this;
             timelineInfo = new TimelineInfo();
         }
-        void Start()
+        
+        private void Start()
         {
             beatSpawner = GameManager.Instance.BeatSpawner;
             // Explicitly create the delegate object and assign it to a member so it doesn't get freed
@@ -99,11 +104,24 @@ namespace Timeline
             musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
             musicInstance.start();
 
+            _beatHandler = new BeatHandler(settings);
+            _beatHandler.Start();
+
             SetSpeed(TempoMode.Default);
         }
 
         void LateUpdate() {
             if (onTempo) onTempo = false;
+            
+            // Update the beat handler!
+            _beatHandler.Update(Time.deltaTime);
+            
+            // Debugging Beat Handler
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log(_beatHandler.GetBeatResult());
+            }
+            
             
             // Wait for some time before spawning beats each time the tempo changes
             if (currentTempo != timelineInfo.CurrentMusicTempo)
