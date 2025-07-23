@@ -150,7 +150,7 @@ public class SelectionWheelManager : MonoBehaviour
     public void UseTapeDefault() {
         if (batteryManager.UseBattery(batteryNeeded))
         {
-            MusicTimeline.instance.SetIntensity(2);
+            MusicTimeline.instance.SetSpeed(TempoMode.Default);
             TapeEffectSoundPlayer.Play();
             PlayTapeEffect(TapeType.Slow, 0.01f, 0.5f);
             TapeNotificationManager.Instance.FadeOutUI();
@@ -164,7 +164,7 @@ public class SelectionWheelManager : MonoBehaviour
     public void UseTapeSlow() {
         if (batteryManager.UseBattery(batteryNeeded))
         {
-            MusicTimeline.instance.SetIntensity(1);
+            MusicTimeline.instance.SetSpeed(TempoMode.Slow);
             TapeEffectSoundPlayer.Play();
             PlayTapeEffect(TapeType.Slow, tapeEffectDuration, 0.5f);
             TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Slow, tapeEffectDuration);
@@ -178,7 +178,7 @@ public class SelectionWheelManager : MonoBehaviour
     public void UseTapeFast() {
         if (batteryManager.UseBattery(batteryNeeded))
         {
-            MusicTimeline.instance.SetIntensity(3);
+            MusicTimeline.instance.SetSpeed(TempoMode.Fast);
             TapeEffectSoundPlayer.Play();
             PlayTapeEffect(TapeType.Fast, tapeEffectDuration, 0.5f);
             TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Fast, tapeEffectDuration);
