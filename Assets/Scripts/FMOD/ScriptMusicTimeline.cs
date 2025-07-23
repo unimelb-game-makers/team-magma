@@ -24,7 +24,9 @@
 
 using System;
 using System.Runtime.InteropServices;
+using FMOD;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 
 namespace Timeline 
@@ -33,11 +35,12 @@ namespace Timeline
     {
         public static MusicTimeline instance;
 
+        // New and Updated
         [SerializeField] private BeatSettings settings;
         private BeatHandler _beatHandler;
-        
-        private BeatSpawner beatSpawner;
+        private BeatSpawner _beatSpawner;
 
+        // Deprecated or Old
         [Header("Parameters")]
         [Tooltip("The current song / tempo")]
         [SerializeField] private int _intensity = 0;
@@ -74,6 +77,8 @@ namespace Timeline
         public bool onTempo = false;
         [SerializeField] private float _volume = 1.0f;
 
+        private static Action onBeat;
+
         #if UNITY_EDITOR
             void Reset()
             {
@@ -85,6 +90,7 @@ namespace Timeline
         {
             instance = this;
             timelineInfo = new TimelineInfo();
+            onBeat += OnBeat;
         }
         
         private void Start()
@@ -104,10 +110,34 @@ namespace Timeline
             musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
             musicInstance.start();
 
+            // Init Beat Handler
             _beatHandler = new BeatHandler(settings);
             _beatHandler.Start();
+            
+            // Find and Init BeatSpawner
+            _beatSpawner = GameManager.Instance.BeatSpawner;
+            _beatSpawner.Init(_beatHandler);
+            _beatSpawner.StartTrack();
+            DebugDSP();
 
             SetSpeed(TempoMode.Default);
+        }
+
+        private static void DebugDSP()
+        {
+            FMODUnity.RuntimeManager.CoreSystem.getSoftwareFormat(out int samplerate, out _, out _);
+
+            FMODUnity.RuntimeManager.CoreSystem.getMasterChannelGroup(out ChannelGroup channelGroup);
+            channelGroup.getDSPClock(out ulong dspclock, out ulong parentclock);
+            float currentDspTime = dspclock / (float)samplerate;
+            Debug.Log($"Sample Rate {samplerate} DSP Clock {dspclock} Parent Clock {parentclock} DSP Time is {currentDspTime}");
+        }
+
+        private void OnBeat()
+        {
+            _beatHandler.OnBeat();
+            _beatSpawner.OnBeat(_beatHandler.Beat);
+            // DebugDSP();
         }
 
         void LateUpdate() {
@@ -237,6 +267,10 @@ namespace Timeline
                         timelineInfo.CurrentMusicBeat = parameter.beat; // Added beats info - Ryan
                         timelineInfo.CurrentMusicBar = parameter.bar;
                         SetOnBeat();
+                        
+                        DebugDSP();
+                        
+                        onBeat?.Invoke();
 
                         // A beat has to be spawned
                         MusicTimeline.instance.toSpawnBeat = true;

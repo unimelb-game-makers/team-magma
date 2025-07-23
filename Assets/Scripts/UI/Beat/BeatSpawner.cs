@@ -5,64 +5,67 @@ using System.Runtime.CompilerServices;
 
 public class BeatSpawner : MonoBehaviour
 {
-    public GameObject beatPrefab;  // The Beat prefab
-    public Transform spawnPointLeft;  // Where beats spawn on the left
-    public Transform spawnPointRight;  // Where beats spawn on the right
-    public Transform hexagonLeft;  // Beats spawning on the left move to this
-    public Transform hexagonRight;  // Beats spawning on the right move to this
-    private Queue<Beat> beatQueueLeft = new();  // Queue for beats to be processed
-    private Queue<Beat> beatQueueRight = new();  // Queue for beats to be processed
+    // The number of beats that will be pre-emptively spawned
+    private const int BEAT_SPAWN = 5;
+    // The distance that a beat will travel in one second
+    private const float BEAT_DISTANCE = 700f;
 
-    private float beatTravelTime;  // Time for the beat to move from its start to end pos
+    [SerializeField] private RectTransform beatHolder;
+    [SerializeField] private BeatPopupItem sampleBeatPopupItem;
 
-    [Tooltip("Hit range to hit beats on time")]
-    [SerializeField] private float hitTolerance = 25f;
+    [SerializeField] private RectTransform leftTarget;
+    [SerializeField] private RectTransform rightTarget;
+    
+    private BeatHandler _beatHandler;
 
-    public void SetTempo(float tempo)
+    private Dictionary<int, BeatPopupItem> _popupItems = new();
+
+    public void Init(BeatHandler beatHandler)
     {
-        // The number of seconds between each beat
-        float beatInterval = 60f / tempo;
-        // The time it takes for this beat to reach the target
-        beatTravelTime = beatInterval * 2f;
+        _beatHandler = beatHandler;
     }
 
-    public void SpawnBeat()
+    /// <summary>
+    /// Starts the track and spawns the first initial beats, starting at 1
+    /// </summary>
+    public void StartTrack()
     {
-        if (spawnPointLeft == null)
+        for (int i = 0; i < BEAT_SPAWN; ++i)
         {
-            Debug.LogError("Spawn point was not set, check, i don't wanna fix this, fix if you can");
-            return;
+            SpawnBeat(i + 1);
         }
-        GameObject beatLeft = Instantiate(beatPrefab, spawnPointLeft.position, Quaternion.identity, transform);
-        // Should be the same as parent's rotation otherwise it will be out of shape
-        beatLeft.transform.rotation = transform.rotation;
-        beatLeft.GetComponent<Beat>().Initialise(hexagonLeft.GetComponent<TargetHexagon>(), beatTravelTime, hitTolerance, beatQueueLeft);
+    }
 
-        GameObject beatRight = Instantiate(beatPrefab, spawnPointRight.position, Quaternion.identity, transform);
-        // Should be the same as parent's rotation otherwise it will be out of shape
-        beatRight.transform.rotation = transform.rotation;
-        beatRight.GetComponent<Beat>().Initialise(hexagonRight.GetComponent<TargetHexagon>(), beatTravelTime, hitTolerance, beatQueueRight);
+    /// <summary>
+    /// Spawns a beat based on the time it will hit the target.
+    /// </summary>
+    /// <param name="beat">The beat to spawn</param>
+    private void SpawnBeat(int beat)
+    {
+        float timeToTarget = _beatHandler.GetBeatTime(beat);
+        float timeToTravel = timeToTarget - Time.time;
+        float distance = BEAT_DISTANCE * timeToTravel;
+        // Debug.Log($"Spawning Beat {beat}, To Target: {timeToTarget}, Time is {Time.time}");
+
+        BeatPopupItem beatPopupItem = Instantiate(sampleBeatPopupItem, beatHolder);
+        beatPopupItem.Init(leftTarget, rightTarget, distance, timeToTravel);
+        _popupItems.Add(beat, beatPopupItem);
+    }
+
+    /// <summary>
+    /// Resolve the current beat and create a new beat
+    /// </summary>
+    /// <param name="beat"></param>
+    public void OnBeat(int beat)
+    {
+        // Resolve the last beat and release it
+        if (_popupItems.TryGetValue(beat, out BeatPopupItem popupItem))
+        {
+            popupItem.Resolve();
+            _popupItems.Remove(beat);
+        }
         
-        beatQueueLeft.Enqueue(beatLeft.GetComponent<Beat>());
-        beatQueueRight.Enqueue(beatRight.GetComponent<Beat>());
+        SpawnBeat(beat + BEAT_SPAWN);
     }
-
-    // Check for and remove beats that have been hit
-    public bool HitOnBeat()
-    {
-        Beat beatLeft = beatQueueLeft.Peek();
-        Beat beatRight = beatQueueRight.Peek();
-        if (beatLeft.IsHittable() && beatRight.IsHittable())
-        {
-            // If both beats are hittable, remove them from the queue
-            beatLeft.OnHit();
-            beatRight.OnHit();
-            return true;
-        }
-
-        return false;
-    }
-
-
 }
 
