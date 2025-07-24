@@ -43,8 +43,6 @@ namespace Timeline
         // Deprecated or Old
         [Header("Parameters")]
         [Tooltip("The current song / tempo")]
-        [SerializeField] private int _intensity = 0;
-        [SerializeField] static float _beatWindowAround = 0.1f;
         [SerializeField] private float _speedRatio = 1f;
         private float currentTempo;
         [Tooltip("How long to wait between tempo changes")]
@@ -72,8 +70,6 @@ namespace Timeline
         FMOD.Studio.EVENT_CALLBACK beatCallback;
         FMOD.Studio.EventInstance musicInstance;
 
-        static bool beatTrigger = false;
-        static float beatWindowAfter;
         public bool onTempo = false;
         [SerializeField] private float _volume = 1.0f;
 
@@ -89,11 +85,6 @@ namespace Timeline
             EventName = FMODUnity.EventReference.Find("event:/Music/Regulator");
         }
 #endif
-
-        private void Start()
-        {
-            // StartTrack();
-        }
 
         private void Awake()
         {
@@ -150,9 +141,9 @@ namespace Timeline
                 }
             }
         }
-        
 
-        void LateUpdate() {
+        void LateUpdate() 
+        {
             if (onTempo) onTempo = false;
             // Wait for some time before spawning beats each time the tempo changes
             if (currentTempo != timelineInfo.CurrentMusicTempo)
@@ -173,11 +164,6 @@ namespace Timeline
             }
 
             musicInstance.setVolume(_volume);
-            
-            beatWindowAfter = Math.Max(beatWindowAfter - Time.deltaTime, 0);
-            if (beatTrigger && beatWindowAfter == 0) {
-                beatTrigger = false;
-            }
         }
 
         void OnDestroy()
@@ -192,12 +178,6 @@ namespace Timeline
                 GUILayout.Box(String.Format("Current Beat = {0}, Current Bar = {1}, Current Tempo = {2}, Last Marker = {3}", timelineInfo.CurrentMusicBeat, timelineInfo.CurrentMusicBar, timelineInfo.CurrentMusicTempo, (string)timelineInfo.LastMarker));
             }
         }
-
-        // Would be better to have in a MusicManager, but for demonstration is here.
-        public void SetIntensity(int intensity) {
-            _intensity = intensity;
-            musicInstance.setParameterByName("Intensity", intensity);
-        }
         
         public void SetSpeed(TempoMode mode)
         {
@@ -210,25 +190,6 @@ namespace Timeline
             float speedRatio = TempoSetting.GetRatio(mode);
             _speedRatio = speedRatio;
             musicInstance.setParameterByName("MusicSpeed", speedRatio);
-        }
-
-        public float GetSpeedRatio()
-        {
-            return _speedRatio;
-        }
-
-        public int GetIntensity()
-        {
-            return _intensity;
-        }
-
-        static void SetOnBeat() {
-            beatTrigger = true;
-            beatWindowAfter = _beatWindowAround;
-        }
-
-        public bool GetOnBeat() {
-            return beatTrigger;
         }
 
         // BeatEventCallback: This method is called each time a new beat occurs
@@ -259,7 +220,6 @@ namespace Timeline
                         timelineInfo.CurrentMusicTempo = parameter.tempo * MusicTimeline.instance._speedRatio;
                         timelineInfo.CurrentMusicBeat = parameter.beat; // Added beats info - Ryan
                         timelineInfo.CurrentMusicBar = parameter.bar;
-                        SetOnBeat();
                         
                         onBeat?.Invoke();
 
