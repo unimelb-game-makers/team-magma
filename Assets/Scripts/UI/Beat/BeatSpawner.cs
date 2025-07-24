@@ -1,7 +1,5 @@
 using UnityEngine;
-using Timeline;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 public class BeatSpawner : MonoBehaviour
 {
@@ -18,7 +16,7 @@ public class BeatSpawner : MonoBehaviour
     
     private BeatHandler _beatHandler;
 
-    private Dictionary<int, BeatPopupItem> _popupItems = new();
+    private readonly Dictionary<int, BeatPopupItem> _popupItems = new();
 
     public void Init(BeatHandler beatHandler)
     {
@@ -45,27 +43,30 @@ public class BeatSpawner : MonoBehaviour
         float timeToTarget = _beatHandler.GetBeatTime(beat);
         float timeToTravel = timeToTarget - Time.time;
         float distance = BEAT_DISTANCE * timeToTravel;
-        // Debug.Log($"Spawning Beat {beat}, To Target: {timeToTarget}, Time is {Time.time}");
+        Debug.Log($"Spawning Beat {beat}, To Target: {timeToTarget}, Time is {Time.time}");
 
         BeatPopupItem beatPopupItem = Instantiate(sampleBeatPopupItem, beatHolder);
-        beatPopupItem.Init(leftTarget, rightTarget, distance, timeToTravel);
+        beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, timeToTravel);
         _popupItems.Add(beat, beatPopupItem);
     }
 
     /// <summary>
-    /// Resolve the current beat and create a new beat
+    /// Creates a new beat following the initial beat offset
     /// </summary>
     /// <param name="beat"></param>
     public void OnBeat(int beat)
     {
-        // Resolve the last beat and release it
-        if (_popupItems.TryGetValue(beat, out BeatPopupItem popupItem))
-        {
-            popupItem.Resolve();
-            _popupItems.Remove(beat);
-        }
-        
         SpawnBeat(beat + BEAT_SPAWN);
+    }
+
+    /// <summary>
+    /// Resolves the beat by removing it from the dictionary
+    /// </summary>
+    /// <param name="beat"></param>
+    public void ResolveBeat(int beat)
+    {
+        if (_popupItems.ContainsKey(beat))
+            _popupItems.Remove(beat);
     }
 }
 

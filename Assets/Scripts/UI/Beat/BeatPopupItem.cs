@@ -12,10 +12,16 @@ public class BeatPopupItem : MonoBehaviour
     private RectTransform _leftTarget;
     private RectTransform _rightTarget;
 
-    private Sequence _moveSequence;
+    private Sequence _sequence;
+    private Sequence _resolveSequence;
+
+    private BeatSpawner _spawner;
+    private int _beat;
     
-    public void Init(RectTransform leftTarget, RectTransform rightTarget, float distance, float travelTime)
+    public void Init(BeatSpawner spawner, int beat, RectTransform leftTarget, RectTransform rightTarget, float distance, float travelTime)
     {
+        _spawner = spawner;
+        _beat = beat;
         // Set the distance of the hexagons first
         Vector2 leftPos = leftTarget.anchoredPosition;
         leftPos.x -= distance;
@@ -26,18 +32,20 @@ public class BeatPopupItem : MonoBehaviour
         rightHexagon.Rect.anchoredPosition = rightPos;
         
         // Create tweens to move the hexagons
-        _moveSequence = DOTween.Sequence();
-        _moveSequence.Append(leftHexagon.Rect.DOAnchorPos(leftTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
-        _moveSequence.Join(rightHexagon.Rect.DOAnchorPos(rightTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
-        _moveSequence.Play();
+        _sequence = DOTween.Sequence();
+        _sequence.Append(leftHexagon.Rect.DOAnchorPos(leftTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
+        _sequence.Join(rightHexagon.Rect.DOAnchorPos(rightTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
+        _sequence.Play().OnComplete(Resolve);
     }
 
-    public void Resolve()
+    private void Resolve()
     {
-        _moveSequence.Kill();
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(leftHexagon.Image.DOFade(0f, FADE_DURATION).SetEase(Ease.InOutCubic));
-        sequence.Join(rightHexagon.Image.DOFade(0f, FADE_DURATION).SetEase(Ease.InOutCubic));
-        sequence.AppendCallback(() => { Destroy(gameObject); });
+        _sequence.Kill();
+        _sequence = DOTween.Sequence();
+        _sequence.Append(leftHexagon.Image.DOFade(0f, FADE_DURATION).SetEase(Ease.InOutCubic));
+        _sequence.Join(rightHexagon.Image.DOFade(0f, FADE_DURATION).SetEase(Ease.InOutCubic));
+        _sequence.AppendCallback(() => { Destroy(gameObject); });
+        
+        _spawner.ResolveBeat(_beat);
     }
 }

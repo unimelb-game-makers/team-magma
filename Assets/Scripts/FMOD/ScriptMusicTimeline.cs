@@ -79,12 +79,15 @@ namespace Timeline
 
         private static Action onBeat;
 
-        #if UNITY_EDITOR
-            void Reset()
-            {
-                EventName = FMODUnity.EventReference.Find("event:/Music/Regulator");
-            }
-        #endif
+#if UNITY_EDITOR
+        /// <summary>
+        /// Why is this needed?
+        /// </summary>
+        void Reset()
+        {
+            EventName = FMODUnity.EventReference.Find("event:/Music/Regulator");
+        }
+#endif
 
         private void Awake()
         {
@@ -95,10 +98,9 @@ namespace Timeline
         
         private void Start()
         {
-            beatSpawner = GameManager.Instance.BeatSpawner;
             // Explicitly create the delegate object and assign it to a member so it doesn't get freed
             // by the garbage collected while it's being used
-            beatCallback = new FMOD.Studio.EVENT_CALLBACK(BeatEventCallback);
+            beatCallback = BeatEventCallback;
 
             musicInstance = FMODUnity.RuntimeManager.CreateInstance(EventName);
 
@@ -118,26 +120,14 @@ namespace Timeline
             _beatSpawner = GameManager.Instance.BeatSpawner;
             _beatSpawner.Init(_beatHandler);
             _beatSpawner.StartTrack();
-            DebugDSP();
 
             SetSpeed(TempoMode.Default);
-        }
-
-        private static void DebugDSP()
-        {
-            FMODUnity.RuntimeManager.CoreSystem.getSoftwareFormat(out int samplerate, out _, out _);
-
-            FMODUnity.RuntimeManager.CoreSystem.getMasterChannelGroup(out ChannelGroup channelGroup);
-            channelGroup.getDSPClock(out ulong dspclock, out ulong parentclock);
-            float currentDspTime = dspclock / (float)samplerate;
-            Debug.Log($"Sample Rate {samplerate} DSP Clock {dspclock} Parent Clock {parentclock} DSP Time is {currentDspTime}");
         }
 
         private void OnBeat()
         {
             _beatHandler.OnBeat();
             _beatSpawner.OnBeat(_beatHandler.Beat);
-            // DebugDSP();
         }
 
         void LateUpdate() {
@@ -165,25 +155,18 @@ namespace Timeline
                 if (toSpawnBeat)
                 {
                     toSpawnBeat = false;
-                    beatSpawner.SetTempo(currentTempo);
-                    beatSpawner.SpawnBeat();
                     onTempo = true;
                 }
             } else {
                 toSpawnBeat = false;
             }
 
-            //musicInstance.setParameterByName("Intensity", _intensity);
-            //musicInstance.setParameterByName("Stinger", 0);
-
             musicInstance.setVolume(_volume);
             
             beatWindowAfter = Math.Max(beatWindowAfter - Time.deltaTime, 0);
             if (beatTrigger && beatWindowAfter == 0) {
-                // Remove the beat trigger window after;
                 beatTrigger = false;
             }
-            // TODO: Figure out predictive "before window" via current tempo and last beat. 
         }
 
         void OnDestroy()
@@ -203,14 +186,13 @@ namespace Timeline
         public void SetIntensity(int intensity) {
             _intensity = intensity;
             musicInstance.setParameterByName("Intensity", intensity);
-            //musicInstance.setParameterByName("Stinger", 1);
         }
         
         public void SetSpeed(TempoMode mode)
         {
             if (!musicInstance.isValid())
             {
-                UnityEngine.Debug.LogWarning("Music instance is not valid. Cannot set speed.");
+                Debug.LogWarning("Music instance is not valid. Cannot set speed.");
                 return;
             }
 
@@ -267,8 +249,6 @@ namespace Timeline
                         timelineInfo.CurrentMusicBeat = parameter.beat; // Added beats info - Ryan
                         timelineInfo.CurrentMusicBar = parameter.bar;
                         SetOnBeat();
-                        
-                        DebugDSP();
                         
                         onBeat?.Invoke();
 
