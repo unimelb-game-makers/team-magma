@@ -40,6 +40,7 @@ public class BeatPopupItem : MonoBehaviour
 
     private void Resolve()
     {
+        // Debug.Log($"Resolving Beat {_beat}");
         _sequence.Kill();
         _sequence = DOTween.Sequence();
         _sequence.Append(leftHexagon.Image.DOFade(0f, FADE_DURATION).SetEase(Ease.InOutCubic));

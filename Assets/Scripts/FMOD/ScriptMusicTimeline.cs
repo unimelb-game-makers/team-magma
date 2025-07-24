@@ -90,6 +90,11 @@ namespace Timeline
         }
 #endif
 
+        private void Start()
+        {
+            // StartTrack();
+        }
+
         private void Awake()
         {
             instance = this;
@@ -131,7 +136,6 @@ namespace Timeline
 
         private void Update()
         {
-            
             // Debugging Beat Handler
             if (Input.GetMouseButtonDown(0))
             {
@@ -144,12 +148,6 @@ namespace Timeline
                 {
                     Debug.Log(_beatHandler.GetBeatResult());
                 }
-            }
-
-            if (_started)
-            {
-                // Update the beat handler!
-                _beatHandler.Update(Time.deltaTime);
             }
         }
         

@@ -30,13 +30,15 @@ public class BeatSpawner : MonoBehaviour
     {
         if (!_beatHandler.IsBeat(beat)) return;
         
-        float timeToTarget = _beatHandler.GetBeatTime(beat);
-        float timeToTravel = timeToTarget - Time.time;
-        float distance = BEAT_DISTANCE * timeToTravel;
-        Debug.Log($"Spawning Beat {beat}, To Target: {timeToTarget}, Time is {Time.time}");
+        // Debug.Log($"Spawning {beat}");
+        
+        // The time to target is the amount of beats we spawned ahead of time
+        float travelTime = _beatHandler.BeatInterval * BEAT_PREFIX;
+        float distance = BEAT_DISTANCE * travelTime;
+        // Debug.Log($"Spawning Beat {beat}, To Target: {timeToTarget}, Time is {Time.time}");
 
         BeatPopupItem beatPopupItem = Instantiate(sampleBeatPopupItem, beatHolder);
-        beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, timeToTravel);
+        beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, travelTime);
         _popupItems.Add(beat, beatPopupItem);
     }
 
@@ -46,9 +48,7 @@ public class BeatSpawner : MonoBehaviour
     /// <param name="beat"></param>
     public void OnBeat(int beat)
     {
-        int nextBeatToSpawn = beat + BEAT_PREFIX;
-        if (!_beatHandler.IsBeat(nextBeatToSpawn)) return;
-        SpawnBeat(nextBeatToSpawn);
+        SpawnBeat(beat + BEAT_PREFIX);
     }
 
     /// <summary>
