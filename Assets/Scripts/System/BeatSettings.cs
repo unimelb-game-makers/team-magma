@@ -26,5 +26,6 @@ public class BeatSettings : ScriptableObject
     public int bpm;
     public BeatThreshold[] thresholds;
 
+    public int initialEmptyBeats = 8;
     public bool[] beatPattern = new bool[4];
 }

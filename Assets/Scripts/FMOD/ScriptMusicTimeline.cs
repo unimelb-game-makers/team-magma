@@ -77,6 +77,7 @@ namespace Timeline
         public bool onTempo = false;
         [SerializeField] private float _volume = 1.0f;
 
+        private bool _started = false;
         private static Action onBeat;
 
 #if UNITY_EDITOR
@@ -95,8 +96,8 @@ namespace Timeline
             timelineInfo = new TimelineInfo();
             onBeat += OnBeat;
         }
-        
-        private void Start()
+
+        private void StartTrack()
         {
             // Explicitly create the delegate object and assign it to a member so it doesn't get freed
             // by the garbage collected while it's being used
@@ -114,32 +115,41 @@ namespace Timeline
 
             // Init Beat Handler
             _beatHandler = new BeatHandler(settings);
-            _beatHandler.Start();
             
             // Find and Init BeatSpawner
             _beatSpawner = GameManager.Instance.BeatSpawner;
             _beatSpawner.Init(_beatHandler);
-            _beatSpawner.StartTrack();
 
             SetSpeed(TempoMode.Default);
         }
 
         private void OnBeat()
         {
-            Debug.Log($"Beat {_beatHandler.Beat}");
             _beatHandler.OnBeat();
             _beatSpawner.OnBeat(_beatHandler.Beat);
         }
 
         private void Update()
         {
-            // Update the beat handler!
-            _beatHandler.Update(Time.deltaTime);
             
             // Debugging Beat Handler
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log(_beatHandler.GetBeatResult());
+                if (!_started)
+                {
+                    StartTrack();
+                    _started = true;
+                }
+                else
+                {
+                    Debug.Log(_beatHandler.GetBeatResult());
+                }
+            }
+
+            if (_started)
+            {
+                // Update the beat handler!
+                _beatHandler.Update(Time.deltaTime);
             }
         }
         

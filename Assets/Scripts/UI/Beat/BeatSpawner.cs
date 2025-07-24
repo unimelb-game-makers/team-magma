@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 public class BeatSpawner : MonoBehaviour
 {
-    // The number of beats that will be pre-emptively spawned
-    private const int BEAT_SPAWN = 5;
+    private const int BEAT_PREFIX = 4;
     // The distance that a beat will travel in one second
     private const float BEAT_DISTANCE = 700f;
 
@@ -24,28 +23,17 @@ public class BeatSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts the track and spawns the first initial beats, starting at 1
-    /// </summary>
-    public void StartTrack()
-    {
-        for (int i = 0; i < BEAT_SPAWN; ++i)
-        {
-            SpawnBeat(i + 1);
-        }
-    }
-
-    /// <summary>
     /// Spawns a beat based on the time it will hit the target.
     /// </summary>
     /// <param name="beat">The beat to spawn</param>
     private void SpawnBeat(int beat)
     {
-        if (!_beatHandler.CanSpawn(beat)) return;
+        if (!_beatHandler.IsBeat(beat)) return;
         
         float timeToTarget = _beatHandler.GetBeatTime(beat);
         float timeToTravel = timeToTarget - Time.time;
         float distance = BEAT_DISTANCE * timeToTravel;
-        // Debug.Log($"Spawning Beat {beat}, To Target: {timeToTarget}, Time is {Time.time}");
+        Debug.Log($"Spawning Beat {beat}, To Target: {timeToTarget}, Time is {Time.time}");
 
         BeatPopupItem beatPopupItem = Instantiate(sampleBeatPopupItem, beatHolder);
         beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, timeToTravel);
@@ -58,8 +46,8 @@ public class BeatSpawner : MonoBehaviour
     /// <param name="beat"></param>
     public void OnBeat(int beat)
     {
-        int nextBeatToSpawn = beat + BEAT_SPAWN;
-        if (!_beatHandler.CanSpawn(nextBeatToSpawn)) return;
+        int nextBeatToSpawn = beat + BEAT_PREFIX;
+        if (!_beatHandler.IsBeat(nextBeatToSpawn)) return;
         SpawnBeat(nextBeatToSpawn);
     }
 

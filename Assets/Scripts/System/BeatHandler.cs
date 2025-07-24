@@ -23,7 +23,7 @@ public class BeatHandler
         Array.Sort(_settings.thresholds, (a, b) => a.tolerance.CompareTo(b.tolerance));
     }
 
-    public void Start()
+    private void Start()
     {
         _started = true;
         _startTime = Time.time;
@@ -31,6 +31,9 @@ public class BeatHandler
 
     public void OnBeat()
     {
+        if (_beat == 0)
+            Start();
+        Debug.Log($"Beat on {_beat} Time is {Time.time}");
         _beat += 1;
     }
 
@@ -38,15 +41,18 @@ public class BeatHandler
     /// Checks the existing beat pattern from settings if the beat is spawnable
     /// </summary>
     /// <param name="beat"></param>
-    public bool CanSpawn(int beat)
+    public bool IsBeat(int beat)
     {
+        // Check empty beats first
+        if (beat < _settings.initialEmptyBeats) return false;
+        
         // Beat 1 maps to 0, Beat 4 maps to 3
         int beatPosition = (beat + TempoSetting.TIME_SIGNATURE - 1) % TempoSetting.TIME_SIGNATURE;
         if (beatPosition >= _settings.beatPattern.Length)
             throw new IndexOutOfRangeException($"Settings Beat Pattern is too small for Pos {beatPosition}");
 
         bool onBeat = _settings.beatPattern[beatPosition];
-        Debug.Log($"Can Spawn {beat} is {onBeat}. Beat Pos is {beatPosition}");
+        // Debug.Log($"Can Spawn {beat} is {onBeat}. Beat Pos is {beatPosition}");
         return onBeat;
     }
 
@@ -63,11 +69,18 @@ public class BeatHandler
 
     public BeatResult GetBeatResult()
     {
-        float timeToNearestBeat = Mathf.Abs(Mathf.Round(_timer / _beatInterval) * _beatInterval - _timer);
-        Debug.Log($"Time to Nearest Beat is {timeToNearestBeat}");
+        Debug.Log($"Hitting Beat {_beat}");
+        // If the current beat is not in the pattern, then return false
+        if (!IsBeat(_beat)) return BeatResult.Failed;
+        
+        // Get the expected beat time and compare it against the current time
+        float expectedBeatTime = _startTime + _beat * _beatInterval;
+        float currentTime = Time.time;
+        float timeDifference = Mathf.Abs(expectedBeatTime - currentTime);
+        Debug.Log($"Time Diff is {timeDifference}");
         for (int i = 0; i < _settings.thresholds.Length; ++i)
         {
-            if (timeToNearestBeat <= _settings.thresholds[i].tolerance)
+            if (timeDifference <= _settings.thresholds[i].tolerance)
             {
                 return _settings.thresholds[i].result;
             }
