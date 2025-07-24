@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class BeatHandler
 {
@@ -84,14 +83,12 @@ public class BeatHandler
         // Get the next possible beat in order to allow for early and late beats
         int beat = GetNextBeat();
         
-        Debug.Log($"Hitting Beat {beat}");
         // Get the expected beat time and compare it against the current time
         // Do beat - 1 since beat 1 starts on 0
         float expectedBeatTime = (beat - 1) * _beatInterval;
         float currentTime = Time.time - _startTime;
         
         float timeDifference = Mathf.Abs(expectedBeatTime - currentTime);
-        Debug.Log($"Expected {expectedBeatTime} Current {currentTime}. Time Difference is {timeDifference}");
         for (int i = 0; i < _settings.thresholds.Length; ++i)
         {
             if (timeDifference <= _settings.thresholds[i].tolerance)

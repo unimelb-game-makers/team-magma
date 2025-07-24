@@ -30,12 +30,9 @@ public class BeatSpawner : MonoBehaviour
     {
         if (!_beatHandler.IsBeat(beat)) return;
         
-        // Debug.Log($"Spawning {beat}");
-        
         // The time to target is the amount of beats we spawned ahead of time
         float travelTime = _beatHandler.BeatInterval * BEAT_PREFIX;
         float distance = BEAT_DISTANCE * travelTime;
-        // Debug.Log($"Spawning Beat {beat}, To Target: {timeToTarget}, Time is {Time.time}");
 
         BeatPopupItem beatPopupItem = Instantiate(sampleBeatPopupItem, beatHolder);
         beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, travelTime);
