@@ -38,6 +38,7 @@ namespace Timeline
         [Tooltip("The current song / tempo")]
         [SerializeField] private int _intensity = 0;
         [SerializeField] static float _beatWindowAround = 0.1f;
+        [SerializeField] private float _speedRatio = 1f;
         private float currentTempo;
         [Tooltip("How long to wait between tempo changes")]
         [SerializeField] private float changeTempoDuration = 0.5f;
@@ -69,12 +70,12 @@ namespace Timeline
 
         [SerializeField] private float _volume = 1.0f;
 
-    #if UNITY_EDITOR
-        void Reset()
-        {
-            EventName = FMODUnity.EventReference.Find("event:/music/music");
-        }
-    #endif
+        #if UNITY_EDITOR
+            void Reset()
+            {
+                EventName = FMODUnity.EventReference.Find("event:/Music/Regulator");
+            }
+        #endif
 
         void Awake()
         {
@@ -98,12 +99,13 @@ namespace Timeline
             musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
             musicInstance.start();
 
-            SetIntensity(0);
+            SetSpeed(TempoMode.Default);
         }
 
         void Update() {
             // Wait for some time before spawning beats each time the tempo changes
-            if (currentTempo != timelineInfo.CurrentMusicTempo) {
+            if (currentTempo != timelineInfo.CurrentMusicTempo)
+            {
                 currentChangeTempoTime = changeTempoDuration;
                 currentTempo = timelineInfo.CurrentMusicTempo;
             }
@@ -123,11 +125,6 @@ namespace Timeline
             //musicInstance.setParameterByName("Stinger", 0);
 
             musicInstance.setVolume(_volume);
-
-            if (timelineInfo.CurrentMusicBar == 6 && timelineInfo.CurrentMusicBeat == 4) {
-                // Change to Low intensity after Intro is finished first loop
-                //SetIntensity(1);
-            }
             
             beatWindowAfter = Math.Max(beatWindowAfter - Time.deltaTime, 0);
             if (beatTrigger && beatWindowAfter == 0) {
@@ -156,8 +153,27 @@ namespace Timeline
             musicInstance.setParameterByName("Intensity", intensity);
             //musicInstance.setParameterByName("Stinger", 1);
         }
+        
+        public void SetSpeed(TempoMode mode)
+        {
+            if (!musicInstance.isValid())
+            {
+                UnityEngine.Debug.LogWarning("Music instance is not valid. Cannot set speed.");
+                return;
+            }
 
-        public int GetIntensity() {
+            float speedRatio = TempoSetting.GetRatio(mode);
+            _speedRatio = speedRatio;
+            musicInstance.setParameterByName("MusicSpeed", speedRatio);
+        }
+
+        public float GetSpeedRatio()
+        {
+            return _speedRatio;
+        }
+
+        public int GetIntensity()
+        {
             return _intensity;
         }
 
@@ -194,7 +210,8 @@ namespace Timeline
                     case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
                     {
                         var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
-                        timelineInfo.CurrentMusicTempo = parameter.tempo; // Addded tempo info - Ryan
+                        // note: parameter.tempo will be the default 160 at all time.
+                        timelineInfo.CurrentMusicTempo = parameter.tempo * MusicTimeline.instance._speedRatio;
                         timelineInfo.CurrentMusicBeat = parameter.beat; // Added beats info - Ryan
                         timelineInfo.CurrentMusicBar = parameter.bar;
                         SetOnBeat();
