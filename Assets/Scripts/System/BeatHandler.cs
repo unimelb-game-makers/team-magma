@@ -1,5 +1,4 @@
 using System;
-using FMOD;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -8,7 +7,7 @@ public class BeatHandler
     private int _beat;
     private readonly float _beatInterval;
     private bool _started;
-    private ulong _startTime;
+    private float _startTime;
     private BeatSettings _settings;
 
     public int Beat => _beat;
@@ -23,26 +22,28 @@ public class BeatHandler
         Array.Sort(_settings.thresholds, (a, b) => a.tolerance.CompareTo(b.tolerance));
     }
 
-    private ulong GetDspTime()
-    {
-        FMODUnity.RuntimeManager.CoreSystem.getMasterChannelGroup(out ChannelGroup channelGroup);
-        channelGroup.getDSPClock(out ulong dspClock, out _);
-        return dspClock;
-    }
+    /// <summary>
+    /// I implemented a DSP version, but it was absolutely terrible.
+    /// Keep this just in case
+    /// </summary>
+    // private ulong GetDspTime()
+    // {
+    //     FMODUnity.RuntimeManager.CoreSystem.getMasterChannelGroup(out ChannelGroup channelGroup);
+    //     channelGroup.getDSPClock(out ulong dspClock, out _);
+    //     return dspClock;
+    // }
     
     private void Start()
     {
         _started = true;
-        _startTime = GetDspTime();
+        _startTime = Time.time;
     }
 
     public void OnBeat()
     {
         if (_beat == 0)
             Start();
-        // Debug.Log($"Beat on {_beat} Time is {Time.time}");
         _beat += 1;
-        // Debug.Log($"Beat is {_beat} on {GetDspTime() - _startTime}");
     }
 
     /// <summary>
@@ -60,7 +61,6 @@ public class BeatHandler
             throw new IndexOutOfRangeException($"Settings Beat Pattern is too small for Pos {beatPosition}");
 
         bool onBeat = _settings.beatPattern[beatPosition];
-        // Debug.Log($"Can Spawn {beat} is {onBeat}. Beat Pos is {beatPosition}");
         return onBeat;
     }
 
@@ -87,18 +87,14 @@ public class BeatHandler
         Debug.Log($"Hitting Beat {beat}");
         // Get the expected beat time and compare it against the current time
         // Do beat - 1 since beat 1 starts on 0
-        ulong expectedBeatTime = (ulong)(beat - 1) * _settings.dspInterval;
-        ulong currentTime = GetDspTime() - _startTime;
+        float expectedBeatTime = (beat - 1) * _beatInterval;
+        float currentTime = Time.time - _startTime;
         
-        // Since we are dealing with unsigned long, need to use conditional
-        ulong timeDifference = expectedBeatTime > currentTime
-            ? expectedBeatTime - currentTime
-            : currentTime - expectedBeatTime;
-        float percentage = (float)timeDifference / _settings.dspInterval;
-        Debug.Log($"Expected {expectedBeatTime} Current {currentTime}. Time Difference is {timeDifference} Percentage is {percentage}");
+        float timeDifference = Mathf.Abs(expectedBeatTime - currentTime);
+        Debug.Log($"Expected {expectedBeatTime} Current {currentTime}. Time Difference is {timeDifference}");
         for (int i = 0; i < _settings.thresholds.Length; ++i)
         {
-            if (percentage <= _settings.thresholds[i].tolerance)
+            if (timeDifference <= _settings.thresholds[i].tolerance)
             {
                 return _settings.thresholds[i].result;
             }
