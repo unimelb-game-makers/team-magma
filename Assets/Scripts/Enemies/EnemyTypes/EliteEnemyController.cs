@@ -54,17 +54,14 @@ namespace Enemies.EnemyTypes
         {
             if (canAttack)
             {
-                if (!IsAttacking())
-                {
-                    // Visual effect to show the enemy is not guarding.
-                    guardIndicator.SetActive(false);
+                // Visual effect to show the enemy is not guarding.
+                guardIndicator.SetActive(false);
 
-                    // When elite enemy starts attacking, it can be damaged.
-                    damageable.setIsInvulnerable(false);
-                    // Set isTrigger to true so player or other enemies can pass through.
-                    enemyCollider.isTrigger = true;
-                    base.Attack();
-                }
+                // When elite enemy starts attacking, it can be damaged.
+                damageable.setIsInvulnerable(false);
+                // Set isTrigger to true so player or other enemies can pass through.
+                enemyCollider.isTrigger = true;
+                base.Attack();
             }
         }
 

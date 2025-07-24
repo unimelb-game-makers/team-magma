@@ -22,7 +22,13 @@ namespace Enemy
         protected NavMeshAgent agent;
 
         [SerializeField] private float health = 100f;
-
+        [Tooltip("Will the enemy be synced with the beat?")]
+        [SerializeField] private bool isSyncable = true;
+        public bool IsSyncable
+        {
+            get => isSyncable;
+            set => isSyncable = value;
+        }
         // Idle Variables
         [Header("Idle Variables")]
         [Tooltip("How long the enemy will idle before switching to patrol states.")]
