@@ -126,13 +126,13 @@ namespace Timeline
 
         private void OnBeat()
         {
+            Debug.Log($"Beat {_beatHandler.Beat}");
             _beatHandler.OnBeat();
             _beatSpawner.OnBeat(_beatHandler.Beat);
         }
 
-        void LateUpdate() {
-            if (onTempo) onTempo = false;
-            
+        private void Update()
+        {
             // Update the beat handler!
             _beatHandler.Update(Time.deltaTime);
             
@@ -141,8 +141,11 @@ namespace Timeline
             {
                 Debug.Log(_beatHandler.GetBeatResult());
             }
-            
-            
+        }
+        
+
+        void LateUpdate() {
+            if (onTempo) onTempo = false;
             // Wait for some time before spawning beats each time the tempo changes
             if (currentTempo != timelineInfo.CurrentMusicTempo)
             {

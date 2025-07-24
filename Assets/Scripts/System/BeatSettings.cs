@@ -1,6 +1,8 @@
 using System;
+using Sirenix.OdinInspector;
+using Sirenix.Utilities;
+using UnityEditor;
 using UnityEngine;
-
 
 [Serializable]
 public enum BeatResult
@@ -23,4 +25,6 @@ public class BeatSettings : ScriptableObject
     public FMODUnity.EventReference track;
     public int bpm;
     public BeatThreshold[] thresholds;
+
+    public bool[] beatPattern = new bool[4];
 }
