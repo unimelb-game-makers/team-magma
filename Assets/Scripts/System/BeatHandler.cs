@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BeatHandler
@@ -11,6 +12,9 @@ public class BeatHandler
 
     public int Beat => _beat;
     public float BeatInterval => _beatInterval;
+
+    // TODO: Use this in the level end screen possibly for stats?
+    private readonly Dictionary<int, Grade> _processedBeats = new Dictionary<int, Grade>();
 
     public BeatHandler(BeatSettings settings)
     {
@@ -53,6 +57,9 @@ public class BeatHandler
     {
         // Check empty beats first
         if (beat < _settings.initialEmptyBeats) return false;
+        
+        // Check if we have processed it already
+        if (_processedBeats.ContainsKey(beat)) return false;
         
         // Beat 1 maps to 0, Beat 4 maps to 3
         int beatPosition = (beat + TempoSetting.TIME_SIGNATURE - 1) % TempoSetting.TIME_SIGNATURE;
@@ -97,11 +104,11 @@ public class BeatHandler
 
     public BeatResult GetBeatResult()
     {
-        if (!_started) return BeatResult.Failed;
+        if (!_started) return new BeatResult(0, Grade.Failed);
         
         // Get the next possible beat in order to allow for early and late beats
         int beat = GetNearestBeat();
-        if (beat == -1) return BeatResult.Failed;
+        if (beat == -1) return new BeatResult(beat, Grade.Failed);
         
         // Get the expected beat time and compare it against the current time
         // Do beat - 1 since beat 1 starts on 0
@@ -113,9 +120,16 @@ public class BeatHandler
         {
             if (timeDifference <= _settings.thresholds[i].tolerance)
             {
-                return _settings.thresholds[i].result;
+                return new BeatResult(beat, _settings.thresholds[i].result);
             }
         }
-        return BeatResult.Failed;
+
+        return new BeatResult(beat, Grade.Failed);
+    }
+
+    public void ProcessBeat(BeatResult beatResult)
+    {
+        if (!_processedBeats.ContainsKey(beatResult.beat))
+            _processedBeats.Add(beatResult.beat, beatResult.grade);
     }
 }

@@ -2,17 +2,29 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public enum BeatResult
+public enum Grade
 {
     Failed,
     Good,
     Perfect,
 }
 
+public struct BeatResult
+{
+    public int beat;
+    public Grade grade;
+
+    public BeatResult(int beat, Grade grade)
+    {
+        this.beat = beat;
+        this.grade = grade;
+    }
+}
+
 [Serializable]
 public class BeatThreshold
 {
-    public BeatResult result;
+    public Grade result;
     public float tolerance;
 }
 

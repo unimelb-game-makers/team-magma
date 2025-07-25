@@ -95,6 +95,10 @@ namespace Timeline
         {
             // Init Beat Handler
             _beatHandler = new BeatHandler(settings);
+            
+            // Find and Init BeatSpawner
+            _beatSpawner = GameManager.Instance.BeatSpawner;
+            _beatSpawner.Init(_beatHandler);
         }
 
         private void StartTrack()
@@ -113,10 +117,6 @@ namespace Timeline
             musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
             musicInstance.setVolume(_volume);
             musicInstance.start();
-            
-            // Find and Init BeatSpawner
-            _beatSpawner = GameManager.Instance.BeatSpawner;
-            _beatSpawner.Init(_beatHandler);
 
             SetSpeed(TempoMode.Default);
         }
@@ -130,6 +130,8 @@ namespace Timeline
         {
             BeatResult result = _beatHandler.GetBeatResult();
 
+            _beatHandler.ProcessBeat(result);
+            _beatSpawner.ProcessBeat(result);
             return result;
         }
 
@@ -141,7 +143,7 @@ namespace Timeline
 
         private void Update()
         {
-            // Debugging Beat Handler
+            // TODO: Need to move this to a proper code path when the level starts
             if (Input.GetMouseButtonDown(0))
             {
                 if (!_started)

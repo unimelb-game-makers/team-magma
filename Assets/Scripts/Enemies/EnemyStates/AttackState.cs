@@ -62,7 +62,7 @@ public class AttackState : BaseEnemyState
         // add the beat spawner check to syncronise the attack with the beat
         else if (!isSyncable && !enemyController.IsAttacking())
         {   
-            // Debug.Log("Attacking player" + Time.time + " " + enemyController.gameObject.GetInstanceID());
+            Debug.Log("Attacking player" + Time.time + " " + enemyController.gameObject.GetInstanceID());
             enemyController.Attack();
         }
     }
@@ -72,9 +72,9 @@ public class AttackState : BaseEnemyState
     /// </summary>
     private void OnBeat()
     {
-        if(!isSyncable && !enemyController.IsAttacking())
+        if(isSyncable && !enemyController.IsAttacking())
         {   
-            // Debug.Log("Attacking player" + Time.time + " " + enemyController.gameObject.GetInstanceID());
+            Debug.Log("Attacking player" + Time.time + " " + enemyController.gameObject.GetInstanceID());
             enemyController.Attack();
         }
     }

@@ -147,9 +147,9 @@ namespace Player
             if (Input.GetButtonDown("Fire1"))
             {
                 BeatResult result = MusicTimeline.instance.ProcessAction();
-                switch (result)
+                switch (result.grade)
                 {
-                    case BeatResult.Perfect:
+                    case Grade.Perfect:
                         // Strong melee attack
                         if (Time.time > _previousMeleeAttack + strongMeleeAttackRecoverTime)
                         {
@@ -158,7 +158,7 @@ namespace Player
                             _previousMeleeAttack = Time.time;
                         }
                         break;
-                    case BeatResult.Good:
+                    case Grade.Good:
                         if (Time.time > _previousMeleeAttack + weakMeleeAttackRecoverTime)
                         {
                             Debug.Log("Weak Attack!");
@@ -166,7 +166,7 @@ namespace Player
                             _previousMeleeAttack = Time.time;
                         }
                         break;
-                    case BeatResult.Failed:
+                    case Grade.Failed:
                         break;
                 }
                 _leftMouseButtonDown = true;
