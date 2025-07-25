@@ -24,7 +24,6 @@
 
 using System;
 using System.Runtime.InteropServices;
-using FMOD;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -70,11 +69,10 @@ namespace Timeline
         FMOD.Studio.EVENT_CALLBACK beatCallback;
         FMOD.Studio.EventInstance musicInstance;
 
-        public bool onTempo = false;
         [SerializeField] private float _volume = 1.0f;
 
         private bool _started = false;
-        private static Action onBeat;
+        public static Action OnBeat;
 
 #if UNITY_EDITOR
         /// <summary>
@@ -90,7 +88,7 @@ namespace Timeline
         {
             instance = this;
             timelineInfo = new TimelineInfo();
-            onBeat += OnBeat;
+            OnBeat += OnBeatInternal;
         }
 
         private void Start()
@@ -113,6 +111,7 @@ namespace Timeline
             musicInstance.setUserData(GCHandle.ToIntPtr(timelineHandle));
 
             musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
+            musicInstance.setVolume(_volume);
             musicInstance.start();
             
             // Find and Init BeatSpawner
@@ -134,7 +133,7 @@ namespace Timeline
             return result;
         }
 
-        private void OnBeat()
+        private void OnBeatInternal()
         {
             _beatHandler.OnBeat();
             _beatSpawner.OnBeat(_beatHandler.Beat);
@@ -151,30 +150,6 @@ namespace Timeline
                     _started = true;
                 }
             }
-        }
-
-        void LateUpdate() 
-        {
-            if (onTempo) onTempo = false;
-            // Wait for some time before spawning beats each time the tempo changes
-            if (currentTempo != timelineInfo.CurrentMusicTempo)
-            {
-                currentChangeTempoTime = changeTempoDuration;
-                currentTempo = timelineInfo.CurrentMusicTempo;
-            }
-
-            currentChangeTempoTime -= Time.deltaTime;
-            if (currentChangeTempoTime <= 0) {
-                if (toSpawnBeat)
-                {
-                    toSpawnBeat = false;
-                    onTempo = true;
-                }
-            } else {
-                toSpawnBeat = false;
-            }
-
-            musicInstance.setVolume(_volume);
         }
 
         void OnDestroy()
@@ -232,7 +207,7 @@ namespace Timeline
                         timelineInfo.CurrentMusicBeat = parameter.beat; // Added beats info - Ryan
                         timelineInfo.CurrentMusicBar = parameter.bar;
                         
-                        onBeat?.Invoke();
+                        OnBeat?.Invoke();
 
                         // A beat has to be spawned
                         MusicTimeline.instance.toSpawnBeat = true;
