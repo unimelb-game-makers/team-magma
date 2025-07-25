@@ -64,24 +64,42 @@ public class BeatHandler
     }
 
     /// <summary>
-    /// Gets the next possible hittable beat
+    /// Gets the closest legal beat to the current beat
     /// </summary>
     /// <returns></returns>
-    private int GetNextBeat()
+    private int GetNearestBeat()
     {
-        // I can't be bothered to do the math, sorry
+        int nearestBeat = -1;
+        int minDistance = int.MaxValue;
+
         for (int i = 0; i < TempoSetting.TIME_SIGNATURE; ++i)
         {
-            if (IsBeat(_beat + i))
-                return _beat + i;
+            int earlier = _beat - i;
+            if (IsBeat(earlier) && i < minDistance)
+            {
+                nearestBeat = earlier;
+                minDistance = i;
+            }
+
+            int later = _beat + i;
+            if (IsBeat(later) && i < minDistance)
+            {
+                nearestBeat = later;
+                minDistance = i;
+            }
+
+            if (minDistance == 0)
+                break;
         }
-        return -1;
+
+        return nearestBeat;
     }
 
     public BeatResult GetBeatResult()
     {
         // Get the next possible beat in order to allow for early and late beats
-        int beat = GetNextBeat();
+        int beat = GetNearestBeat();
+        if (beat == -1) return BeatResult.Failed;
         
         // Get the expected beat time and compare it against the current time
         // Do beat - 1 since beat 1 starts on 0
