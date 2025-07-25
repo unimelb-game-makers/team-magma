@@ -24,7 +24,9 @@
 
 using System;
 using System.Runtime.InteropServices;
+using FMOD;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 
 namespace Timeline 
@@ -32,12 +34,15 @@ namespace Timeline
     public class MusicTimeline : MonoBehaviour
     {
         public static MusicTimeline instance;
-        private BeatSpawner beatSpawner;
 
+        // New and Updated
+        [SerializeField] private BeatSettings settings;
+        private BeatHandler _beatHandler;
+        private BeatSpawner _beatSpawner;
+
+        // Deprecated or Old
         [Header("Parameters")]
         [Tooltip("The current song / tempo")]
-        [SerializeField] private int _intensity = 0;
-        [SerializeField] static float _beatWindowAround = 0.1f;
         [SerializeField] private float _speedRatio = 1f;
         private float currentTempo;
         [Tooltip("How long to wait between tempo changes")]
@@ -65,29 +70,34 @@ namespace Timeline
         FMOD.Studio.EVENT_CALLBACK beatCallback;
         FMOD.Studio.EventInstance musicInstance;
 
-        static bool beatTrigger = false;
-        static float beatWindowAfter;
         public bool onTempo = false;
         [SerializeField] private float _volume = 1.0f;
 
-        #if UNITY_EDITOR
-            void Reset()
-            {
-                EventName = FMODUnity.EventReference.Find("event:/Music/Regulator");
-            }
-        #endif
+        private bool _started = false;
+        private static Action onBeat;
 
-        void Awake()
+#if UNITY_EDITOR
+        /// <summary>
+        /// Why is this needed?
+        /// </summary>
+        void Reset()
+        {
+            EventName = FMODUnity.EventReference.Find("event:/Music/Regulator");
+        }
+#endif
+
+        private void Awake()
         {
             instance = this;
             timelineInfo = new TimelineInfo();
+            onBeat += OnBeat;
         }
-        void Start()
+
+        private void StartTrack()
         {
-            beatSpawner = GameManager.Instance.BeatSpawner;
             // Explicitly create the delegate object and assign it to a member so it doesn't get freed
             // by the garbage collected while it's being used
-            beatCallback = new FMOD.Studio.EVENT_CALLBACK(BeatEventCallback);
+            beatCallback = BeatEventCallback;
 
             musicInstance = FMODUnity.RuntimeManager.CreateInstance(EventName);
 
@@ -99,12 +109,42 @@ namespace Timeline
             musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
             musicInstance.start();
 
+            // Init Beat Handler
+            _beatHandler = new BeatHandler(settings);
+            
+            // Find and Init BeatSpawner
+            _beatSpawner = GameManager.Instance.BeatSpawner;
+            _beatSpawner.Init(_beatHandler);
+
             SetSpeed(TempoMode.Default);
         }
 
-        void LateUpdate() {
+        private void OnBeat()
+        {
+            _beatHandler.OnBeat();
+            _beatSpawner.OnBeat(_beatHandler.Beat);
+        }
+
+        private void Update()
+        {
+            // Debugging Beat Handler
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (!_started)
+                {
+                    StartTrack();
+                    _started = true;
+                }
+                else
+                {
+                    Debug.Log(_beatHandler.GetBeatResult());
+                }
+            }
+        }
+
+        void LateUpdate() 
+        {
             if (onTempo) onTempo = false;
-            
             // Wait for some time before spawning beats each time the tempo changes
             if (currentTempo != timelineInfo.CurrentMusicTempo)
             {
@@ -117,25 +157,13 @@ namespace Timeline
                 if (toSpawnBeat)
                 {
                     toSpawnBeat = false;
-                    beatSpawner.SetTempo(currentTempo);
-                    beatSpawner.SpawnBeat();
                     onTempo = true;
                 }
             } else {
                 toSpawnBeat = false;
             }
 
-            //musicInstance.setParameterByName("Intensity", _intensity);
-            //musicInstance.setParameterByName("Stinger", 0);
-
             musicInstance.setVolume(_volume);
-            
-            beatWindowAfter = Math.Max(beatWindowAfter - Time.deltaTime, 0);
-            if (beatTrigger && beatWindowAfter == 0) {
-                // Remove the beat trigger window after;
-                beatTrigger = false;
-            }
-            // TODO: Figure out predictive "before window" via current tempo and last beat. 
         }
 
         void OnDestroy()
@@ -150,44 +178,18 @@ namespace Timeline
                 GUILayout.Box(String.Format("Current Beat = {0}, Current Bar = {1}, Current Tempo = {2}, Last Marker = {3}", timelineInfo.CurrentMusicBeat, timelineInfo.CurrentMusicBar, timelineInfo.CurrentMusicTempo, (string)timelineInfo.LastMarker));
             }
         }
-
-        // Would be better to have in a MusicManager, but for demonstration is here.
-        public void SetIntensity(int intensity) {
-            _intensity = intensity;
-            musicInstance.setParameterByName("Intensity", intensity);
-            //musicInstance.setParameterByName("Stinger", 1);
-        }
         
         public void SetSpeed(TempoMode mode)
         {
             if (!musicInstance.isValid())
             {
-                UnityEngine.Debug.LogWarning("Music instance is not valid. Cannot set speed.");
+                Debug.LogWarning("Music instance is not valid. Cannot set speed.");
                 return;
             }
 
             float speedRatio = TempoSetting.GetRatio(mode);
             _speedRatio = speedRatio;
             musicInstance.setParameterByName("MusicSpeed", speedRatio);
-        }
-
-        public float GetSpeedRatio()
-        {
-            return _speedRatio;
-        }
-
-        public int GetIntensity()
-        {
-            return _intensity;
-        }
-
-        static void SetOnBeat() {
-            beatTrigger = true;
-            beatWindowAfter = _beatWindowAround;
-        }
-
-        public bool GetOnBeat() {
-            return beatTrigger;
         }
 
         // BeatEventCallback: This method is called each time a new beat occurs
@@ -218,7 +220,8 @@ namespace Timeline
                         timelineInfo.CurrentMusicTempo = parameter.tempo * MusicTimeline.instance._speedRatio;
                         timelineInfo.CurrentMusicBeat = parameter.beat; // Added beats info - Ryan
                         timelineInfo.CurrentMusicBar = parameter.bar;
-                        SetOnBeat();
+                        
+                        onBeat?.Invoke();
 
                         // A beat has to be spawned
                         MusicTimeline.instance.toSpawnBeat = true;

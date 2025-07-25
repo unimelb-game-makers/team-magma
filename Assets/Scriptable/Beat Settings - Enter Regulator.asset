@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57f52a7c880cd44eabef760124c4cdad, type: 3}
+  m_Name: Beat Settings - Enter Regulator
+  m_EditorClassIdentifier: 
+  track:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  bpm: 160
+  thresholds:
+  - result: 2
+    tolerance: 0.08
+  - result: 1
+    tolerance: 0.15
+  dspInterval: 18432
+  initialEmptyBeats: 6
+  beatPattern: 00000001

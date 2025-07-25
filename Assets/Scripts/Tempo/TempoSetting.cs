@@ -7,6 +7,7 @@ public enum TempoMode
 
 public static class TempoSetting
 {
+    public const int TIME_SIGNATURE = 4;
     public const float SlowRatio    = 0.875f; // ~140 BPM
     public const float DefaultRatio = 1.0f;   // 160 BPM
     public const float FastRatio    = 1.125f; // ~180 BPM

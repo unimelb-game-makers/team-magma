@@ -61,23 +61,6 @@ namespace Player
         
         private BeatSpawner beatSpawner;
 
-        public BeatSpawner BeatSpawner
-        {
-            get
-            {
-                if (beatSpawner == null)
-                {
-                    beatSpawner = GameManager.Instance.BeatSpawner;
-                    if (beatSpawner == null)
-                    {
-                        throw new Exception("No BeatSpawner found in the scene. please attach to somewhere in the scene");
-                    }
-                }
-                return beatSpawner;
-
-            }
-        }
-
         public enum OrientationType
         {
             TowardMouse,
@@ -162,22 +145,22 @@ namespace Player
             if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
             {   
                 // Check if the attack was on beat here
-                if (BeatSpawner.HitOnBeat()) {
-                    // Strong melee attack
-                    if (Time.time > _previousMeleeAttack + strongMeleeAttackRecoverTime)
-                    {
-                        animator.SetTrigger("StrongAttack");
-                        // update timer
-                        _previousMeleeAttack = Time.time;
-                    }
-                } else {
-                    if (Time.time > _previousMeleeAttack + weakMeleeAttackRecoverTime)
-                    {
-                        animator.SetTrigger("WeakAttack");
-                        // update timer
-                        _previousMeleeAttack = Time.time;
-                    }
-                }
+                // if (BeatSpawner.HitOnBeat()) {
+                //     // Strong melee attack
+                //     if (Time.time > _previousMeleeAttack + strongMeleeAttackRecoverTime)
+                //     {
+                //         animator.SetTrigger("StrongAttack");
+                //         // update timer
+                //         _previousMeleeAttack = Time.time;
+                //     }
+                // } else {
+                //     if (Time.time > _previousMeleeAttack + weakMeleeAttackRecoverTime)
+                //     {
+                //         animator.SetTrigger("WeakAttack");
+                //         // update timer
+                //         _previousMeleeAttack = Time.time;
+                //     }
+                // }
                 _leftMouseButtonDown = true;
             }
 
