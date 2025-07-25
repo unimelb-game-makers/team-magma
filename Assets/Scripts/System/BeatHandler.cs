@@ -97,6 +97,8 @@ public class BeatHandler
 
     public BeatResult GetBeatResult()
     {
+        if (!_started) return BeatResult.Failed;
+        
         // Get the next possible beat in order to allow for early and late beats
         int beat = GetNearestBeat();
         if (beat == -1) return BeatResult.Failed;

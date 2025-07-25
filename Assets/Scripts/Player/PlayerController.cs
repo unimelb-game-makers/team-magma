@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Platforms; // Why is TapeType in platforms?
 using Tempo;
+using Timeline;
 using Utilities.ServiceLocator;
 using UI;
 
@@ -105,6 +106,8 @@ namespace Player
         private bool _isDodging;
 
         private bool _canControl = true;
+        private static readonly int StrongAttack = Animator.StringToHash("StrongAttack");
+        private static readonly int WeakAttack = Animator.StringToHash("WeakAttack");
 
         private void Start()
         {
@@ -141,26 +144,31 @@ namespace Player
 
         private void Attack()
         {
-            //if the player has attacked need to release the mouse to attack again
-            if (Input.GetButtonDown("Fire1") && !_leftMouseButtonDown)
-            {   
-                // Check if the attack was on beat here
-                // if (BeatSpawner.HitOnBeat()) {
-                //     // Strong melee attack
-                //     if (Time.time > _previousMeleeAttack + strongMeleeAttackRecoverTime)
-                //     {
-                //         animator.SetTrigger("StrongAttack");
-                //         // update timer
-                //         _previousMeleeAttack = Time.time;
-                //     }
-                // } else {
-                //     if (Time.time > _previousMeleeAttack + weakMeleeAttackRecoverTime)
-                //     {
-                //         animator.SetTrigger("WeakAttack");
-                //         // update timer
-                //         _previousMeleeAttack = Time.time;
-                //     }
-                // }
+            if (Input.GetButtonDown("Fire1"))
+            {
+                BeatResult result = MusicTimeline.instance.ProcessAction();
+                switch (result)
+                {
+                    case BeatResult.Perfect:
+                        // Strong melee attack
+                        if (Time.time > _previousMeleeAttack + strongMeleeAttackRecoverTime)
+                        {
+                            Debug.Log("Strong Attack!");
+                            animator.SetTrigger(StrongAttack);
+                            _previousMeleeAttack = Time.time;
+                        }
+                        break;
+                    case BeatResult.Good:
+                        if (Time.time > _previousMeleeAttack + weakMeleeAttackRecoverTime)
+                        {
+                            Debug.Log("Weak Attack!");
+                            animator.SetTrigger(WeakAttack);
+                            _previousMeleeAttack = Time.time;
+                        }
+                        break;
+                    case BeatResult.Failed:
+                        break;
+                }
                 _leftMouseButtonDown = true;
             }
 

@@ -93,6 +93,12 @@ namespace Timeline
             onBeat += OnBeat;
         }
 
+        private void Start()
+        {
+            // Init Beat Handler
+            _beatHandler = new BeatHandler(settings);
+        }
+
         private void StartTrack()
         {
             // Explicitly create the delegate object and assign it to a member so it doesn't get freed
@@ -108,15 +114,24 @@ namespace Timeline
 
             musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
             musicInstance.start();
-
-            // Init Beat Handler
-            _beatHandler = new BeatHandler(settings);
             
             // Find and Init BeatSpawner
             _beatSpawner = GameManager.Instance.BeatSpawner;
             _beatSpawner.Init(_beatHandler);
 
             SetSpeed(TempoMode.Default);
+        }
+
+        /// <summary>
+        /// This is the main entry point into interacting with the music.
+        /// It will process and action and determine its result, notifying the system and the UI
+        /// </summary>
+        /// <returns></returns>
+        public BeatResult ProcessAction()
+        {
+            BeatResult result = _beatHandler.GetBeatResult();
+
+            return result;
         }
 
         private void OnBeat()
@@ -134,10 +149,6 @@ namespace Timeline
                 {
                     StartTrack();
                     _started = true;
-                }
-                else
-                {
-                    Debug.Log(_beatHandler.GetBeatResult());
                 }
             }
         }
