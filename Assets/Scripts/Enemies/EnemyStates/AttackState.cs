@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Enemy;
 using UnityEngine.AI;
 using Player;
 using Enemies.EnemyTypes;
-using System;
 using Timeline;
 
 public class AttackState : BaseEnemyState
@@ -13,19 +10,20 @@ public class AttackState : BaseEnemyState
     protected float outsideAttackRangeTime;
     protected float outsideAttackRangeDuration = 0.5f;
     private bool isSyncable;
+    private static readonly int AttackIdle = Animator.StringToHash("AttackIdle");
+
     public AttackState(EnemyController enemyController, NavMeshAgent navMeshAgent, PlayerController playerController) :
                         base(enemyController, navMeshAgent, playerController)
     { 
-        isSyncable = enemyController.IsSyncable;        
+        isSyncable = enemyController.IsSyncable;
     }
 
     public override void EnterState()
     {
-        // Debug.Log("Entering Attack State");
-
+        MusicTimeline.OnBeat += OnBeat;
         if (enemyController.GetAnimator())
         {
-            enemyController.GetAnimator().SetBool("AttackIdle", true);
+            enemyController.GetAnimator().SetBool(AttackIdle, true);
         }
         navMeshAgent.SetDestination(enemyController.transform.position);
         outsideAttackRangeDuration = enemyController.GetOutsideAttackRangeDuration();
@@ -62,7 +60,19 @@ public class AttackState : BaseEnemyState
             }
         }
         // add the beat spawner check to syncronise the attack with the beat
-        else if ((!isSyncable || MusicTimeline.instance.onTempo) && !enemyController.IsAttacking())
+        else if (!isSyncable && !enemyController.IsAttacking())
+        {   
+            Debug.Log("Attacking player" + Time.time + " " + enemyController.gameObject.GetInstanceID());
+            enemyController.Attack();
+        }
+    }
+
+    /// <summary>
+    /// Attacks the player on beat if the enemy is syncable
+    /// </summary>
+    private void OnBeat()
+    {
+        if(isSyncable && !enemyController.IsAttacking())
         {   
             Debug.Log("Attacking player" + Time.time + " " + enemyController.gameObject.GetInstanceID());
             enemyController.Attack();
@@ -76,5 +86,6 @@ public class AttackState : BaseEnemyState
         {
             enemyController.GetAnimator().SetBool("AttackIdle", false);
         }
+        MusicTimeline.OnBeat -= OnBeat;
     }
 }

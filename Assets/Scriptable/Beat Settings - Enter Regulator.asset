@@ -12,19 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57f52a7c880cd44eabef760124c4cdad, type: 3}
   m_Name: Beat Settings - Enter Regulator
   m_EditorClassIdentifier: 
-  track:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   bpm: 160
   thresholds:
   - result: 2
-    tolerance: 0.08
+    tolerance: 0.05
   - result: 1
-    tolerance: 0.15
-  dspInterval: 18432
+    tolerance: 0.1
   initialEmptyBeats: 6
   beatPattern: 00000001
