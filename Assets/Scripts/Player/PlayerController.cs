@@ -10,6 +10,17 @@ using UI;
 
 namespace Player
 {
+    public enum PlayerState
+    {
+        Normal,
+        Attacking,
+    }
+    
+    public enum PlayerAttack
+    {
+        Weak,
+        Strong,
+    }
     public class PlayerController : MonoBehaviour
     {
         private static readonly int Speed = Animator.StringToHash("speed");
@@ -61,6 +72,7 @@ namespace Player
         [Space(10)]
         
         private BeatSpawner beatSpawner;
+        private PlayerState _state = PlayerState.Normal;
 
         public enum OrientationType
         {
@@ -71,7 +83,6 @@ namespace Player
         // Rigidbody component for physics-based movement
         private Rigidbody _rigidbody;
 
-        private bool _leftMouseButtonDown;
         private bool _DodgeButtonDown;
         private Camera _mainCamera;
 
@@ -91,7 +102,8 @@ namespace Player
             }
         }
 
-        private float _previousMeleeAttack;
+        private float _attackTime;
+        private float _attackAnimTimer;
 
         private bool _isMovingHorizontally;
         private bool _isMovingVertically;
@@ -106,8 +118,8 @@ namespace Player
         private bool _isDodging;
 
         private bool _canControl = true;
-        private static readonly int StrongAttack = Animator.StringToHash("StrongAttack");
-        private static readonly int WeakAttack = Animator.StringToHash("WeakAttack");
+        private static readonly int StrongAttackAnim = Animator.StringToHash("StrongAttack");
+        private static readonly int WeakAttackAnim = Animator.StringToHash("WeakAttack");
 
         private void Start()
         {
@@ -118,8 +130,6 @@ namespace Player
                 Debug.LogError("Rigidbody component is missing from the player object.");
             }
 
-            // Get the main camera
-            _previousMeleeAttack = Time.time - weakMeleeAttackRecoverTime;
             _previousDodge = Time.time - dodgeRecoverTime;
         }
 
@@ -130,51 +140,69 @@ namespace Player
             _horizontalInput = Input.GetAxis("Horizontal");
             _verticalInput = Input.GetAxis("Vertical");
 
-            TrackMovementInput();
-
-            Rotate();
-            
-            Move();
-
-            if (PlayerStateManager.Instance == null) return;
-            if (PlayerStateManager.Instance.IsCombat()) {
-                Attack();
+            switch (_state)
+            {
+                case PlayerState.Normal:
+                    TrackMovementInput();
+                    Rotate();
+                    Move();
+                    TrackAttackInput();
+                    break;
+                case PlayerState.Attacking:
+                    Attack();
+                    break;
             }
         }
 
-        private void Attack()
+        private void TrackAttackInput()
         {
+            if (PlayerStateManager.Instance == null || !PlayerStateManager.Instance.IsCombat()) return;
             if (Input.GetButtonDown("Fire1"))
             {
                 BeatResult result = MusicTimeline.instance.ProcessAction();
                 switch (result.grade)
                 {
                     case Grade.Perfect:
-                        // Strong melee attack
-                        if (Time.time > _previousMeleeAttack + strongMeleeAttackRecoverTime)
-                        {
-                            Debug.Log("Strong Attack!");
-                            animator.SetTrigger(StrongAttack);
-                            _previousMeleeAttack = Time.time;
-                        }
+                        StrongAttack();
                         break;
                     case Grade.Good:
-                        if (Time.time > _previousMeleeAttack + weakMeleeAttackRecoverTime)
-                        {
-                            Debug.Log("Weak Attack!");
-                            animator.SetTrigger(WeakAttack);
-                            _previousMeleeAttack = Time.time;
-                        }
+                        WeakAttack();
                         break;
                     case Grade.Failed:
                         break;
                 }
-                _leftMouseButtonDown = true;
             }
+        }
 
-            if (Input.GetButtonUp("Fire1"))
+        private void StrongAttack()
+        {
+            SetAttackState();
+            animator.SetTrigger(StrongAttackAnim);
+            _attackTime = strongMeleeAttackRecoverTime;
+            _attackAnimTimer = 0f;
+        }
+
+        private void WeakAttack()
+        {
+            SetAttackState();
+            animator.SetTrigger(WeakAttackAnim);
+            _attackTime = weakMeleeAttackRecoverTime;
+            _attackAnimTimer = 0f;
+        }
+
+        private void SetAttackState()
+        {
+            _state = PlayerState.Attacking;
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
+
+        private void Attack()
+        {
+            _attackAnimTimer += Time.deltaTime;
+            if (_attackAnimTimer >= _attackTime)
             {
-                _leftMouseButtonDown = false;
+                _state = PlayerState.Normal;
             }
         }
 
