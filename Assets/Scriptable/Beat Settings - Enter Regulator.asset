@@ -15,8 +15,8 @@ MonoBehaviour:
   bpm: 160
   thresholds:
   - result: 2
-    tolerance: 0.05
-  - result: 1
     tolerance: 0.1
+  - result: 1
+    tolerance: 1
   initialEmptyBeats: 6
   beatPattern: 00000001

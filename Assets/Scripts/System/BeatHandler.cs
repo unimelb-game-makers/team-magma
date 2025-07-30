@@ -5,16 +5,19 @@ using UnityEngine;
 public class BeatHandler
 {
     private int _beat;
+    private float _currentBeat;
     private readonly float _beatInterval;
     private bool _started;
-    private float _startTime;
     private BeatSettings _settings;
 
     public int Beat => _beat;
-    public float BeatInterval => _beatInterval;
 
     // TODO: Use this in the level end screen possibly for stats?
     private readonly Dictionary<int, Grade> _processedBeats = new Dictionary<int, Grade>();
+
+    private TempoMode _currentMode = TempoMode.Default;
+    public float CurrentBeat => _currentBeat;
+    public float BeatInterval => _beatInterval / TempoSetting.GetRatio(_currentMode);
 
     public BeatHandler(BeatSettings settings)
     {
@@ -39,7 +42,6 @@ public class BeatHandler
     private void Start()
     {
         _started = true;
-        _startTime = Time.time;
     }
 
     public void OnBeat()
@@ -47,6 +49,22 @@ public class BeatHandler
         if (_beat == 0)
             Start();
         _beat += 1;
+        
+        // By resetting our current beat tracker to the beat of the track, we minimise the offset created
+        // by floating point imprecision and weird delta time silliness on Unity's end.
+        _currentBeat = _beat;
+    }
+
+    public void OnTempoChanged(TempoMode mode)
+    {
+        _currentMode = mode;
+    }
+
+    public void Update(float deltaTime)
+    {
+        if (!_started) return;
+
+        _currentBeat += BeatInterval * deltaTime;
     }
 
     /// <summary>
@@ -109,16 +127,13 @@ public class BeatHandler
         // Get the next possible beat in order to allow for early and late beats
         int beat = GetNearestBeat();
         if (beat == -1) return new BeatResult(beat, Grade.Failed);
+
+        // The key is that we calculate the difference in the beats, as opposed to elapsed time!
+        float beatDifference = Mathf.Abs(beat - _currentBeat);
         
-        // Get the expected beat time and compare it against the current time
-        // Do beat - 1 since beat 1 starts on 0
-        float expectedBeatTime = (beat - 1) * _beatInterval;
-        float currentTime = Time.time - _startTime;
-        
-        float timeDifference = Mathf.Abs(expectedBeatTime - currentTime);
         for (int i = 0; i < _settings.thresholds.Length; ++i)
         {
-            if (timeDifference <= _settings.thresholds[i].tolerance)
+            if (beatDifference <= _settings.thresholds[i].tolerance)
             {
                 return new BeatResult(beat, _settings.thresholds[i].result);
             }

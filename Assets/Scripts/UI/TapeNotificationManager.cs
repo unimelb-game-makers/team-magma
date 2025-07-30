@@ -24,9 +24,16 @@ public class TapeNotificationManager : Singleton<TapeNotificationManager>
     private bool isFadingOut = false;
     private Vector2 initialPosition;
 
+    private SelectionWheelManager _selectionWheel;
+
     void Start()
     {
         initialPosition = uiGroup.anchoredPosition;
+    }
+
+    public void Init(SelectionWheelManager selectionWheel)
+    {
+        _selectionWheel = selectionWheel;
     }
 
     public void ActivateTapeUI(TapeType tape, float duration)
@@ -145,7 +152,7 @@ public class TapeNotificationManager : Singleton<TapeNotificationManager>
         ResetTapeNotification();
     }
 
-    public void ResetTapeNotification()
+    private void ResetTapeNotification()
     {
         uiGroup.anchoredPosition = initialPosition;
         canvasGroup.alpha = 0f;
@@ -153,6 +160,9 @@ public class TapeNotificationManager : Singleton<TapeNotificationManager>
         countdownRoutine = null;
         currentRoutine = null;
         isFadingOut = false;
+        
+        // Alert the selection wheel that we are finished
+        _selectionWheel.OnTapeComplete();
     }
 }
 
