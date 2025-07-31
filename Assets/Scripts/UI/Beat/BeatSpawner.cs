@@ -70,7 +70,7 @@ public class BeatSpawner : MonoBehaviour
     {
         if (!_popupItems.TryGetValue(beatResult.beat, out BeatPopupItem popupItem))
         {
-            Debug.Log($"Could not find {beatResult.beat}");
+            //Debug.Log($"Could not find {beatResult.beat}");
             return;
         }
 

@@ -42,6 +42,14 @@ namespace Hazard
         [Tooltip("The speed at which the fan rotates when at slow tempo.")]
         [SerializeField] private Vector3 _slowSpeed = new(0, 0, -10);
 
+        [Header("Particle Setting")]
+        [SerializeField] private ParticleSystem windParticle;
+        //displacement of spawning position, change when the particle changes 
+        private float normalParticlePositionZ;
+        private float normalParticleSpeed;
+        [SerializeField] private float _particleFastFactor = 2;
+        [SerializeField] private float _particleSlowFactor = 0.5f;
+
         [Header("Damage and Knockback")]
         [SerializeField] private float _defaultDamage = 10;
         [Tooltip("The damage which the fan deals when at fast tempo.")]
@@ -113,6 +121,8 @@ namespace Hazard
             // Only the default areas should be active at the start.
             fanPushFast.SetActive(false);
             fanPullFast.SetActive(false);
+            normalParticlePositionZ = windParticle.transform.localPosition.z;
+            normalParticleSpeed = windParticle.main.startSpeedMultiplier;
         }
 
         public void Start()
@@ -127,6 +137,12 @@ namespace Hazard
         {
             if(tapeType == TapeType.Slow)
             {
+                    var main = windParticle.main;
+                main.startSpeedMultiplier = _particleSlowFactor * normalParticleSpeed;
+                Vector3 position = windParticle.transform.localPosition;
+                windParticle.transform.localPosition = new Vector3(
+                    position.x, position.y, normalParticlePositionZ * _particleSlowFactor
+                );
                 fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_slowSpeed);
                 foreach (Transform fanBlade in fanBlades.transform)
                 {
@@ -177,6 +193,12 @@ namespace Hazard
             // if TapeType.Fast, switch to fanPush_Fast
             if(tapeType == TapeType.Fast)
             {
+                var main = windParticle.main;
+                main.startSpeedMultiplier = _particleFastFactor * normalParticleSpeed;
+                Vector3 position = windParticle.transform.localPosition;
+                windParticle.transform.localPosition = new Vector3(
+                    position.x, position.y, normalParticlePositionZ * _particleFastFactor
+                );
                 fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
                 foreach (Transform fanBlade in fanBlades.transform)
                 {
@@ -218,7 +240,12 @@ namespace Hazard
             yield return new WaitForSeconds(duration);
 
             // Code for Animations and Sounds.
-
+            var main = windParticle.main;
+            main.startSpeedMultiplier = normalParticleSpeed;
+            Vector3 position = windParticle.transform.localPosition;
+            windParticle.transform.localPosition = new Vector3(
+                position.x, position.y, normalParticlePositionZ
+            );
             fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_defaultSpeed);
             foreach (Transform fanBlade in fanBlades.transform)
             {
