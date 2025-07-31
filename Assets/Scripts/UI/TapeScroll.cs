@@ -30,7 +30,6 @@ public class TapeScroll : MonoBehaviour, ISyncable
 
     public void Affect(TempoMode mode, float duration, float effectValue)
     {
-        Debug.Log("switching tape");
 
         if (this.mode == mode)
         {
@@ -67,7 +66,6 @@ public class TapeScroll : MonoBehaviour, ISyncable
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("register");
         ServiceLocator.Instance.Register<ISyncable>(this);
 
     }
@@ -82,7 +80,6 @@ public class TapeScroll : MonoBehaviour, ISyncable
         while (elapsed < switchDuration)
         {
             elapsed += Time.deltaTime;
-            Debug.Log(elapsed);
             float t = elapsed / switchDuration;
             angle = Mathf.Lerp(fromAngle, toAngle, t);
             setTape();
