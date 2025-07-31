@@ -36,7 +36,7 @@ public class TapeNotificationManager : Singleton<TapeNotificationManager>
         _selectionWheel = selectionWheel;
     }
 
-    public void ActivateTapeUI(TapeType tape, float duration)
+    public void ActivateTapeUI(TempoMode mode, float duration)
     {
         if (currentRoutine != null)
             StopCoroutine(currentRoutine);
@@ -44,13 +44,13 @@ public class TapeNotificationManager : Singleton<TapeNotificationManager>
             StopCoroutine(countdownRoutine);
 
         isFadingOut = false;
-        currentRoutine = StartCoroutine(HandleTapeUI(tape, duration));
+        currentRoutine = StartCoroutine(HandleTapeUI(mode, duration));
     }
 
-    private IEnumerator HandleTapeUI(TapeType tape, float duration)
+    private IEnumerator HandleTapeUI(TempoMode mode, float duration)
     {
         // Set correct sprite
-        tapeIcon.sprite = tape == TapeType.Fast ? fastTapeSprite : slowTapeSprite;
+        tapeIcon.sprite = mode == TempoMode.Fast ? fastTapeSprite : slowTapeSprite;
 
         // Move UI in
         uiGroup.anchoredPosition = initialPosition;

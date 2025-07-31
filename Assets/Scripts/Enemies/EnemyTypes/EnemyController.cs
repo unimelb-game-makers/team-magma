@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Enemies.EnemyStates;
-using Enemies.EnemyTypes;
-using Platforms;
 using Player;
 using Tempo;
 using Timeline;
@@ -85,6 +82,9 @@ namespace Enemy
         protected Dictionary<EnemyState, BaseEnemyState> _states;
         private BaseEnemyState _currentState;
         protected BaseEnemyState CurrentState => _currentState;
+
+        private TempoMode _mode = TempoMode.Default;
+        
         #endregion
 
         #region Audio SFX
@@ -133,10 +133,10 @@ namespace Enemy
         // State Variables
         public float GetIdleDuration() { return idleDuration; }
         public bool GetPresetPatrolPoints() {return presetPatrolRoute; }
-        public float GetPatrolSpeed() { return patrolSpeed; }
+        public float GetPatrolSpeed() { return patrolSpeed * TempoSetting.GetEnemyMovementMultiplier(_mode); }
         public Vector3 GetCurrentPatrolPoint() { return currentPatrolPoint; }
         public float GetChaseDuration() { return chaseDuration; }
-        public float GetChaseSpeed() { return chaseSpeed; }
+        public float GetChaseSpeed() { return chaseSpeed * TempoSetting.GetEnemyMovementMultiplier(_mode); }
         public float GetOutsideAttackRangeDuration() { return outsideAttackRangeDuration; }
         public float GetAttackCooldown() { return attackCooldown; }
         public bool IsAttacking() { return isAttacking; }
@@ -189,12 +189,22 @@ namespace Enemy
             else
                 currentPatrolPoint = transform.position;
             DefaultTempo();
+
+            MusicTimeline.OnTempoChanged += OnTempoChanged;
         }
 
         protected virtual void Start() {
             AddStates();
             _currentState = GetState(EnemyState.Idle);
             _currentState.EnterState();
+        }
+
+        private void OnTempoChanged(TempoMode mode)
+        {
+            _mode = mode;
+            // Seems like some enemies might not have an animator
+            if (animator)
+                animator.speed = TempoSetting.GetEnemyMovementMultiplier(mode);
         }
         
         protected virtual void AddStates()
@@ -324,8 +334,9 @@ namespace Enemy
         }
 
         // Safeguard in case the enemy is destroyed without calling Die method.
-        void OnDestroy()
+        private void OnDestroy()
         {
+            MusicTimeline.OnTempoChanged -= OnTempoChanged;
             _currentState?.ExitState();
             StopSFX();
             ReleaseSFX();
@@ -369,14 +380,14 @@ namespace Enemy
         }
 
         #region Tempo Overrides
-        public void Affect(TapeType tapeType, float duration, float effectValue)
+        public void Affect(TempoMode mode, float duration, float effectValue)
         {
-            switch (tapeType)
+            switch (mode)
             {
-                case TapeType.Slow:
+                case TempoMode.Slow:
                     StartCoroutine(SlowTempo(duration));
                     break;
-                case TapeType.Fast:
+                case TempoMode.Fast:
                     StartCoroutine(FastTempo(duration));
                     break;
             }

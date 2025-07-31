@@ -21,6 +21,7 @@ namespace Player
         Weak,
         Strong,
     }
+    
     public class PlayerController : MonoBehaviour
     {
         private static readonly int Speed = Animator.StringToHash("speed");
@@ -120,6 +121,14 @@ namespace Player
         private bool _canControl = true;
         private static readonly int StrongAttackAnim = Animator.StringToHash("StrongAttack");
         private static readonly int WeakAttackAnim = Animator.StringToHash("WeakAttack");
+        private TempoMode _mode = TempoMode.Default;
+        private static readonly int JumpAnim = Animator.StringToHash("Jump");
+        private static readonly int InAirAnim = Animator.StringToHash("inAir");
+
+        private void Awake()
+        {
+            MusicTimeline.OnTempoChanged += OnTempoChanged;
+        }
 
         private void Start()
         {
@@ -149,9 +158,15 @@ namespace Player
                     TrackAttackInput();
                     break;
                 case PlayerState.Attacking:
-                    Attack();
+                    AttackUpdate();
                     break;
             }
+        }
+
+        private void OnTempoChanged(TempoMode mode)
+        {
+            _mode = mode;
+            Animator.speed = TempoSetting.GetPlayerMovementMultiplier(mode);
         }
 
         private void TrackAttackInput()
@@ -163,30 +178,22 @@ namespace Player
                 switch (result.grade)
                 {
                     case Grade.Perfect:
-                        StrongAttack();
+                        Attack(PlayerAttack.Strong);
                         break;
                     case Grade.Good:
-                        WeakAttack();
+                        Attack(PlayerAttack.Weak);
                         break;
                     case Grade.Failed:
                         break;
                 }
             }
         }
-
-        private void StrongAttack()
+        
+        private void Attack(PlayerAttack attack)
         {
             SetAttackState();
-            animator.SetTrigger(StrongAttackAnim);
-            _attackTime = strongMeleeAttackRecoverTime;
-            _attackAnimTimer = 0f;
-        }
-
-        private void WeakAttack()
-        {
-            SetAttackState();
-            animator.SetTrigger(WeakAttackAnim);
-            _attackTime = weakMeleeAttackRecoverTime;
+            animator.SetTrigger(attack == PlayerAttack.Strong ? StrongAttackAnim : WeakAttackAnim);
+            _attackTime = attack == PlayerAttack.Strong ? strongMeleeAttackRecoverTime : weakMeleeAttackRecoverTime * TempoSetting.GetPlayerMovementMultiplier(_mode);
             _attackAnimTimer = 0f;
         }
 
@@ -197,7 +204,7 @@ namespace Player
             _rigidbody.angularVelocity = Vector3.zero;
         }
 
-        private void Attack()
+        private void AttackUpdate()
         {
             _attackAnimTimer += Time.deltaTime;
             if (_attackAnimTimer >= _attackTime)
@@ -237,13 +244,13 @@ namespace Player
                     _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
                     airJumpsRemaining = maxAirJumps; // Reset air jumps on ground
                     _isGrounded = false;
-                    animator.SetTrigger("Jump");
+                    animator.SetTrigger(JumpAnim);
 
                 } else if (airJumpsRemaining > 0) {
                     _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z); // Reset Y
                     _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
                     airJumpsRemaining--;
-                    animator.SetTrigger("Jump");
+                    animator.SetTrigger(JumpAnim);
 
                 }
             }
@@ -301,9 +308,10 @@ namespace Player
                 //_rigidbody.MovePosition(_rigidbody.position + movement * Time.deltaTime);
 
                 // Apply velocity to the Rigidbody
-                _rigidbody.velocity = new Vector3(movement.x, _rigidbody.velocity.y, movement.z);
+                Vector3 finalMovement = movement * TempoSetting.GetPlayerMovementMultiplier(_mode);
+                _rigidbody.velocity = new Vector3(finalMovement.x, _rigidbody.velocity.y, finalMovement.z);
                 // set animation speed
-                Animator.SetFloat(SpeedID, movement.magnitude/MovementSpeed);
+                Animator.SetFloat(SpeedID, finalMovement.magnitude / MovementSpeed);
             }
         }
 
@@ -328,19 +336,6 @@ namespace Player
                 return directionPoint;
             }
             return Vector3.zero;
-        }
-        
-        /**
-         * Placeholder for playing the tape effect
-         */
-        private void PlayTapeEffect()
-        {
-            //get IAffectServices from service locator
-            var affectServices = ServiceLocator.Instance.Get<ISyncable>();
-            foreach (var o in affectServices)
-            {
-                o.Affect(TapeType.Slow, 5, 0.5f); // Why is TapeType in Platforms namespace?
-            }
         }
 
         void Rotate()
@@ -409,21 +404,25 @@ namespace Player
                 if (Vector3.Angle(contact.normal, Vector3.up) < 45f)
                 {
                     _isGrounded = true;
-                    Animator.SetBool("inAir", false);
+                    Animator.SetBool(InAirAnim, false);
 
                     return;
                 }
             }
 
             _isGrounded = false; // In case all contacts are walls/ceilings
-            Animator.SetBool("inAir", true);
+            Animator.SetBool(InAirAnim, true);
     	}
 
         void OnCollisionExit(Collision collision)
         {
             _isGrounded = false;
-            Animator.SetBool("inAir", true);
+            Animator.SetBool(InAirAnim, true);
+        }
 
+        private void OnDestroy()
+        {
+            MusicTimeline.OnTempoChanged -= OnTempoChanged;
         }
     }
 }
