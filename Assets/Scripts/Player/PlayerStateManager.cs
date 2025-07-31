@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// This class controls showing and hiding of the UI, not the actual Player's State
+/// </summary>
 public class PlayerStateManager : MonoBehaviour
 {
     public static PlayerStateManager Instance { get; private set; }
