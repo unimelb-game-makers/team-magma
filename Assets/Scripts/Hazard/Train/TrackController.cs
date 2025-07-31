@@ -73,14 +73,14 @@ namespace Hazard.Train
             _spawnTrainCoroutine = StartCoroutine(TrainSpawner());
         }
 
-        public override void Affect(TapeType tapeType, float duration, float effectValue)
+        public override void Affect(TempoMode mode, float duration, float effectValue)
         {
-            switch (tapeType)
+            switch (mode)
             {
-                case TapeType.Slow:
+                case TempoMode.Slow:
                     StartCoroutine(SlowTempo(duration, effectValue));
                     break;
-                case TapeType.Fast:
+                case TempoMode.Fast:
                     StartCoroutine(FastTempo(duration, effectValue));
                     break;
                 default:

@@ -82,9 +82,9 @@ namespace Platforms
         /**
          * Affect the platform with the tape type.
          */
-        public override void Affect(TapeType tapeType, float duration, float effectValue)
+        public override void Affect(TempoMode mode, float duration, float effectValue)
         {
-            if(tapeType == TapeType.Slow)
+            if(mode == TempoMode.Slow)
             {
                 _speed = effectValue;
                 StartCoroutine(AffectTimer(duration));

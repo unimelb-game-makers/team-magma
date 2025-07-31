@@ -156,7 +156,7 @@ public class SelectionWheelManager : MonoBehaviour
         {
             MusicTimeline.instance.SetSpeed(TempoMode.Default);
             TapeEffectSoundPlayer.Play();
-            PlayTapeEffect(TapeType.Slow, 0.01f, 0.5f);
+            PlayTapeEffect(TempoMode.Slow, 0.01f, 0.5f);
             TapeNotificationManager.Instance.FadeOutUI();
 
             if (isWheelActive) {
@@ -170,8 +170,8 @@ public class SelectionWheelManager : MonoBehaviour
         {
             MusicTimeline.instance.SetSpeed(TempoMode.Slow);
             TapeEffectSoundPlayer.Play();
-            PlayTapeEffect(TapeType.Slow, tapeEffectDuration, 0.5f);
-            TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Slow, tapeEffectDuration);
+            PlayTapeEffect(TempoMode.Slow, tapeEffectDuration, 0.5f);
+            TapeNotificationManager.Instance.ActivateTapeUI(TempoMode.Slow, tapeEffectDuration);
         
             if (isWheelActive) {
                 ToggleWheel();
@@ -184,8 +184,8 @@ public class SelectionWheelManager : MonoBehaviour
         {
             MusicTimeline.instance.SetSpeed(TempoMode.Fast);
             TapeEffectSoundPlayer.Play();
-            PlayTapeEffect(TapeType.Fast, tapeEffectDuration, 0.5f);
-            TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Fast, tapeEffectDuration);
+            PlayTapeEffect(TempoMode.Fast, tapeEffectDuration, 0.5f);
+            TapeNotificationManager.Instance.ActivateTapeUI(TempoMode.Fast, tapeEffectDuration);
 
             if (isWheelActive) {
                 ToggleWheel();
@@ -193,13 +193,13 @@ public class SelectionWheelManager : MonoBehaviour
         } 
     }
 
-    public void PlayTapeEffect(TapeType Type, float duration, float effectValue)
+    public void PlayTapeEffect(TempoMode mode, float duration, float effectValue)
     {
         //get IAffectServices from service locator
         var affectServices = ServiceLocator.Instance.Get<ISyncable>();
         foreach (var o in affectServices)
         {
-            o.Affect(Type, duration, effectValue);
+            o.Affect(mode, duration, effectValue);
         }
     }
 
@@ -265,6 +265,7 @@ public class SelectionWheelManager : MonoBehaviour
     public void OnTapeComplete()
     {
         MusicTimeline.instance.SetSpeed(TempoMode.Default);
+        PlayTapeEffect(TempoMode.Default, tapeEffectDuration, 0.5f);
     }
 }
 

@@ -124,9 +124,9 @@ namespace Hazard
         /**
          * Move the 'KillArea' depending on the TapeType.
          */
-        public override void Affect(TapeType tapeType, float duration, float effectValue)
+        public override void Affect(TempoMode mode, float duration, float effectValue)
         {
-            if (tapeType == TapeType.Slow)
+            if (mode == TempoMode.Slow)
             {
                 // Move the 'KillArea' object to height1.
                 StartCoroutine(MoveKillAreaToHeight(height1));
@@ -148,7 +148,7 @@ namespace Hazard
                 }
             }
 
-            if (tapeType == TapeType.Fast)
+            if (mode == TempoMode.Fast)
             {
                 // Move the 'KillArea' object to height1.
                 StartCoroutine(MoveKillAreaToHeight(height3));
