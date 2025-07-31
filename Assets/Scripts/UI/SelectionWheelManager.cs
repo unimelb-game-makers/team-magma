@@ -9,8 +9,6 @@ using System.Collections.Generic;
 
 public class SelectionWheelManager : MonoBehaviour
 {
-
-    [SerializeField] private GameObject selectionWheel; // The UI wheel to display
     [SerializeField] private GameObject selectionWheelPanel; // The UI wheel to display
     [SerializeField] private string inputName = "Tape"; // Input name as defined in the Input Manager
     [SerializeField] private BatteryManager batteryManager;
@@ -32,8 +30,14 @@ public class SelectionWheelManager : MonoBehaviour
 
     void Awake() {
         selectionWheelPanel.transform.localScale = Vector3.zero;
-    }    
-    
+    }
+
+    private void Start()
+    {
+        // TODO: Hacky way of dependency injection without using singleton
+        TapeNotificationManager.Instance.Init(this);
+    }
+
     void Update()
     {
         if (PauseManager.IsPaused && (PauseMenuController.Instance.isPauseMenu || StartMenuManager.Instance.isStartMenu))
@@ -150,7 +154,7 @@ public class SelectionWheelManager : MonoBehaviour
     public void UseTapeDefault() {
         if (batteryManager.UseBattery(batteryNeeded))
         {
-            MusicTimeline.instance.SetIntensity(2);
+            MusicTimeline.instance.SetSpeed(TempoMode.Default);
             TapeEffectSoundPlayer.Play();
             PlayTapeEffect(TapeType.Slow, 0.01f, 0.5f);
             TapeNotificationManager.Instance.FadeOutUI();
@@ -164,7 +168,7 @@ public class SelectionWheelManager : MonoBehaviour
     public void UseTapeSlow() {
         if (batteryManager.UseBattery(batteryNeeded))
         {
-            MusicTimeline.instance.SetIntensity(1);
+            MusicTimeline.instance.SetSpeed(TempoMode.Slow);
             TapeEffectSoundPlayer.Play();
             PlayTapeEffect(TapeType.Slow, tapeEffectDuration, 0.5f);
             TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Slow, tapeEffectDuration);
@@ -178,7 +182,7 @@ public class SelectionWheelManager : MonoBehaviour
     public void UseTapeFast() {
         if (batteryManager.UseBattery(batteryNeeded))
         {
-            MusicTimeline.instance.SetIntensity(3);
+            MusicTimeline.instance.SetSpeed(TempoMode.Fast);
             TapeEffectSoundPlayer.Play();
             PlayTapeEffect(TapeType.Fast, tapeEffectDuration, 0.5f);
             TapeNotificationManager.Instance.ActivateTapeUI(TapeType.Fast, tapeEffectDuration);
@@ -250,11 +254,17 @@ public class SelectionWheelManager : MonoBehaviour
 
     public void UseTape()
     {
+        // TODO: This looks like dangerous recursion
         if (batteryManager.UseBattery(batteryNeeded) && isWheelActive)
         {
             UseTape();
             ToggleWheel();
         }
+    }
+
+    public void OnTapeComplete()
+    {
+        MusicTimeline.instance.SetSpeed(TempoMode.Default);
     }
 }
 

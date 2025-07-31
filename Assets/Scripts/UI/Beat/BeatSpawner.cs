@@ -1,67 +1,80 @@
 using UnityEngine;
-using Timeline;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 public class BeatSpawner : MonoBehaviour
 {
-    public GameObject beatPrefab;  // The Beat prefab
-    public Transform spawnPointLeft;  // Where beats spawn on the left
-    public Transform spawnPointRight;  // Where beats spawn on the right
-    public Transform hexagonLeft;  // Beats spawning on the left move to this
-    public Transform hexagonRight;  // Beats spawning on the right move to this
-    private List<Beat> beats = new();  // Stores the active beats
-    private float beatTravelTime;  // Time for the beat to move from its start to end pos
+    private const int BEAT_PREFIX = 4;
+    // The distance that a beat will travel in one second
+    private const float BEAT_DISTANCE = 700f;
 
-    [Tooltip("Hit range to hit beats on time")]
-    [SerializeField] private float hitTolerance = 25f;
+    [SerializeField] private RectTransform beatHolder;
+    [SerializeField] private BeatPopupItem sampleBeatPopupItem;
 
-    public void SetTempo(float tempo)
+    [SerializeField] private RectTransform leftTarget;
+    [SerializeField] private RectTransform rightTarget;
+    
+    private BeatHandler _beatHandler;
+
+    private readonly Dictionary<int, BeatPopupItem> _popupItems = new();
+
+    public void Init(BeatHandler beatHandler)
     {
-        // The number of seconds between each beat
-        float beatInterval = 60f / tempo;
-        // The time it takes for this beat to reach the target
-        beatTravelTime = beatInterval * 2f;
+        _beatHandler = beatHandler;
     }
 
-    public void SpawnBeat()
+    /// <summary>
+    /// Spawns a beat based on the time it will hit the target.
+    /// </summary>
+    /// <param name="beat">The beat to spawn</param>
+    private void SpawnBeat(int beat)
     {
-        if (spawnPointLeft == null)
+        if (!_beatHandler.IsBeat(beat)) return;
+        
+        // The time to target is the amount of beats we spawned ahead of time
+        float travelTime = _beatHandler.BeatInterval * BEAT_PREFIX;
+        float distance = BEAT_DISTANCE * travelTime;
+
+        BeatPopupItem beatPopupItem = Instantiate(sampleBeatPopupItem, beatHolder);
+        beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, travelTime);
+        _popupItems.Add(beat, beatPopupItem);
+    }
+
+    /// <summary>
+    /// Creates a new beat following the initial beat offset
+    /// </summary>
+    /// <param name="beat"></param>
+    public void OnBeat(int beat)
+    {
+        SpawnBeat(beat + BEAT_PREFIX);
+    }
+
+    public void OnTempoChanged(TempoMode mode)
+    {
+        foreach (KeyValuePair<int, BeatPopupItem> popupItem in _popupItems)
         {
-            Debug.LogError("Spawn point was not set, check, i don't wanna fix this, fix if you can");
+            popupItem.Value.OnTempoChanged(mode, _beatHandler);
+        }
+    }
+
+    /// <summary>
+    /// Resolves the beat by removing it from the dictionary
+    /// </summary>
+    /// <param name="beat"></param>
+    public void ResolveBeat(int beat)
+    {
+        if (_popupItems.ContainsKey(beat))
+            _popupItems.Remove(beat);
+    }
+
+    public void ProcessBeat(BeatResult beatResult)
+    {
+        if (!_popupItems.TryGetValue(beatResult.beat, out BeatPopupItem popupItem))
+        {
+            Debug.Log($"Could not find {beatResult.beat}");
             return;
         }
-        GameObject beatLeft = Instantiate(beatPrefab, spawnPointLeft.position, Quaternion.identity, transform);
-        // Should be the same as parent's rotation otherwise it will be out of shape
-        beatLeft.transform.rotation = transform.rotation;
-        beatLeft.GetComponent<Beat>().Initialise(hexagonLeft.GetComponent<TargetHexagon>(), beatTravelTime, hitTolerance);
 
-        GameObject beatRight = Instantiate(beatPrefab, spawnPointRight.position, Quaternion.identity, transform);
-        // Should be the same as parent's rotation otherwise it will be out of shape
-        beatRight.transform.rotation = transform.rotation;
-        beatRight.GetComponent<Beat>().Initialise(hexagonRight.GetComponent<TargetHexagon>(), beatTravelTime, hitTolerance);
-
-        beats.Add(beatLeft.GetComponent<Beat>());
-        beats.Add(beatRight.GetComponent<Beat>());
-    }
-
-    // Check for and remove beats that have been hit
-    public bool HitOnBeat()
-    {
-        float numBeatsHit = 0;
-        for (int i = beats.Count - 1; i >= 0; i--)
-        {
-            if (beats[i].IsHittable())
-            {
-                beats[i].OnHit();
-                beats.RemoveAt(i);
-
-                numBeatsHit++;
-                if (numBeatsHit >= 2) return true;
-            }
-        }
-
-        return false;
+        popupItem.Resolve(beatResult.grade);
     }
 }
 

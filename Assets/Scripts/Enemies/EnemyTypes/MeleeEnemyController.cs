@@ -30,16 +30,14 @@ namespace Enemies.EnemyTypes
         
         public override void Attack()
         {
-            if (!IsAttacking())
-            {   
-                if (GetAnimator()){
-                    animator.SetTrigger("Attack");
-                }
-
-                SetIsAttacking(true);
-                StartStrike();
+            if (GetAnimator()){
+                animator.SetTrigger("Attack");
             }
+
+            SetIsAttacking(true);
+            StartStrike();
         }
+        
 
         private void StartStrike()
         {

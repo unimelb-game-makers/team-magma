@@ -65,8 +65,6 @@ namespace Enemies.EnemyTypes
         
         #region Attack
         public override void Attack() {
-            if (!IsAttacking())
-            {
                 // Trigger animation
                 // GetAnimator().SetTrigger(GetAttackAnimationTrigger());
 
@@ -89,7 +87,6 @@ namespace Enemies.EnemyTypes
                 //StudioEventEmitter fire = GetComponent<FMODUnity.StudioEventEmitter>();
                 //fire.Play();
                 //FMODUnity.RuntimeManager.AttachInstanceToGameObject(fire.EventInstance, gameObject, GetComponent<Rigidbody>());
-            }
         }
 
         private IEnumerator PerformStrikeSequence()

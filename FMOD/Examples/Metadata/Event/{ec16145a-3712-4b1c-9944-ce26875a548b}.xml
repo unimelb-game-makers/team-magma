@@ -142,12 +142,10 @@ www.yangseunghyuk.com</value>
 			<destination>{1e7a22ff-8532-495c-b963-8215639c9b32}</destination>
 			<destination>{fe29b464-7ffa-4202-90eb-7ded116c2717}</destination>
 			<destination>{d4c989c9-b3ed-4c3c-8f49-4b022da93ff7}</destination>
-			<destination>{13ed8bc4-f975-4bb7-9851-a57d68d2019b}</destination>
 			<destination>{695d673b-b191-47b8-94a6-fd1eac95c8ed}</destination>
 			<destination>{c8019ca7-a97f-48d9-8c3b-4b256de6b1ed}</destination>
 			<destination>{2226a49f-6c02-48b3-9515-4ac41460c832}</destination>
 			<destination>{34a0671d-c7ec-4e8b-ae6e-a7fac78b3561}</destination>
-			<destination>{6551a24b-9fb6-4f57-9851-74e20e0a5a7f}</destination>
 			<destination>{556e6baf-c42d-4498-bcd9-ac04530e513c}</destination>
 			<destination>{9aa20312-abcc-4716-8ec2-e8ca61bd0ff0}</destination>
 			<destination>{a3c6d8ec-b8ee-4202-a149-d942839c81d2}</destination>
@@ -164,11 +162,8 @@ www.yangseunghyuk.com</value>
 			<destination>{4ef7bd88-8617-421f-b24e-7614a3f1f07e}</destination>
 			<destination>{24595760-2b23-426a-81b8-8f363cefaf93}</destination>
 			<destination>{9ec067eb-c1b7-487c-b406-4caf369338dc}</destination>
-			<destination>{6eb9ccca-2df5-4c87-9e54-7e9d8b9a8535}</destination>
-			<destination>{f8f8ccc8-c4a8-4c39-8ff7-674afc0d4600}</destination>
 			<destination>{ea01f339-0e49-4c3c-bee3-edfdbd40d7c7}</destination>
 			<destination>{eb5a1d30-ed6d-4186-9b29-6a148e476bbb}</destination>
-			<destination>{293d6056-c8d5-4ed3-bd13-9c09cc03c8d1}</destination>
 			<destination>{20ff2b5c-531d-4547-8670-5191ae2a40d0}</destination>
 			<destination>{3564424e-1dae-4694-8e52-cf9ad4e94c8e}</destination>
 			<destination>{e1bbf39a-d100-439f-a08b-2017508a5d1f}</destination>
@@ -185,14 +180,12 @@ www.yangseunghyuk.com</value>
 	<object class="GroupTrack" id="{92655cca-301a-4a48-b3f1-71a02a3e8976}">
 		<relationship name="modules">
 			<destination>{8d5efb2e-961c-4170-87c8-7d1c84d5c4cb}</destination>
-			<destination>{42090352-ce48-4092-a4c6-27fca3a13ebd}</destination>
 			<destination>{f154063b-224a-4a8d-b8db-da0b882449ee}</destination>
 			<destination>{6668d1cf-0376-4c7a-8c86-ca6471a74109}</destination>
 			<destination>{c0290db6-6b92-47eb-b085-04d9055e69fc}</destination>
 			<destination>{4f4c20cf-a893-425c-b92a-b95fb3e8eae0}</destination>
 			<destination>{986489f9-cba7-45cd-8ead-df4978089cde}</destination>
 			<destination>{44e105d4-9ebe-456d-920e-5ad3389488fb}</destination>
-			<destination>{919d1cbd-93aa-426b-b70f-cec13c34e82d}</destination>
 			<destination>{c926090a-2062-42ac-b74b-56e6563ef1e7}</destination>
 			<destination>{afa7e229-368d-4bbc-a5c7-b4567af0de9e}</destination>
 			<destination>{13814baa-200a-4af1-8c61-5c069ee3daf1}</destination>
@@ -319,20 +312,6 @@ www.yangseunghyuk.com</value>
 			<destination>{7d5024a7-02ba-49bf-8f3e-3c0524e916c4}</destination>
 		</relationship>
 	</object>
-	<object class="TransitionDestinationSound" id="{13ed8bc4-f975-4bb7-9851-a57d68d2019b}">
-		<property name="isAsync">
-			<value>true</value>
-		</property>
-		<property name="length">
-			<value>3.4285714285714279</value>
-		</property>
-		<property name="voiceStealing">
-			<value>3</value>
-		</property>
-		<relationship name="fadeInCurve">
-			<destination>{00360aff-8a9c-4075-8957-5e866facf09c}</destination>
-		</relationship>
-	</object>
 	<object class="TransitionSourceSound" id="{695d673b-b191-47b8-94a6-fd1eac95c8ed}">
 		<property name="isAsync">
 			<value>true</value>
@@ -387,20 +366,6 @@ www.yangseunghyuk.com</value>
 		</property>
 		<relationship name="fadeOutCurve">
 			<destination>{5f0b9a2a-8d4c-44b7-96a2-a8948116aa19}</destination>
-		</relationship>
-	</object>
-	<object class="TransitionSourceSound" id="{6551a24b-9fb6-4f57-9851-74e20e0a5a7f}">
-		<property name="isAsync">
-			<value>true</value>
-		</property>
-		<property name="length">
-			<value>3.4285714285714279</value>
-		</property>
-		<property name="voiceStealing">
-			<value>3</value>
-		</property>
-		<relationship name="fadeOutCurve">
-			<destination>{20310c0c-c388-4dee-9e7a-8aa3b3c68f99}</destination>
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{556e6baf-c42d-4498-bcd9-ac04530e513c}">
@@ -519,31 +484,6 @@ www.yangseunghyuk.com</value>
 			<value>3</value>
 		</property>
 	</object>
-	<object class="TransitionSourceSound" id="{6eb9ccca-2df5-4c87-9e54-7e9d8b9a8535}">
-		<property name="isAsync">
-			<value>true</value>
-		</property>
-		<property name="length">
-			<value>0</value>
-		</property>
-		<property name="voiceStealing">
-			<value>3</value>
-		</property>
-	</object>
-	<object class="SingleSound" id="{f8f8ccc8-c4a8-4c39-8ff7-674afc0d4600}">
-		<property name="length">
-			<value>3.4286394557823101</value>
-		</property>
-		<property name="voiceStealing">
-			<value>3</value>
-		</property>
-		<property name="looping">
-			<value>true</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{4ca59036-2c6a-4f38-87d5-ae572b4db327}</destination>
-		</relationship>
-	</object>
 	<object class="SingleSound" id="{ea01f339-0e49-4c3c-bee3-edfdbd40d7c7}">
 		<property name="length">
 			<value>3.4285714285714284</value>
@@ -561,20 +501,6 @@ www.yangseunghyuk.com</value>
 	<object class="TransitionSourceSound" id="{eb5a1d30-ed6d-4186-9b29-6a148e476bbb}">
 		<property name="isAsync">
 			<value>true</value>
-		</property>
-		<property name="length">
-			<value>0</value>
-		</property>
-		<property name="voiceStealing">
-			<value>3</value>
-		</property>
-	</object>
-	<object class="TransitionDestinationSound" id="{293d6056-c8d5-4ed3-bd13-9c09cc03c8d1}">
-		<property name="isAsync">
-			<value>true</value>
-		</property>
-		<property name="start">
-			<value>3.4285714285714279</value>
 		</property>
 		<property name="length">
 			<value>0</value>
@@ -693,11 +619,6 @@ www.yangseunghyuk.com</value>
 			<value>0</value>
 		</property>
 	</object>
-	<object class="TransitionSourceSound" id="{42090352-ce48-4092-a4c6-27fca3a13ebd}">
-		<property name="length">
-			<value>0</value>
-		</property>
-	</object>
 	<object class="TransitionDestinationSound" id="{f154063b-224a-4a8d-b8db-da0b882449ee}">
 		<property name="start">
 			<value>3.4285714285714284</value>
@@ -730,14 +651,6 @@ www.yangseunghyuk.com</value>
 		</property>
 	</object>
 	<object class="TransitionSourceSound" id="{44e105d4-9ebe-456d-920e-5ad3389488fb}">
-		<property name="length">
-			<value>0</value>
-		</property>
-	</object>
-	<object class="TransitionDestinationSound" id="{919d1cbd-93aa-426b-b70f-cec13c34e82d}">
-		<property name="start">
-			<value>3.4285714285714279</value>
-		</property>
 		<property name="length">
 			<value>0</value>
 		</property>
@@ -910,9 +823,6 @@ www.yangseunghyuk.com</value>
 		</relationship>
 		<relationship name="markerTrack">
 			<destination>{3b55da82-4f48-4e06-a664-0ce70879118b}</destination>
-		</relationship>
-		<relationship name="transitionTimeline">
-			<destination>{ddec4e3d-8bb7-4eb9-bc86-affafddd8196}</destination>
 		</relationship>
 		<relationship name="destination">
 			<destination>{72166c0a-6662-4474-8043-6fdabb5b732f}</destination>
@@ -1126,17 +1036,6 @@ www.yangseunghyuk.com</value>
 			<destination>{c8019ca7-a97f-48d9-8c3b-4b256de6b1ed}</destination>
 		</relationship>
 	</object>
-	<object class="TransitionDestinationFadeInCurve" id="{00360aff-8a9c-4075-8957-5e866facf09c}">
-		<relationship name="startPoint">
-			<destination>{fd7bfd7a-5356-488e-a16c-50aadc7ec852}</destination>
-		</relationship>
-		<relationship name="endPoint">
-			<destination>{00eba7d7-f3be-4607-9089-b297a0133612}</destination>
-		</relationship>
-		<relationship name="relatedModule">
-			<destination>{6551a24b-9fb6-4f57-9851-74e20e0a5a7f}</destination>
-		</relationship>
-	</object>
 	<object class="TransitionSourceFadeOutCurve" id="{ccf3bc6c-4d09-4e6d-bfa4-bbb38e05fd7b}">
 		<relationship name="startPoint">
 			<destination>{4534f215-5e0c-4204-9220-6ccdb36d680c}</destination>
@@ -1179,17 +1078,6 @@ www.yangseunghyuk.com</value>
 		</relationship>
 		<relationship name="relatedModule">
 			<destination>{187c4742-af68-4196-b0b5-f732e9e89f80}</destination>
-		</relationship>
-	</object>
-	<object class="TransitionSourceFadeOutCurve" id="{20310c0c-c388-4dee-9e7a-8aa3b3c68f99}">
-		<relationship name="startPoint">
-			<destination>{33a7c7e7-81db-4a28-aa48-261994b90cea}</destination>
-		</relationship>
-		<relationship name="endPoint">
-			<destination>{678991b6-5e81-480c-9b05-c78104e2d83f}</destination>
-		</relationship>
-		<relationship name="relatedModule">
-			<destination>{13ed8bc4-f975-4bb7-9851-a57d68d2019b}</destination>
 		</relationship>
 	</object>
 	<object class="TransitionSourceFadeOutCurve" id="{68e4335f-b50d-440a-9e06-af397ece74cb}">
@@ -1286,20 +1174,6 @@ www.yangseunghyuk.com</value>
 		</property>
 		<relationship name="parameter">
 			<destination>{96d6cd3d-ea4f-4baa-b368-2f1d98940b31}</destination>
-		</relationship>
-	</object>
-	<object class="TransitionTimeline" id="{ddec4e3d-8bb7-4eb9-bc86-affafddd8196}">
-		<property name="length">
-			<value>3.4285714285714279</value>
-		</property>
-		<relationship name="modules">
-			<destination>{42090352-ce48-4092-a4c6-27fca3a13ebd}</destination>
-			<destination>{6eb9ccca-2df5-4c87-9e54-7e9d8b9a8535}</destination>
-			<destination>{f8f8ccc8-c4a8-4c39-8ff7-674afc0d4600}</destination>
-			<destination>{293d6056-c8d5-4ed3-bd13-9c09cc03c8d1}</destination>
-			<destination>{13ed8bc4-f975-4bb7-9851-a57d68d2019b}</destination>
-			<destination>{919d1cbd-93aa-426b-b70f-cec13c34e82d}</destination>
-			<destination>{6551a24b-9fb6-4f57-9851-74e20e0a5a7f}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterCondition" id="{877d481e-1495-4763-90ef-7b2b3186f5f9}">
@@ -1466,25 +1340,6 @@ www.yangseunghyuk.com</value>
 			<value>0</value>
 		</property>
 	</object>
-	<object class="AutomationPoint" id="{fd7bfd7a-5356-488e-a16c-50aadc7ec852}">
-		<property name="position">
-			<value>0</value>
-		</property>
-		<property name="value">
-			<value>0</value>
-		</property>
-		<property name="curveShape">
-			<value>-0.2547189</value>
-		</property>
-	</object>
-	<object class="AutomationPoint" id="{00eba7d7-f3be-4607-9089-b297a0133612}">
-		<property name="position">
-			<value>3.4285714285714279</value>
-		</property>
-		<property name="value">
-			<value>1</value>
-		</property>
-	</object>
 	<object class="AutomationPoint" id="{4534f215-5e0c-4204-9220-6ccdb36d680c}">
 		<property name="position">
 			<value>0</value>
@@ -1556,25 +1411,6 @@ www.yangseunghyuk.com</value>
 	<object class="AutomationPoint" id="{ccfc9b42-40fb-483b-b1a2-d455824b5bd2}">
 		<property name="position">
 			<value>3.4285714285714284</value>
-		</property>
-		<property name="value">
-			<value>0</value>
-		</property>
-	</object>
-	<object class="AutomationPoint" id="{33a7c7e7-81db-4a28-aa48-261994b90cea}">
-		<property name="position">
-			<value>0</value>
-		</property>
-		<property name="value">
-			<value>1</value>
-		</property>
-		<property name="curveShape">
-			<value>0.25471893</value>
-		</property>
-	</object>
-	<object class="AutomationPoint" id="{678991b6-5e81-480c-9b05-c78104e2d83f}">
-		<property name="position">
-			<value>3.4285714285714279</value>
 		</property>
 		<property name="value">
 			<value>0</value>
