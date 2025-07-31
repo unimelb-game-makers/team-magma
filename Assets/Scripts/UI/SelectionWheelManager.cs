@@ -9,8 +9,6 @@ using System.Collections.Generic;
 
 public class SelectionWheelManager : MonoBehaviour
 {
-
-    [SerializeField] private GameObject selectionWheel; // The UI wheel to display
     [SerializeField] private GameObject selectionWheelPanel; // The UI wheel to display
     [SerializeField] private string inputName = "Tape"; // Input name as defined in the Input Manager
     [SerializeField] private BatteryManager batteryManager;
@@ -32,8 +30,14 @@ public class SelectionWheelManager : MonoBehaviour
 
     void Awake() {
         selectionWheelPanel.transform.localScale = Vector3.zero;
-    }    
-    
+    }
+
+    private void Start()
+    {
+        // TODO: Hacky way of dependency injection without using singleton
+        TapeNotificationManager.Instance.Init(this);
+    }
+
     void Update()
     {
         if (PauseManager.IsPaused && (PauseMenuController.Instance.isPauseMenu || StartMenuManager.Instance.isStartMenu))
@@ -250,11 +254,17 @@ public class SelectionWheelManager : MonoBehaviour
 
     public void UseTape()
     {
+        // TODO: This looks like dangerous recursion
         if (batteryManager.UseBattery(batteryNeeded) && isWheelActive)
         {
             UseTape();
             ToggleWheel();
         }
+    }
+
+    public void OnTapeComplete()
+    {
+        MusicTimeline.instance.SetSpeed(TempoMode.Default);
     }
 }
 

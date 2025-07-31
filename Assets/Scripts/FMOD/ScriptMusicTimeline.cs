@@ -143,6 +143,7 @@ namespace Timeline
 
         private void Update()
         {
+            _beatHandler.Update(Time.deltaTime);
             // TODO: Need to move this to a proper code path when the level starts
             if (Input.GetMouseButtonDown(0))
             {
@@ -177,7 +178,11 @@ namespace Timeline
 
             float speedRatio = TempoSetting.GetRatio(mode);
             _speedRatio = speedRatio;
-            musicInstance.setParameterByName("MusicSpeed", speedRatio);
+            // musicInstance.setParameterByName("MusicSpeed", speedRatio);
+            musicInstance.setPitch(speedRatio);
+            
+            _beatHandler.OnTempoChanged(mode);
+            _beatSpawner.OnTempoChanged(mode);
         }
 
         // BeatEventCallback: This method is called each time a new beat occurs

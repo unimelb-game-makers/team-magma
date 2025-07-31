@@ -49,6 +49,21 @@ public class BeatPopupItem : MonoBehaviour
         _sequence.Play().OnComplete(Resolve);
     }
 
+    public void OnTempoChanged(TempoMode _, BeatHandler beatHandler)
+    {
+        float remainingBeat = _beat - beatHandler.CurrentBeat;
+        if (remainingBeat <= 0) return;
+
+        float travelTime = remainingBeat * beatHandler.BeatInterval;
+        
+        // If we have a remaining beat, then we want to adjust our time to travel
+        _sequence.Kill();
+        _sequence = DOTween.Sequence();
+        _sequence.Append(leftHexagon.Rect.DOAnchorPos(_leftTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
+        _sequence.Join(rightHexagon.Rect.DOAnchorPos(_rightTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
+        _sequence.Play().OnComplete(Resolve);
+    }
+
     private void Resolve()
     {
         _sequence.Kill();
@@ -105,5 +120,4 @@ public class BeatPopupItem : MonoBehaviour
             _spawner.ResolveBeat(_beat);
             Destroy(gameObject);
         });
-        
     }}
