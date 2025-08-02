@@ -8,14 +8,8 @@ using UnityEngine.SceneManagement;
 [ExecuteInEditMode]
 public class VirtualCamera : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-
-    private CinemachineTransposer transposer;
-    //whether the camera is initially active 
-
+    //whether the camera is shouldbe initially active 
     [SerializeField] private bool initialActive = false;
-
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField, HideInInspector] private Vector3 cameraPosition = new Vector3(0, 0, 0);
@@ -39,6 +33,8 @@ public class VirtualCamera : MonoBehaviour
             playerTarget.transform.position = value;
         }
     }
+    [Tooltip("changes the displacement from camera to player")]
+
     [SerializeField] Vector3 followOffset = new Vector3(0, 0, 0);
     [SerializeField, HideInInspector] Vector3 previousOffset = new Vector3(0, 0, 0);
 
@@ -51,6 +47,8 @@ public class VirtualCamera : MonoBehaviour
             previousOffset = value;
         }
     }
+
+    [Tooltip("changes the distance from camera to player")]
 
     [SerializeField] public float distance;
     [SerializeField, HideInInspector] private float Distance
@@ -66,6 +64,8 @@ public class VirtualCamera : MonoBehaviour
     private Transform player;
 
 
+
+    //change the values on the inspector will reflect on the change in camera 
     void OnValidate()
     {
 
@@ -87,6 +87,8 @@ public class VirtualCamera : MonoBehaviour
     private void Update()
     {
 #if UNITY_EDITOR
+        //change the position of player or camera in editor will change the distance and displacement
+
         if (!Application.isPlaying)
         {
 
