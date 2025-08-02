@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UI;
 using UnityEngine;
 
 namespace Player.Stats
 {
     public class PlayerStats : MonoBehaviour, IHealthManager
     {
-        private PlayerCharacter playerCharacter;
         [SerializeField] private PlayerHealth healthStat;
         public PlayerHealth HealthStat => healthStat;
 
@@ -21,7 +17,6 @@ namespace Player.Stats
 
         public void Awake()
         {
-            playerCharacter = GetComponent<PlayerCharacter>();
             if (healthStat == null)
             {
                 throw new Exception("PlayerStats requires a health stat to function.");
@@ -56,7 +51,7 @@ namespace Player.Stats
 
         private void OnDeath()
         {
-            DefeatScreenManager.Instance.ShowDefeatScreen();
+            GameManager.Instance.OnPlayerDead();
         }
 
         private void OnDamaged(float health)
