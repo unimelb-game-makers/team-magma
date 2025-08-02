@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Level;
 using Player;
+using Timeline;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities.ServiceLocator;
@@ -166,6 +168,15 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// To be called when the player dies
+        /// </summary>
+        public void OnPlayerDead()
+        {
+            MusicTimeline.instance.StopTrack();
+            DefeatScreenManager.Instance.ShowDefeatScreen();
+        }
+
         public void ReloadLevel()
         {
             LoadingLevel();
@@ -177,6 +188,7 @@ namespace System
             Debug.Log("Level loaded.");
             PlayerCharacter.gameObject.SetActive(false);
         }
+        
         private void LevelLoaded()
         {
             Debug.Log("Level loaded.");
@@ -188,6 +200,8 @@ namespace System
             var cameraComponent = PlayerCharacter.GetComponent<PlayerCamera>();
             cameraComponent.FindActiveCamera();
             cameraComponent.SetYaw(SubGameManager.Instance.LevelSpawnPoint.eulerAngles.y);
+            
+            MusicTimeline.instance.StartTrack();
         }
 
         private void LevelReloaded()
@@ -203,6 +217,8 @@ namespace System
             cameraComponent.SetYaw(SubGameManager.Instance.LevelSpawnPoint.eulerAngles.y);
 
             PlayerCharacter.PlayerStats.OnReset();
+            
+            MusicTimeline.instance.StartTrack();
         }
 
     }
