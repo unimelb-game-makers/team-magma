@@ -71,6 +71,14 @@ namespace Player
         [SerializeField] private float dodgeForce = 20f; // New parameter for dodge force
 
         [Space(10)]
+
+        [Header("Ground Setup")]
+
+        [SerializeField] private float groundStickDistance = 0.5f;
+        [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private float maxAirStickTime = 0.3f;
+
+        [Space(10)]
         
         private BeatSpawner beatSpawner;
         private PlayerState _state = PlayerState.Normal;
@@ -108,7 +116,7 @@ namespace Player
 
         private bool _isMovingHorizontally;
         private bool _isMovingVertically;
-        private bool _isGrounded;
+        private bool _isGrounded = true;
 
         private float _previousDodge;
         private Vector3 _dodgeDirection;
@@ -124,6 +132,9 @@ namespace Player
         private TempoMode _mode = TempoMode.Default;
         private static readonly int JumpAnim = Animator.StringToHash("Jump");
         private static readonly int InAirAnim = Animator.StringToHash("inAir");
+        private float groundedCooldown = 1f;
+        private float groundedCooldownTimer = 0f;
+        private float timeSinceLeftGround = 0f;
 
         private void Awake()
         {
@@ -215,20 +226,52 @@ namespace Player
 
         private void Move()
         {
+            // avoid immediate sticking on jump
+            if (groundedCooldownTimer > 0f)
+            {
+                groundedCooldownTimer -= Time.fixedDeltaTime;
+                if (groundedCooldownTimer <= 0f)
+                {
+                    _isGrounded = false;
+                }
+            }
+            else if (!_isGrounded)
+            {
+                // Increase air time counter
+                timeSinceLeftGround += Time.fixedDeltaTime;
+
+                // Only stick if the player has been off the ground for less than maxAirStickTime (so that the jumping & droping won't count)
+                if (timeSinceLeftGround < maxAirStickTime)
+                {
+                    StickToGround();
+                }
+                else
+                {
+                    // Too long in air — no stick; keep _isGrounded false
+                    _isGrounded = false;
+                }
+            }
+            else
+            {
+                // Player is grounded — reset air timer
+                timeSinceLeftGround = 0f;
+            }
+
             if (Input.GetButtonDown("Dodge") && !_DodgeButtonDown && Time.time > _previousDodge + dodgeRecoverTime && !_isDodging)
             {
-                _dodgeDirection = transform.forward; 
+                _dodgeDirection = transform.forward;
                 _previousDodge = Time.time;
                 _DodgeButtonDown = true;
                 _isDodging = true;
 
-                if (!TrackMovementInput()) {
+                if (!TrackMovementInput())
+                {
                     // Move toward the direction the player is facing
                     _dodgeDirection = transform.forward;
                 }
 
                 GetComponent<Damage.Damageable>().setIsInvulnerable(true);
-                
+
                 // Apply dodge force instead of using MovePosition
                 _rigidbody.AddForce(_dodgeDirection * dodgeForce, ForceMode.Impulse);
             }
@@ -238,12 +281,12 @@ namespace Player
                 _DodgeButtonDown = false;
             }
 
-            if(Input.GetButtonDown("Jump")) {
+            if (Input.GetButtonDown("Jump")) {
                 if (_isGrounded) {
                     _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z); // Reset Y
                     _rigidbody.AddForce(new Vector3(0.0f, jumpHeight, 0.0f) * jumpForce, ForceMode.Impulse);
                     airJumpsRemaining = maxAirJumps; // Reset air jumps on ground
-                    _isGrounded = false;
+                    groundedCooldownTimer = groundedCooldown;
                     animator.SetTrigger(JumpAnim);
 
                 } else if (airJumpsRemaining > 0) {
@@ -411,7 +454,7 @@ namespace Player
             }
 
             _isGrounded = false; // In case all contacts are walls/ceilings
-            Animator.SetBool(InAirAnim, true);
+            Animator.SetBool(InAirAnim, !_isGrounded);
     	}
 
         void OnCollisionExit(Collision collision)
@@ -420,9 +463,29 @@ namespace Player
             Animator.SetBool(InAirAnim, true);
         }
 
+        void StickToGround()
+        {
+            BoxCollider col = GetComponent<BoxCollider>();
+            // Calculate a ray starting just above the bottom of the collider
+            Vector3 rayOrigin = transform.position + col.center - Vector3.up * (col.size.y / 2 - 0.05f);
+            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, groundStickDistance, groundLayer))
+            {
+                Debug.Log("Hit ground: " + hit.collider.name);
+                // If the player is only a tiny bit above ground, snap down
+                if (hit.distance <= groundStickDistance - 0.05f)
+                {
+                    _rigidbody.position = new Vector3(_rigidbody.position.x, _rigidbody.position.y - hit.distance + 0.05f, _rigidbody.position.z);
+                    _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0f, _rigidbody.velocity.z);
+                    _isGrounded = true;
+                    Animator.SetBool(InAirAnim, false);
+                }
+            }
+        }
+
         private void OnDestroy()
         {
             MusicTimeline.OnTempoChanged -= OnTempoChanged;
         }
+        
     }
 }
