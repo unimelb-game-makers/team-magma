@@ -22,7 +22,7 @@ public class TapeScroll : MonoBehaviour, ISyncable
     [SerializeField] private GameObject fastTape;
 
     [SerializeField] float startingScale ;
-
+    Coroutine runningCoroutine;
     void Awake()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -106,7 +106,7 @@ public class TapeScroll : MonoBehaviour, ISyncable
             delta += 2 * Mathf.PI;
         return delta - Mathf.PI;
     }
-    
+
     void setTape()
     {
         setPosition(slowTape, angle + SlowTapeAngleOffset);
