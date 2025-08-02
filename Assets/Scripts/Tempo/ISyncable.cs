@@ -4,6 +4,6 @@ namespace Tempo
 {
     public interface ISyncable : IGameService
     {
-        void Affect(TapeType tapeType, float duration, float effectValue);
+        void Affect(TempoMode mode, float duration, float effectValue);
     }
 }

@@ -16,6 +16,6 @@ namespace Hazard
         [SerializeField] protected float _slowEffectTime = 5f;
         [SerializeField] protected float _fastEffectValue = 5f;
         [SerializeField] protected float _slowEffectValue = 5f;
-        public abstract void Affect(TapeType tapeType, float duration, float effectValue);
+        public abstract void Affect(TempoMode mode, float duration, float effectValue);
     }
 }

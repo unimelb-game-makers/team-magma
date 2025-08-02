@@ -133,9 +133,10 @@ namespace Hazard
         /**
          * Change the fan speed and damage for 'duration' seconds.
          */
-        public override void Affect(TapeType tapeType, float duration, float effectValue)
+        public override void Affect(TempoMode mode, float duration, float effectValue)
         {
-            if (tapeType == TapeType.Slow)
+
+            if(mode == TempoMode.Slow)
             {
                 changeParticleEffect(_particleSlowFactor);
 
@@ -190,7 +191,8 @@ namespace Hazard
             }
 
             // if TapeType.Fast, switch to fanPush_Fast
-            if (tapeType == TapeType.Fast)
+
+            if(mode == TempoMode.Fast)
             {
                 changeParticleEffect(_particleFastFactor);
 

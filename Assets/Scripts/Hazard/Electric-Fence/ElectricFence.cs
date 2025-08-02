@@ -37,18 +37,18 @@ namespace Hazard.Electric_Fence
             doorCoroutine = StartCoroutine(DoorRepeat());
         }
         
-        public override void Affect(TapeType tapeType, float duration, float effectValue)
+        public override void Affect(TempoMode mode, float duration, float effectValue)
         {
-            switch (tapeType)
+            switch (mode)
             {
-                case TapeType.Slow:
+                case TempoMode.Slow:
                     if (useDefaultEffectTimeValues) {
                         StartCoroutine(FastTempo(duration));
                     } else {
                         StartCoroutine(FastTempo(_slowEffectTime));
                     }
                     break;
-                case TapeType.Fast:
+                case TempoMode.Fast:
                     if (useDefaultEffectTimeValues) {
                         StartCoroutine(SlowTempo(duration));
                     } else {
@@ -56,7 +56,7 @@ namespace Hazard.Electric_Fence
                     }
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(tapeType), tapeType, null);
+                    throw new ArgumentOutOfRangeException(mode.ToString(), mode, null);
             }
         }
         
