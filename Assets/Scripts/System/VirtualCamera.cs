@@ -2,39 +2,138 @@ using System;
 using System.Collections;
 using System.Collections.Generic;   
 using Cinemachine;
+using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+[ExecuteInEditMode]
 public class VirtualCamera : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    private CinemachineVirtualCamera virtualCamera;
+
     private CinemachineTransposer transposer;
+    //whether the camera is initially active 
+
     [SerializeField] private bool initialActive = false;
-    [SerializeField] Vector3 followOffset = new Vector3(0, 0, 0);
-    private Transform player;
-    void Awake()
+
+
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField, HideInInspector] private Vector3 cameraPosition = new Vector3(0, 0, 0);
+    private Vector3 CameraPosition
     {
-        virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
-        if (virtualCamera == null)
+        get { return cameraPosition; }
+        set
         {
-            Debug.Log("no virtual camera found");
-            Destroy(gameObject);
-            return;
+            cameraPosition = value;
+            virtualCamera.transform.position = value;
+        }
+    }
+    [SerializeField] private Transform playerTarget;
+    [SerializeField, HideInInspector] private Vector3 playerPosition = new Vector3(0, 0, 0);
+    private Vector3 PlayerPosition
+    {
+        get { return playerPosition; }
+        set
+        {
+            playerPosition = value;
+            playerTarget.transform.position = value;
+        }
+    }
+    [SerializeField] Vector3 followOffset = new Vector3(0, 0, 0);
+    [SerializeField, HideInInspector] Vector3 previousOffset = new Vector3(0, 0, 0);
+
+    private Vector3 FollowOffset
+    {
+        get { return followOffset; }
+        set
+        {
+            followOffset = value;
+            previousOffset = value;
+        }
+    }
+
+    [SerializeField] public float distance;
+    [SerializeField, HideInInspector] private float Distance
+    {
+        get { return distance; }
+        set
+        {
+            distance = value;
+            previousDistance = value;
+        }
+    }
+    private float previousDistance;
+    private Transform player;
+
+
+    void OnValidate()
+    {
+
+        if (previousOffset != followOffset)
+        {
+            previousOffset = followOffset;
+            Distance = FollowOffset.magnitude;
+            CameraPosition = PlayerPosition + FollowOffset;
+        }
+        if (distance != previousDistance)
+        {
+            previousDistance = distance;
+            FollowOffset = FollowOffset.normalized * distance;
+            CameraPosition = PlayerPosition + FollowOffset;
         }
 
+
+    }   
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+
+            if (playerTarget == null)
+            {
+                Debug.Log("player not assigned");
+                return;
+            }
+            if (playerPosition != playerTarget.transform.position)
+            {
+                playerPosition = playerTarget.transform.position;
+                Debug.Log("player changed");
+                FollowOffset = cameraPosition - playerPosition;
+                Distance = FollowOffset.magnitude;
+
+            }
+            if (cameraPosition != virtualCamera.transform.position)
+            {
+                cameraPosition = virtualCamera.transform.position;
+                Debug.Log("camera changed");
+
+                FollowOffset = cameraPosition - playerPosition;
+                Distance = FollowOffset.magnitude;
+
+            }
+        }
+#endif
+
     }
+
 
     void Start()
     {
-        player = GameManager.Instance.PlayerCharacter.transform;
-        CameraManager.Instance.register(virtualCamera, initialActive);
+        if (Application.isPlaying)
+        {
+
+            player = GameManager.Instance.PlayerCharacter.transform;
+            playerTarget.gameObject.SetActive(false);
+            CameraManager.Instance.register(virtualCamera, initialActive);
+        }
     }
 
     void LateUpdate()
-    {   
+    {   if (Application.isPlaying)
+        {
         virtualCamera.transform.position = player.position + followOffset;
-
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -44,4 +143,6 @@ public class VirtualCamera : MonoBehaviour
             CameraManager.Instance.enableCamera(virtualCamera);
         }
     }
+    
+
 }
