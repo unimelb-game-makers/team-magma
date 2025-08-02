@@ -31,18 +31,18 @@ namespace Hazard.Train
             ServiceLocator.Instance.Unregister(this);
         }
 
-        public override void Affect(TapeType tapeType, float duration, float effectValue)
+        public override void Affect(TempoMode mode, float duration, float effectValue)
         {
-            switch (tapeType)
+            switch (mode)
             {
-                case TapeType.Slow:
+                case TempoMode.Slow:
                     if (useDefaultEffectTimeValues) {
                         StartCoroutine(SlowTempo(duration, effectValue));
                     } else {
                         StartCoroutine(SlowTempo(_slowEffectTime, _slowEffectValue));
                     }
                     break;
-                case TapeType.Fast:
+                case TempoMode.Fast:
                     if (useDefaultEffectTimeValues) {
                         StartCoroutine(FastTempo(duration, effectValue));
                     } else {

@@ -6,7 +6,7 @@ namespace Platforms
 {
     public abstract class PlatformComponent : MonoBehaviour, ISyncable
     {
-        public abstract void Affect(TapeType tapeType, float duration, float effectValue);
+        public abstract void Affect(TempoMode mode, float duration, float effectValue);
         public void OnChangeTrack()
         {
             throw new System.NotImplementedException();

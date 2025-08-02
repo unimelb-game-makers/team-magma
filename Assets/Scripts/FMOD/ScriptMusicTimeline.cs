@@ -73,6 +73,7 @@ namespace Timeline
 
         private bool _started = false;
         public static Action OnBeat;
+        public static Action<TempoMode> OnTempoChanged;
 
 #if UNITY_EDITOR
         /// <summary>
@@ -183,6 +184,7 @@ namespace Timeline
             
             _beatHandler.OnTempoChanged(mode);
             _beatSpawner.OnTempoChanged(mode);
+            OnTempoChanged?.Invoke(mode);
         }
 
         // BeatEventCallback: This method is called each time a new beat occurs
