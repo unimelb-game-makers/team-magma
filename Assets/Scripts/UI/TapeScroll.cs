@@ -11,7 +11,10 @@ using Utilities.ServiceLocator;
 public class TapeScroll : MonoBehaviour, ISyncable
 {
     TempoMode mode = TempoMode.Default;
-     float angle = 0;
+    //angle corresponds to the default tape. 
+    float angle = 0;
+    const float SlowTapeAngleOffset = - 2* (float)Mathf.PI /3;
+    const float FastTapeAngleOffset = 2 * (float)Mathf.PI / 3;
     [SerializeField] private float switchDuration = 1;
     [SerializeField] private float radius = 100;
     [SerializeField] private GameObject slowTape;
@@ -19,8 +22,6 @@ public class TapeScroll : MonoBehaviour, ISyncable
     [SerializeField] private GameObject fastTape;
 
     [SerializeField] float startingScale ;
-
-    Coroutine runningCoroutine;
 
     void Awake()
     {
@@ -42,13 +43,17 @@ public class TapeScroll : MonoBehaviour, ISyncable
                 if (runningCoroutine != null) {
                     StopCoroutine(runningCoroutine);
                 }
-                runningCoroutine = StartCoroutine(Rotation(2* (float)Mathf.PI /3));
+                //rotate default tape to -fastTapeAngleOffset, 
+                //slow tape will be at the display angle 
+                runningCoroutine = StartCoroutine(Rotation(-SlowTapeAngleOffset));
                 break;
             case TempoMode.Fast:
                 if (runningCoroutine != null) {
                     StopCoroutine(runningCoroutine);
                 }
-                runningCoroutine = StartCoroutine(Rotation(- 2* (float)Mathf.PI /3));
+                //rotate default tape to -fastTapeAngleOffset, 
+                //fast tape will be at the display angle 
+                runningCoroutine = StartCoroutine(Rotation(-FastTapeAngleOffset));
 
                 break;
             case TempoMode.Default:
@@ -70,6 +75,7 @@ public class TapeScroll : MonoBehaviour, ISyncable
 
     }
 
+    //rotate the angle of default tape to target angle
     IEnumerator Rotation(float targetAngle)
     {   
 
@@ -86,9 +92,10 @@ public class TapeScroll : MonoBehaviour, ISyncable
             yield return null;
         }
 
-        angle = toAngle; // Snap to exact end
+        angle = toAngle; 
     }
 
+    // find the closest angle rotation between from and to 
     float DeltaAngleRad(float from, float to)
     {
         float delta = to - from;
@@ -99,12 +106,14 @@ public class TapeScroll : MonoBehaviour, ISyncable
             delta += 2 * Mathf.PI;
         return delta - Mathf.PI;
     }
+    
     void setTape()
     {
-        setPosition(slowTape, angle - 2 * (float)Math.PI / 3f);
+        setPosition(slowTape, angle + SlowTapeAngleOffset);
         setPosition(defaultTape, angle);
-        setPosition(fastTape, angle + 2 * (float)Math.PI / 3f);
+        setPosition(fastTape, angle + FastTapeAngleOffset);
     }
+
     void setPosition(GameObject tape, float angle)
     {
         float distance = 2f - Mathf.Cos(angle);
