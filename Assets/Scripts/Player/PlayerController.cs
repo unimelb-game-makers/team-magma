@@ -345,8 +345,9 @@ namespace Player
             {
                 case OrientationType.BasedOnInput:
                     if (TrackMovementInput()) {
-                        targetRotation = Quaternion.LookRotation(Quaternion.AngleAxis(Camera.transform.rotation.eulerAngles.y, Vector3.up) * new Vector3(_horizontalInput, 0, _verticalInput));
-                        // Smoothly rotate towards the target rotation
+                        Vector3 direction = _rigidbody.velocity.normalized;
+                        direction.y = 0; // Don't rotate along the y-axis
+                        targetRotation = Quaternion.LookRotation(direction);
                         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
                     }
                     break;
