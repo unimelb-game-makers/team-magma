@@ -219,6 +219,9 @@ namespace System
             PlayerCharacter.PlayerStats.OnReset();
             
             MusicTimeline.instance.StartTrack();
+            // Hacky way of resetting the tape battery
+            // TapeNotificationManager > SelectionWheelManager > BatteryManager
+            TapeNotificationManager.Instance.OnReset();
         }
 
     }

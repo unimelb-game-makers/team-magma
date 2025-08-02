@@ -267,5 +267,10 @@ public class SelectionWheelManager : MonoBehaviour
         MusicTimeline.instance.SetSpeed(TempoMode.Default);
         PlayTapeEffect(TempoMode.Default, tapeEffectDuration, 0.5f);
     }
+    
+    public void OnReset()
+    {
+        batteryManager.Refresh();
+    }
 }
 
