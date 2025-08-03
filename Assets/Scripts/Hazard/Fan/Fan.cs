@@ -138,7 +138,7 @@ namespace Hazard
 
             if(mode == TempoMode.Slow)
             {
-                changeParticleEffect(_particleSlowFactor);
+                ChangeParticleEffect(_particleSlowFactor);
 
                 fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_slowSpeed);
                 foreach (Transform fanBlade in fanBlades.transform)
@@ -194,7 +194,7 @@ namespace Hazard
 
             if(mode == TempoMode.Fast)
             {
-                changeParticleEffect(_particleFastFactor);
+                ChangeParticleEffect(_particleFastFactor);
 
                 fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
                 foreach (Transform fanBlade in fanBlades.transform)
@@ -238,7 +238,7 @@ namespace Hazard
         private IEnumerator AffectTimer(float duration)
         {
             yield return new WaitForSeconds(duration);
-            changeParticleEffect(1);
+            ChangeParticleEffect(1);
             fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_defaultSpeed);
             foreach (Transform fanBlade in fanBlades.transform)
             {
@@ -264,7 +264,7 @@ namespace Hazard
         }
 
 
-        void changeParticleEffect(float factor)
+        void ChangeParticleEffect(float factor)
         {
             var main = windParticle.main;
             main.startSpeedMultiplier = normalParticleSpeed * factor;
