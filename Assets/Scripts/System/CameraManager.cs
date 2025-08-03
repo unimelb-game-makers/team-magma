@@ -26,7 +26,7 @@ public class CameraManager : MonoBehaviour
         if (initialActive) initialCamera = camera;
     }
 
-    public void detele(CinemachineVirtualCamera camera)
+    public void Delete(CinemachineVirtualCamera camera)
     {
         cameras.Remove(camera);
     }
