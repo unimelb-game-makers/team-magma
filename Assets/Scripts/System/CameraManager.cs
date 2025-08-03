@@ -19,7 +19,7 @@ public class CameraManager : MonoBehaviour
         cameras = new List<CinemachineVirtualCamera>();
     }
    
-    public void register(CinemachineVirtualCamera camera, bool initialActive)
+    public void Register(CinemachineVirtualCamera camera, bool initialActive)
     {
         cameras.Add(camera);
         camera.Priority = initialActive ? activePriority : inactivePriority;
@@ -31,7 +31,7 @@ public class CameraManager : MonoBehaviour
         cameras.Remove(camera);
     }
 
-    public void disableAllCamera()
+    public void DisableAllCamera()
     {
         foreach (CinemachineVirtualCamera camera in cameras)
         {
@@ -39,14 +39,14 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    public void enableCamera(CinemachineVirtualCamera camera)
+    public void EnableCamera(CinemachineVirtualCamera camera)
     {
-        disableAllCamera();
+        DisableAllCamera();
         camera.Priority = activePriority;
     }
     public void ResetCamera()
     {
-        enableCamera(initialCamera);
+        EnableCamera(initialCamera);
         
     }
 }

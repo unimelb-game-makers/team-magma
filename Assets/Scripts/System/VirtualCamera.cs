@@ -127,7 +127,7 @@ public class VirtualCamera : MonoBehaviour
 
             player = GameManager.Instance.PlayerCharacter.transform;
             playerTarget.gameObject.SetActive(false);
-            CameraManager.Instance.register(virtualCamera, initialActive);
+            CameraManager.Instance.Register(virtualCamera, initialActive);
         }
     }
 
@@ -142,7 +142,7 @@ public class VirtualCamera : MonoBehaviour
     {
         if (virtualCamera != null)
         {
-            CameraManager.Instance.enableCamera(virtualCamera);
+            CameraManager.Instance.EnableCamera(virtualCamera);
         }
     }
     
