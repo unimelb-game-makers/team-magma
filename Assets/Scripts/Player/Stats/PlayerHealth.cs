@@ -27,7 +27,6 @@ namespace Player.Stats
         public override StatType StatType => StatType.Health;
         
         private Coroutine _damageImmuneCoroutine;
-        
         public override float Modify(float amount)
         {
             //if the player is not invincible, take damage
@@ -54,12 +53,17 @@ namespace Player.Stats
         public override void DecreaseMaxValue(float amount)
         {
             base.DecreaseMaxValue(amount);
-            if(MaxValue <= 0)
+            if (MaxValue <= 0)
             {
-                OnDeath?.Invoke();
+                Death();
             }
         }
-        
+        public void Death()
+        {
+            OnDeath?.Invoke();
+            CameraManager.Instance.ResetCamera();
+
+        }
         private void OnDamageImmune()
         {
             onDamageImmune?.Invoke();

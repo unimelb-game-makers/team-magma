@@ -7,6 +7,7 @@ using Tempo;
 using Timeline;
 using Utilities.ServiceLocator;
 using UI;
+using Player.Stats;
 
 namespace Player
 {
@@ -156,7 +157,7 @@ namespace Player
         private void Update()
         {
             if (PauseManager.IsPaused || DefeatScreenManager.Instance.IsDefeat() || SuccessScreenManager.Instance.IsSuccess() || !_canControl) return;
-            
+
             _horizontalInput = Input.GetAxis("Horizontal");
             _verticalInput = Input.GetAxis("Vertical");
 
@@ -171,6 +172,11 @@ namespace Player
                 case PlayerState.Attacking:
                     AttackUpdate();
                     break;
+            }
+
+            if (transform.position.y < -500)
+            {
+                GetComponent<PlayerHealth>().Death();
             }
         }
 
