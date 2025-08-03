@@ -44,7 +44,7 @@ public class CameraManager : MonoBehaviour
         disableAllCamera();
         camera.Priority = activePriority;
     }
-    public void Reset()
+    public void ResetCamera()
     {
         enableCamera(initialCamera);
         
