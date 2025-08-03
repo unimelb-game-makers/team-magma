@@ -30,7 +30,6 @@ public class ChaseState : BaseEnemyState
     }
 
     public override void UpdateState() {
-        Debug.Log("Enemy Chase State");
         enemyController.Chase();
 
         // Footsteps sound.

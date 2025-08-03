@@ -42,6 +42,14 @@ namespace Hazard
         [Tooltip("The speed at which the fan rotates when at slow tempo.")]
         [SerializeField] private Vector3 _slowSpeed = new(0, 0, -10);
 
+        [Header("Particle Setting")]
+        [SerializeField] private ParticleSystem windParticle;
+        //displacement of spawning position, change when the particle changes 
+        private float normalParticlePositionZ;
+        private float normalParticleSpeed;
+        [SerializeField] private float _particleFastFactor = 2;
+        [SerializeField] private float _particleSlowFactor = 0.5f;
+
         [Header("Damage and Knockback")]
         [SerializeField] private float _defaultDamage = 10;
         [Tooltip("The damage which the fan deals when at fast tempo.")]
@@ -113,6 +121,8 @@ namespace Hazard
             // Only the default areas should be active at the start.
             fanPushFast.SetActive(false);
             fanPullFast.SetActive(false);
+            normalParticlePositionZ = windParticle.transform.localPosition.z;
+            normalParticleSpeed = windParticle.main.startSpeedMultiplier;
         }
 
         public void Start()
@@ -125,15 +135,18 @@ namespace Hazard
          */
         public override void Affect(TempoMode mode, float duration, float effectValue)
         {
+
             if(mode == TempoMode.Slow)
             {
+                ChangeParticleEffect(_particleSlowFactor);
+
                 fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_slowSpeed);
                 foreach (Transform fanBlade in fanBlades.transform)
                 {
                     fanBlade.GetComponent<FanDamager>().SetDamage(_slowDamage);
                     fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_slowKnockbackForce, _slowEnemyKnockbackForce);
                 }
-                
+
                 // Disable the 'fanPush' object so no characters are pushed.
                 if (fanPushDefault.activeSelf)
                 {
@@ -167,16 +180,22 @@ namespace Hazard
                 // then reset it.
                 if (resetFanCoroutine != null) StopCoroutine(resetFanCoroutine);
 
-                if (useDefaultEffectTimeValues) {
+                if (useDefaultEffectTimeValues)
+                {
                     resetFanCoroutine = StartCoroutine(AffectTimer(duration));
-                } else {
+                }
+                else
+                {
                     resetFanCoroutine = StartCoroutine(AffectTimer(_slowEffectTime));
                 }
             }
 
             // if TapeType.Fast, switch to fanPush_Fast
+
             if(mode == TempoMode.Fast)
             {
+                ChangeParticleEffect(_particleFastFactor);
+
                 fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
                 foreach (Transform fanBlade in fanBlades.transform)
                 {
@@ -190,7 +209,7 @@ namespace Hazard
                 }
                 fanPushDefault.SetActive(false);
                 fanPushFast.SetActive(true);
-                
+
                 if (fanPullDefault.activeSelf)
                 {
                     fanPullDefault.GetComponent<FanArea>().RemoveAllObjects();
@@ -202,9 +221,12 @@ namespace Hazard
 
                 if (resetFanCoroutine != null) StopCoroutine(resetFanCoroutine);
 
-                if (useDefaultEffectTimeValues) {
+                if (useDefaultEffectTimeValues)
+                {
                     resetFanCoroutine = StartCoroutine(AffectTimer(duration));
-                } else {
+                }
+                else
+                {
                     resetFanCoroutine = StartCoroutine(AffectTimer(_fastEffectTime));
                 }
             }
@@ -216,9 +238,7 @@ namespace Hazard
         private IEnumerator AffectTimer(float duration)
         {
             yield return new WaitForSeconds(duration);
-
-            // Code for Animations and Sounds.
-
+            ChangeParticleEffect(1);
             fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_defaultSpeed);
             foreach (Transform fanBlade in fanBlades.transform)
             {
@@ -241,6 +261,18 @@ namespace Hazard
             fanPullFast.SetActive(false);
 
             fanStopper.SetActive(true);
+        }
+
+
+        void ChangeParticleEffect(float factor)
+        {
+            var main = windParticle.main;
+            main.startSpeedMultiplier = normalParticleSpeed * factor;
+            Vector3 position = windParticle.transform.localPosition;
+            windParticle.transform.localPosition = new Vector3(
+                position.x, position.y, normalParticlePositionZ * factor
+            );
+
         }
     }
 }
