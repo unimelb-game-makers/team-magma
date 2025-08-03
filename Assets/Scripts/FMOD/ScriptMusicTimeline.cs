@@ -24,6 +24,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using FMOD.Studio;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -102,8 +103,22 @@ namespace Timeline
             _beatSpawner.Init(_beatHandler);
         }
 
-        private void StartTrack()
+        /// <summary>
+        /// Used to stop the currently playing track.
+        /// </summary>
+        public void StopTrack()
         {
+            musicInstance.stop(STOP_MODE.IMMEDIATE);
+        }
+        
+        /// <summary>
+        /// Used to start the track. It will automatically stop a currently playing track.
+        /// </summary>
+        public void StartTrack()
+        {
+            // Stop the track if it is already playing
+            musicInstance.stop(STOP_MODE.IMMEDIATE);
+            
             // Explicitly create the delegate object and assign it to a member so it doesn't get freed
             // by the garbage collected while it's being used
             beatCallback = BeatEventCallback;
@@ -145,15 +160,6 @@ namespace Timeline
         private void Update()
         {
             _beatHandler.Update(Time.deltaTime);
-            // TODO: Need to move this to a proper code path when the level starts
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (!_started)
-                {
-                    StartTrack();
-                    _started = true;
-                }
-            }
         }
 
         void OnDestroy()
