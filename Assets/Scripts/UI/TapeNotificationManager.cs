@@ -36,13 +36,15 @@ public class TapeNotificationManager : Singleton<TapeNotificationManager>
         _selectionWheel = selectionWheel;
     }
 
+    public void OnReset()
+    {
+        _selectionWheel.OnReset();
+        ResetTapeNotification();
+    }
+
     public void ActivateTapeUI(TempoMode mode, float duration)
     {
-        if (currentRoutine != null)
-            StopCoroutine(currentRoutine);
-        if (countdownRoutine != null)
-            StopCoroutine(countdownRoutine);
-
+        KillCoroutines();
         isFadingOut = false;
         currentRoutine = StartCoroutine(HandleTapeUI(mode, duration));
     }
@@ -152,8 +154,17 @@ public class TapeNotificationManager : Singleton<TapeNotificationManager>
         ResetTapeNotification();
     }
 
+    private void KillCoroutines()
+    {
+        if (currentRoutine != null)
+            StopCoroutine(currentRoutine);
+        if (countdownRoutine != null)
+            StopCoroutine(countdownRoutine);
+    }
+
     private void ResetTapeNotification()
     {
+        KillCoroutines();
         uiGroup.anchoredPosition = initialPosition;
         canvasGroup.alpha = 0f;
         timerText.text = "";

@@ -13,14 +13,18 @@ public class BatteryManager : MonoBehaviour
     private Tween flashTween;
     private Color originalColor;
 
-
-    void Start()
+    private void Start()
     {
-        currentBattery = maxBattery; // Start with a full battery
+        Refresh();
+    }
+
+    public void Refresh()
+    {
+        currentBattery = maxBattery;
         UpdateBatteryUI();
     }
 
-    void Update()
+    private void Update()
     {
         RecoverBattery();
     }

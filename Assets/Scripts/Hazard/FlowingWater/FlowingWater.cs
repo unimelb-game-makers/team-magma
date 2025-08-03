@@ -2,10 +2,8 @@
 // 12/01/2025 18:10
 
 using System.Collections;
-using System.Collections.Generic;
 using Utilities.ServiceLocator;
 using UnityEngine;
-using Platforms;
 using Tempo;
 
 namespace Hazard
@@ -51,11 +49,12 @@ namespace Hazard
         [SerializeField] private float mediumRippleDensity = 12f;
         [SerializeField] private float fastRippleDensity = 15f;
 
-        [SerializeField] private Material waterMaterial;
         private static readonly int RippleSpeedID = Shader.PropertyToID("_rippleSpeed"),
                                     WaveSpeedID = Shader.PropertyToID("_waveSpeed"),
                                     RippleDensityID = Shader.PropertyToID("_rippleDensity");
 
+        [SerializeField] private Renderer _waterRenderer;
+        private Material _waterMaterial;
         private Coroutine resetWaterCoroutine;
 
         public void Awake()
@@ -71,6 +70,8 @@ namespace Hazard
 
             // The default position of the killArea should be height2.
             killArea.transform.position = new Vector3(killArea.transform.position.x, height2, killArea.transform.position.z);
+
+            _waterMaterial = _waterRenderer.material;
         }
 
         public void Start()
@@ -96,30 +97,11 @@ namespace Hazard
             // Ensure the exact target position is set
             killArea.transform.position = targetPosition;
         }
-        private IEnumerator ChangeMaterialDensity(float targetRippleSpeed, float targetWaveSpeed, float targetRippleDensity)
+        private void ChangeMaterialDensity(float targetRippleSpeed, float targetWaveSpeed, float targetRippleDensity)
         {
-            // Change the material properties over time
-            float elapsedTime = 0f;
-            float initialRippleSpeed = waterMaterial.GetFloat(RippleSpeedID);
-            float initialWaveSpeed = waterMaterial.GetFloat(WaveSpeedID);
-            float initialRippleDensity = waterMaterial.GetFloat(RippleDensityID);
-
-            while (elapsedTime < _duration)
-            {
-                float t = elapsedTime / _duration;
-
-                waterMaterial.SetFloat(RippleSpeedID, Mathf.Lerp(initialRippleSpeed, targetRippleSpeed, t));
-                waterMaterial.SetFloat(WaveSpeedID, Mathf.Lerp(initialWaveSpeed, targetWaveSpeed, t));
-                waterMaterial.SetFloat(RippleDensityID, Mathf.Lerp(initialRippleDensity, targetRippleDensity, t));
-
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            // Ensure the exact target values are set
-            waterMaterial.SetFloat(RippleSpeedID, targetRippleSpeed);
-            waterMaterial.SetFloat(WaveSpeedID, targetWaveSpeed);
-            waterMaterial.SetFloat(RippleDensityID, targetRippleDensity);
+            _waterMaterial.SetFloat(RippleSpeedID, targetRippleSpeed);
+            _waterMaterial.SetFloat(WaveSpeedID, targetWaveSpeed);
+            _waterMaterial.SetFloat(RippleDensityID, targetRippleDensity);
         }
         /**
          * Move the 'KillArea' depending on the TapeType.
@@ -130,7 +112,7 @@ namespace Hazard
             {
                 // Move the 'KillArea' object to height1.
                 StartCoroutine(MoveKillAreaToHeight(height1));
-                StartCoroutine(ChangeMaterialDensity(slowRippleSpeed, slowWaveSpeed, slowRippleDensity));
+                ChangeMaterialDensity(slowRippleSpeed, slowWaveSpeed, slowRippleDensity);
 
                 // Code for Animations and Sounds.
 
@@ -152,7 +134,7 @@ namespace Hazard
             {
                 // Move the 'KillArea' object to height1.
                 StartCoroutine(MoveKillAreaToHeight(height3));
-                StartCoroutine(ChangeMaterialDensity(fastRippleSpeed, fastWaveSpeed, fastRippleDensity));
+                ChangeMaterialDensity(fastRippleSpeed, fastWaveSpeed, fastRippleDensity);
 
                 // Code for Animations and Sounds.
                 if (resetWaterCoroutine != null) StopCoroutine(resetWaterCoroutine);
@@ -178,7 +160,7 @@ namespace Hazard
 
             // Move the 'KillArea' object to height3.
             StartCoroutine(MoveKillAreaToHeight(height2));
-            StartCoroutine(ChangeMaterialDensity(mediumRippleSpeed, mediumWaveSpeed, mediumRippleDensity));
+            ChangeMaterialDensity(mediumRippleSpeed, mediumWaveSpeed, mediumRippleDensity);
         }
     }
 
