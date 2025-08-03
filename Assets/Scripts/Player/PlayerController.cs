@@ -477,7 +477,6 @@ namespace Player
             Vector3 rayOrigin = transform.position + col.center - Vector3.up * (col.size.y / 2 - 0.05f);
             if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, groundStickDistance, groundLayer))
             {
-                Debug.Log("Hit ground: " + hit.collider.name);
                 // If the player is only a tiny bit above ground, snap down
                 if (hit.distance <= groundStickDistance - 0.05f)
                 {
