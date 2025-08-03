@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 30
+  isSyncable: 1
   idleDuration: 3
   presetPatrolRoute: 0
   patrolSpeed: 5
@@ -109,7 +110,7 @@ MonoBehaviour:
   destinationToleranceRange: 1.5
   sightRange: 10
   attackRange: 2
-  sfxModifier: 0.2
+  sfxModifier: 1
   idleSoundReference:
     Guid:
       Data1: 347416895

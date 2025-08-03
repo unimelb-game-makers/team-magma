@@ -337,6 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
+  isSyncable: 1
   idleDuration: 3
   presetPatrolRoute: 0
   patrolSpeed: 3
@@ -350,6 +351,7 @@ MonoBehaviour:
   destinationToleranceRange: 1.5
   sightRange: 10
   attackRange: 2
+  sfxModifier: 1
   idleSoundReference:
     Guid:
       Data1: 347416895
@@ -378,8 +380,7 @@ MonoBehaviour:
       Data3: -128471909
       Data4: -739394485
     Path: event:/Weapons/Explosion
-  slowTempo: 0
-  fastTempo: 0
+  animator: {fileID: 0}
   damageAreaPrefab: {fileID: 3345562608605307880, guid: 09bae0f8be2e24537a4016ff51518298, type: 3}
   originalWindUpTime: 0.5
   originalDamageRadius: 2.5
