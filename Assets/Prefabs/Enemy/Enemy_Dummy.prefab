@@ -286,6 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 200
+  isSyncable: 1
   idleDuration: 3
   presetPatrolRoute: 0
   patrolSpeed: 0
@@ -299,7 +300,7 @@ MonoBehaviour:
   destinationToleranceRange: 1.5
   sightRange: 10
   attackRange: 2
-  sfxModifier: 0.2
+  sfxModifier: 1
   idleSoundReference:
     Guid:
       Data1: 347416895
@@ -328,3 +329,4 @@ MonoBehaviour:
       Data3: 964216707
       Data4: -396832587
     Path: event:/Weapons/Pistol
+  animator: {fileID: 0}

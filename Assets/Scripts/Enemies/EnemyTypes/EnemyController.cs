@@ -30,7 +30,7 @@ namespace Enemy
         [Header("Idle Variables")]
         [Tooltip("How long the enemy will idle before switching to patrol states.")]
         [SerializeField] private float idleDuration = 3f;
-        
+
         // Patrol Variables
         [Header("Patrol Variables")]
         [Tooltip("Does the enemy have a preset patrol route (In the inspector)?")]
@@ -42,7 +42,7 @@ namespace Enemy
         [Tooltip("The preset patrol points.")]
         [SerializeField] private List<Transform> patrolPoints;
         private int patrolIndex = 0;
-        
+
         // Chase Variables
         [Header("Chase Variables")]
         [SerializeField] private float chaseSpeed = 12f;
@@ -52,7 +52,7 @@ namespace Enemy
         [SerializeField] private float locationCheckInterval = 0.1f;
         private float currentLocationCheckTime_Chase = 0f;
         private float currentLocationCheckTime_General = 0f;
-        
+
         // Attack Variables
         [Header("Attack Variables")]
         [Tooltip("How much damage the enemy deals at default tempo.")]
@@ -62,7 +62,7 @@ namespace Enemy
         [Tooltip("How long the enemy will try to attack the Player outside its attack range before stopping.")]
         [SerializeField] protected float outsideAttackRangeDuration;
         private bool isAttacking;
-        
+
         // Current Damage Variables for the current tempo.
         protected float damage;
         protected float attackCooldown;
@@ -84,13 +84,13 @@ namespace Enemy
         protected BaseEnemyState CurrentState => _currentState;
 
         private TempoMode _mode = TempoMode.Default;
-        
+
         #endregion
 
         #region Audio SFX
         [Header("Audio SFX")]
         [Tooltip("How loud the enemy sfx should be.")]
-        [SerializeField] protected float sfxModifier = 0.2f;
+        [SerializeField] protected float sfxModifier = 1f;
         [Tooltip("Idling sound.")]
         [SerializeField] private FMODUnity.EventReference idleSoundReference;
         [Tooltip("Patrol sound.")]
@@ -104,7 +104,7 @@ namespace Enemy
         private FMOD.Studio.EventInstance chaseSound;
         private FMOD.Studio.EventInstance attackSound;
         #endregion
-        
+
         #region Enemy State Getters and Setters
         [SerializeField] protected Animator animator;
 
@@ -113,7 +113,7 @@ namespace Enemy
         {
             get
             {
-                if(!_Player)
+                if (!_Player)
                 {
                     _Player = GameManager.Instance.PlayerController;
                 }
@@ -121,7 +121,7 @@ namespace Enemy
             }
         }
         public NavMeshAgent GetNavMeshAgent() { return agent; }
-        
+
         // Health
         public float GetHealth() { return health; }
 
@@ -129,10 +129,10 @@ namespace Enemy
         {
             health = newHealth;
         }
-        
+
         // State Variables
         public float GetIdleDuration() { return idleDuration; }
-        public bool GetPresetPatrolPoints() {return presetPatrolRoute; }
+        public bool GetPresetPatrolPoints() { return presetPatrolRoute; }
         public float GetPatrolSpeed() { return patrolSpeed * TempoSetting.GetEnemyMovementMultiplier(_mode); }
         public Vector3 GetCurrentPatrolPoint() { return currentPatrolPoint; }
         public float GetChaseDuration() { return chaseDuration; }
@@ -149,19 +149,23 @@ namespace Enemy
         public bool PlayerIsInSightRange() { return PlayerInSightRange; }
         public bool PlayerIsInAttackRange() { return PlayerInAttackRange; }
 
-        public FMOD.Studio.EventInstance GetIdleSound() {
+        public FMOD.Studio.EventInstance GetIdleSound()
+        {
             return idleSound;
         }
-        public FMOD.Studio.EventInstance GetPatrolSound() {
+        public FMOD.Studio.EventInstance GetPatrolSound()
+        {
             return patrolSound;
         }
-        public FMOD.Studio.EventInstance GetChaseSound() {
+        public FMOD.Studio.EventInstance GetChaseSound()
+        {
             return chaseSound;
         }
-        public FMOD.Studio.EventInstance GetAttackSound() {
+        public FMOD.Studio.EventInstance GetAttackSound()
+        {
             return attackSound;
         }
-        
+
         public BaseEnemyState GetState(EnemyState state)
         {
             if (_states.TryGetValue(state, out var state1))
@@ -171,8 +175,9 @@ namespace Enemy
             return null;
         }
         #endregion
-        
-        protected virtual void Awake() {
+
+        protected virtual void Awake()
+        {
             agent = GetComponent<NavMeshAgent>();
             agent.speed = patrolSpeed;
 
@@ -180,6 +185,11 @@ namespace Enemy
             patrolSound = FMODUnity.RuntimeManager.CreateInstance(patrolSoundReference);
             chaseSound = FMODUnity.RuntimeManager.CreateInstance(chaseSoundReference);
             attackSound = FMODUnity.RuntimeManager.CreateInstance(attackSoundReference);
+
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(idleSound, transform, GetComponent<Rigidbody>());
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(patrolSound, transform, GetComponent<Rigidbody>());
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(chaseSound, transform, GetComponent<Rigidbody>());
+            FMODUnity.RuntimeManager.AttachInstanceToGameObject(attackSound, transform, GetComponent<Rigidbody>());
 
             // timeline = FindObjectOfType<MusicTimeline>();
             // animator = GetComponent<Animator>();
@@ -193,7 +203,8 @@ namespace Enemy
             MusicTimeline.OnTempoChanged += OnTempoChanged;
         }
 
-        protected virtual void Start() {
+        protected virtual void Start()
+        {
             AddStates();
             _currentState = GetState(EnemyState.Idle);
             _currentState.EnterState();
@@ -206,7 +217,7 @@ namespace Enemy
             if (animator)
                 animator.speed = TempoSetting.GetEnemyMovementMultiplier(mode);
         }
-        
+
         protected virtual void AddStates()
         {
             _states = new Dictionary<EnemyState, BaseEnemyState>()
@@ -217,28 +228,36 @@ namespace Enemy
                 { EnemyState.Attack, new AttackState(this, agent, Player) },
             };
         }
-        
-        public virtual void Update() {
-            if (PauseManager.IsPaused && !wasGamePaused) {
+
+        public virtual void Update()
+        {
+            if (PauseManager.IsPaused && !wasGamePaused)
+            {
                 wasGamePaused = true;
                 agentStatus = agent.isStopped;
                 agent.isStopped = true;
                 return;
-            } else if (!PauseManager.IsPaused && wasGamePaused) {
+            }
+            else if (!PauseManager.IsPaused && wasGamePaused)
+            {
                 wasGamePaused = false;
                 agent.isStopped = agentStatus;
-            } else if (wasGamePaused) {
+            }
+            else if (wasGamePaused)
+            {
                 return;
             }
 
-            if (DefeatScreenManager.Instance.IsDefeat()) {
+            if (DefeatScreenManager.Instance.IsDefeat())
+            {
                 agent.isStopped = true;
                 return;
             }
 
             // No need to check update locations/sounds every frame.
             currentLocationCheckTime_General -= Time.deltaTime;
-            if (currentLocationCheckTime_General < 0) {
+            if (currentLocationCheckTime_General < 0)
+            {
                 currentLocationCheckTime_General = locationCheckInterval;
 
                 // Update ranges
@@ -248,19 +267,14 @@ namespace Enemy
                     PlayerInSightRange = Vector3.Distance(transform.position, Player.transform.position) <= sightRange;
                     PlayerInAttackRange = Vector3.Distance(transform.position, Player.transform.position) <= attackRange;
                 }
-
-                // Update the locations where the sounds should be played.
-                idleSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-                patrolSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-                chaseSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-                attackSound.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
             }
 
             _currentState?.UpdateState();
         }
 
         // Exit the current state, and enter the new state.
-        public void TransitionToState(EnemyState stateType) {
+        public void TransitionToState(EnemyState stateType)
+        {
             var newState = GetState(stateType);
             if (newState == null)
             {
@@ -271,24 +285,27 @@ namespace Enemy
             newState.EnterState();
         }
 
-        public virtual void Idle() {}
+        public virtual void Idle() { }
 
-        public virtual void Patrol() {}
+        public virtual void Patrol() { }
 
         // Set the next patrol point. If the last patrol point was reached, reset.
-        public void NextPatrolPoint() {
+        public void NextPatrolPoint()
+        {
             if (patrolPoints.Count == 0) return;
             patrolIndex++;
             if (patrolIndex >= patrolPoints.Count) patrolIndex = 0;
             currentPatrolPoint = patrolPoints[patrolIndex].position;
         }
 
-        public virtual void Chase() {    
+        public virtual void Chase()
+        {
             // No need to check Player location every frame.
             currentLocationCheckTime_Chase -= Time.deltaTime;
             if (currentLocationCheckTime_Chase > 0) return;
             currentLocationCheckTime_Chase = locationCheckInterval;
-            if (Player != null) {
+            if (Player != null)
+            {
                 agent.SetDestination(Player.transform.position);
             }
         }
@@ -299,7 +316,8 @@ namespace Enemy
         public void ApplyKnockback(Vector3 direction, float distance)
         {
             // Apply knockback, then resume enemy AI after
-            if (agent.isOnNavMesh) {
+            if (agent.isOnNavMesh)
+            {
                 agent.isStopped = true;
                 StartCoroutine(KnockbackRoutine(direction, distance));
             }
@@ -326,7 +344,8 @@ namespace Enemy
             agent.isStopped = false;
         }
 
-        public virtual void Die() {
+        public virtual void Die()
+        {
             _currentState?.ExitState();
             StopSFX();
             ReleaseSFX();
@@ -342,29 +361,36 @@ namespace Enemy
             ReleaseSFX();
         }
 
-        public virtual void SetAudioVolume(float masterVolume, float sfxVolume) {
-            if (idleSound.isValid()) {
+        public virtual void SetAudioVolume(float masterVolume, float sfxVolume)
+        {
+            if (idleSound.isValid())
+            {
                 idleSound.setVolume(sfxVolume * masterVolume * sfxModifier);
             }
-            if (patrolSound.isValid()) {
+            if (patrolSound.isValid())
+            {
                 patrolSound.setVolume(sfxVolume * masterVolume * sfxModifier);
             }
-            if (chaseSound.isValid()) {
+            if (chaseSound.isValid())
+            {
                 chaseSound.setVolume(sfxVolume * masterVolume * sfxModifier);
             }
-            if (attackSound.isValid()) {
+            if (attackSound.isValid())
+            {
                 attackSound.setVolume(sfxVolume * masterVolume * sfxModifier);
             }
         }
 
-        public virtual void PauseAudio(bool pause) {
+        public virtual void PauseAudio(bool pause)
+        {
             idleSound.setPaused(pause);
             patrolSound.setPaused(pause);
             chaseSound.setPaused(pause);
             attackSound.setPaused(pause);
         }
 
-        public virtual void StopSFX() {
+        public virtual void StopSFX()
+        {
             idleSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             patrolSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             chaseSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -372,7 +398,8 @@ namespace Enemy
         }
 
         // Release the sounds so FMOD can discard them.
-        protected virtual void ReleaseSFX() {
+        protected virtual void ReleaseSFX()
+        {
             idleSound.release();
             patrolSound.release();
             chaseSound.release();
@@ -414,18 +441,19 @@ namespace Enemy
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, destinationToleranceRange);
         }
-        public Animator GetAnimator(){
+        public Animator GetAnimator()
+        {
             return animator;
         }
     }
 
     public enum EnemyState
-    {
-        Idle,
-        Patrol,
-        Chase,
-        Attack,
-        Flee,
-        Guard
-    }
+        {
+            Idle,
+            Patrol,
+            Chase,
+            Attack,
+            Flee,
+            Guard
+        }
 }
