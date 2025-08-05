@@ -95,20 +95,16 @@ namespace Enemies.EnemyTypes
             canAttack = true;
         }
 
-        protected override IEnumerator SlowTempo(float duration)
+        protected override void SlowTempo()
         {
             canAttack = false;
-            yield return new WaitForSeconds(duration);
-            DefaultTempo();
         }
 
-        protected override IEnumerator FastTempo(float duration)
+        protected override void FastTempo()
         {
             windUpTime = originalWindUpTime * 0.5f;
             attackCooldown = originalAttackCooldown * 0.5f;
             canAttack = true;
-            yield return new WaitForSeconds(duration);
-            DefaultTempo();
         }
         #endregion
     }

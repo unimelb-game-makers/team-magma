@@ -44,11 +44,6 @@ namespace Timeline
         [Header("Parameters")]
         [Tooltip("The current song / tempo")]
         [SerializeField] private float _speedRatio = 1f;
-        private float currentTempo;
-        [Tooltip("How long to wait between tempo changes")]
-        [SerializeField] private float changeTempoDuration = 0.5f;
-        private float currentChangeTempoTime;
-        private bool toSpawnBeat = false;
         
         [Space(5)]
         [Header("Events")]
@@ -72,7 +67,6 @@ namespace Timeline
 
         [SerializeField] private float _volume = 1.0f;
 
-        private bool _started = false;
         public static Action OnBeat;
         public static Action<TempoMode> OnTempoChanged;
 
@@ -223,9 +217,6 @@ namespace Timeline
                         timelineInfo.CurrentMusicBar = parameter.bar;
                         
                         OnBeat?.Invoke();
-
-                        // A beat has to be spawned
-                        MusicTimeline.instance.toSpawnBeat = true;
                         break;
                     }
                     case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER:

@@ -407,15 +407,18 @@ namespace Enemy
         }
 
         #region Tempo Overrides
-        public void Affect(TempoMode mode, float duration, float effectValue)
+        public void Affect(TempoMode mode)
         {
             switch (mode)
             {
                 case TempoMode.Slow:
-                    StartCoroutine(SlowTempo(duration));
+                    SlowTempo();
+                    break;
+                case TempoMode.Default:
+                    DefaultTempo();
                     break;
                 case TempoMode.Fast:
-                    StartCoroutine(FastTempo(duration));
+                    FastTempo();
                     break;
             }
         }
@@ -427,9 +430,8 @@ namespace Enemy
             attackCooldown = originalAttackCooldown;
         }
 
-        protected abstract IEnumerator SlowTempo(float duration);
-
-        protected abstract IEnumerator FastTempo(float duration);
+        protected abstract void SlowTempo();
+        protected abstract void FastTempo();
         #endregion
 
         private void OnDrawGizmosSelected()

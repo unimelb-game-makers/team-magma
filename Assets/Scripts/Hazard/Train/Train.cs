@@ -31,23 +31,15 @@ namespace Hazard.Train
             ServiceLocator.Instance.Unregister(this);
         }
 
-        public override void Affect(TempoMode mode, float duration, float effectValue)
+        public override void Affect(TempoMode mode)
         {
             switch (mode)
             {
                 case TempoMode.Slow:
-                    if (useDefaultEffectTimeValues) {
-                        StartCoroutine(SlowTempo(duration, effectValue));
-                    } else {
-                        StartCoroutine(SlowTempo(_slowEffectTime, _slowEffectValue));
-                    }
+                    speed = normalSpeed * _slowEffectValue;
                     break;
                 case TempoMode.Fast:
-                    if (useDefaultEffectTimeValues) {
-                        StartCoroutine(FastTempo(duration, effectValue));
-                    } else {
-                        StartCoroutine(FastTempo(_fastEffectTime, _fastEffectValue));
-                    }
+                    speed = normalSpeed * _fastEffectValue;
                     break;
                 default:
                     speed = normalSpeed;
@@ -55,22 +47,8 @@ namespace Hazard.Train
             }
         }
         
-        private IEnumerator SlowTempo(float duration, float effectValue)
-        {
-            speed *= effectValue;
-            yield return new WaitForSeconds(duration);
-            speed = normalSpeed;
-        }
-        
-        private IEnumerator FastTempo(float duration, float effectValue)
-        {
-            speed *= effectValue;
-            yield return new WaitForSeconds(duration);
-            speed = normalSpeed;
-        }
-        
         //Move along the path
-        public void Update()
+        private void Update()
         {
             if (_pathCreator)
             {

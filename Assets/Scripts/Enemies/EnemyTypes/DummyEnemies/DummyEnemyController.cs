@@ -20,16 +20,9 @@ namespace Enemies.EnemyTypes
             base.Die();
         }
 
-        protected override IEnumerator FastTempo(float duration)
-        {
-            yield return null;
-        }
+        protected override void FastTempo() { }
 
-        protected override IEnumerator SlowTempo(float duration)
-        {
-            yield return null;
-
-        }
+        protected override void SlowTempo() { }
     }
 }
 

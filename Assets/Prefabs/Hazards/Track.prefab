@@ -100,6 +100,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93302efd17364e4297125b9fe01747e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDefaultEffectTimeValues: 1
+  _fastEffectTime: 5
+  _slowEffectTime: 5
+  _fastEffectValue: 2
+  _slowEffectValue: 0.5
   pathCreator: {fileID: 0}
   trainPrefab: {fileID: 0}
   start: {fileID: 0}

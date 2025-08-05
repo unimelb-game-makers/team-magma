@@ -2,11 +2,8 @@
 // 19 03 2025 03 33
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using PathCreation;
-using Platforms;
-using Tempo;
 using Utilities.ServiceLocator;
 
 namespace Hazard.Train
@@ -68,39 +65,33 @@ namespace Hazard.Train
 
         private IEnumerator TrainSpawner()
         {
-            SpawnTrain();
-            yield return new WaitForSeconds(_spawnInterval);
-            _spawnTrainCoroutine = StartCoroutine(TrainSpawner());
+            while (true)
+            {
+                SpawnTrain();
+                yield return new WaitForSeconds(_spawnInterval);
+            }
         }
 
-        public override void Affect(TempoMode mode, float duration, float effectValue)
+        public override void Affect(TempoMode mode)
         {
             switch (mode)
             {
                 case TempoMode.Slow:
-                    StartCoroutine(SlowTempo(duration, effectValue));
+                    _spawnInterval *= _normalSpawnInterval * _slowEffectValue;
                     break;
                 case TempoMode.Fast:
-                    StartCoroutine(FastTempo(duration, effectValue));
+                    _spawnInterval *= _normalSpawnInterval * _fastEffectValue;
                     break;
-                default:
+                case TempoMode.Default:
                     _spawnInterval = _normalSpawnInterval;
                     break;
             }
         }
-        
-        private IEnumerator SlowTempo(float duration, float effectValue)
+
+        private void OnDestroy()
         {
-            _spawnInterval *= effectValue;
-            yield return new WaitForSeconds(duration);
-            _spawnInterval = _normalSpawnInterval;
-        }
-        
-        private IEnumerator FastTempo(float duration, float effectValue)
-        {
-            _spawnInterval *= effectValue;
-            yield return new WaitForSeconds(duration);
-            _spawnInterval = _normalSpawnInterval;
+            if (_spawnTrainCoroutine != null)
+                StopCoroutine(_spawnTrainCoroutine);
         }
     }
 }
