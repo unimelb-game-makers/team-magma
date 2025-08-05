@@ -13,7 +13,6 @@ namespace Damage
     [RequireComponent(typeof(Collider))]
     public class DamageVolume : MonoBehaviour
     {
-        [SerializeField] private float damage = 1f;
         [SerializeField] private float damageInterval = 1f;
         [SerializeField] private GameObject visualEffect;
         private bool _canDamage = true;

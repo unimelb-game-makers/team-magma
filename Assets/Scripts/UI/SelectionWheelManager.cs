@@ -156,7 +156,7 @@ public class SelectionWheelManager : MonoBehaviour
         {
             MusicTimeline.instance.SetSpeed(TempoMode.Default);
             TapeEffectSoundPlayer.Play();
-            PlayTapeEffect(TempoMode.Slow, 0.01f, 0.5f);
+            PlayTapeEffect(TempoMode.Default);
             TapeNotificationManager.Instance.FadeOutUI();
 
             if (isWheelActive) {
@@ -170,7 +170,7 @@ public class SelectionWheelManager : MonoBehaviour
         {
             MusicTimeline.instance.SetSpeed(TempoMode.Slow);
             TapeEffectSoundPlayer.Play();
-            PlayTapeEffect(TempoMode.Slow, tapeEffectDuration, 0.5f);
+            PlayTapeEffect(TempoMode.Slow);
             TapeNotificationManager.Instance.ActivateTapeUI(TempoMode.Slow, tapeEffectDuration);
         
             if (isWheelActive) {
@@ -184,7 +184,7 @@ public class SelectionWheelManager : MonoBehaviour
         {
             MusicTimeline.instance.SetSpeed(TempoMode.Fast);
             TapeEffectSoundPlayer.Play();
-            PlayTapeEffect(TempoMode.Fast, tapeEffectDuration, 0.5f);
+            PlayTapeEffect(TempoMode.Fast);
             TapeNotificationManager.Instance.ActivateTapeUI(TempoMode.Fast, tapeEffectDuration);
 
             if (isWheelActive) {
@@ -193,14 +193,12 @@ public class SelectionWheelManager : MonoBehaviour
         } 
     }
 
-    public void PlayTapeEffect(TempoMode mode, float duration, float effectValue)
+    private void PlayTapeEffect(TempoMode mode)
     {
         //get IAffectServices from service locator
-        var affectServices = ServiceLocator.Instance.Get<ISyncable>();
-        foreach (var o in affectServices)
-        {
-            o.Affect(mode, duration, effectValue);
-        }
+        List<ISyncable> affectServices = ServiceLocator.Instance.Get<ISyncable>();
+        foreach (ISyncable o in affectServices)
+            o.Affect(mode);
     }
 
     public void ToggleWheel()
@@ -265,7 +263,7 @@ public class SelectionWheelManager : MonoBehaviour
     public void OnTapeComplete()
     {
         MusicTimeline.instance.SetSpeed(TempoMode.Default);
-        PlayTapeEffect(TempoMode.Default, tapeEffectDuration, 0.5f);
+        PlayTapeEffect(TempoMode.Default);
     }
     
     public void OnReset()

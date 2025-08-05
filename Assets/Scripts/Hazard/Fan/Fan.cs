@@ -133,111 +133,84 @@ namespace Hazard
         /**
          * Change the fan speed and damage for 'duration' seconds.
          */
-        public override void Affect(TempoMode mode, float duration, float effectValue)
+        public override void Affect(TempoMode mode)
         {
-
-            if(mode == TempoMode.Slow)
+            switch (mode)
             {
-                ChangeParticleEffect(_particleSlowFactor);
+                case TempoMode.Slow:
+                    ChangeParticleEffect(_particleSlowFactor);
 
-                fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_slowSpeed);
-                foreach (Transform fanBlade in fanBlades.transform)
-                {
-                    fanBlade.GetComponent<FanDamager>().SetDamage(_slowDamage);
-                    fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_slowKnockbackForce, _slowEnemyKnockbackForce);
-                }
+                    fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_slowSpeed);
+                    foreach (Transform fanBlade in fanBlades.transform)
+                    {
+                        fanBlade.GetComponent<FanDamager>().SetDamage(_slowDamage);
+                        fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_slowKnockbackForce, _slowEnemyKnockbackForce);
+                    }
 
-                // Disable the 'fanPush' object so no characters are pushed.
-                if (fanPushDefault.activeSelf)
-                {
-                    fanPushDefault.GetComponent<FanArea>().RemoveAllObjects();
-                }
-                if (fanPushFast.activeSelf)
-                {
-                    fanPushFast.GetComponent<FanArea>().RemoveAllObjects();
-                }
-                fanPushDefault.SetActive(false);
-                fanPushFast.SetActive(false);
+                    // Disable the 'fanPush' object so no characters are pushed.
+                    if (fanPushDefault.activeSelf)
+                    {
+                        fanPushDefault.GetComponent<FanArea>().RemoveAllObjects();
+                    }
+                    if (fanPushFast.activeSelf)
+                    {
+                        fanPushFast.GetComponent<FanArea>().RemoveAllObjects();
+                    }
+                    fanPushDefault.SetActive(false);
+                    fanPushFast.SetActive(false);
 
-                // Disable the 'fanPull' object so no characters are pushed.
-                if (fanPullDefault.activeSelf)
-                {
-                    fanPullDefault.GetComponent<FanArea>().RemoveAllObjects();
-                }
-                if (fanPullFast.activeSelf)
-                {
-                    fanPullFast.GetComponent<FanArea>().RemoveAllObjects();
-                }
-                fanPullDefault.SetActive(false);
-                fanPullFast.SetActive(false);
+                    // Disable the 'fanPull' object so no characters are pushed.
+                    if (fanPullDefault.activeSelf)
+                    {
+                        fanPullDefault.GetComponent<FanArea>().RemoveAllObjects();
+                    }
+                    if (fanPullFast.activeSelf)
+                    {
+                        fanPullFast.GetComponent<FanArea>().RemoveAllObjects();
+                    }
+                    fanPullDefault.SetActive(false);
+                    fanPullFast.SetActive(false);
 
-                // Disable the 'fanStopper' object so characters can pass through.
-                fanStopper.SetActive(false);
+                    // Disable the 'fanStopper' object so characters can pass through.
+                    fanStopper.SetActive(false);
+                    break;
+                case TempoMode.Fast:
+                    ChangeParticleEffect(_particleFastFactor);
 
-                // Code for Animations and Sounds.
+                    fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
+                    foreach (Transform fanBlade in fanBlades.transform)
+                    {
+                        fanBlade.GetComponent<FanDamager>().SetDamage(_fastDamage);
+                        fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_fastKnockbackForce, _fastEnemyKnockbackForce);
+                    }
 
-                // If there was a previous timer to return the fan to default configuration,
-                // then reset it.
-                if (resetFanCoroutine != null) StopCoroutine(resetFanCoroutine);
+                    if (fanPushDefault.activeSelf)
+                    {
+                        fanPushDefault.GetComponent<FanArea>().RemoveAllObjects();
+                    }
+                    fanPushDefault.SetActive(false);
+                    fanPushFast.SetActive(true);
 
-                if (useDefaultEffectTimeValues)
-                {
-                    resetFanCoroutine = StartCoroutine(AffectTimer(duration));
-                }
-                else
-                {
-                    resetFanCoroutine = StartCoroutine(AffectTimer(_slowEffectTime));
-                }
-            }
+                    if (fanPullDefault.activeSelf)
+                    {
+                        fanPullDefault.GetComponent<FanArea>().RemoveAllObjects();
+                    }
+                    fanPullDefault.SetActive(false);
+                    fanPullFast.SetActive(true);
 
-            // if TapeType.Fast, switch to fanPush_Fast
-
-            if(mode == TempoMode.Fast)
-            {
-                ChangeParticleEffect(_particleFastFactor);
-
-                fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_fastSpeed);
-                foreach (Transform fanBlade in fanBlades.transform)
-                {
-                    fanBlade.GetComponent<FanDamager>().SetDamage(_fastDamage);
-                    fanBlade.GetComponent<FanDamager>().SetKnockbackForce(_fastKnockbackForce, _fastEnemyKnockbackForce);
-                }
-
-                if (fanPushDefault.activeSelf)
-                {
-                    fanPushDefault.GetComponent<FanArea>().RemoveAllObjects();
-                }
-                fanPushDefault.SetActive(false);
-                fanPushFast.SetActive(true);
-
-                if (fanPullDefault.activeSelf)
-                {
-                    fanPullDefault.GetComponent<FanArea>().RemoveAllObjects();
-                }
-                fanPullDefault.SetActive(false);
-                fanPullFast.SetActive(true);
-
-                fanStopper.SetActive(true);
-
-                if (resetFanCoroutine != null) StopCoroutine(resetFanCoroutine);
-
-                if (useDefaultEffectTimeValues)
-                {
-                    resetFanCoroutine = StartCoroutine(AffectTimer(duration));
-                }
-                else
-                {
-                    resetFanCoroutine = StartCoroutine(AffectTimer(_fastEffectTime));
-                }
+                    fanStopper.SetActive(true);
+                    break;
+                case TempoMode.Default:
+                    ResetFan();
+                    break;
             }
         }
 
         /**
          * After 'duration' seconds, the fan is returned to its default configuration.
          */
-        private IEnumerator AffectTimer(float duration)
+        private void ResetFan()
         {
-            yield return new WaitForSeconds(duration);
             ChangeParticleEffect(1);
             fanBlades.GetComponent<FanRotate>().SetRotationSpeed(_defaultSpeed);
             foreach (Transform fanBlade in fanBlades.transform)
@@ -263,8 +236,7 @@ namespace Hazard
             fanStopper.SetActive(true);
         }
 
-
-        void ChangeParticleEffect(float factor)
+        private void ChangeParticleEffect(float factor)
         {
             var main = windParticle.main;
             main.startSpeedMultiplier = normalParticleSpeed * factor;

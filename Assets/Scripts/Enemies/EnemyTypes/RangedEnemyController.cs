@@ -225,24 +225,20 @@ namespace Enemies.EnemyTypes
             isProjectileHoming = false;
         }
         
-        protected override IEnumerator SlowTempo(float duration)
+        protected override void SlowTempo()
         {
             windUpTime = originalWindUpTime * 2f;
             attackCooldown = originalAttackCooldown * 2f;
             projectileSpeed = originalProjectileSpeed * 0.8f;
             isProjectileHoming = true;
-            yield return new WaitForSeconds(duration);
-            DefaultTempo();
         }
 
-        protected override IEnumerator FastTempo(float duration)
+        protected override void FastTempo()
         {
             windUpTime = originalWindUpTime / 2f;
             attackCooldown = originalAttackCooldown / 2f;
             inaccuracyAmount = originalInaccuracyAmount * 3f;
             projectileSpeed = originalProjectileSpeed * 1.5f;
-            yield return new WaitForSeconds(duration);
-            DefaultTempo();
         }
         #endregion
 

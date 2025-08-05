@@ -55,7 +55,7 @@ namespace Hazard
 
         [SerializeField] private Renderer _waterRenderer;
         private Material _waterMaterial;
-        private Coroutine resetWaterCoroutine;
+        private Coroutine _waterCoroutine;
 
         public void Awake()
         {
@@ -103,64 +103,33 @@ namespace Hazard
             _waterMaterial.SetFloat(WaveSpeedID, targetWaveSpeed);
             _waterMaterial.SetFloat(RippleDensityID, targetRippleDensity);
         }
+        
         /**
-         * Move the 'KillArea' depending on the TapeType.
+         * Move the 'KillArea' depending on the TempoMode.
          */
-        public override void Affect(TempoMode mode, float duration, float effectValue)
+        public override void Affect(TempoMode mode)
         {
-            if (mode == TempoMode.Slow)
+            switch (mode)
             {
-                // Move the 'KillArea' object to height1.
-                StartCoroutine(MoveKillAreaToHeight(height1));
-                ChangeMaterialDensity(slowRippleSpeed, slowWaveSpeed, slowRippleDensity);
-
-                // Code for Animations and Sounds.
-
-                // If there was a previous timer to return the water to default configuration,
-                // then reset it.
-                if (resetWaterCoroutine != null) StopCoroutine(resetWaterCoroutine);
-
-                if (useDefaultEffectTimeValues)
-                {
-                    resetWaterCoroutine = StartCoroutine(AffectTimer(duration));
-                }
-                else
-                {
-                    resetWaterCoroutine = StartCoroutine(AffectTimer(_slowEffectTime));
-                }
+                case TempoMode.Slow:
+                    if (_waterCoroutine != null)
+                        StopCoroutine(_waterCoroutine);
+                    _waterCoroutine = StartCoroutine(MoveKillAreaToHeight(height1));
+                    ChangeMaterialDensity(slowRippleSpeed, slowWaveSpeed, slowRippleDensity);
+                    break;
+                case TempoMode.Fast:
+                    if (_waterCoroutine != null)
+                        StopCoroutine(_waterCoroutine);
+                    _waterCoroutine = StartCoroutine(MoveKillAreaToHeight(height3));
+                    ChangeMaterialDensity(fastRippleSpeed, fastWaveSpeed, fastRippleDensity);
+                    break;
+                case TempoMode.Default:
+                    if (_waterCoroutine != null)
+                        StopCoroutine(_waterCoroutine);
+                    _waterCoroutine = StartCoroutine(MoveKillAreaToHeight(height2));
+                    ChangeMaterialDensity(mediumRippleSpeed, mediumWaveSpeed, mediumRippleDensity);
+                    break;
             }
-
-            if (mode == TempoMode.Fast)
-            {
-                // Move the 'KillArea' object to height1.
-                StartCoroutine(MoveKillAreaToHeight(height3));
-                ChangeMaterialDensity(fastRippleSpeed, fastWaveSpeed, fastRippleDensity);
-
-                // Code for Animations and Sounds.
-                if (resetWaterCoroutine != null) StopCoroutine(resetWaterCoroutine);
-
-                if (useDefaultEffectTimeValues)
-                {
-                    resetWaterCoroutine = StartCoroutine(AffectTimer(duration));
-                }
-                else
-                {
-                    resetWaterCoroutine = StartCoroutine(AffectTimer(_fastEffectTime));
-                }
-            }
-        }
-
-        /**
-         * After 'duration' seconds, the KillArea returns to its initial location.
-         */
-        private IEnumerator AffectTimer(float duration)
-        {
-            yield return new WaitForSeconds(duration);
-            // Code for Animations and Sounds.
-
-            // Move the 'KillArea' object to height3.
-            StartCoroutine(MoveKillAreaToHeight(height2));
-            ChangeMaterialDensity(mediumRippleSpeed, mediumWaveSpeed, mediumRippleDensity);
         }
     }
 

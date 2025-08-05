@@ -37,45 +37,30 @@ namespace Hazard.Electric_Fence
             doorCoroutine = StartCoroutine(DoorRepeat());
         }
         
-        public override void Affect(TempoMode mode, float duration, float effectValue)
+        public override void Affect(TempoMode mode)
         {
             switch (mode)
             {
                 case TempoMode.Slow:
-                    if (useDefaultEffectTimeValues) {
-                        StartCoroutine(FastTempo(duration));
-                    } else {
-                        StartCoroutine(FastTempo(_slowEffectTime));
-                    }
+                    SlowTempo();
                     break;
                 case TempoMode.Fast:
-                    if (useDefaultEffectTimeValues) {
-                        StartCoroutine(SlowTempo(duration));
-                    } else {
-                        StartCoroutine(SlowTempo(_fastEffectTime));
-                    }
+                    FastTempo();
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(mode.ToString(), mode, null);
+                case TempoMode.Default:
+                    doorSpeed = normalDoorSpeed;
+                    break;
             }
         }
         
-        private IEnumerator FastTempo(float duration)
+        private void FastTempo()
         {
             doorSpeed = fastDoorSpeed;
-            // Restart the door cycle if already running.
-            if (doorCoroutine != null)
-                StopCoroutine(doorCoroutine);
-            doorCoroutine = StartCoroutine(DoorRepeat());
-            yield return new WaitForSeconds(duration);
-            doorSpeed = normalDoorSpeed;
         }
         
-        private IEnumerator SlowTempo(float duration)
+        private void SlowTempo()
         {
             doorSpeed = slowDoorSpeed;
-            yield return new WaitForSeconds(duration);
-            doorSpeed = normalDoorSpeed;
         }
         
         /// <summary>
@@ -104,6 +89,11 @@ namespace Hazard.Electric_Fence
             Debug.Log("Deactivating Electric Fence");
             door.SetActive(false);
             damageVolume.Deactivate();
+        }
+
+        private void OnDestroy()
+        {
+            StopCoroutine(doorCoroutine);
         }
     }
 }

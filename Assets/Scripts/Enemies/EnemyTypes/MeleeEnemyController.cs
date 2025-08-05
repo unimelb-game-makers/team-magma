@@ -110,7 +110,7 @@ namespace Enemies.EnemyTypes
             enemyCollider.isTrigger = true;
         }
 
-        protected override IEnumerator SlowTempo(float duration)
+        protected override void SlowTempo()
         {
             // Set isTrigger to false so player or other enemies cannot pass through.
             enemyCollider.isTrigger = false;
@@ -118,11 +118,9 @@ namespace Enemies.EnemyTypes
             damage = originalDamage * 1.75f;
             windUpTime = originalWindUpTime * 2f;
             attackCooldown = originalAttackCooldown * 1.5f; 
-            yield return new WaitForSeconds(duration);
-            DefaultTempo();
         }
 
-        protected override IEnumerator FastTempo(float duration)
+        protected override void FastTempo()
         {
             /*
                Mostly the same as the default tempo (same damage, etc.), 
@@ -134,8 +132,6 @@ namespace Enemies.EnemyTypes
             damageAngle = originalDamageAngle * 1.5f;
             windUpTime = originalWindUpTime * 0.5f;
             attackCooldown = originalAttackCooldown * 0.5f;
-            yield return new WaitForSeconds(duration);
-            DefaultTempo();
         }
         #endregion
     }

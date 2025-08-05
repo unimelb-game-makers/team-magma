@@ -5,8 +5,10 @@ using UnityEngine;
 using Utilities.ServiceLocator;
 
 namespace Platforms
-{public class MoveablePlatform : PlatformComponent
-    { 
+{
+    public class MoveablePlatform : PlatformComponent
+    {
+        private const float SLOW_MULTIPLIER = 0.5f;
      
         [SerializeField] private float _displacement = 1;
         /**
@@ -31,8 +33,11 @@ namespace Platforms
          */
         private float _time = 0;
         private bool _reverse = false;
+        private float _originalSpeed;
+        
         public void Awake()
-        { 
+        {
+            _originalSpeed = _speed;
             _initialPosition = transform.position;
             CalculateEndPosition();
         }
@@ -82,21 +87,19 @@ namespace Platforms
         /**
          * Affect the platform with the tape type.
          */
-        public override void Affect(TempoMode mode, float duration, float effectValue)
+        public override void Affect(TempoMode mode)
         {
-            if(mode == TempoMode.Slow)
+            switch (mode)
             {
-                _speed = effectValue;
-                StartCoroutine(AffectTimer(duration));
+                // Slow down the platform
+                case TempoMode.Slow:
+                    _speed = SLOW_MULTIPLIER;
+                    break;
+                // Reset the platform speed
+                case TempoMode.Default:
+                    _speed = _originalSpeed;
+                    break;
             }
-        }
-        /**
-         * Affect the platform with the tape type.
-         */
-        private IEnumerator AffectTimer(float duration)
-        {
-            yield return new WaitForSeconds(duration);
-            _speed = 1;
         }
 
         private void OnTriggerEnter(Collider other)
