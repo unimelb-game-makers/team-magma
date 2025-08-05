@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BeatPopupItem : MonoBehaviour
 {
@@ -10,7 +9,11 @@ public class BeatPopupItem : MonoBehaviour
     private readonly Color goodColour = new Color(0.8f, 0.4f, 0.1f, 0.8f);
     private readonly Color failedColour = new Color(0.9f, 0.2f, 0.3f, 0.8f);
     
+    // Determines how long the beat will take to fade out
     private const float FADE_DURATION = 0.5f;
+    // Determines the time when the beat will fade into the player's view
+    private const float APPEAR_TIME = 0.1f;
+    private const float APPEAR_DURATION = 0.05f;
     [SerializeField] private BeatHexagonPopupItem leftHexagon;
     [SerializeField] private BeatHexagonPopupItem rightHexagon;
 
@@ -18,6 +21,7 @@ public class BeatPopupItem : MonoBehaviour
     private RectTransform _rightTarget;
 
     private Sequence _sequence;
+    private Sequence _appearSequence;
     private Sequence _resolveSequence;
 
     private BeatSpawner _spawner;
@@ -47,6 +51,31 @@ public class BeatPopupItem : MonoBehaviour
         _sequence.Append(leftHexagon.Rect.DOAnchorPos(_leftTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
         _sequence.Join(rightHexagon.Rect.DOAnchorPos(_rightTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
         _sequence.Play().OnComplete(Resolve);
+        
+        // Create a tween to control when the beat will appear
+        float timeToAppear = travelTime - APPEAR_TIME;
+        if (timeToAppear > 0f)
+        {
+            SetImageAlpha(leftHexagon.Image, 0f);
+            SetImageAlpha(rightHexagon.Image, 0f);
+            _appearSequence = DOTween.Sequence();
+            _appearSequence.AppendInterval(timeToAppear);
+            _appearSequence.Append(leftHexagon.Image.DOFade(1f, APPEAR_DURATION)).SetEase(Ease.OutCubic);
+            _appearSequence.Join(rightHexagon.Image.DOFade(1f, APPEAR_DURATION)).SetEase(Ease.OutCubic);
+            _appearSequence.Play();
+        }
+        else
+        {
+            SetImageAlpha(leftHexagon.Image, 1f);
+            SetImageAlpha(rightHexagon.Image, 1f);
+        }
+    }
+
+    private void SetImageAlpha(Image image, float alpha)
+    {
+        Color colour = image.color;
+        colour.a = alpha;
+        image.color = colour;
     }
 
     public void OnTempoChanged(TempoMode _, BeatHandler beatHandler)
@@ -66,6 +95,7 @@ public class BeatPopupItem : MonoBehaviour
 
     private void Resolve()
     {
+        _appearSequence.Kill();
         _sequence.Kill();
         _sequence = DOTween.Sequence();
         _sequence.Append(leftHexagon.Image.DOFade(0f, FADE_DURATION).SetEase(Ease.InOutCubic));
@@ -79,6 +109,7 @@ public class BeatPopupItem : MonoBehaviour
     
     public void Resolve(Grade grade)
     {
+        _appearSequence.Kill();
         _sequence.Kill();
         _sequence = DOTween.Sequence();
 
