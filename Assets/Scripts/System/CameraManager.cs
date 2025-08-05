@@ -23,7 +23,14 @@ public class CameraManager : MonoBehaviour
     {
         cameras.Add(camera);
         camera.Priority = initialActive ? activePriority : inactivePriority;
-        if (initialActive) initialCamera = camera;
+        if (initialActive)
+        {
+            initialCamera = camera;
+        }
+        else
+        {
+            Debug.LogWarning($"Multiple cameras have initialActive = true! Pls deactivate Camera");
+        }
     }
 
     public void Delete(CinemachineVirtualCamera camera)
