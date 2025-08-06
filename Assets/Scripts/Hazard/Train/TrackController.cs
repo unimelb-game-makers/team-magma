@@ -1,12 +1,15 @@
 // Author : Peiyu Wang @ Daphatus
 // 19 03 2025 03 33
 
+// Updated by Ellen Lyu
+
 using System.Collections;
 using UnityEngine;
 using PathCreation;
 using Utilities.ServiceLocator;
+using Tempo;
 
-namespace Hazard.Train
+namespace Hazard
 {
     public class TrackController : Hazard
     {
@@ -21,19 +24,20 @@ namespace Hazard.Train
         private void OnEnable()
         {            
             if(ServiceLocator.Instance == null) return;
-            ServiceLocator.Instance.Register(this);
+            ServiceLocator.Instance.Register<ISyncable>(this);
         }
         
         private void OnDisable()
         {
             if(ServiceLocator.Instance == null) return;
-            ServiceLocator.Instance.Unregister(this);
+            ServiceLocator.Instance.Unregister<ISyncable>(this);
         }
         
         private void Start()
         {
             _spawnTrainCoroutine = StartCoroutine(TrainSpawner());
             SetTrackEnds();
+            
         }
 
         private void SetTrackEnds()
@@ -44,13 +48,13 @@ namespace Hazard.Train
             end.transform.rotation = pathCreator.path.GetRotationAtDistance(pathCreator.path.length);
         }
 
-        private void SpawnTrain()
+        private void SpawnTrain(TempoMode mode)
         {
             if (!trainPrefab)
             {
                 throw new System.Exception("Train prefab is null");
             }
-            var o = Instantiate(trainPrefab,pathCreator.path.GetPoint(0) , pathCreator.path.GetRotationAtDistance(0));
+            var o = Instantiate(trainPrefab, pathCreator.path.GetPoint(0), pathCreator.path.GetRotationAtDistance(0));
             if (!o)
             {
                 throw new System.Exception("cannot instantiate train");
@@ -61,14 +65,28 @@ namespace Hazard.Train
                 throw new System.Exception("Train component not found");
             }
             train.SetPath(pathCreator);
+            // force initial position and rotation immediately on spawn
+            train.transform.position = pathCreator.path.GetPointAtDistance(0f);
+            train.transform.rotation = pathCreator.path.GetRotationAtDistance(0f);
+            // set the initial speed based on the current tempo mode
+            train.Affect(mode);
         }
 
         private IEnumerator TrainSpawner()
         {
+            float timer = 0f;
+
             while (true)
             {
-                SpawnTrain();
-                yield return new WaitForSeconds(_spawnInterval);
+                timer += Time.deltaTime;
+
+                if (timer >= _spawnInterval)
+                {
+                    SpawnTrain(GetCurrentTempoMode());
+                    timer = 0f;
+                }
+
+                yield return null; // Wait until the next frame
             }
         }
 
@@ -77,15 +95,24 @@ namespace Hazard.Train
             switch (mode)
             {
                 case TempoMode.Slow:
-                    _spawnInterval *= _normalSpawnInterval * _slowEffectValue;
+                    _spawnInterval = _normalSpawnInterval * _slowEffectValue;
                     break;
                 case TempoMode.Fast:
-                    _spawnInterval *= _normalSpawnInterval * _fastEffectValue;
+                    _spawnInterval = _normalSpawnInterval * _fastEffectValue;
                     break;
                 case TempoMode.Default:
                     _spawnInterval = _normalSpawnInterval;
                     break;
             }
+        }
+
+        public TempoMode GetCurrentTempoMode()
+        {
+            if (Mathf.Approximately(_spawnInterval, _normalSpawnInterval * _slowEffectValue))
+                return TempoMode.Slow;
+            if (Mathf.Approximately(_spawnInterval, _normalSpawnInterval * _fastEffectValue))
+                return TempoMode.Fast;
+            return TempoMode.Default;
         }
 
         private void OnDestroy()
