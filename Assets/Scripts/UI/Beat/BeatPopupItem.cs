@@ -26,7 +26,7 @@ public class BeatPopupItem : MonoBehaviour
 
     private BeatSpawner _spawner;
     private int _beat;
-
+    [SerializeField] private BeatHitEffect sampleHitEffect;
     public void Init(BeatSpawner spawner, int beat, RectTransform leftTarget, RectTransform rightTarget, float distance, float travelTime)
     {
         _spawner = spawner;
@@ -114,6 +114,8 @@ public class BeatPopupItem : MonoBehaviour
         _sequence = DOTween.Sequence();
 
         Color targetColor = Color.white;
+        BeatHitEffect hitEffect;
+        float fadeStrength = 0f;
         switch (grade)
         {
             // If perfect, the hexagons should pop before fading away
@@ -127,14 +129,29 @@ public class BeatPopupItem : MonoBehaviour
                 _sequence.Join(rightHexagon.Rect.DOScale(1.5f, 0.1f).SetEase(Ease.OutCubic));
                 _sequence.Append(leftHexagon.Rect.DOScale(1f, 0.1f).SetEase(Ease.OutCubic));
                 _sequence.Join(rightHexagon.Rect.DOScale(1f, 0.1f).SetEase(Ease.OutCubic));
+
+                hitEffect = Instantiate(sampleHitEffect, leftHexagon.Rect);
+                hitEffect.Init(targetColor, FADE_DURATION, 2f);
+                hitEffect = Instantiate(sampleHitEffect, rightHexagon.Rect);
+                hitEffect.Init(targetColor, FADE_DURATION, 2f);
+
                 break;
             // If good, just set the colour to green
             case Grade.Good:
                 targetColor = goodColour;
+                hitEffect = Instantiate(sampleHitEffect, leftHexagon.Rect);
+                hitEffect.Init(targetColor, FADE_DURATION, 1.2f);
+                hitEffect = Instantiate(sampleHitEffect, rightHexagon.Rect);
+                hitEffect.Init(targetColor, FADE_DURATION, 1.2f);
+
                 break;
             // If failed, just set the colour to red
             case Grade.Failed:
                 targetColor = failedColour;
+                fadeStrength = 1f;
+                _sequence.Append(leftHexagon.Rect.DOShakeAnchorPos(0.5f, 10f, 20, 90f));
+                _sequence.Join(rightHexagon.Rect.DOShakeAnchorPos(0.5f, 10f, 20, 90f));
+
                 break;
         }
 
@@ -143,8 +160,8 @@ public class BeatPopupItem : MonoBehaviour
         rightHexagon.Image.color = targetColor;
 
         // Fade Out
-        _sequence.Append(leftHexagon.Image.DOFade(0f, FADE_DURATION).SetEase(Ease.InOutCubic));
-        _sequence.Join(rightHexagon.Image.DOFade(0f, FADE_DURATION).SetEase(Ease.InOutCubic));
+        _sequence.Append(leftHexagon.Image.DOFade(fadeStrength, FADE_DURATION).SetEase(Ease.InOutCubic));
+        _sequence.Join(rightHexagon.Image.DOFade(fadeStrength, FADE_DURATION).SetEase(Ease.InOutCubic));
 
         _sequence.AppendCallback(() =>
         {
