@@ -8,7 +8,7 @@ public class BeatPopupItem : MonoBehaviour
     private readonly Color perfectColour = new Color(0.2f, 0.8f, 0.1f, 0.8f);
     private readonly Color goodColour = new Color(0.8f, 0.4f, 0.1f, 0.8f);
     private readonly Color failedColour = new Color(0.9f, 0.2f, 0.3f, 0.8f);
-    
+
     // Determines how long the beat will take to fade out
     private const float FADE_DURATION = 0.5f;
     // Determines the time when the beat will fade into the player's view
@@ -37,21 +37,21 @@ public class BeatPopupItem : MonoBehaviour
         Vector2 leftPos = _leftTarget.anchoredPosition;
         leftPos.x -= distance;
         leftHexagon.Rect.anchoredPosition = leftPos;
-        
+
         Vector2 rightPos = _rightTarget.anchoredPosition;
         rightPos.x += distance;
         rightHexagon.Rect.anchoredPosition = rightPos;
-        
+
         // Set colour to neutral
         leftHexagon.Image.color = neutralColour;
         rightHexagon.Image.color = neutralColour;
-        
+
         // Create tweens to move the hexagons
         _sequence = DOTween.Sequence();
         _sequence.Append(leftHexagon.Rect.DOAnchorPos(_leftTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
         _sequence.Join(rightHexagon.Rect.DOAnchorPos(_rightTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
         _sequence.Play().OnComplete(Resolve);
-        
+
         // Create a tween to control when the beat will appear
         float timeToAppear = travelTime - APPEAR_TIME;
         if (timeToAppear > 0f)
@@ -84,7 +84,7 @@ public class BeatPopupItem : MonoBehaviour
         if (remainingBeat <= 0) return;
 
         float travelTime = remainingBeat * beatHandler.BeatInterval;
-        
+
         // If we have a remaining beat, then we want to adjust our time to travel
         _sequence.Kill();
         _sequence = DOTween.Sequence();
@@ -106,7 +106,7 @@ public class BeatPopupItem : MonoBehaviour
             Destroy(gameObject);
         });
     }
-    
+
     public void Resolve(Grade grade)
     {
         _appearSequence.Kill();
@@ -168,4 +168,11 @@ public class BeatPopupItem : MonoBehaviour
             _spawner.ResolveBeat(_beat);
             Destroy(gameObject);
         });
-    }}
+    }
+
+    void OnApplicationQuit()
+    {
+        Destroy(gameObject);
+    }
+
+}
