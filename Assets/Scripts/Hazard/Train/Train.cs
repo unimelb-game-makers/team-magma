@@ -1,14 +1,17 @@
 // Author : Peiyu Wang @ Daphatus
 // 19 03 2025 03 52
 
+// Updated by Ellen Lyu
+
 using System;
 using System.Collections;
 using PathCreation;
 using Platforms;
 using UnityEngine;
 using Utilities.ServiceLocator;
+using Tempo;
 
-namespace Hazard.Train
+namespace Hazard
 {
     public class Train : Hazard 
     {
@@ -22,13 +25,13 @@ namespace Hazard.Train
         private void OnEnable()
         {
             if(ServiceLocator.Instance == null) return;
-            ServiceLocator.Instance.Register(this);
+            ServiceLocator.Instance.Register<ISyncable>(this);
         }
         
         private void OnDisable()
         {
             if(ServiceLocator.Instance == null) return;
-            ServiceLocator.Instance.Unregister(this);
+            ServiceLocator.Instance.Unregister<ISyncable>(this);
         }
 
         public override void Affect(TempoMode mode)
@@ -62,7 +65,7 @@ namespace Hazard.Train
                         _end = true;
                         OnReachEnd();
                     }
-                }            
+                }
             }
             
         }
