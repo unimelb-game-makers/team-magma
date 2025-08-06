@@ -57,8 +57,8 @@ namespace UI
         private void SetMasterVolume(float value)
         {
             MusicTimeline.instance?.SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", 1.0f) * value);
-
             StartMenuManager.Instance?.SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", 1.0f) * value);
+            SuccessScreenManager.Instance?.SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", 1.0f) * value);
 
             PlayerPrefs.SetFloat("MasterVolume", value);
 
@@ -73,6 +73,7 @@ namespace UI
         {
             MusicTimeline.instance?.SetMusicVolume(PlayerPrefs.GetFloat("MasterVolume", 1.0f) * value);
             StartMenuManager.Instance?.SetMusicVolume(PlayerPrefs.GetFloat("MasterVolume", 1.0f) * value);
+            SuccessScreenManager.Instance?.SetMusicVolume(PlayerPrefs.GetFloat("MasterVolume", 1.0f) * value);
 
             PlayerPrefs.SetFloat("MusicVolume", value);
 

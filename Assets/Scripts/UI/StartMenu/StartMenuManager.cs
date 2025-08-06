@@ -10,21 +10,22 @@ public class StartMenuManager : Singleton<StartMenuManager>
     public CanvasGroup startMenuCanvasGroup;
     public float fadeDuration = 0.5f;
     public bool isStartMenu = true;
-    private float _volume = 1.0f;
 
     [Header("FMOD")]
     [SerializeField] private EventReference startMenuMusicEvent;
-    private FMOD.Studio.EventInstance startMenuMusicInstance;
+    private IMusicController musicController;
 
     void Start()
     {
+        musicController = new FMODMusicController(startMenuMusicEvent);
+
         if (isStartMenu)
         {
             PauseManager.PauseGame();
             startMenuCanvasGroup.gameObject.SetActive(true);
             startMenuCanvasGroup.alpha = 1;
 
-            PlayStartMenuMusic();
+            musicController.PlayMusic();
         }
         else
         {
@@ -39,7 +40,7 @@ public class StartMenuManager : Singleton<StartMenuManager>
         PauseManager.PauseGame();
         startMenuCanvasGroup.gameObject.SetActive(true);
 
-        PlayStartMenuMusic();
+        musicController.PlayMusic();
 
         StartCoroutine(FadeInStartMenu());
     }
@@ -55,7 +56,7 @@ public class StartMenuManager : Singleton<StartMenuManager>
     public void HideStartMenu()
     {
         isStartMenu = false;
-        StopStartMenuMusic();
+        musicController.StopMusic();
         StartCoroutine(FadeOutStartMenu());
     }
 
@@ -68,28 +69,9 @@ public class StartMenuManager : Singleton<StartMenuManager>
         startMenuCanvasGroup.gameObject.SetActive(false);
     }
 
-    private void PlayStartMenuMusic()
+    public void SetMusicVolume(float value)
     {
-        if (!startMenuMusicInstance.isValid())
-        {
-            startMenuMusicInstance = RuntimeManager.CreateInstance(startMenuMusicEvent);
-            startMenuMusicInstance.start();
-        }
-    }
-
-    private void StopStartMenuMusic()
-    {
-        if (startMenuMusicInstance.isValid())
-        {
-            startMenuMusicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            startMenuMusicInstance.release();
-        }
-    }
-
-    public void SetMusicVolume(float volume)
-    {
-        _volume = Mathf.Clamp(volume, 0.0f, 1.0f);
-        startMenuMusicInstance.setVolume(_volume);
+        musicController.SetMusicVolume(value);
     }
 }
 
