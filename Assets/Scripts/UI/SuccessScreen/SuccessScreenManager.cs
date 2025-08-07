@@ -1,6 +1,8 @@
 using System.Collections;
 using Scenes;
 using UnityEngine;
+using FMODUnity;
+using Timeline;
 
 namespace UI
 {
@@ -8,6 +10,10 @@ namespace UI
     {
         public CanvasGroup successScreenCanvasGroup;
         public float fadeDuration = 0.3f; // Duration of the fade-in
+
+        [Header("FMOD")]
+        [SerializeField] private EventReference successScreenMusicEvent;
+        private IMusicController musicController;
 
         public bool isSuccess { get; private set; } = false;
 
@@ -18,6 +24,8 @@ namespace UI
 
         void Start()
         {
+            musicController = new FMODMusicController(successScreenMusicEvent);
+
             Time.timeScale = 1f;
             HideSuccessScreen();
         }
@@ -31,9 +39,11 @@ namespace UI
 
         private IEnumerator FadeInSuccessScreen()
         {
-            yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(successScreenCanvasGroup, 0, 1, fadeDuration));
             Time.timeScale = 0f;
             SoundManager.Instance.StopAllSFX();
+            MusicTimeline.instance.PauseMusic();
+            musicController.PlayMusic();
+            yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(successScreenCanvasGroup, 0, 1, fadeDuration));
         }
 
         public void HideSuccessScreen()
@@ -41,6 +51,12 @@ namespace UI
             isSuccess = false;
             successScreenCanvasGroup.gameObject.SetActive(false);
             successScreenCanvasGroup.alpha = 0;
+            musicController.StopMusic();
+        }
+        
+        public void SetMusicVolume(float value)
+        {
+            musicController.SetMusicVolume(value);
         }
     }
 }
