@@ -43,7 +43,7 @@ namespace Narrative
             HideUI();
         }
         
-        public void TalkToNpc(Story story, string knot) //JASPER WROTE THIS
+        public void Talk(Story story, string knot) //JASPER WROTE THIS
         {
             // default name
             characterNameText.text = "???";
@@ -165,72 +165,88 @@ namespace Narrative
         private string[] SplitIntoPages(string text)
         {
             List<string> result = new List<string>();
-            List<string> currentPageLines = new List<string>(); // Tracks lines for the current page
-            int charactersInCurrentPage = 0;  // Tracks the number of characters in the current page
+            List<string> currentPageLines = new List<string>();
+            string currentSpeaker = "???";
+            string nextSpeaker = "???";
+            int charactersInCurrentPage = 0;
 
-            string[] lines = text.Split('\n'); // Split the text by new lines (to preserve line structure)
-            foreach (string originalLine in lines)
+            string[] lines = text.Split('\n');
+            
+            foreach (string line in lines)
             {
-                string line = originalLine;  // Create a new variable to store the modified line
+                // Skip empty lines
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
 
-                // Check if the line looks like "characterName: xxx"
-                if (line.Contains(":"))
+                // Check for speaker tag
+                bool isNewSpeaker = false;
+                string content = line;
+                
+                Debug.Log(_story.currentTags);
+
+                // Check if this line has a speaker tag
+                foreach (string tag in _story.currentTags)
                 {
-                    string characterName = line.Substring(0, line.IndexOf(":")).Trim();  // Extract character name
-
-                    // Set the character name text
-                    characterNameText.text = characterName;
-                    
-                    // Remove the character name and the colon
-                    line = line.Substring(line.IndexOf(":") + 1).Trim();  // Remove the character name and colon
+                    if (tag.StartsWith("speaker:"))
+                    {
+                        nextSpeaker = tag.Substring(8).Trim();
+                        Debug.Log(nextSpeaker);
+                        if (nextSpeaker != currentSpeaker)
+                        {
+                            isNewSpeaker = true;
+                        }
+                        break;
+                    }
                 }
 
-                // Split the line if it's longer than the max allowed characters per line
+                // If speaker changed and we have content, start new page
+                if (isNewSpeaker && currentPageLines.Count > 0)
+                {
+                    result.Add(currentSpeaker + "|" + string.Join("\n", currentPageLines));
+                    currentPageLines.Clear();
+                    charactersInCurrentPage = 0;
+                }
+
+                currentSpeaker = nextSpeaker;
+
+                // Handle line wrapping
                 if (line.Length > charactersPerPage)
                 {
-                    // Split the long line into smaller parts
                     List<string> wrappedLines = WrapLongLine(line);
                     foreach (var wrappedLine in wrappedLines)
                     {
-                        // If adding this line would exceed either the character count or the line count
-                        if (charactersInCurrentPage + wrappedLine.Length > charactersPerPage || currentPageLines.Count >= maxLinesPerPage)
+                        if (charactersInCurrentPage + wrappedLine.Length > charactersPerPage ||
+                            currentPageLines.Count >= maxLinesPerPage)
                         {
-                            // Add the current page to the result (as a single page)
-                            result.Add(string.Join("\n", currentPageLines));
-
-                            // Reset for the next page
+                            result.Add(currentSpeaker + "|" + string.Join("\n", currentPageLines));
                             currentPageLines.Clear();
                             charactersInCurrentPage = 0;
                         }
 
-                        // Add the wrapped line to the page
                         currentPageLines.Add(wrappedLine);
-                        charactersInCurrentPage += wrappedLine.Length + 1; // +1 for the newline character
+                        charactersInCurrentPage += wrappedLine.Length + 1;
                     }
                 }
                 else
                 {
-                    // If the line is not too long, proceed as usual
-                    if (charactersInCurrentPage + line.Length > charactersPerPage || currentPageLines.Count >= maxLinesPerPage)
+                    if (charactersInCurrentPage + line.Length > charactersPerPage ||
+                        currentPageLines.Count >= maxLinesPerPage)
                     {
-                        // Add the current page to the result (as a single page)
-                        result.Add(string.Join("\n", currentPageLines));
-
-                        // Reset for the next page
+                        result.Add(currentSpeaker + "|" + string.Join("\n", currentPageLines));
                         currentPageLines.Clear();
                         charactersInCurrentPage = 0;
                     }
 
-                    // Add the current line to the page
                     currentPageLines.Add(line);
-                    charactersInCurrentPage += line.Length + 1; // +1 for the newline character
+                    charactersInCurrentPage += line.Length + 1;
                 }
             }
 
-            // Add the last page if there are any remaining lines and it is not empty (ignoring pages with just spaces or newlines)
-            if (currentPageLines.Count > 0 && !string.IsNullOrWhiteSpace(string.Join("\n", currentPageLines)))
+            // Add final page
+            if (currentPageLines.Count > 0)
             {
-                result.Add(string.Join("\n", currentPageLines));
+                
+                result.Add(currentSpeaker + "|" + string.Join("\n", currentPageLines));
             }
 
             return result.ToArray();
@@ -256,9 +272,27 @@ namespace Narrative
             nextIndicator.SetActive(false);
             closeIndicator.SetActive(false);
 
-            StartTyping(pages[currentPage]);
-
+            // Update speaker name before showing text
+            string textWithoutSpeaker = UpdateSpeakerForCurrentPage(pages[currentPage]);
+            
+            StartTyping(textWithoutSpeaker);
             DisplayChoices();
+        }
+
+        private string UpdateSpeakerForCurrentPage(string text)
+        {
+            Debug.Log(text);
+            // Reset speaker at start of each page
+            characterNameText.text = "???";
+
+            if (text.Contains("|"))
+            {
+                Debug.Log("hihih");
+                string characterName = text.Substring(0, text.IndexOf("|")).Trim();
+                characterNameText.text = characterName;
+                return text.Substring(text.IndexOf("|") + 1).Trim();
+            }
+            return text;
         }
 
         // Next Page Button
@@ -310,11 +344,17 @@ namespace Narrative
         // Method to handle player clicking during typing
         public void OnPlayerClick()
         {
+            
+
             if (isTyping)
             {
                 // Stop the typing coroutine and show the full text
                 StopCoroutine(currentCoroutine);
-                dialogueText.text = pages[currentPage];  // Show the full text of the current page
+
+                // Update speaker name before showing text
+                string textWithoutSpeaker = UpdateSpeakerForCurrentPage(pages[currentPage]);
+
+                dialogueText.text = textWithoutSpeaker;  // Show the full text of the current page
                 isTyping = false;
             }
             else
