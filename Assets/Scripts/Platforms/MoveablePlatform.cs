@@ -3,12 +3,14 @@ using System.Collections;
 using Tempo;
 using UnityEngine;
 using Utilities.ServiceLocator;
+using System.Collections.Generic;
 
 namespace Platforms
 {
     public class MoveablePlatform : PlatformComponent
     {
-        private const float SLOW_MULTIPLIER = 0.5f;
+        [SerializeField] private float slow_speed = 0.5f;
+        [SerializeField] private float fast_speed = 1.5f;
      
         [SerializeField] private float _displacement = 1;
         /**
@@ -27,6 +29,7 @@ namespace Platforms
          * End position of the platform
          */
         private Vector3 _endPosition;
+        private Vector3 previousPosition;
         
         /**
          * Time for the platform to move.
@@ -34,11 +37,13 @@ namespace Platforms
         private float _time = 0;
         private bool _reverse = false;
         private float _originalSpeed;
+        private List<Transform> passengers = new List<Transform>();
         
         public void Awake()
         {
             _originalSpeed = _speed;
             _initialPosition = transform.position;
+            previousPosition = transform.position;
             CalculateEndPosition();
         }
 
@@ -47,7 +52,7 @@ namespace Platforms
             ServiceLocator.Instance.Register<ISyncable>(this);
         }
 
-        public void Update()
+        public void FixedUpdate()
         {
             MovePlatform();
         }
@@ -58,12 +63,15 @@ namespace Platforms
         {
             _endPosition = _initialPosition + _direction * _displacement;
         }
-        
+
         /**
          * Move the platform in the direction and speed.
          */
         private void MovePlatform()
         {
+            // Store previous position
+            previousPosition = transform.position;
+
             if (_time > 1)
             {
                 _reverse = true;
@@ -82,6 +90,19 @@ namespace Platforms
             }
 
             transform.position = Vector3.Lerp(_initialPosition, _endPosition, _time);
+            
+            // Move passengers
+            Vector3 delta = transform.position - previousPosition;
+            foreach (Transform passenger in passengers)
+            {
+                // Store current rotation
+                Quaternion rotation = passenger.rotation;
+
+                passenger.position += delta;
+                
+                // Restore rotation
+                passenger.rotation = rotation;
+            }
         }
     
         /**
@@ -93,7 +114,10 @@ namespace Platforms
             {
                 // Slow down the platform
                 case TempoMode.Slow:
-                    _speed = SLOW_MULTIPLIER;
+                    _speed = slow_speed;
+                    break;
+                case TempoMode.Fast:
+                    _speed = fast_speed;
                     break;
                 // Reset the platform speed
                 case TempoMode.Default:
@@ -102,19 +126,19 @@ namespace Platforms
             }
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision collision)
         {
-            if (other.CompareTag("Player"))
+            if (collision.gameObject.CompareTag("Player"))
             {
-                other.transform.SetParent(transform); // Parent the player to the platform
+                passengers.Add(collision.transform);
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        private void OnCollisionExit(Collision collision)
         {
-            if (other.CompareTag("Player"))
+            if (collision.gameObject.CompareTag("Player"))
             {
-                other.transform.SetParent(null); // Unparent the player
+                passengers.Remove(collision.transform);
             }
         }
     }
