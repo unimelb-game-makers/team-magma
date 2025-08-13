@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class BeatSpawner : MonoBehaviour
 {
@@ -12,9 +13,9 @@ public class BeatSpawner : MonoBehaviour
 
     [SerializeField] private RectTransform leftTarget;
     [SerializeField] private RectTransform rightTarget;
-    
+    [SerializeField] private TapeColorSwitcher switcher;
     private BeatHandler _beatHandler;
-
+    
     private readonly Dictionary<int, BeatPopupItem> _popupItems = new();
 
     public void Init(BeatHandler beatHandler)
@@ -35,7 +36,7 @@ public class BeatSpawner : MonoBehaviour
         float distance = BEAT_DISTANCE * travelTime;
 
         BeatPopupItem beatPopupItem = Instantiate(sampleBeatPopupItem, beatHolder);
-        beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, travelTime);
+        beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, travelTime, switcher.ActiveColor);
         _popupItems.Add(beat, beatPopupItem);
     }
 
