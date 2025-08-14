@@ -63,7 +63,7 @@ PrefabInstance:
     - target: {fileID: 534579418196835213, guid: 2d39ce524d77c4e34ac988198d4b88cf, type: 3}
       propertyPath: trainPrefab
       value: 
-      objectReference: {fileID: 8964880226321231940, guid: 672b6be55cb7af24392ed1e9fd20e1fb, type: 3}
+      objectReference: {fileID: 8964880226321231940, guid: 5a4d63fdfc0544be29d77201949981dd, type: 3}
     - target: {fileID: 534579418196835213, guid: 2d39ce524d77c4e34ac988198d4b88cf, type: 3}
       propertyPath: _spawnInterval
       value: 3
@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3544017319990078650, guid: 2d39ce524d77c4e34ac988198d4b88cf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00005340576
+      value: 0.000049591064
       objectReference: {fileID: 0}
     - target: {fileID: 3544017319990078650, guid: 2d39ce524d77c4e34ac988198d4b88cf, type: 3}
       propertyPath: m_LocalPosition.y
@@ -142,7 +142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8383835175733443799, guid: 2d39ce524d77c4e34ac988198d4b88cf, type: 3}
       propertyPath: editorData.vertexPathUpToDate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8383835175733443799, guid: 2d39ce524d77c4e34ac988198d4b88cf, type: 3}
       propertyPath: editorData._bezierPath.points.Array.data[0].x

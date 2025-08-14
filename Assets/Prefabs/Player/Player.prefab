@@ -36,8 +36,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.61, y: 5.43, z: -8.76}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8279001992077649883}
   m_Father: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6d1d5e5a21463e96f50a667f280c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 15
+  movementSpeed: 10
   animator: {fileID: 4283264021130854951}
   jumpHeight: 2
   jumpForce: 5
@@ -156,8 +156,8 @@ NavMeshObstacle:
   m_GameObject: {fileID: 4176051907566790841}
   m_Enabled: 1
   serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_Shape: 0
+  m_Extents: {x: 0.6, y: 1.25, z: 0.6}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
@@ -243,7 +243,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2.2, z: 1}
+  m_Size: {x: 1, y: 2.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8461794276516773936
 PrefabInstance:
