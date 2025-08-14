@@ -8,7 +8,7 @@ using UnityEngine.PlayerLoop;
 public class CameraManager : MonoBehaviour
 {
     private List<CinemachineVirtualCamera> cameras;
-    private CinemachineVirtualCamera initialCamera; 
+    public CinemachineVirtualCamera initialCamera; 
     private int activePriority = 20;
     private int inactivePriority = 10;
     public static CameraManager Instance;
@@ -18,7 +18,7 @@ public class CameraManager : MonoBehaviour
         Instance = this;
         cameras = new List<CinemachineVirtualCamera>();
     }
-   
+
     public void Register(CinemachineVirtualCamera camera, bool initialActive)
     {
         cameras.Add(camera);
@@ -26,6 +26,8 @@ public class CameraManager : MonoBehaviour
         if (initialActive)
         {
             initialCamera = camera;
+            Camera.main.transform.position = camera.transform.position;
+            Camera.main.transform.rotation = camera.transform.rotation;
         }
         else
         {
@@ -48,6 +50,7 @@ public class CameraManager : MonoBehaviour
 
     public void EnableCamera(CinemachineVirtualCamera camera)
     {
+
         DisableAllCamera();
         camera.Priority = activePriority;
     }

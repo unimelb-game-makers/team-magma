@@ -52,6 +52,8 @@ namespace Player.Stats
         private void OnDeath()
         {
             GameManager.Instance.OnPlayerDead();
+            CameraManager.Instance.ResetCamera();
+
         }
 
         private void OnDamaged(float health)

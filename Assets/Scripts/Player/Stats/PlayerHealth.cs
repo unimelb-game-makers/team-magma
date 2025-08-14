@@ -61,7 +61,6 @@ namespace Player.Stats
         public void Death()
         {
             OnDeath?.Invoke();
-            CameraManager.Instance.ResetCamera();
 
         }
         private void OnDamageImmune()

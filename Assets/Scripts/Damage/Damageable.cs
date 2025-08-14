@@ -1,7 +1,9 @@
 using UnityEngine;
-using System.Collections;
 using Player;
 using Enemy;
+using DG.Tweening;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Damage
 {
@@ -12,44 +14,51 @@ namespace Damage
         [SerializeField] private Color hitColor = Color.red;
         [SerializeField] private float hitEffectDuration = 0.5f;
         [SerializeField] private float colorChangeDuration = 0.2f;
+        [SerializeField] private Renderer[] renderers;
 
         [SerializeField] private AudioPlayer takeDamageAudioPlayer;
         
-        private Renderer rend;  // The Renderer component of the cube  // The color to change to when hit
-        private Color originalColor;  // To store the original color of the cube
+        private List<Color> originalColor;  // To store the original color of the cube
         // ***************
-        
+        [SerializeField] private GameObject HitEffectPrefab;
+
         private bool isInvulnerable = false;
-
+        private Sequence _sequence;
         private IHealthManager healthManager;
-
+        private const string ColorProp = "_BaseColor";  
         public void Awake()
         {
-            rend = GetComponent<Renderer>();
-            if (rend != null)
+            originalColor = new();
+            foreach (Renderer rend in renderers)
             {
-                originalColor = rend.material.color;
+
+                originalColor.Add(rend.material.color);
+
             }
+            _sequence = DOTween.Sequence();
+
 
             // Get the health manager component.
             healthManager = GetComponent<IHealthManager>();
             //Debug.Log(healthManager);
             if (healthManager == null)
             {
-                //Debug.LogError("No IHealthManager implementation found on the GameObject.");
+                Debug.LogError("No IHealthManager implementation found on the GameObject.");
             }
         }
 
         public void TakeDamage(float damage)
         {
-            if (!isInvulnerable) {
+            if (!isInvulnerable)
+            {
                 //Debug.Log(healthManager);
-                if (takeDamageAudioPlayer != null) {
+                if (takeDamageAudioPlayer != null)
+                {
                     takeDamageAudioPlayer.Play();
                 }
 
                 healthManager.TakeDamage(damage);
-                
+
                 if (healthManager.IsDead())
                 {
                     //if is player character, dont destroy
@@ -57,50 +66,48 @@ namespace Damage
                     {
                         //Debug.Log("Player character is dead");
                         // Do nothing, player character should not be destroyed
-                        
+
                         // To add: A Die() method in player that just returns for now.
                     }
                     else if (gameObject.GetComponent<EnemyController>())
                     {
                         // if it is an enemy, call the enemy die method.
                         gameObject.GetComponent<EnemyController>().Die();
-                    } else
+                    }
+                    else
                     {
                         Destroy(gameObject);
                     }
                 }
-                else if (rend != null)
+                else
                 {
-                    StartCoroutine(HitEffect());
+                    _sequence.Kill();
+
+                    for (int i = 0; i < renderers.Count(); i++)
+                    {
+                        var mat = renderers[i].material;
+
+                        DOTween.Kill(mat);
+
+                        // Make a per-material flash sequence: red -> original
+                        var flash = DOTween.Sequence()
+                            .Append(mat.DOColor(hitColor, ColorProp, colorChangeDuration))
+                            .Append(mat.DOColor(originalColor[i], ColorProp, colorChangeDuration));
+
+                    }
+
                 }
+                if (HitEffectPrefab != null)
+                {
+                    GameObject effect = Instantiate(HitEffectPrefab, transform);
+                    Destroy(effect, hitEffectDuration);
+
+                }
+
             }
         }
 
-        private IEnumerator HitEffect()
-        {
-            // Gradually change the color to hitColor
-            yield return StartCoroutine(ChangeColor(originalColor, hitColor, colorChangeDuration));
 
-            // Wait for the rest of the hitEffectDuration
-            yield return new WaitForSeconds(hitEffectDuration - colorChangeDuration);
-
-            // Gradually change the color back to originalColor
-            yield return StartCoroutine(ChangeColor(hitColor, originalColor, colorChangeDuration));
-        }
-
-        private IEnumerator ChangeColor(Color startColor, Color endColor, float duration)
-        {
-            float elapsedTime = 0f;
-
-            while (elapsedTime < duration)
-            {
-                rend.material.color = Color.Lerp(startColor, endColor, elapsedTime / duration);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            rend.material.color = endColor;  // Ensure the color is set to endColor
-        }
 
         public void setIsInvulnerable(bool isInvuln)
         {

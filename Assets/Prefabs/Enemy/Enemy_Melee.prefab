@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75c5691c9ca9bbc4ba48c3499b605df7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 30
+  health: 50
   isSyncable: 1
   idleDuration: 3
   presetPatrolRoute: 0
@@ -158,8 +158,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
-  colorChangeDuration: 0.2
+  colorChangeDuration: 0.5
+  renderers:
+  - {fileID: 1468800512410713638}
+  - {fileID: 2840083543356085789}
   takeDamageAudioPlayer: {fileID: 0}
+  HitEffectPrefab: {fileID: 8530719894753306205, guid: d99d9955afe8653458c2967e06cf26c5, type: 3}
 --- !u!114 &746498277947710746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,6 +351,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 6.255887
       objectReference: {fileID: 0}
+    - target: {fileID: -4278032810995721380, guid: 72461f7d39fdf9e419b0bec0148d48e1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -3746190272939815206, guid: 72461f7d39fdf9e419b0bec0148d48e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -82.022255
@@ -491,6 +499,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -11.951849
       objectReference: {fileID: 0}
+    - target: {fileID: 841595140831446711, guid: 72461f7d39fdf9e419b0bec0148d48e1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 72461f7d39fdf9e419b0bec0148d48e1, type: 3}
       propertyPath: m_Name
       value: EnemyHuman_WalkAnim
@@ -627,6 +639,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -2.6195014
       objectReference: {fileID: 0}
+    - target: {fileID: 7058901479694160906, guid: 72461f7d39fdf9e419b0bec0148d48e1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7078722787440015773, guid: 72461f7d39fdf9e419b0bec0148d48e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 56.741104
@@ -714,3 +730,13 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!137 &1468800512410713638 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1401755511167423451, guid: 72461f7d39fdf9e419b0bec0148d48e1, type: 3}
+  m_PrefabInstance: {fileID: 510652221280644605}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &2840083543356085789 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6882569427513082912, guid: 72461f7d39fdf9e419b0bec0148d48e1, type: 3}
+  m_PrefabInstance: {fileID: 510652221280644605}
+  m_PrefabAsset: {fileID: 0}

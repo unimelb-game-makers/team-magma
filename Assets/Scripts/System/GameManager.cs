@@ -185,7 +185,6 @@ namespace System
 
         private void LoadingLevel()
         {
-            Debug.Log("Level loaded.");
             PlayerCharacter.gameObject.SetActive(false);
         }
         
@@ -197,10 +196,6 @@ namespace System
             PlayerCharacter.transform.rotation = SubGameManager.Instance.LevelSpawnPoint.rotation;
             PlayerCharacter.gameObject.SetActive(true);
 
-            var cameraComponent = PlayerCharacter.GetComponent<PlayerCamera>();
-            cameraComponent.FindActiveCamera();
-            cameraComponent.SetYaw(SubGameManager.Instance.LevelSpawnPoint.eulerAngles.y);
-            
             MusicTimeline.instance.StartTrack();
         }
 
@@ -211,10 +206,6 @@ namespace System
             PlayerCharacter.transform.position = SubGameManager.Instance.LevelSpawnPoint.position;
             PlayerCharacter.transform.rotation = SubGameManager.Instance.LevelSpawnPoint.rotation;
             PlayerCharacter.gameObject.SetActive(true);
-
-            var cameraComponent = PlayerCharacter.GetComponent<PlayerCamera>();
-            cameraComponent.FindActiveCamera();
-            cameraComponent.SetYaw(SubGameManager.Instance.LevelSpawnPoint.eulerAngles.y);
 
             PlayerCharacter.PlayerStats.OnReset();
             
