@@ -5,6 +5,7 @@ using System.Collections;
 using Utilities.ServiceLocator;
 using UnityEngine;
 using Tempo;
+using System.Collections.Generic;
 
 namespace Hazard
 {
@@ -79,24 +80,63 @@ namespace Hazard
             ServiceLocator.Instance.Register<ISyncable>(this);
         }
 
-        private IEnumerator MoveKillAreaToHeight(float targetHeight)
+        private IEnumerator MoveWaterLevelToHeight(float targetWaterHeight)
         {
-            Vector3 startPosition = killArea.transform.position;
-            Vector3 targetPosition = new Vector3(startPosition.x, targetHeight, startPosition.z);
-
+            // Get all floatable objects
+            GameObject[] floatableItems = GameObject.FindGameObjectsWithTag("Floatable");
+            
+            // Store original Y offsets from current water surface
+            Dictionary<Transform, float> objectOffsets = new Dictionary<Transform, float>();
+            Vector3 killAreaStartPos = killArea.transform.position;
+            float currentWaterHeight = killAreaStartPos.y;
+            
+            foreach (GameObject item in floatableItems)
+            {
+                // Calculate each object's current offset from water surface
+                float offset = item.transform.position.y - currentWaterHeight;
+                objectOffsets.Add(item.transform, offset);
+            }
+            
             float elapsedTime = 0f;
+            float heightDifference = targetWaterHeight - currentWaterHeight;
 
             while (elapsedTime < _duration)
             {
-                // Interpolate position over time
-                killArea.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / _duration);
+                float progress = elapsedTime / _duration;
+                float easedProgress = Mathf.SmoothStep(0f, 1f, progress);
+                float currentHeight = Mathf.Lerp(currentWaterHeight, targetWaterHeight, easedProgress);
+                
+                // Move kill area (water surface)
+                killArea.transform.position = new Vector3(
+                    killAreaStartPos.x,
+                    currentHeight,
+                    killAreaStartPos.z
+                );
+                
+                // Move floating items maintaining their natural offsets
+                foreach (var item in objectOffsets)
+                {
+                    Transform objTransform = item.Key;
+                    float naturalOffset = item.Value;
+                    
+                    // Calculate new position maintaining offset from moving surface
+                    Vector3 newPos = objTransform.position;
+                    newPos.y = currentHeight + naturalOffset;
+                    objTransform.position = newPos;
+                }
+                
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
-
-            // Ensure the exact target position is set
-            killArea.transform.position = targetPosition;
+            
+            // Finalize positions
+            killArea.transform.position = new Vector3(
+                killAreaStartPos.x,
+                targetWaterHeight,
+                killAreaStartPos.z
+            );
         }
+
         private void ChangeMaterialDensity(float targetRippleSpeed, float targetWaveSpeed, float targetRippleDensity)
         {
             _waterMaterial.SetFloat(RippleSpeedID, targetRippleSpeed);
@@ -114,19 +154,19 @@ namespace Hazard
                 case TempoMode.Slow:
                     if (_waterCoroutine != null)
                         StopCoroutine(_waterCoroutine);
-                    _waterCoroutine = StartCoroutine(MoveKillAreaToHeight(height1));
+                    _waterCoroutine = StartCoroutine(MoveWaterLevelToHeight(height1));
                     ChangeMaterialDensity(slowRippleSpeed, slowWaveSpeed, slowRippleDensity);
                     break;
                 case TempoMode.Fast:
                     if (_waterCoroutine != null)
                         StopCoroutine(_waterCoroutine);
-                    _waterCoroutine = StartCoroutine(MoveKillAreaToHeight(height3));
+                    _waterCoroutine = StartCoroutine(MoveWaterLevelToHeight(height3));
                     ChangeMaterialDensity(fastRippleSpeed, fastWaveSpeed, fastRippleDensity);
                     break;
                 case TempoMode.Default:
                     if (_waterCoroutine != null)
                         StopCoroutine(_waterCoroutine);
-                    _waterCoroutine = StartCoroutine(MoveKillAreaToHeight(height2));
+                    _waterCoroutine = StartCoroutine(MoveWaterLevelToHeight(height2));
                     ChangeMaterialDensity(mediumRippleSpeed, mediumWaveSpeed, mediumRippleDensity);
                     break;
             }

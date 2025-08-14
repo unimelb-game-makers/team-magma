@@ -1,44 +1,37 @@
-using System;
 using System.Collections;
 using Tempo;
 using UnityEngine;
 using Utilities.ServiceLocator;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace Platforms
 {
     public class MoveablePlatform : PlatformComponent
     {
+        [Header("Movement Settings")]
         [SerializeField] private float slow_speed = 0.5f;
         [SerializeField] private float fast_speed = 1.5f;
-     
         [SerializeField] private float _displacement = 1;
-        /**
-         * Speed of the platform.
-         */
         [SerializeField] private float _speed = 1;
-        /**
-         * Direction of the platform.
-         */
         [SerializeField] private Vector3 _direction = Vector3.right;
-        /**
-         * initial position of the platform
-         */
+        
+        [Header("Editor Visualization")]
+        [SerializeField] private Color _pathColor = Color.cyan;
+        [SerializeField] private float _waypointSize = 0.2f;
+        [SerializeField] private bool _showPathInGame = false;
+
         private Vector3 _initialPosition;
-        /**
-         * End position of the platform
-         */
         private Vector3 _endPosition;
         private Vector3 previousPosition;
-        
-        /**
-         * Time for the platform to move.
-         */
         private float _time = 0;
         private bool _reverse = false;
         private float _originalSpeed;
         private List<Transform> passengers = new List<Transform>();
-        
+
         public void Awake()
         {
             _originalSpeed = _speed;
@@ -56,20 +49,14 @@ namespace Platforms
         {
             MovePlatform();
         }
-        /**
-         * Calculate the end position of the platform.
-         */
+
         private void CalculateEndPosition()
         {
             _endPosition = _initialPosition + _direction * _displacement;
         }
 
-        /**
-         * Move the platform in the direction and speed.
-         */
         private void MovePlatform()
         {
-            // Store previous position
             previousPosition = transform.position;
 
             if (_time > 1)
@@ -80,66 +67,74 @@ namespace Platforms
             {
                 _reverse = false;
             }
-            if (_reverse)
-            {
-                _time -= Time.deltaTime * _speed;
-            }
-            else
-            {
-                _time += Time.deltaTime * _speed;
-            }
-
-            transform.position = Vector3.Lerp(_initialPosition, _endPosition, _time);
             
+            _time += (_reverse ? -1 : 1) * Time.deltaTime * _speed;
+            transform.position = Vector3.Lerp(_initialPosition, _endPosition, _time);
+
             // Move passengers
             Vector3 delta = transform.position - previousPosition;
+            passengers.RemoveAll(passenger => passenger == null);
+            
             foreach (Transform passenger in passengers)
             {
-                // Store current rotation
                 Quaternion rotation = passenger.rotation;
-
                 passenger.position += delta;
-                
-                // Restore rotation
                 passenger.rotation = rotation;
             }
         }
-    
-        /**
-         * Affect the platform with the tape type.
-         */
+
         public override void Affect(TempoMode mode)
         {
             switch (mode)
             {
-                // Slow down the platform
-                case TempoMode.Slow:
-                    _speed = slow_speed;
-                    break;
-                case TempoMode.Fast:
-                    _speed = fast_speed;
-                    break;
-                // Reset the platform speed
-                case TempoMode.Default:
-                    _speed = _originalSpeed;
-                    break;
+                case TempoMode.Slow: _speed = slow_speed; break;
+                case TempoMode.Fast: _speed = fast_speed; break;
+                case TempoMode.Default: _speed = _originalSpeed; break;
             }
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.CompareTag("Player"))
-            {
                 passengers.Add(collision.transform);
-            }
         }
 
         private void OnCollisionExit(Collision collision)
         {
             if (collision.gameObject.CompareTag("Player"))
-            {
                 passengers.Remove(collision.transform);
+        }
+
+        private void OnDisable() => passengers.Clear();
+        private void OnDestroy() => passengers.Clear();
+
+        #if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
+        {
+            if (!Application.isPlaying)
+            {
+                _initialPosition = transform.position;
+                _endPosition = _initialPosition + _direction * _displacement;
+            }
+
+            if (_showPathInGame || !Application.isPlaying)
+            {
+                Gizmos.color = _pathColor;
+                Gizmos.DrawLine(_initialPosition, _endPosition);
+                Gizmos.DrawSphere(_initialPosition, _waypointSize);
+                Gizmos.DrawSphere(_endPosition, _waypointSize);
+                
+                // Draw direction arrow
+                Vector3 dir = (_endPosition - _initialPosition).normalized;
+                float arrowSize = Mathf.Min(_waypointSize * 2, _displacement * 0.3f);
+                Handles.color = _pathColor;
+                Handles.ArrowHandleCap(0, 
+                    _initialPosition + dir * (_displacement * 0.5f), 
+                    Quaternion.LookRotation(dir), 
+                    arrowSize, 
+                    EventType.Repaint);
             }
         }
+        #endif
     }
 }
