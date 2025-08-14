@@ -12713,8 +12713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 970d1c17d5ca4c558c1295de3b8d82be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slow_speed: 0.5
-  fast_speed: 1.5
+  slow_multiplier: 0.5
+  fast_multiplier: 1.5
   _displacement: 10
   _speed: 1
   _direction: {x: 1, y: 0, z: 0}
@@ -17307,7 +17307,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 63778264963933241, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_Alpha
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 301379779729458451, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchorMax.y

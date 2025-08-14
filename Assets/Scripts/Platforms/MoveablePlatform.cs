@@ -28,7 +28,6 @@ namespace Platforms
         private Vector3 _initialPosition;
         private Vector3 _endPosition;
         private Vector3 previousPosition;
-        private bool _reverse = false;
         private float _originalSpeed;
         private List<Transform> passengers = new List<Transform>();
         private enum PlatformState { MovingToEnd, MovingToStart, Waiting }
