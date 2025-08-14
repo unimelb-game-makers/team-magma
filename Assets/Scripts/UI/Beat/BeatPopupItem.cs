@@ -31,6 +31,7 @@ public class BeatPopupItem : MonoBehaviour
 
     private Coroutine _runningCoroutine;
     [SerializeField] private float switchDuration = 0.5f;
+    [SerializeField] TapeColors tapeColors;
 
     public void Init(BeatSpawner spawner, int beat, RectTransform leftTarget, RectTransform rightTarget, float distance, float travelTime, Color color)
     {
@@ -97,7 +98,7 @@ public class BeatPopupItem : MonoBehaviour
         _sequence.Append(leftHexagon.Rect.DOAnchorPos(_leftTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
 
         _sequence.Join(rightHexagon.Rect.DOAnchorPos(_rightTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
-        Color targetColor = TapeColorSwitcher.Instance.GetColor(mode);
+        Color targetColor = tapeColors.GetColor(mode);
         _sequence.Join(leftHexagon.Image.DOColor(targetColor, switchDuration));
         _sequence.Join(rightHexagon.Image.DOColor(targetColor, switchDuration));
 

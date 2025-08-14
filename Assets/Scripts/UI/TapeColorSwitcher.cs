@@ -12,20 +12,20 @@ public class TapeColorSwitcher : MonoBehaviour, ISyncable
     [SerializeField] Image[] PreviousTapeSprite;
     [SerializeField] Image[] CurrentTapeSprite;
     [SerializeField] Image[] AfterTapeSprite;
-
-    [SerializeField] Color FastTapeColor;
-    [SerializeField] Color DefaultTapeColor;
-    [SerializeField] Color SlowTapeColor;
-
-    public static TapeColorSwitcher Instance;
-    public Color ActiveColor;
+    Color FastTapeColor;
+    Color DefaultTapeColor;
+    Color SlowTapeColor;
+    [SerializeField] TapeColors tapeColors;
     private Sequence _sequence;
     [SerializeField] private float switchDuration = 0.5f;
 
     void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        Instance = this;
+        FastTapeColor = tapeColors.GetColor(TempoMode.Fast);
+        DefaultTapeColor = tapeColors.GetColor(TempoMode.Default);
+        SlowTapeColor = tapeColors.GetColor(TempoMode.Slow);
+
         Affect(TempoMode.Default);
     }
 
@@ -45,21 +45,18 @@ public class TapeColorSwitcher : MonoBehaviour, ISyncable
                 SetSpriteColor(DefaultTapeColor, PreviousTapeSprite);
                 SetSpriteColor(SlowTapeColor, CurrentTapeSprite);
                 SetSpriteColor(FastTapeColor, AfterTapeSprite);
-                ActiveColor = SlowTapeColor;
 
                 break;
             case TempoMode.Fast:
                 SetSpriteColor(SlowTapeColor, PreviousTapeSprite);
                 SetSpriteColor(FastTapeColor, CurrentTapeSprite);
                 SetSpriteColor(DefaultTapeColor, AfterTapeSprite);
-                ActiveColor = FastTapeColor;
 
                 break;
             case TempoMode.Default:
                 SetSpriteColor(FastTapeColor, PreviousTapeSprite);
                 SetSpriteColor(DefaultTapeColor, CurrentTapeSprite);
                 SetSpriteColor(SlowTapeColor, AfterTapeSprite);
-                ActiveColor = DefaultTapeColor;
 
 
                 break;

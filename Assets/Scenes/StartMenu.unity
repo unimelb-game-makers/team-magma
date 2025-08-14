@@ -1119,6 +1119,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2206792748672380777, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: tapeColors
+      value: 
+      objectReference: {fileID: 11400000, guid: 5e88bb49ff0877f4aa0537f87e9c89e2, type: 2}
     - target: {fileID: 2308821192550003612, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -60.62178
@@ -1175,6 +1179,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3821700391950096264, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
+      propertyPath: tapeColors
+      value: 
+      objectReference: {fileID: 11400000, guid: 5e88bb49ff0877f4aa0537f87e9c89e2, type: 2}
     - target: {fileID: 3847680495876232078, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1324,58 +1332,16 @@ PrefabInstance:
     - {fileID: 1860149416047865648, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7602391877294570292, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      insertIndex: 0
+      insertIndex: 3
       addedObject: {fileID: 1121806095}
     - targetCorrespondingSourceObject: {fileID: 7602391877294570292, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      insertIndex: 1
+      insertIndex: 4
       addedObject: {fileID: 1129877623}
     - targetCorrespondingSourceObject: {fileID: 7602391877294570292, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      insertIndex: 2
+      insertIndex: 5
       addedObject: {fileID: 2044710408}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6473223846017973945, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 709990619}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
---- !u!1 &709990618 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6473223846017973945, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-  m_PrefabInstance: {fileID: 709990617}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &709990619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 709990618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c460e3b48ffd54a45b989e6425a1d26f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PreviousTapeSprite:
-  - {fileID: 1121806096}
-  CurrentTapeSprite:
-  - {fileID: 709990621}
-  - {fileID: 1129877624}
-  - {fileID: 8403376122832795833, guid: f8d2164f527688f4b8c86d5f18751341, type: 3}
-  AfterTapeSprite:
-  - {fileID: 2044710409}
-  FastTapeColor: {r: 1, g: 0.7019608, b: 0, a: 1}
-  DefaultTapeColor: {r: 0, g: 1, b: 1, a: 1}
-  SlowTapeColor: {r: 0, g: 1, b: 0, a: 1}
---- !u!114 &709990621 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4698941015361369055, guid: c85d5e67885d94454b0e3ef36c834b90, type: 3}
-  m_PrefabInstance: {fileID: 709990617}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &937781502
 GameObject:
   m_ObjectHideFlags: 0
