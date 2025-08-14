@@ -13,11 +13,12 @@ namespace Platforms
     public class MoveablePlatform : PlatformComponent
     {
         [Header("Movement Settings")]
-        [SerializeField] private float slow_speed = 0.5f;
-        [SerializeField] private float fast_speed = 1.5f;
+        [SerializeField] private float slow_multiplier = 0.5f;
+        [SerializeField] private float fast_multiplier = 1.5f;
         [SerializeField] private float _displacement = 1;
-        [SerializeField] private float _speed = 1;
+        [SerializeField] private float _speed = 5;
         [SerializeField] private Vector3 _direction = Vector3.right;
+        [SerializeField] private float _waitTime = 1f; // Time to wait at each end
         
         [Header("Editor Visualization")]
         [SerializeField] private Color _pathColor = Color.cyan;
@@ -27,10 +28,12 @@ namespace Platforms
         private Vector3 _initialPosition;
         private Vector3 _endPosition;
         private Vector3 previousPosition;
-        private float _time = 0;
         private bool _reverse = false;
         private float _originalSpeed;
         private List<Transform> passengers = new List<Transform>();
+        private enum PlatformState { Moving, Waiting }
+        private PlatformState _currentState = PlatformState.Moving;
+        private float _waitTimer = 0f;
 
         public void Awake()
         {
@@ -59,17 +62,44 @@ namespace Platforms
         {
             previousPosition = transform.position;
 
-            if (_time > 1)
+            if (_currentState == PlatformState.Waiting)
             {
-                _reverse = true;
+                _waitTimer -= Time.deltaTime;
+                if (_waitTimer <= 0f)
+                {
+                    _currentState = PlatformState.Moving;
+                }
+                return;
             }
-            else if (_time < 0)
+
+            // Calculate direction
+            Vector3 direction = (_endPosition - _initialPosition).normalized;
+
+            // Move platform at constant speed
+            if (_reverse)
             {
-                _reverse = false;
+                transform.position -= direction * _speed * Time.deltaTime;
+                
+                // Check if we've reached the initial position
+                if (Vector3.Distance(transform.position, _initialPosition) < 0.01f)
+                {
+                    transform.position = _initialPosition; // Snap to exact position
+                    _reverse = false;
+                    StartWaiting();
+                }
             }
-            
-            _time += (_reverse ? -1 : 1) * Time.deltaTime * _speed;
-            transform.position = Vector3.Lerp(_initialPosition, _endPosition, _time);
+            else
+            {
+                transform.position += direction * _speed * Time.deltaTime;
+                
+                // Check if we've reached the end position
+                if (Vector3.Distance(transform.position, _endPosition) < 0.01f)
+                {
+                    transform.position = _endPosition; // Snap to exact position
+                    _reverse = true;
+                    StartWaiting();
+                }
+            }
 
             // Move passengers
             Vector3 delta = transform.position - previousPosition;
@@ -83,12 +113,18 @@ namespace Platforms
             }
         }
 
+        private void StartWaiting()
+        {
+            _currentState = PlatformState.Waiting;
+            _waitTimer = _waitTime;
+        }
+
         public override void Affect(TempoMode mode)
         {
             switch (mode)
             {
-                case TempoMode.Slow: _speed = slow_speed; break;
-                case TempoMode.Fast: _speed = fast_speed; break;
+                case TempoMode.Slow: _speed = _originalSpeed * slow_multiplier; break;
+                case TempoMode.Fast: _speed = _originalSpeed * fast_multiplier; break;
                 case TempoMode.Default: _speed = _originalSpeed; break;
             }
         }
@@ -108,7 +144,7 @@ namespace Platforms
         private void OnDisable() => passengers.Clear();
         private void OnDestroy() => passengers.Clear();
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
             if (!Application.isPlaying)
@@ -135,6 +171,6 @@ namespace Platforms
                     EventType.Repaint);
             }
         }
-        #endif
+#endif
     }
 }

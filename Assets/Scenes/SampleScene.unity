@@ -12718,6 +12718,7 @@ MonoBehaviour:
   _displacement: 10
   _speed: 1
   _direction: {x: 1, y: 0, z: 0}
+  _waitTime: 1
   _pathColor: {r: 0, g: 1, b: 1, a: 1}
   _waypointSize: 0.2
   _showPathInGame: 0
@@ -15252,6 +15253,18 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -1407634158221012103, guid: a4afab303a1f247508e4e458dc150c65, type: 3}
+    - target: {fileID: 8275842858017041580, guid: 4a0bd3be14cb7495f9ed6ebbaec7f5c0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8275842858017041580, guid: 4a0bd3be14cb7495f9ed6ebbaec7f5c0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8275842858017041580, guid: 4a0bd3be14cb7495f9ed6ebbaec7f5c0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3
+      objectReference: {fileID: 0}
     - target: {fileID: 8275842858017041580, guid: 4a0bd3be14cb7495f9ed6ebbaec7f5c0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.6

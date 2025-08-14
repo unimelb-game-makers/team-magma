@@ -393,10 +393,12 @@ namespace Player
             switch (lookOrientation)
             {
                 case OrientationType.BasedOnInput:
-                    if (TrackMovementInput()) {
-                        Vector3 direction = _rigidbody.velocity.normalized;
-                        direction.y = 0; // Don't rotate along the y-axis
-                        targetRotation = Quaternion.LookRotation(direction);
+                    Vector3 playerDirection = _rigidbody.velocity.normalized;
+                    playerDirection.y = 0; // Don't rotate along the y-axis
+                    
+                    if (TrackMovementInput() && playerDirection != Vector3.zero)
+                    {
+                        targetRotation = Quaternion.LookRotation(playerDirection);
                         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
                     }
                     break;
