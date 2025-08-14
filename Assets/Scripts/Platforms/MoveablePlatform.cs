@@ -18,7 +18,7 @@ namespace Platforms
         [SerializeField] private float _displacement = 1;
         [SerializeField] private float _speed = 5;
         [SerializeField] private Vector3 _direction = Vector3.right;
-        [SerializeField] private float _waitTime = 1f; // Time to wait at each end
+        [SerializeField] private float _waitTime = 1f;
         
         [Header("Editor Visualization")]
         [SerializeField] private Color _pathColor = Color.cyan;
@@ -31,8 +31,8 @@ namespace Platforms
         private bool _reverse = false;
         private float _originalSpeed;
         private List<Transform> passengers = new List<Transform>();
-        private enum PlatformState { Moving, Waiting }
-        private PlatformState _currentState = PlatformState.Moving;
+        private enum PlatformState { MovingToEnd, MovingToStart, Waiting }
+        private PlatformState _currentState = PlatformState.MovingToEnd;
         private float _waitTimer = 0f;
 
         public void Awake()
@@ -55,7 +55,7 @@ namespace Platforms
 
         private void CalculateEndPosition()
         {
-            _endPosition = _initialPosition + _direction * _displacement;
+            _endPosition = _initialPosition + _direction.normalized * _displacement;
         }
 
         private void MovePlatform()
@@ -67,36 +67,39 @@ namespace Platforms
                 _waitTimer -= Time.deltaTime;
                 if (_waitTimer <= 0f)
                 {
-                    _currentState = PlatformState.Moving;
+                    // Determine next movement direction after waiting
+                    if (Vector3.Distance(transform.position, _initialPosition) < 0.01f)
+                    {
+                        _currentState = PlatformState.MovingToEnd;
+                    }
+                    else
+                    {
+                        _currentState = PlatformState.MovingToStart;
+                    }
                 }
                 return;
             }
 
-            // Calculate direction
             Vector3 direction = (_endPosition - _initialPosition).normalized;
+            float distanceToTravel = _speed * Time.deltaTime;
 
-            // Move platform at constant speed
-            if (_reverse)
+            if (_currentState == PlatformState.MovingToEnd)
             {
-                transform.position -= direction * _speed * Time.deltaTime;
+                transform.position += direction * distanceToTravel;
                 
-                // Check if we've reached the initial position
-                if (Vector3.Distance(transform.position, _initialPosition) < 0.01f)
+                if (Vector3.Distance(transform.position, _endPosition) <= distanceToTravel)
                 {
-                    transform.position = _initialPosition; // Snap to exact position
-                    _reverse = false;
+                    transform.position = _endPosition;
                     StartWaiting();
                 }
             }
-            else
+            else if (_currentState == PlatformState.MovingToStart)
             {
-                transform.position += direction * _speed * Time.deltaTime;
+                transform.position -= direction * distanceToTravel;
                 
-                // Check if we've reached the end position
-                if (Vector3.Distance(transform.position, _endPosition) < 0.01f)
+                if (Vector3.Distance(transform.position, _initialPosition) <= distanceToTravel)
                 {
-                    transform.position = _endPosition; // Snap to exact position
-                    _reverse = true;
+                    transform.position = _initialPosition;
                     StartWaiting();
                 }
             }
@@ -107,9 +110,7 @@ namespace Platforms
             
             foreach (Transform passenger in passengers)
             {
-                Quaternion rotation = passenger.rotation;
                 passenger.position += delta;
-                passenger.rotation = rotation;
             }
         }
 
@@ -150,7 +151,7 @@ namespace Platforms
             if (!Application.isPlaying)
             {
                 _initialPosition = transform.position;
-                _endPosition = _initialPosition + _direction * _displacement;
+                _endPosition = _initialPosition + _direction.normalized * _displacement;
             }
 
             if (_showPathInGame || !Application.isPlaying)
@@ -160,15 +161,17 @@ namespace Platforms
                 Gizmos.DrawSphere(_initialPosition, _waypointSize);
                 Gizmos.DrawSphere(_endPosition, _waypointSize);
                 
-                // Draw direction arrow
-                Vector3 dir = (_endPosition - _initialPosition).normalized;
-                float arrowSize = Mathf.Min(_waypointSize * 2, _displacement * 0.3f);
-                Handles.color = _pathColor;
-                Handles.ArrowHandleCap(0, 
-                    _initialPosition + dir * (_displacement * 0.5f), 
-                    Quaternion.LookRotation(dir), 
-                    arrowSize, 
-                    EventType.Repaint);
+                if ((_endPosition - _initialPosition).sqrMagnitude > 0.01f)
+                {
+                    Vector3 dir = (_endPosition - _initialPosition).normalized;
+                    float arrowSize = Mathf.Min(_waypointSize * 2, _displacement * 0.3f);
+                    Handles.color = _pathColor;
+                    Handles.ArrowHandleCap(0, 
+                        _initialPosition + dir * (_displacement * 0.5f), 
+                        Quaternion.LookRotation(dir), 
+                        arrowSize, 
+                        EventType.Repaint);
+                }
             }
         }
 #endif
