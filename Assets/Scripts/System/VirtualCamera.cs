@@ -140,9 +140,7 @@ public class VirtualCamera : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-        
-        if (virtualCamera != null)
+        if (virtualCamera != null && other.tag == "Player")
         {
             CameraManager.Instance.EnableCamera(virtualCamera);
         }

@@ -170,6 +170,9 @@ namespace Player
                     TrackAttackInput();
                     break;
                 case PlayerState.Attacking:
+                    TrackMovementInput();
+                    Move();
+
                     AttackUpdate();
                     break;
             }
