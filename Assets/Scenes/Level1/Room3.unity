@@ -2212,7 +2212,6 @@ Transform:
   m_Children:
   - {fileID: 1489439248}
   - {fileID: 1397850149}
-  - {fileID: 1956725857}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1005260150
@@ -3868,7 +3867,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 197375675056847014, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: near clip plane
-      value: 2.36
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 752836661390818357, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: m_LocalPosition.x
