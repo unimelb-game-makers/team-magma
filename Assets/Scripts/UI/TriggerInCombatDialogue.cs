@@ -5,6 +5,7 @@ public class TriggerInCombatDialogue : MonoBehaviour
 {
     [Header("Dialogue Settings")]
     [SerializeField] private string text;
+    [SerializeField] private float displayDuration = 7f;
     [SerializeField] private bool resetOnStart = true; // New serialized toggle
     
     private bool isTriggered = false;
@@ -24,7 +25,7 @@ public class TriggerInCombatDialogue : MonoBehaviour
         isTriggered = true;
         
         currentDialogueRoutine = StartCoroutine(
-            InCombatDialogueManager.Instance.ShowAndHideDialogue(text)
+            InCombatDialogueManager.Instance.ShowAndHideDialogue(text, displayDuration)
         );
     }
 

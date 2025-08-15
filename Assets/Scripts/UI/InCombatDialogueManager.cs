@@ -10,34 +10,55 @@ public class InCombatDialogueManager : Singleton<InCombatDialogueManager>
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private float screenFadeDuration = 0.5f;
     [SerializeField] private float typingSpeed = 0.01f;
-    [SerializeField] private float displayDuration = 8f; // Time to show dialogue before auto-hiding
     private bool isTyping = false;  // Flag to track whether text is still being typed
-    private Coroutine currentCoroutine;
+    private Coroutine typeCoroutine;
+    private Coroutine dialogueCoroutine;
 
     void Start()
     {
         HideDialogueImmediate();
     }
 
-    public IEnumerator ShowAndHideDialogue(string text)
+    public void ShowNewDialogue(string text, float displayDuration)
     {
-        // Fade in
-        dialogueText.text = "";
+        // If a dialogue is already running, stop it
+        if (dialogueCoroutine != null)
+        {
+            StopCoroutine(dialogueCoroutine);
+        }
+
+        // Start a new sequence
+        dialogueCoroutine = StartCoroutine(ShowAndHideDialogue(text, displayDuration));
+    }
+
+    public IEnumerator ShowAndHideDialogue(string text, float displayDuration)
+    {
+        bool wasActive = inCombatDialogueCanvasGroup.gameObject.activeSelf;
+
+        // Make sure it's active
         inCombatDialogueCanvasGroup.gameObject.SetActive(true);
-        yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(
-            inCombatDialogueCanvasGroup, 0, 1, screenFadeDuration));
-        
-        // Start typing effect
+
+        if (!wasActive || inCombatDialogueCanvasGroup.alpha < 1f)
+        {
+            // If not already visible, fade in
+            dialogueText.text = "";
+            yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(
+                inCombatDialogueCanvasGroup, 0, 1, screenFadeDuration));
+        }
+
+        // Instantly switch text (or start typing if you want typing effect)
+        dialogueText.text = "";
         StartTyping(text);
-        
-        // Wait for both typing AND display duration
+
+        // Restart display timer
         yield return new WaitForSeconds(displayDuration);
-        
-        // Fade out
+
+        // Fade out only if nothing new has started
         yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(
             inCombatDialogueCanvasGroup, 1, 0, screenFadeDuration));
-        
+
         inCombatDialogueCanvasGroup.gameObject.SetActive(false);
+        dialogueCoroutine = null;
     }
 
     public void HideDialogue()
@@ -65,14 +86,14 @@ public class InCombatDialogueManager : Singleton<InCombatDialogueManager>
         if (isTyping)
         {
             // If already typing, stop the current typing coroutine and show full text
-            StopCoroutine(currentCoroutine);
+            StopCoroutine(typeCoroutine);
             dialogueText.text = text;  // Show the full text immediately
             isTyping = false;  // Set the flag to false since the text is fully revealed
         }
         else
         {
             // Start the typewriter effect
-            currentCoroutine = StartCoroutine(TypeText(text));
+            typeCoroutine = StartCoroutine(TypeText(text));
         }
     }
 
