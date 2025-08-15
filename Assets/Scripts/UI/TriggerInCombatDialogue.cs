@@ -1,23 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UI;
-using Unity.VisualScripting;
 
 [RequireComponent(typeof(Collider))]
 public class TriggerInCombatDialogue : MonoBehaviour
 {
+    [Header("Dialogue Settings")]
     [SerializeField] private string text;
+    [SerializeField] private float displayDuration = 7f;
+    [SerializeField] private bool resetOnStart = true; // New serialized toggle
+    
     private bool isTriggered = false;
+    private Coroutine currentDialogueRoutine;
+
+    private void Start()
+    {
+        if (resetOnStart)
+        {
+            ResetTrigger();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (isTriggered) return;
+        if (isTriggered || !other.CompareTag("Player")) return;
+        isTriggered = true;
+        
+        currentDialogueRoutine = StartCoroutine(
+            InCombatDialogueManager.Instance.ShowAndHideDialogue(text, displayDuration)
+        );
+    }
 
-        if (other.CompareTag("Player"))
+    private void OnDestroy()
+    {
+        CleanupDialogue();
+    }
+
+    public void ResetTrigger()
+    {
+        isTriggered = false;
+        
+        if (currentDialogueRoutine != null)
         {
-            Debug.Log("triggered");
-            isTriggered = true;
-            StartCoroutine(InCombatDialogueManager.Instance.ShowAndHideDialogue(text));
+            StopCoroutine(currentDialogueRoutine);
+            currentDialogueRoutine = null;
+        }
+        
+    }
+
+    private void CleanupDialogue()
+    {
+        if (!isTriggered) return;
+        
+        if (currentDialogueRoutine != null)
+        {
+            StopCoroutine(currentDialogueRoutine);
+        }
+        
+        if (InCombatDialogueManager.Instance != null)
+        {
+            InCombatDialogueManager.Instance.HideDialogueImmediate();
         }
     }
 }

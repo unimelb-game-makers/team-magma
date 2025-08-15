@@ -56,7 +56,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 10
   animator: {fileID: 4283264021130854951}
-  jumpHeight: 2
+  jumpHeight: 1.8
   jumpForce: 5
   maxAirJumps: 1
   lookOrientation: 1
@@ -146,7 +146,9 @@ MonoBehaviour:
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   hitEffectDuration: 0.5
   colorChangeDuration: 0.2
+  renderers: []
   takeDamageAudioPlayer: {fileID: 6169043454981276182}
+  HitEffectPrefab: {fileID: 0}
 --- !u!208 &3826332439342066953
 NavMeshObstacle:
   m_ObjectHideFlags: 0
