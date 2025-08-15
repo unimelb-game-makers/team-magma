@@ -1,5 +1,7 @@
+
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class BeatSpawner : MonoBehaviour
 {
@@ -12,14 +14,15 @@ public class BeatSpawner : MonoBehaviour
 
     [SerializeField] private RectTransform leftTarget;
     [SerializeField] private RectTransform rightTarget;
-    
     private BeatHandler _beatHandler;
+    private TempoMode  currentTempo;
 
     private readonly Dictionary<int, BeatPopupItem> _popupItems = new();
 
     public void Init(BeatHandler beatHandler)
     {
         _beatHandler = beatHandler;
+        currentTempo = TempoMode.Default;
     }
 
     /// <summary>
@@ -35,7 +38,7 @@ public class BeatSpawner : MonoBehaviour
         float distance = BEAT_DISTANCE * travelTime;
 
         BeatPopupItem beatPopupItem = Instantiate(sampleBeatPopupItem, beatHolder);
-        beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, travelTime);
+        beatPopupItem.Init(this, beat, leftTarget, rightTarget, distance, travelTime, currentTempo);
         _popupItems.Add(beat, beatPopupItem);
     }
 
@@ -53,6 +56,7 @@ public class BeatSpawner : MonoBehaviour
         foreach (KeyValuePair<int, BeatPopupItem> popupItem in _popupItems)
         {
             popupItem.Value.OnTempoChanged(mode, _beatHandler);
+            currentTempo = mode;
         }
     }
 
@@ -76,4 +80,3 @@ public class BeatSpawner : MonoBehaviour
         popupItem.Resolve(beatResult.grade);
     }
 }
-

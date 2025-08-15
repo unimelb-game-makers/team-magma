@@ -53,6 +53,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 8387150868502993674}
   rightHexagon: {fileID: 8579859014973630274}
   sampleHitEffect: {fileID: 7505590498364718112, guid: e12c545153aae8a438755ed4f4a4127d, type: 3}
+  switchDuration: 0.5
+  tapeColors: {fileID: 11400000, guid: 5e88bb49ff0877f4aa0537f87e9c89e2, type: 2}
 --- !u!1001 &2110298734866997398
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,6 +147,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2843404435286012853, guid: dbb4c7e84e15c4b7fbc630b290add0cb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 228549a65ba7b2647a9dd62e0f20c9f6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -258,6 +264,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2843404435286012853, guid: dbb4c7e84e15c4b7fbc630b290add0cb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 228549a65ba7b2647a9dd62e0f20c9f6, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

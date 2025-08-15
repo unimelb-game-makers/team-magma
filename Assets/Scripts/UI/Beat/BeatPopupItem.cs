@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,8 +28,14 @@ public class BeatPopupItem : MonoBehaviour
     private BeatSpawner _spawner;
     private int _beat;
     [SerializeField] private BeatHitEffect sampleHitEffect;
-    public void Init(BeatSpawner spawner, int beat, RectTransform leftTarget, RectTransform rightTarget, float distance, float travelTime)
+
+    private Coroutine _runningCoroutine;
+    [SerializeField] private float switchDuration = 0.5f;
+    [SerializeField] TapeColors tapeColors;
+
+    public void Init(BeatSpawner spawner, int beat, RectTransform leftTarget, RectTransform rightTarget, float distance, float travelTime, TempoMode CurrentTempo)
     {
+
         _spawner = spawner;
         _beat = beat;
         _leftTarget = leftTarget;
@@ -43,8 +50,8 @@ public class BeatPopupItem : MonoBehaviour
         rightHexagon.Rect.anchoredPosition = rightPos;
 
         // Set colour to neutral
-        leftHexagon.Image.color = neutralColour;
-        rightHexagon.Image.color = neutralColour;
+        leftHexagon.Image.color = tapeColors.GetColor(CurrentTempo);
+        rightHexagon.Image.color = tapeColors.GetColor(CurrentTempo);
 
         // Create tweens to move the hexagons
         _sequence = DOTween.Sequence();
@@ -78,7 +85,7 @@ public class BeatPopupItem : MonoBehaviour
         image.color = colour;
     }
 
-    public void OnTempoChanged(TempoMode _, BeatHandler beatHandler)
+    public void OnTempoChanged(TempoMode mode, BeatHandler beatHandler)
     {
         float remainingBeat = _beat - beatHandler.CurrentBeat;
         if (remainingBeat <= 0) return;
@@ -89,7 +96,12 @@ public class BeatPopupItem : MonoBehaviour
         _sequence.Kill();
         _sequence = DOTween.Sequence();
         _sequence.Append(leftHexagon.Rect.DOAnchorPos(_leftTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
+
         _sequence.Join(rightHexagon.Rect.DOAnchorPos(_rightTarget.anchoredPosition, travelTime).SetEase(Ease.Linear));
+        Color targetColor = tapeColors.GetColor(mode);
+        _sequence.Join(leftHexagon.Image.DOColor(targetColor, switchDuration));
+        _sequence.Join(rightHexagon.Image.DOColor(targetColor, switchDuration));
+
         _sequence.Play().OnComplete(Resolve);
     }
 

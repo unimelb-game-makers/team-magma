@@ -29,13 +29,14 @@ public class VirtualCamera : MonoBehaviour
         get { return playerPosition; }
         set
         {
+            Debug.Log("set");
             playerPosition = value;
             playerTarget.transform.position = value;
         }
     }
     [Tooltip("changes the displacement from camera to player")]
 
-    [SerializeField] Vector3 followOffset = new Vector3(0, 0, 0);
+    [SerializeField] Vector3 followOffset;
     [SerializeField, HideInInspector] Vector3 previousOffset = new Vector3(0, 0, 0);
 
     private Vector3 FollowOffset
@@ -60,7 +61,7 @@ public class VirtualCamera : MonoBehaviour
             previousDistance = value;
         }
     }
-    private float previousDistance;
+    [SerializeField, HideInInspector] private float previousDistance;
     private Transform player;
 
 
@@ -71,7 +72,7 @@ public class VirtualCamera : MonoBehaviour
 
         if (previousOffset != followOffset)
         {
-            previousOffset = followOffset;
+            FollowOffset = followOffset;
             Distance = FollowOffset.magnitude;
             CameraPosition = PlayerPosition + FollowOffset;
         }
@@ -108,7 +109,6 @@ public class VirtualCamera : MonoBehaviour
             if (cameraPosition != virtualCamera.transform.position)
             {
                 cameraPosition = virtualCamera.transform.position;
-                Debug.Log("camera changed");
 
                 FollowOffset = cameraPosition - playerPosition;
                 Distance = FollowOffset.magnitude;
@@ -134,7 +134,7 @@ public class VirtualCamera : MonoBehaviour
     void LateUpdate()
     {   if (Application.isPlaying)
         {
-        virtualCamera.transform.position = player.position + followOffset;
+            virtualCamera.transform.position = player.position + followOffset;
         }
     }
 
