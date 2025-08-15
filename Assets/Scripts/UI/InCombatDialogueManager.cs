@@ -19,41 +19,41 @@ public class InCombatDialogueManager : Singleton<InCombatDialogueManager>
         HideDialogueImmediate();
     }
 
-    public void ShowNewDialogue(string text, float displayDuration)
+    public IEnumerator ShowAndHideDialogue(string text, float displayDuration)
     {
-        // If a dialogue is already running, stop it
+        // Stop previous dialogue if it's still running
         if (dialogueCoroutine != null)
         {
             StopCoroutine(dialogueCoroutine);
+            dialogueCoroutine = null;
         }
 
-        // Start a new sequence
-        dialogueCoroutine = StartCoroutine(ShowAndHideDialogue(text, displayDuration));
+        dialogueCoroutine = StartCoroutine(ShowAndHideDialogueRoutine(text, displayDuration));
+        yield return dialogueCoroutine;
     }
 
-    public IEnumerator ShowAndHideDialogue(string text, float displayDuration)
+    private IEnumerator ShowAndHideDialogueRoutine(string text, float displayDuration)
     {
         bool wasActive = inCombatDialogueCanvasGroup.gameObject.activeSelf;
 
-        // Make sure it's active
+        // Make sure canvas is active
         inCombatDialogueCanvasGroup.gameObject.SetActive(true);
 
         if (!wasActive || inCombatDialogueCanvasGroup.alpha < 1f)
         {
-            // If not already visible, fade in
             dialogueText.text = "";
             yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(
                 inCombatDialogueCanvasGroup, 0, 1, screenFadeDuration));
         }
 
-        // Instantly switch text (or start typing if you want typing effect)
+        // Display text
         dialogueText.text = "";
         StartTyping(text);
 
-        // Restart display timer
+        // Wait for display duration
         yield return new WaitForSeconds(displayDuration);
 
-        // Fade out only if nothing new has started
+        // Fade out
         yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(
             inCombatDialogueCanvasGroup, 1, 0, screenFadeDuration));
 
