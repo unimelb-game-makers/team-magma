@@ -966,6 +966,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 4202378662886557176}
   rightHexagon: {fileID: 8329582280913244366}
   sampleHitEffect: {fileID: 7505590498364718112, guid: e12c545153aae8a438755ed4f4a4127d, type: 3}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &203652291794897738
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,6 +1321,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 2146142729840258}
   rightHexagon: {fileID: 995698918166329079}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &302852585754542253
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,6 +1642,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &397486607439524444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1841,6 +1847,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 8660137951999168201}
   rightHexagon: {fileID: 7253597554199927279}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &460586185360760875
 GameObject:
   m_ObjectHideFlags: 0
@@ -2892,7 +2900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7969754414466778302
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3080,6 +3088,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 3539989746502382836}
   rightHexagon: {fileID: 6895462908103030864}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &819211984630224033
 GameObject:
   m_ObjectHideFlags: 0
@@ -4676,6 +4686,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 7421883538427299517}
   rightHexagon: {fileID: 1709658881616266956}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &1260123703141727513
 GameObject:
   m_ObjectHideFlags: 0
@@ -4832,6 +4844,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 4909115845649347257}
   rightHexagon: {fileID: 3015443091794331736}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &1330744433123834732
 GameObject:
   m_ObjectHideFlags: 0
@@ -4885,6 +4899,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 5911941871468035444}
   rightHexagon: {fileID: 1141321800014708351}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &1366385663341274377
 GameObject:
   m_ObjectHideFlags: 0
@@ -5108,6 +5124,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 6204923231188291413}
   rightHexagon: {fileID: 7281792280965315032}
   sampleHitEffect: {fileID: 7505590498364718112, guid: e12c545153aae8a438755ed4f4a4127d, type: 3}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &1392198572763831774
 GameObject:
   m_ObjectHideFlags: 0
@@ -5367,6 +5385,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 4044570118319710699}
   rightHexagon: {fileID: 8786463503197228323}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &1406661768437551142
 GameObject:
   m_ObjectHideFlags: 0
@@ -8979,7 +8999,6 @@ MonoBehaviour:
   dialogueText: {fileID: 4648674099191495645}
   screenFadeDuration: 0.5
   typingSpeed: 0.01
-  displayDuration: 5
 --- !u!1 &2070803402643673053
 GameObject:
   m_ObjectHideFlags: 0
@@ -9539,6 +9558,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 6520711297492997912}
   rightHexagon: {fileID: 473444751986767660}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &2274819823489580379
 GameObject:
   m_ObjectHideFlags: 0
@@ -9784,6 +9805,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 8042246966431651186}
   rightHexagon: {fileID: 3916322411345862466}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &2318915942224392237
 GameObject:
   m_ObjectHideFlags: 0
@@ -10530,6 +10553,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 3099122316711224236}
   rightHexagon: {fileID: 7640181153172760570}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &2591054894962599888
 GameObject:
   m_ObjectHideFlags: 0
@@ -10954,6 +10979,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 2431842986780388642}
   rightHexagon: {fileID: 5317842035445141822}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &2693374707647666886
 GameObject:
   m_ObjectHideFlags: 0
@@ -12601,6 +12628,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 8270021437349506079}
   rightHexagon: {fileID: 2523047307245383833}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3091971467151162520
 GameObject:
   m_ObjectHideFlags: 0
@@ -12653,6 +12682,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 1446449936016370124}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3097677846567514508
 GameObject:
   m_ObjectHideFlags: 0
@@ -13284,6 +13315,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 7972373067471196748}
   rightHexagon: {fileID: 707172083170125535}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3161517986790287838
 GameObject:
   m_ObjectHideFlags: 0
@@ -14672,6 +14705,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 5632137593289778765}
   rightHexagon: {fileID: 852737719222354096}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3384553948713642177
 GameObject:
   m_ObjectHideFlags: 0
@@ -14934,6 +14969,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 3467695254763402347}
   rightHexagon: {fileID: 306730993860388424}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3469131656993538589
 GameObject:
   m_ObjectHideFlags: 0
@@ -14987,6 +15024,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 6629669521987131981}
   rightHexagon: {fileID: 5650133884017155397}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3486437691327636207
 GameObject:
   m_ObjectHideFlags: 0
@@ -15115,6 +15154,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 2725004154362484271}
   rightHexagon: {fileID: 191200992293037365}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3510917912444161698
 GameObject:
   m_ObjectHideFlags: 0
@@ -15427,6 +15468,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 8064003930088193923}
   rightHexagon: {fileID: 8229752300843953527}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3562417424954048584
 GameObject:
   m_ObjectHideFlags: 0
@@ -16227,6 +16270,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 7851389256711883947}
   rightHexagon: {fileID: 6371932702848619610}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3740889115909819205
 GameObject:
   m_ObjectHideFlags: 0
@@ -16802,6 +16847,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 6976714138590647520}
   rightHexagon: {fileID: 894650472416688762}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3829140266911918448
 GameObject:
   m_ObjectHideFlags: 0
@@ -17061,6 +17108,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 481474658240719533}
   rightHexagon: {fileID: 1923162267168970207}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3847680495876232078
 GameObject:
   m_ObjectHideFlags: 0
@@ -17568,6 +17617,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 3552837661918414602}
   rightHexagon: {fileID: 3008253042268486610}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &3971038930816522482
 GameObject:
   m_ObjectHideFlags: 0
@@ -18581,6 +18632,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 5915196959759613093}
   rightHexagon: {fileID: 4782875302972071705}
   sampleHitEffect: {fileID: 7505590498364718112, guid: e12c545153aae8a438755ed4f4a4127d, type: 3}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &4069813219402351815
 GameObject:
   m_ObjectHideFlags: 0
@@ -20753,6 +20806,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 1849975871519417625}
   rightHexagon: {fileID: 4263510685603657976}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &4645335743354740404
 GameObject:
   m_ObjectHideFlags: 0
@@ -21160,6 +21215,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 2137087848215403186}
   rightHexagon: {fileID: 8277329031030831089}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &4742290317816980813
 GameObject:
   m_ObjectHideFlags: 0
@@ -21211,6 +21268,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &4765114781804759130
 GameObject:
   m_ObjectHideFlags: 0
@@ -21229,7 +21288,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2182222019818869177
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22457,6 +22516,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 7897342498147339201}
   rightHexagon: {fileID: 4090336837330306802}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &5074353323885600870
 GameObject:
   m_ObjectHideFlags: 0
@@ -22510,6 +22571,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 8325273365145921389}
   rightHexagon: {fileID: 6877433724664969013}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &5075316326257852585
 GameObject:
   m_ObjectHideFlags: 0
@@ -22995,6 +23058,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 4189062545388883548}
   rightHexagon: {fileID: 2208669789109657380}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &5185621843989131757
 GameObject:
   m_ObjectHideFlags: 0
@@ -25185,6 +25250,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &5776519204567103217
 GameObject:
   m_ObjectHideFlags: 0
@@ -25353,6 +25420,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 5081973714267339871}
   rightHexagon: {fileID: 8190360862448471529}
   sampleHitEffect: {fileID: 7505590498364718112, guid: e12c545153aae8a438755ed4f4a4127d, type: 3}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &5828151069328901588
 GameObject:
   m_ObjectHideFlags: 0
@@ -25406,6 +25475,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 1694821302842456904}
   rightHexagon: {fileID: 9128819164732699277}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &5835991095904429212
 GameObject:
   m_ObjectHideFlags: 0
@@ -26255,6 +26326,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 6757857544727420513}
   rightHexagon: {fileID: 2982391498714536042}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &6062598796613800006
 GameObject:
   m_ObjectHideFlags: 0
@@ -27769,6 +27842,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &6428904640540075083
 GameObject:
   m_ObjectHideFlags: 0
@@ -28273,6 +28348,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 4497633795321936634}
   rightHexagon: {fileID: 2873213856214912569}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &6608221161518753388
 GameObject:
   m_ObjectHideFlags: 0
@@ -30312,6 +30389,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 6444970255795746500}
   rightHexagon: {fileID: 112104830215025309}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &6977350097141366823
 GameObject:
   m_ObjectHideFlags: 0
@@ -30993,6 +31072,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7034326637222995191
 GameObject:
   m_ObjectHideFlags: 0
@@ -31330,6 +31411,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7079642407183835341
 GameObject:
   m_ObjectHideFlags: 0
@@ -31630,6 +31713,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7139393331129158009
 GameObject:
   m_ObjectHideFlags: 0
@@ -31817,6 +31902,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 7350354028346521302}
   rightHexagon: {fileID: 6091103447281020395}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7177293022812486658
 GameObject:
   m_ObjectHideFlags: 0
@@ -31870,6 +31957,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 3287910391941844996}
   rightHexagon: {fileID: 1159892881388183049}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7186106527442460412
 GameObject:
   m_ObjectHideFlags: 0
@@ -32904,6 +32993,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 3964449749543509115}
   rightHexagon: {fileID: 2697435094312732345}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7485753103272780047
 GameObject:
   m_ObjectHideFlags: 0
@@ -33608,6 +33699,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 3304999133749622417}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7573561511718936633
 GameObject:
   m_ObjectHideFlags: 0
@@ -33942,6 +34035,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 4015608849237514753}
   rightHexagon: {fileID: 692513366975920875}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7722757227769164908
 GameObject:
   m_ObjectHideFlags: 0
@@ -34784,6 +34879,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 7074753533279852542}
   sampleHitEffect: {fileID: 7505590498364718112, guid: e12c545153aae8a438755ed4f4a4127d, type: 3}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7914199114565880332
 GameObject:
   m_ObjectHideFlags: 0
@@ -34912,6 +35009,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 2595147605079367015}
   rightHexagon: {fileID: 8643007555999977216}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &7934006501271561706
 GameObject:
   m_ObjectHideFlags: 0
@@ -36309,7 +36408,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: End of Prototype
+  m_text: End of Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ec1fe2f867684a54f9c8b3d87b8f17b8, type: 2}
   m_sharedMaterial: {fileID: 7058703163840867300, guid: ec1fe2f867684a54f9c8b3d87b8f17b8, type: 2}
@@ -36430,6 +36529,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 9107612787928814722}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8368053072131497503
 GameObject:
   m_ObjectHideFlags: 0
@@ -36939,6 +37040,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 92441245535933572}
   rightHexagon: {fileID: 979545494034866385}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8443041171134857857
 GameObject:
   m_ObjectHideFlags: 0
@@ -36992,6 +37095,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 5602065017563970505}
   rightHexagon: {fileID: 3637193300622191832}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8444080123302955045
 GameObject:
   m_ObjectHideFlags: 0
@@ -37282,6 +37387,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 3895410647382054641}
   rightHexagon: {fileID: 185112246925205373}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8499664965967904442
 GameObject:
   m_ObjectHideFlags: 0
@@ -37438,6 +37545,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 2245347739795499317}
   rightHexagon: {fileID: 7763447327934466719}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8526881370127050045
 GameObject:
   m_ObjectHideFlags: 0
@@ -37491,6 +37600,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 2092012275335946139}
   rightHexagon: {fileID: 4289966885965165956}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8537883412449419561
 GameObject:
   m_ObjectHideFlags: 0
@@ -37679,6 +37790,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 1957082165127953314}
   rightHexagon: {fileID: 2455279854988943700}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8563175428973158155
 GameObject:
   m_ObjectHideFlags: 0
@@ -38643,6 +38756,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 5970731738510431928}
   rightHexagon: {fileID: 3167617866303889728}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8773012557983715439
 GameObject:
   m_ObjectHideFlags: 0
@@ -38696,6 +38811,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 1501559614988214626}
   rightHexagon: {fileID: 6350830613396080665}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8812874852247211121
 GameObject:
   m_ObjectHideFlags: 0
@@ -39048,6 +39165,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 8113051237881269874}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8860918440516697185
 GameObject:
   m_ObjectHideFlags: 0
@@ -39176,6 +39295,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 6917442883661838847}
   rightHexagon: {fileID: 4339624399826054626}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8875783499908068950
 GameObject:
   m_ObjectHideFlags: 0
@@ -39666,6 +39787,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 1768212788760095181}
   rightHexagon: {fileID: 6881547617606628215}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &8984403714536673130
 GameObject:
   m_ObjectHideFlags: 0
@@ -40088,6 +40211,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 0}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &9069010013136328201
 GameObject:
   m_ObjectHideFlags: 0
@@ -40529,6 +40654,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 19601187265884274}
   rightHexagon: {fileID: 2942569662640922029}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &9151904185752869512
 GameObject:
   m_ObjectHideFlags: 0
@@ -40581,6 +40708,8 @@ MonoBehaviour:
   leftHexagon: {fileID: 0}
   rightHexagon: {fileID: 36379178426611935}
   sampleHitEffect: {fileID: 0}
+  switchDuration: 0.5
+  tapeColors: {fileID: 0}
 --- !u!1 &9214997637003545759
 GameObject:
   m_ObjectHideFlags: 0

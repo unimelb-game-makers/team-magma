@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UI;
 
-// Note that this is temporary for alpha build
-
 [RequireComponent(typeof(Collider))]
 public class SuccessScreenTriggerTest : MonoBehaviour
 {
