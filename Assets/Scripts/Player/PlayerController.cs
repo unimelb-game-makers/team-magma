@@ -398,11 +398,16 @@ namespace Player
                 case OrientationType.BasedOnInput:
                     Vector3 playerDirection = _rigidbody.velocity.normalized;
                     playerDirection.y = 0; // Don't rotate along the y-axis
-                    
+
                     if (TrackMovementInput() && playerDirection != Vector3.zero)
                     {
                         targetRotation = Quaternion.LookRotation(playerDirection);
                         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                    }
+                    else
+                    {
+                        _rigidbody.angularVelocity = Vector3.zero;
+
                     }
                     break;
                 case OrientationType.TowardMouse:

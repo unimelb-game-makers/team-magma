@@ -21,6 +21,7 @@ public class TapeColorSwitcher : MonoBehaviour, ISyncable
 
     void Start()
     {
+        _sequence = DOTween.Sequence();
         SceneManager.sceneLoaded += OnSceneLoaded;
         FastTapeColor = tapeColors.GetColor(TempoMode.Fast);
         DefaultTapeColor = tapeColors.GetColor(TempoMode.Default);
@@ -37,8 +38,8 @@ public class TapeColorSwitcher : MonoBehaviour, ISyncable
 
     public void Affect(TempoMode mode)
     {
-        _sequence.Kill();
-
+        _sequence?.Kill();                    
+        _sequence = DOTween.Sequence();       
         switch (mode)
         {
             case TempoMode.Slow:

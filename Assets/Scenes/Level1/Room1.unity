@@ -680,6 +680,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2189865486573922233, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5791818487809558598, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -1629,6 +1633,10 @@ PrefabInstance:
     - target: {fileID: 2008986567448187752, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2189865486573922233, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5791818487809558598, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8756,35 +8764,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 197375675056847014, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: near clip plane
-      value: 2.36
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 752836661390818357, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -80.6
+      value: -14.854961
       objectReference: {fileID: 0}
     - target: {fileID: 752836661390818357, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -9.730877
+      value: -10.530001
       objectReference: {fileID: 0}
     - target: {fileID: 752836661390818357, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.03923893
+      value: -4.39
       objectReference: {fileID: 0}
     - target: {fileID: 752836661390818357, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0000045072247
+      value: -0.36963946
       objectReference: {fileID: 0}
     - target: {fileID: 752836661390818357, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000016821188
+      value: -0.09903019
       objectReference: {fileID: 0}
     - target: {fileID: 752836661390818357, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9659258
+      value: 0.8924009
       objectReference: {fileID: 0}
     - target: {fileID: 752836661390818357, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.2588191
+      value: -0.23912412
       objectReference: {fileID: 0}
     - target: {fileID: 752836661390818357, guid: 64119753269c2b54a88206a53b849d4d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9498,6 +9506,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2189865486573922233, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5791818487809558598, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -10007,6 +10019,10 @@ PrefabInstance:
     - target: {fileID: 2008986567448187752, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2189865486573922233, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5791818487809558598, guid: b923e3abcc85ba24d87e2fa1c3f87a57, type: 3}
       propertyPath: m_LocalPosition.x
