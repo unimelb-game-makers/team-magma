@@ -16,8 +16,7 @@ public class InCombatDialogueManager : Singleton<InCombatDialogueManager>
 
     void Start()
     {
-        inCombatDialogueCanvasGroup.gameObject.SetActive(false);
-        inCombatDialogueCanvasGroup.alpha = 0;
+        HideDialogueImmediate();
     }
 
     public IEnumerator ShowAndHideDialogue(string text)
@@ -52,6 +51,12 @@ public class InCombatDialogueManager : Singleton<InCombatDialogueManager>
         yield return StartCoroutine(SceneFadeManager.Instance.FadeCanvasGroup(
             inCombatDialogueCanvasGroup, 1, 0, screenFadeDuration));
         inCombatDialogueCanvasGroup.gameObject.SetActive(false);
+    }
+
+    public void HideDialogueImmediate()
+    {
+        inCombatDialogueCanvasGroup.gameObject.SetActive(false);
+        inCombatDialogueCanvasGroup.alpha = 0;
     }
 
     // Method to start typing the text
