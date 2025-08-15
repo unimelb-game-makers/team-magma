@@ -19,6 +19,7 @@ namespace Hazard
         [SerializeField] private GameObject end;
         [SerializeField] private float _spawnInterval = 5f;
         [SerializeField] private float _normalSpawnInterval = 20f;
+        [SerializeField] private float _initialSpawnDelay = 0f;
         private Coroutine _spawnTrainCoroutine;
         
         private void OnEnable()
@@ -37,7 +38,6 @@ namespace Hazard
         {
             _spawnTrainCoroutine = StartCoroutine(TrainSpawner());
             SetTrackEnds();
-            
         }
 
         private void SetTrackEnds()
@@ -65,15 +65,17 @@ namespace Hazard
                 throw new System.Exception("Train component not found");
             }
             train.SetPath(pathCreator);
-            // force initial position and rotation immediately on spawn
             train.transform.position = pathCreator.path.GetPointAtDistance(0f);
             train.transform.rotation = pathCreator.path.GetRotationAtDistance(0f);
-            // set the initial speed based on the current tempo mode
             train.Affect(mode);
         }
 
         private IEnumerator TrainSpawner()
         {
+            // Wait for initial delay before starting spawns
+            if (_initialSpawnDelay > 0)
+                yield return new WaitForSeconds(_initialSpawnDelay);
+
             float timer = 0f;
 
             while (true)
@@ -86,7 +88,7 @@ namespace Hazard
                     timer = 0f;
                 }
 
-                yield return null; // Wait until the next frame
+                yield return null;
             }
         }
 

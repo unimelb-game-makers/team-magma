@@ -63,7 +63,7 @@ namespace NPC
             if (CurrentState == NpcState.Idle)
             {
                 string _storylet_to_play = _storylets_manager.PickPlayableStorylet(); //JASPER WROTE THIS . This provides a KnotID string which, presumably we can pass to the Ink story to play content from?
-                DialogueUI.Instance.TalkToNpc(_story, _storylet_to_play);
+                DialogueUI.Instance.Talk(_story, _storylet_to_play);
             }
             
             _playerInRangeCheckCoroutine = StartCoroutine(PlayerInRangeCheck());
