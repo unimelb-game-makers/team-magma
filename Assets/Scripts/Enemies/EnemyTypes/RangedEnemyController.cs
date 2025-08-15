@@ -139,7 +139,7 @@ namespace Enemies.EnemyTypes
                 // Introduce random inaccuracy
                 direction = ApplyInaccuracy(direction, inaccuracyAmount);
 
-                projectileComponent.SetInitialDirection(new Vector3(direction.x, 0f, direction.z), Player.gameObject);
+                projectileComponent.SetInitialDirection(direction, Player.gameObject);
             }
         }
 
