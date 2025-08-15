@@ -161,13 +161,15 @@ namespace Timeline
             musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             musicInstance.release();
         }
-
+        
+        /**
         void OnGUI()
         {
             if (_timelineInfoDisplayToggle && timelineInfo != null) {
                 GUILayout.Box(String.Format("Current Beat = {0}, Current Bar = {1}, Current Tempo = {2}, Last Marker = {3}", timelineInfo.CurrentMusicBeat, timelineInfo.CurrentMusicBar, timelineInfo.CurrentMusicTempo, (string)timelineInfo.LastMarker));
             }
         }
+        **/
         
         public void SetSpeed(TempoMode mode)
         {
