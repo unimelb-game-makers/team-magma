@@ -22,7 +22,7 @@ public class MeleeDamager : MonoBehaviour, IDamageManager
     {
         damager.Damage(other);
     }
-    
+
     /**
      * Deal damage to the object.
      */
@@ -44,6 +44,11 @@ public class MeleeDamager : MonoBehaviour, IDamageManager
             // The knockback distance is between 1 to 5 depending on damage
             float knockbackDistance = Mathf.Clamp(damage * 0.1f, 1f, 5f);
             enemyController.ApplyKnockback(knockbackDirection, knockbackDistance);
+        }
+        EnemyGetHit enemyGetHit = target.GetComponent<EnemyGetHit>();
+        if (enemyGetHit != null)
+        {
+            enemyGetHit.GetHit();
         }
     }
 }
