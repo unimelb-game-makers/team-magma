@@ -74,11 +74,6 @@ namespace System
             "Room1",
             "Room2",
             "Room3",
-            "Room4",
-            "Room5",
-            "Room6",
-            "Room7",
-            "Room8-9",
         };
 
 
@@ -106,16 +101,15 @@ namespace System
 
         public void LoadNextLevel()
         {
-            if (_currentLevelIndex >= levelNames.Count)
+            if (_currentLevelIndex >= levelNames.Count - 1)
             {
-                // TODO: add success screen
-                throw new Exception("No more levels to load.");
+                SuccessScreenManager.Instance.ShowSuccessScreen();
+                return;
             }
             _currentLevelIndex++;
             PlayerPrefs.SetInt("CurrentLevelIndex", _currentLevelIndex);
             PlayerPrefs.Save();
             LoadLevel(levelNames[_currentLevelIndex]);
-
         }
 
         public void LoadNewGame()
