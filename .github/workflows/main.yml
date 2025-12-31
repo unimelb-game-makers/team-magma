@@ -26,7 +26,7 @@ jobs:
   build-Windows:
     name: Build Windows 
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request' 
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request' || github.event_name == 'push'
     strategy:
       matrix:
         targetPlatform: [StandaloneWindows64]
@@ -84,7 +84,7 @@ jobs:
     needs: [build-Windows]
     name: Build on Linux/Macos
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' 
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     strategy:
       matrix: 
         targetPlatform: [StandaloneLinux64, StandaloneOSX]
